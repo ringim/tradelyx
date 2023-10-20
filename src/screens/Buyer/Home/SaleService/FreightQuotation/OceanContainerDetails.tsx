@@ -1,0 +1,378 @@
+import {Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {Controller, useForm} from 'react-hook-form';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Spinner from 'react-native-loading-spinner-overlay';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {
+  ALERT_TYPE,
+  AlertNotificationRoot,
+  Toast,
+} from 'react-native-alert-notification';
+import FastImage from 'react-native-fast-image';
+
+import {
+  FreightType,
+  Header,
+  TextButton,
+  QuotationProgress2,
+  QtySection,
+  ContainerType,
+} from '../../../../../components';
+import {
+  COLORS,
+  FONTS,
+  SIZES,
+  constants,
+  icons,
+  images,
+} from '../../../../../constants';
+import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
+
+const OceanContainerDetails = () => {
+  const navigation = useNavigation<HomeStackNavigatorParamList>();
+
+  const {control, handleSubmit}: any = useForm();
+
+  const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState(5);
+  const [selectedOption, setSelectedOptions] = useState(true);
+  const [value, setValue] = useState(null);
+
+  const [open, setOpen] = useState(false);
+  const [value1, setValue1] = useState(null);
+  const [type, setType] = useState('');
+  const [jobType, setJobType] = useState<any>(constants.containerType);
+
+  const [open2, setOpen2] = useState(false);
+  const [value2, setValue2] = useState(null);
+  const [type2, setType2] = useState('');
+  const [jobType2, setJobType2] = useState<any>(constants.weight);
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 5) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const onSubmit = async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    try {
+      // console.log('job data', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  function requestForm() {
+    return (
+      <View
+        style={{
+          marginTop: SIZES.semi_margin,
+          marginHorizontal: SIZES.semi_margin,
+        }}>
+        {/* container detail */}
+        <View style={{marginTop: SIZES.semi_margin}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
+            Container
+          </Text>
+          <View
+            style={{
+              marginTop: SIZES.radius,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            {constants.contDetails.map((item: any, index: any) => {
+              return (
+                <ContainerType
+                  key={`ContainerType-${index}`}
+                  item={item}
+                  selected={item.id == selectedOption}
+                  containerStyle={{
+                    width: 175,
+                  }}
+                  onPress={() => {
+                    setSelectedOptions(item.id);
+                    setValue(item.label);
+                  }}
+                />
+              );
+            })}
+          </View>
+        </View>
+
+        {/* container size */}
+        <View style={{marginTop: SIZES.padding}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
+            Container Size
+          </Text>
+          <View
+            style={{
+              marginTop: SIZES.radius,
+              marginRight: 20,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            {constants.contSize.map((item: any, index: any) => {
+              return (
+                <ContainerType
+                  key={`ContainerType-${index}`}
+                  item={item}
+                  selected={item.id == selectedOption}
+                  containerStyle={{
+                    width: 105,
+                  }}
+                  onPress={() => {
+                    setSelectedOptions(item.id);
+                    setValue(item.label);
+                  }}
+                />
+              );
+            })}
+          </View>
+        </View>
+
+        {/* Category Type */}
+        <Controller
+          control={control}
+          name="containerType"
+          rules={{
+            required: 'Container type is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <View style={{marginTop: SIZES.padding}}>
+              <Text
+                style={{
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                }}>
+                Container type
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'type',
+                }}
+                onChangeValue={onChange}
+                open={open}
+                showArrowIcon={true}
+                placeholder="Select"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value1}
+                items={jobType}
+                setOpen={setOpen}
+                setValue={setValue1}
+                setItems={setJobType}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.base,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select "
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.body3,
+                    color: COLORS.Rose1,
+                    top: 14,
+                    left: 5,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
+        />
+
+        {/* Weight */}
+        <Controller
+          control={control}
+          name="weight"
+          rules={{
+            required: 'Charge is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <View style={{marginTop: SIZES.padding}}>
+              <Text
+                style={{
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                }}>
+                Weight
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'type',
+                }}
+                onChangeValue={onChange}
+                open={open2}
+                showArrowIcon={true}
+                placeholder="Select container type"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value2}
+                items={jobType2}
+                setOpen={setOpen2}
+                setValue={setValue2}
+                setItems={setJobType2}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.base,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select container type"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType2(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.body3,
+                    color: COLORS.Rose1,
+                    top: 14,
+                    left: 5,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
+        />
+
+        {/* Qty Handler */}
+        <QtySection
+          containerStyle={{marginTop: SIZES.padding * 1.5, marginBottom: 70}}
+          handleDecrease={handleDecrease}
+          handleIncrease={handleIncrease}
+          qty={quantity}
+          title="Container Count"
+        />
+      </View>
+    );
+  }
+
+  return (
+    <AlertNotificationRoot>
+      <View style={{flex: 1, backgroundColor: COLORS.white}}>
+        <Header
+          title={'Request for Freight'}
+          contentStyle={{marginBottom: 0}}
+          tintColor={COLORS.Neutral1}
+        />
+
+        <Spinner
+          visible={loading}
+          animation={'fade'}
+          overlayColor={'rgba(0,0,0,0.5)'}
+        />
+
+        <QuotationProgress2
+          bgColor1={COLORS.primary1}
+          bgColor2={COLORS.primary1}
+          bgColor3={COLORS.white}
+          color1={COLORS.primary1}
+          color2={COLORS.primary1}
+          item2={COLORS.white}
+          item3={COLORS.Neutral6}
+          type={'Container'}
+          type2={'Pickup'}
+        />
+
+        <KeyboardAwareScrollView
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+          extraHeight={100}
+          extraScrollHeight={100}
+          enableOnAndroid={true}>
+          <FreightType
+            freightType={'Ocean Freight'}
+            image={images.water}
+            freightDesc={'Delivery within 20-25 days'}
+            info="Container Details"
+          />
+
+          {requestForm()}
+        </KeyboardAwareScrollView>
+
+        <View style={{justifyContent: 'flex-end'}}>
+          <TextButton
+            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            label="Continue"
+            onPress={() => navigation.navigate('OceanPickupProcess')}
+          />
+        </View>
+      </View>
+    </AlertNotificationRoot>
+  );
+};
+
+export default OceanContainerDetails;

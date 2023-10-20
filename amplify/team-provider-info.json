@@ -1,0 +1,33 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tradelyx-staging-182449-authRole",
+      "UnauthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-staging-182449-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-staging-182449-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-tradelyx-staging-182449-deployment",
+      "UnauthRoleName": "amplify-tradelyx-staging-182449-unauthRole",
+      "StackName": "amplify-tradelyx-staging-182449",
+      "StackId": "arn:aws:cloudformation:us-east-1:016887497077:stack/amplify-tradelyx-staging-182449/4ae2ea80-6c51-11ee-be44-0af72da372e3",
+      "AmplifyAppId": "d3d5deb2pam0pe",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-tradelyx-staging-182449-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "tradelyx": {}
+      },
+      "function": {
+        "tradelyxPostConfirmation": {
+          "deploymentBucketName": "amplify-tradelyx-staging-182449-deployment",
+          "s3Key": "amplify-builds/tradelyxPostConfirmation-68564f696247514e4f38-build.zip"
+        }
+      },
+      "api": {
+        "tradelyx": {}
+      },
+      "storage": {
+        "tradelyMedia": {}
+      }
+    }
+  }
+}
