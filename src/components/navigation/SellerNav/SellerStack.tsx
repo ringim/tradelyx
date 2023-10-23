@@ -10,7 +10,7 @@ import {
   Refer,
   Wallet,
   SellOffer,
-  AddProducts,
+  StoreProduct,
   PackingShipment,
   PackageShipmentAddress,
   MiniumOrderPayment,
@@ -25,6 +25,16 @@ import {
   ProgressOrderDetail,
   AgentRequestDetails,
   AccountAddress,
+  EditProductPrice,
+  EditProductShipmentAddress,
+  EditProductShipment,
+  ProductSpecification,
+  ProductPricing,
+  ProductShipmentAddress,
+  EditProductItem,
+  ProductShipment,
+  EditProductSpec,
+  StoreItem,
 } from '../../../screens/Seller';
 import CBottomTabs from './SBottomTabs';
 
@@ -89,8 +99,18 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
+        name="EditProductShipment"
+        component={EditProductShipment}
+        options={() => options}
+      />
+      <Stack.Screen
         name="Notifications"
         component={Notifications}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="ProductShipmentAddress"
+        component={ProductShipmentAddress}
         options={() => options}
       />
       <Stack.Screen
@@ -99,13 +119,28 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
-        name="AddProducts"
-        component={AddProducts}
+        name="EditProductSpec"
+        component={EditProductSpec}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="StoreProduct"
+        component={StoreProduct}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="EditProductShipmentAddress"
+        component={EditProductShipmentAddress}
         options={() => options}
       />
       <Stack.Screen
         name="PackingShipment"
         component={PackingShipment}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="EditProductPrice"
+        component={EditProductPrice}
         options={() => options}
       />
       <Stack.Screen
@@ -128,10 +163,35 @@ const SellerStack = () => {
         component={AgentRequestDetails}
         options={{presentation: 'modal'}}
       />
+      <Stack.Screen
+        name="StoreItem"
+        component={StoreItem}
+        options={() => options}
+      />
       <Stack.Screen name="Filter" component={Filter} options={() => options} />
       <Stack.Screen
         name="RFQFilter"
         component={RFQFilter}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="ProductSpecification"
+        component={ProductSpecification}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="EditProductItem"
+        component={EditProductItem}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="ProductPricing"
+        component={ProductPricing}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="ProductShipment"
+        component={ProductShipment}
         options={() => options}
       />
       <Stack.Screen

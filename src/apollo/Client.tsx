@@ -31,17 +31,22 @@ const link = ApolloLink.from([
   createSubscriptionHandshakeLink({url, region, auth}, httpLink),
 ]);
 
+const mergeList = (existing = {items: []}, incoming = {items: []}) => {
+  return {
+    ...incoming,
+    items: [...(existing?.items || []), ...incoming.items],
+  };
+};
+
 const typePolicies: TypePolicies = {
   User: {
     keyFields: [
       'name',
       'email',
       'image',
-      'address',
-      'rating',
-      'lat',
-      'lng',
-      'level',
+      'phone_number',
+      'backgroundImage',
+      'logo',
     ],
   },
 };

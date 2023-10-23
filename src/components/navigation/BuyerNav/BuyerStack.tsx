@@ -56,6 +56,8 @@ import {
   CategoryItemList,
   AccountAddress,
   InternationalDestinationAddress,
+  OceanPortOriginAddress,
+  OceanDestinationAddress,
 } from '../../../screens/Buyer';
 
 const Stack = createSharedElementStackNavigator();
@@ -185,6 +187,16 @@ const BuyerStack = () => {
       <Stack.Screen
         name="InternationalPortAddress"
         component={InternationalPortAddress}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="OceanPortOriginAddress"
+        component={OceanPortOriginAddress}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="OceanDestinationAddress"
+        component={OceanDestinationAddress}
         options={() => options}
       />
       <Stack.Screen

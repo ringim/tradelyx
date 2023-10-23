@@ -1,9 +1,10 @@
 import {Text, View} from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {useMutation} from '@apollo/client';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
@@ -27,15 +28,26 @@ import {
   images,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {
+  UpdateRFFInput,
+  UpdateRFFMutation,
+  UpdateRFFMutationVariables,
+} from '../../../../../API';
+import {updateRFF} from '../../../../../queries/RequestQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 interface IFreight {
-  weight: number;
+  weight: any;
   length: number;
   height: number;
+  width: number;
 }
 
 const FreightPackage = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
+  const route = useRoute<any>();
+
+  const {userID} = useAuthContext();
 
   const {control, handleSubmit}: any = useForm();
 
@@ -44,7 +56,7 @@ const FreightPackage = () => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(null);
 
-  // console.log(value);
+  console.log(route.params);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -56,13 +68,35 @@ const FreightPackage = () => {
     }
   };
 
-  const onSubmit = async ({length, height, weight}: IFreight) => {
+  // CREATE UPDATE RFF
+  const [doUpdateRFQ] = useMutation<
+    UpdateRFFMutation,
+    UpdateRFFMutationVariables
+  >(updateRFF);
+
+  const onSubmit = async ({length, height, width, weight}: IFreight) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: UpdateRFFInput = {
+        id: route?.params.rffID,
+        weight,
+        length,
+        height,
+        width,
+        qty: quantity,
+        packageType: value,
+        userID,
+      };
+      await doUpdateRFQ({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('AirPickupProcess', {rffID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -179,7 +213,7 @@ const FreightPackage = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 55,
+              width: 70,
               height: 50,
               top: 52,
               borderRadius: SIZES.semi_margin,
@@ -190,7 +224,7 @@ const FreightPackage = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              Kg
+              meters
             </Text>
           </View>
         </View>
@@ -199,7 +233,7 @@ const FreightPackage = () => {
         <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
           <View style={{flex: 0.95, justifyContent: 'center'}}>
             <FormInput
-              name="weight"
+              name="height"
               control={control}
               keyboardType={'numeric'}
               placeholder="Height"
@@ -215,7 +249,7 @@ const FreightPackage = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 55,
+              width: 70,
               height: 50,
               top: 8,
               borderRadius: SIZES.semi_margin,
@@ -226,7 +260,7 @@ const FreightPackage = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              Kg
+              meters
             </Text>
           </View>
         </View>
@@ -251,7 +285,7 @@ const FreightPackage = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 55,
+              width: 70,
               height: 50,
               top: 8,
               borderRadius: SIZES.semi_margin,
@@ -262,7 +296,7 @@ const FreightPackage = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              Kg
+              meters
             </Text>
           </View>
         </View>
@@ -318,8 +352,7 @@ const FreightPackage = () => {
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
             labelStyle={{...FONTS.h4}}
-            // onPress={handleSubmit(onSubmit)}
-            onPress={() => navigation.navigate('AirPickupProcess')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

@@ -9,42 +9,43 @@ const otp = require('../assets/icons/otp.png');
 const user = require('../assets/icons/user.png');
 const apple = require('../assets/icons/apple.png');
 const checkmark = require('../assets/icons/checkmark.png');
-const arrow_down_fill = require('../assets/icons/arrow-down-fill.png')
-const checked = require('../assets/icons/checked.png')
-const phone = require('../assets/icons/phone.png')
-const lock = require('../assets/icons/lock.png')
-const home = require('../assets/icons/home.png')
-const offer = require('../assets/icons/offer.png')
-const explore = require('../assets/icons/explore.png')
-const chat = require('../assets/icons/chat.png')
-const eye_off = require('../assets/icons/eye-off.png')
-const order = require('../assets/icons/order.png')
-const plus = require('../assets/icons/plus.png')
-const rate = require('../assets/icons/rate.png')
-const bell = require('../assets/icons/bell.png')
-const filter = require('../assets/icons/filter.png')
-const search = require('../assets/icons/search.png')
-const bar = require('../assets/icons/bar.png')
-const right_arrow = require('../assets/icons/arrow_right.png')
-const backward = require('../assets/icons/backward.png')
-const save = require('../assets/icons/saved.png')
-const share = require('../assets/icons/share.png')
-const right = require('../assets/icons/right.png')
-const star = require('../assets/icons/star.png')
-const store = require('../assets/icons/store.png')
-const dot = require('../assets/icons/dot.png')
-const call = require('../assets/icons/call.png')
-const logOut = require('../assets/icons/logOut.png')
-const network = require('../assets/icons/network.png')
-const wallet = require('../assets/icons/wallet.png')
-const location = require('../assets/icons/location.png')
-const contracts = require('../assets/icons/document.png')
-const support = require('../assets/icons/support-services.png')
-const pp = require('../assets/icons/privacy-policy.png')
-const close = require('../assets/icons/close.png')
-const bell2 = require('../assets/icons/bell2.png')
-const circle = require('../assets/icons/circle.png')
-const checkCircle = require('../assets/icons/select.png')
+const arrow_down_fill = require('../assets/icons/arrow-down-fill.png');
+const checked = require('../assets/icons/checked.png');
+const phone = require('../assets/icons/phone.png');
+const lock = require('../assets/icons/lock.png');
+const home = require('../assets/icons/home.png');
+const offer = require('../assets/icons/offer.png');
+const explore = require('../assets/icons/explore.png');
+const chat = require('../assets/icons/chat.png');
+const eye_off = require('../assets/icons/eye-off.png');
+const order = require('../assets/icons/order.png');
+const plus = require('../assets/icons/plus.png');
+const rate = require('../assets/icons/rate.png');
+const bell = require('../assets/icons/bell.png');
+const filter = require('../assets/icons/filter.png');
+const search = require('../assets/icons/search.png');
+const bar = require('../assets/icons/bar.png');
+const right_arrow = require('../assets/icons/arrow_right.png');
+const backward = require('../assets/icons/backward.png');
+const save = require('../assets/icons/saved.png');
+const share = require('../assets/icons/share.png');
+const right = require('../assets/icons/right.png');
+const star = require('../assets/icons/star.png');
+const store = require('../assets/icons/store.png');
+const dot = require('../assets/icons/dot.png');
+const call = require('../assets/icons/call.png');
+const logOut = require('../assets/icons/logOut.png');
+const network = require('../assets/icons/network.png');
+const wallet = require('../assets/icons/wallet.png');
+const location = require('../assets/icons/location.png');
+const contracts = require('../assets/icons/document.png');
+const content = require('../assets/icons/content.png');
+const support = require('../assets/icons/support-services.png');
+const pp = require('../assets/icons/privacy-policy.png');
+const close = require('../assets/icons/close.png');
+const bell2 = require('../assets/icons/bell2.png');
+const circle = require('../assets/icons/circle.png');
+const checkCircle = require('../assets/icons/select.png');
 const down = require('../assets/icons/down.png');
 const calender = require('../assets/icons/calender.png');
 const category = require('../assets/icons/category.png');
@@ -85,18 +86,26 @@ const timer = require('../assets/icons/timer.png');
 const membership = require('../assets/icons/membership.png');
 const imageUpload = require('../assets/icons/imageUpload.png');
 const live = require('../assets/icons/live.png');
-
+const packages = require('../assets/icons/package.png');
+const pricing = require('../assets/icons/price-tag.png');
+const trucked = require('../assets/icons/delivery-truck.png');
+const infor = require('../assets/icons/infor.png');
+const option = require('../assets/icons/option.png');
 
 export default {
   placeholder,
   transaction,
   bar,
+  trucked,
+  option,
   bell2,
+  pricing,
   backward,
   imageUpload,
   rate,
   four_star,
   camera,
+  infor,
   copy,
   finishedOrder,
   earnings,
@@ -171,8 +180,10 @@ export default {
   search,
   store,
   filter,
+  content,
   location,
   dot,
   offer,
-  marker
+  marker,
+  packages,
 };

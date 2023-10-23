@@ -1,12 +1,13 @@
 import {View, Text, TouchableOpacity, Alert, Platform} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Tags from 'react-native-tags';
+import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {v4 as uuidV4} from 'uuid';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
   ALERT_TYPE,
@@ -15,139 +16,82 @@ import {
 } from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
-import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
+import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   FormInput,
   Header,
+  ImageUpload,
+  MultipleImages,
   QuotationProgress2,
+  SingleImage,
   TextButton,
 } from '../../../components';
+import {
+  CreateSellOfferInput,
+  CreateSellOfferMutation,
+  CreateSellOfferMutationVariables,
+  ListCommodityCategoriesQuery,
+  ListCommodityCategoriesQueryVariables,
+} from '../../../API';
+import {useAuthContext} from '../../../context/AuthContext';
+import {createSellOffer} from '../../../queries/RequestQueries';
+import {referralCode} from '../../../utilities/Utils';
+import {deleteItem, uploadMedia} from '../../../utilities/service';
+import {listCommodityCategories} from '../../../queries/ProductQueries';
 
 interface ISellOffer {
   sellOffer: string;
   productName: string;
   desc: string;
-  images: [];
 }
 
 const SellOffer = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-
+  const {userID} = useAuthContext();
   const {control, handleSubmit}: any = useForm();
 
+  // LIST COMMODITY CATEGORIES
+  const {data, loading: onLoad} = useQuery<
+    ListCommodityCategoriesQuery,
+    ListCommodityCategoriesQueryVariables
+  >(listCommodityCategories);
+  const allCommodityCategories: any =
+    data?.listCommodityCategories?.items.filter(
+      (item: any) => !item?._deleted,
+    ) || [];
+  // console.log(allCategories);
+
+  const [open, setOpen] = useState(false);
+  const [value1, setValue1] = useState(null);
+  const [type, setType] = useState('');
+  const [jobType, setJobType] = useState<any>(allCommodityCategories);
+  const [categoryID, setCategoryID] = useState('');
+  const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
+  const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>('');
+  const [loading, setLoading] = useState(false);
   const [initialTags, setInitialTags] = useState([
     'vegetable',
     'grains',
     'agriculture',
   ]);
 
-  const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>([]);
-  const [photos, setPhotos] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>([
-    {
-      id: '0',
-      type: 'Freight of all kinds',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/box.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-    {
-      id: '1',
-      type: 'Animal & Animal Products',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/beef.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-    {
-      id: '2',
-      type: 'Vegetable Products',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/avocado.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-    {
-      id: '3',
-      type: 'Animal and Vegetable Fats and Oils',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/sunflower.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-    {
-      id: '4',
-      type: 'Foodstuff, Beverages and Tobacco',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/apple2.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-    {
-      id: '5',
-      type: 'Mineral Products',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/mineral.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-    {
-      id: '6',
-      type: 'Chemical & Allied Industries',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/dna.png')}
-          style={{width: 15, height: 15}}
-        />
-      ),
-    },
-  ]);
+  console.log('selectedPhotos1', selectedPhoto);
+  console.log('selectedPhotos2', selectedPhotos);
 
   const openImageGallery = () => {
     launchImageLibrary(
       {mediaType: 'photo', selectionLimit: 7, quality: 0.5},
       ({didCancel, errorCode, assets}) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
-          const params: {images?: string[]} = {};
-          if (assets.length > 1) {
-            params.images = assets.map(asset => asset.uri) as string[];
-            setSelectedPhoto(assets);
+          if (assets.length === 1) {
+            setSelectedPhoto(assets[0].uri);
+          } else if (assets.length > 1) {
+            assets.map(asset => asset.uri) as string[];
+            setSelectedPhotos(assets);
           }
         }
       },
-    );
-  };
-
-  // Delete a single image
-  const deleteItem = (itemId: any) => {
-    setPhotos((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
     );
   };
 
@@ -198,18 +142,50 @@ const SellOffer = () => {
     );
   };
 
-  const onSubmit = async ({
-    sellOffer,
-    desc,
-    productName,
-    images,
-  }: ISellOffer) => {
+  // CREATE REQUEST QUOTATION
+  const [doCreateSellOffer] = useMutation<
+    CreateSellOfferMutation,
+    CreateSellOfferMutationVariables
+  >(createSellOffer);
+
+  const onSubmit = async ({sellOffer, desc, productName}: ISellOffer) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: CreateSellOfferInput = {
+        id: uuidV4(),
+        sellOfferID: referralCode(),
+        title: sellOffer,
+        requestCategory: type,
+        tags: initialTags,
+        productName,
+        image: selectedPhoto,
+        images: selectedPhotos,
+        description: desc,
+        commoditycategoryID: categoryID,
+        userID,
+      };
+
+      if (selectedPhoto) {
+        const imageKey = await uploadMedia(selectedPhoto);
+        input.image = imageKey;
+      } else if (selectedPhotos) {
+        const imageKeys = await Promise.all(
+          selectedPhotos.map((img: string) => uploadMedia(img)),
+        );
+        console.log('keys', imageKeys);
+        input.images = imageKeys;
+      }
+
+      await doCreateSellOffer({
+        variables: {
+          input,
+        },
+      });
+      console.log('job data', input);
+      navigation.navigate('PackingShipment', {sellOfferID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -221,19 +197,6 @@ const SellOffer = () => {
     }
   };
 
-  useEffect(() => {
-    let unmounted = false;
-    try {
-      const stores = selectedPhoto.filter((item: any) => !item?._deleted || []);
-      setPhotos(stores);
-    } catch (error) {
-      Alert.alert((error as Error).message);
-    }
-    return () => {
-      unmounted = true;
-    };
-  }, [selectedPhoto]);
-
   function requestForm() {
     return (
       <View
@@ -241,12 +204,12 @@ const SellOffer = () => {
           marginHorizontal: SIZES.semi_margin,
           marginBottom: 100,
         }}>
-        {/* Category Type */}
+        {/* Commodity Category Type */}
         <Controller
           control={control}
           name="category"
           rules={{
-            required: 'Job type is required',
+            required: 'Category type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <>
@@ -261,14 +224,15 @@ const SellOffer = () => {
               </Text>
               <DropDownPicker
                 schema={{
-                  label: 'type',
-                  value: 'type',
+                  label: 'title',
+                  value: 'id',
                 }}
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
                 placeholder="Select Category"
                 showTickIcon={true}
+                loading={onLoad}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
                 value={value1}
@@ -307,15 +271,17 @@ const SellOffer = () => {
                 }}
                 onSelectItem={(value: any) => {
                   setType(value?.type);
+                  setCategoryID(value?.id);
                 }}
               />
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -417,81 +383,19 @@ const SellOffer = () => {
             Product Images
           </Text>
 
-          {photos?.length <= 0 ? (
-            <TouchableOpacity
-              style={{
-                marginTop: SIZES.radius,
-                justifyContent: 'center',
-                width: 80,
-                height: 80,
-                borderRadius: SIZES.base,
-                backgroundColor: COLORS.white,
-                alignItems: 'center',
-                borderWidth: 0.5,
-                borderColor: COLORS.Neutral6,
-              }}
-              onPress={openImageGallery}>
-              <FastImage
-                source={icons.imageUpload}
-                style={{width: 30, height: 30}}
-                resizeMode={FastImage.resizeMode.contain}
-                tintColor={COLORS.primary1}
-              />
-            </TouchableOpacity>
+          {!selectedPhoto && selectedPhotos?.length === 0 ? (
+            <ImageUpload onPress={openImageGallery} />
+          ) : selectedPhoto ? (
+            <SingleImage
+              selectedPhoto={selectedPhoto}
+              setSelectedPhoto={setSelectedPhoto}
+            />
           ) : (
-            <View
-              style={{
-                marginTop: selectedPhoto ? SIZES.margin : SIZES.radius,
-              }}>
-              <FlatList
-                data={photos}
-                keyExtractor={(item: any) => `${item.uri}`}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item, index}) => {
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        marginLeft: index == 0 ? 10 : 15,
-                        marginRight:
-                          index == selectedPhoto.length - 1 ? SIZES.padding : 0,
-                        marginTop: SIZES.semi_margin,
-                      }}>
-                      <FastImage
-                        source={item}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: SIZES.base,
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                      />
-                      <TouchableOpacity
-                        onPress={() => deleteItem(item.uri)}
-                        style={{
-                          padding: 6,
-                          top: -18,
-                          right: -10,
-                          borderRadius: SIZES.margin,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                        }}>
-                        <FastImage
-                          source={icons.remove}
-                          style={{width: 17, height: 17}}
-                          tintColor={COLORS.Rose5}
-                          resizeMode={FastImage.resizeMode.contain}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-                ListFooterComponent={<View style={{marginBottom: 100}} />}
-              />
-            </View>
+            <MultipleImages
+              selectedPhotos={selectedPhotos}
+              manyPhotos={selectedPhotos}
+              onPress={() => deleteItem(setSelectedPhoto)}
+            />
           )}
         </View>
       </View>
@@ -548,7 +452,7 @@ const SellOffer = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('PackingShipment')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

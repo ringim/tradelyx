@@ -29,7 +29,7 @@ function FormInput({
   maxLength,
   labelStyle,
   errorStyle,
-  onPress
+  onPress,
 }: any) {
   return (
     <Controller
@@ -43,8 +43,9 @@ function FormInput({
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text
                 style={{
-                  color: COLORS.Neutral4,
                   ...FONTS.body3,
+                  fontWeight: '500',
+                  color: COLORS.Neutral1,
                   ...labelStyle,
                 }}>
                 {label}

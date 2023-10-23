@@ -31,7 +31,7 @@ export type ProfileStackNavigatorParamList = {
   Contact: undefined;
   InviteFriends: undefined;
   UserAddress: undefined;
-  AccountAddress: undefined
+  AccountAddress: undefined;
 };
 
 export type HomeStackNavigatorParamList = {
@@ -39,13 +39,19 @@ export type HomeStackNavigatorParamList = {
   goBack: any;
   navigate: any;
   Notifications: undefined;
+  EditProductItem: {product: string};
+  EditProductSpec: {product: string};
+  EditProductPrice: {product: string};
+  EditProductShipment: {product: string};
+  EditProductShipmentAddress: undefined
   Home: undefined;
-  AddProducts: undefined;
+  StoreProduct: undefined;
   SellOffer: undefined;
   PackingShipment: undefined;
   PackageShipmentAddress: undefined;
   MiniumOrderPayment: undefined;
   Filter: undefined;
+  StoreItem: {storeItem: string};
 };
 
 export type ExploreStackNavigatorParamList = {
@@ -53,9 +59,9 @@ export type ExploreStackNavigatorParamList = {
   goBack: any;
   navigate: any;
   RFQSearch: undefined;
-  RFFSearch:undefined
+  RFFSearch: undefined;
   Explore: undefined;
-  Filter: undefined
+  Filter: undefined;
   RFQFilter: undefined;
   RFQList: undefined;
   RFFList: undefined;
@@ -130,4 +136,29 @@ export type ProgressOrderDetailRouteProp = RouteProp<
 export type OrderDetailRouteProp = RouteProp<
   OrderStackNavigatorParamList,
   'OrderDetail'
+>;
+
+export type StoreItemRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'StoreItem'
+>;
+
+export type EditProductItemRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'EditProductItem'
+>;
+
+export type EditProductSpecRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'EditProductSpec'
+>;
+
+export type EditProductPriceRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'EditProductPrice'
+>;
+
+export type EditProductShipmentRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'EditProductShipment'
 >;

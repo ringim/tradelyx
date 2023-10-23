@@ -14,6 +14,7 @@ const Handling = ({selected, item, onPress}: any) => {
         borderRadius: SIZES.radius,
         borderWidth: 1,
         padding: SIZES.radius,
+        marginRight: 50,
         borderColor: selected ? COLORS.primary2 : COLORS.Neutral8,
         backgroundColor: selected ? COLORS.primary10 : 'transparent',
       }}>

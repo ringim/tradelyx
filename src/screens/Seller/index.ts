@@ -2,11 +2,20 @@
 import Home from './Home/Home';
 import Notifications from './Home/Notifications';
 import SellOffer from './Home/SellOffer';
-import AddProducts from './Home/AddProducts';
+import StoreProduct from './Home/StoreProduct';
 import PackingShipment from './Home/PackingShipment';
 import PackageShipmentAddress from './Home/PackageShipmentAddress';
 import MiniumOrderPayment from './Home/MiniumOrderPayment';
 import Filter from './Home/Filter';
+import ProductSpecification from './Home/ProductSpecification';
+import ProductPricing from './Home/ProductPricing';
+import ProductShipment from './Home/ProductShipment';
+import StoreItem from './Home/StoreItem';
+import EditProductItem from './Home/EditProduct/EditProductItem';
+import EditProductSpec from './Home/EditProduct/EditProductSpec';
+import EditProductPrice from './Home/EditProduct/EditProductPrice';
+import EditProductShipment from './Home/EditProduct/EditProductShipment';
+import EditProductShipmentAddress from './Home/EditProduct/EditProductShipmentAddress';
 
 // Explore
 import Explore from './Explore/Explore';
@@ -30,6 +39,7 @@ import Profile from './Home/Profile/Profile';
 import InviteFriends from './Home/Profile/InviteFriends';
 import UserAddress from './Home/Profile/UserAddress';
 import AccountAddress from './Home/Profile/AccountAddress';
+import ProductShipmentAddress from './Home/ProductShipmentAddress';
 
 //Chat
 import Chat from './Chat/Chat';
@@ -37,20 +47,30 @@ import Chat from './Chat/Chat';
 export {
   Home,
   Explore,
+  StoreItem,
+  EditProductSpec,
+  EditProductPrice,
+  EditProductShipment,
+  EditProductShipmentAddress,
+  EditProductItem,
   Chat,
   AccountAddress,
+  ProductPricing,
+  ProductShipmentAddress,
+  ProductShipment,
   Order,
   UserAddress,
   RFQFilter,
   OrderDetail,
   ProgressOrderDetail,
   RFQSearch,
+  ProductSpecification,
   RFFSearch,
   PackingShipment,
   AgentRequestDetails,
   Filter,
   QuotesRequestDetails,
-  AddProducts,
+  StoreProduct,
   MiniumOrderPayment,
   Account,
   PackageShipmentAddress,

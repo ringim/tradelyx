@@ -34,6 +34,7 @@ export const listProducts = gql`
     listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        image
         title
         images
         description
@@ -46,12 +47,15 @@ export const listProducts = gql`
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -59,6 +63,41 @@ export const listProducts = gql`
         __typename
       }
       nextToken
+      __typename
+    }
+  }
+`;
+
+export const getProduct = gql`
+  query GetProduct($id: ID!) {
+    getProduct(id: $id) {
+      id
+      image
+      title
+      images
+      description
+      rating
+      tags
+      productCertification
+      supplyCapacity
+      minOrderQty
+      unit
+      packageType
+      quantity
+      fobPrice
+      deliveryTime
+      paymentType
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
+      documents
+      commoditycategoryID
+      categoriesID
+      userID
+      createdAt
+      updatedAt
       __typename
     }
   }
@@ -124,6 +163,7 @@ export const productsByCategoriesID = gql`
     ) {
       items {
         id
+        image
         title
         images
         description
@@ -136,14 +176,132 @@ export const productsByCategoriesID = gql`
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+
+export const createProduct = gql`
+  mutation CreateProduct(
+    $input: CreateProductInput!
+    $condition: ModelProductConditionInput
+  ) {
+    createProduct(input: $input, condition: $condition) {
+      id
+      image
+      title
+      images
+      description
+      rating
+      tags
+      productCertification
+      supplyCapacity
+      minOrderQty
+      unit
+      packageType
+      quantity
+      fobPrice
+      deliveryTime
+      paymentType
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
+      documents
+      commoditycategoryID
+      categoriesID
+      userID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+export const updateProduct = gql`
+  mutation UpdateProduct(
+    $input: UpdateProductInput!
+    $condition: ModelProductConditionInput
+  ) {
+    updateProduct(input: $input, condition: $condition) {
+      id
+      image
+      title
+      images
+      description
+      rating
+      tags
+      productCertification
+      supplyCapacity
+      minOrderQty
+      unit
+      packageType
+      quantity
+      fobPrice
+      deliveryTime
+      paymentType
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
+      documents
+      commoditycategoryID
+      categoriesID
+      userID
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+export const deleteProduct = gql`
+  mutation DeleteProduct(
+    $input: DeleteProductInput!
+    $condition: ModelProductConditionInput
+  ) {
+    deleteProduct(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+export const listCommodityCategories = gql`
+  query ListCommodityCategories(
+    $filter: ModelCommodityCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCommodityCategories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        image
         createdAt
         updatedAt
         __typename

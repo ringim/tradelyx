@@ -3,12 +3,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
-import {
-  Header,
-  OrderItem,
-  ReplyListItem,
-  SearchBox2,
-} from '../../../components';
+import {Header, OrderItem, ReplyListItem} from '../../../components';
 import {COLORS, SIZES, dummyData} from '../../../constants';
 import {
   OrderStackNavigatorParamList,

@@ -7,7 +7,10 @@ import {
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {Storage} from 'aws-amplify';
+import DocumentPicker from 'react-native-document-picker';
 import {v4 as uuidV4} from 'uuid';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import appConfig from '../../app.json';
 
@@ -86,33 +89,17 @@ export const hasLocationPermission = async () => {
   return false;
 };
 
-const uriToBlob = (uri: string) => {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      // return the blob
-      resolve(xhr.response);
-    };
-    xhr.onerror = function () {
-      reject(new Error('uriToBlob failed'));
-    };
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
-
-    xhr.send(null);
-  });
-};
-
 export const uploadMedia = async (uri: string) => {
   try {
     // get the Blob of the file from uri
-    const blob = await uriToBlob(uri);
+    const response = await fetch(uri);
+    const blob = await response?.blob();
 
     // file extension splitting
     const uriParts = uri.split('.');
     const extension = uriParts[uriParts.length - 1];
 
-    // console.log(uri);
+    console.log(uri);
 
     // upload file (blob) to s3
     const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
@@ -120,4 +107,62 @@ export const uploadMedia = async (uri: string) => {
   } catch (error) {
     Alert.alert('Error uploading the file', (error as Error).message);
   }
+};
+
+// SELECT FILE
+export const selectFile = async (setSingleFile: any, setFileName: any) => {
+  try {
+    const res = await DocumentPicker.pickSingle({
+      type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
+      allowMultiSelection: false,
+    });
+    setSingleFile(res.uri);
+    setFileName(res.name);
+  } catch (err) {
+    setSingleFile(null);
+    if (DocumentPicker.isCancel(err)) {
+      return;
+    } else {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: 'Unknown Error: ' + JSON.stringify(err),
+        autoClose: 1500,
+      });
+      throw err;
+    }
+  }
+};
+
+// UPLOAD VIA GALLERY
+export const onChangePhoto = (setSelectedPhoto: any) => {
+  launchImageLibrary(
+    {mediaType: 'photo', quality: 0.5, selectionLimit: 1},
+    ({didCancel, errorCode, assets}) => {
+      if (!didCancel && !errorCode && assets && assets.length > 0) {
+        setSelectedPhoto(assets[0]);
+      }
+    },
+  );
+};
+
+// UPLOAD FILE TO STORAGE
+export const uploadFile = async (fileName: any, singleFile: any) => {
+  try {
+    // upload file (blob) to s3
+    const s3Response = await Storage.put(fileName, singleFile);
+    return s3Response.key;
+  } catch (err) {
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      textBody: (err as Error).message,
+      autoClose: 2000,
+    });
+  }
+};
+
+// Delete a single image
+export const deleteItem = (itemId: any, setSelectedPhotos?: any) => {
+  setSelectedPhotos((prevData: any) =>
+    prevData.filter((item: any) => item.uri !== itemId),
+  );
 };

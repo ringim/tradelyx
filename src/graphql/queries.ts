@@ -14,15 +14,16 @@ export const getOrder = /* GraphQL */ `query GetOrder($id: ID!) {
     orderType
     orderStatus
     agreement
-    userID
-    orderDate
-    rfqID
-    rffID
     toImage
     toCountry
     fromImage
     fromCountry
     orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
     createdAt
     updatedAt
     __typename
@@ -40,15 +41,16 @@ export const listOrders = /* GraphQL */ `query ListOrders(
       orderType
       orderStatus
       agreement
-      userID
-      orderDate
-      rfqID
-      rffID
       toImage
       toCountry
       fromImage
       fromCountry
       orderMessage
+      orderDate
+      userID
+      rfqID
+      rffID
+      sellOfferID
       createdAt
       updatedAt
       __typename
@@ -80,15 +82,16 @@ export const ordersByUserID = /* GraphQL */ `query OrdersByUserID(
       orderType
       orderStatus
       agreement
-      userID
-      orderDate
-      rfqID
-      rffID
       toImage
       toCountry
       fromImage
       fromCountry
       orderMessage
+      orderDate
+      userID
+      rfqID
+      rffID
+      sellOfferID
       createdAt
       updatedAt
       __typename
@@ -120,15 +123,16 @@ export const ordersByRfqID = /* GraphQL */ `query OrdersByRfqID(
       orderType
       orderStatus
       agreement
-      userID
-      orderDate
-      rfqID
-      rffID
       toImage
       toCountry
       fromImage
       fromCountry
       orderMessage
+      orderDate
+      userID
+      rfqID
+      rffID
+      sellOfferID
       createdAt
       updatedAt
       __typename
@@ -160,15 +164,16 @@ export const ordersByRffID = /* GraphQL */ `query OrdersByRffID(
       orderType
       orderStatus
       agreement
-      userID
-      orderDate
-      rfqID
-      rffID
       toImage
       toCountry
       fromImage
       fromCountry
       orderMessage
+      orderDate
+      userID
+      rfqID
+      rffID
+      sellOfferID
       createdAt
       updatedAt
       __typename
@@ -181,11 +186,271 @@ export const ordersByRffID = /* GraphQL */ `query OrdersByRffID(
   APITypes.OrdersByRffIDQueryVariables,
   APITypes.OrdersByRffIDQuery
 >;
+export const ordersBySellOfferID = /* GraphQL */ `query OrdersBySellOfferID(
+  $sellOfferID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelOrderFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  ordersBySellOfferID(
+    sellOfferID: $sellOfferID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      orderType
+      orderStatus
+      agreement
+      toImage
+      toCountry
+      fromImage
+      fromCountry
+      orderMessage
+      orderDate
+      userID
+      rfqID
+      rffID
+      sellOfferID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.OrdersBySellOfferIDQueryVariables,
+  APITypes.OrdersBySellOfferIDQuery
+>;
+export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
+  getSellOffer(id: $id) {
+    id
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetSellOfferQueryVariables,
+  APITypes.GetSellOfferQuery
+>;
+export const listSellOffers = /* GraphQL */ `query ListSellOffers(
+  $filter: ModelSellOfferFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSellOffers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      image
+      images
+      rfqType
+      packageType
+      packageDesc
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      userID
+      commoditycategoryID
+      Orders {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListSellOffersQueryVariables,
+  APITypes.ListSellOffersQuery
+>;
+export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
+  $userID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSellOfferFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  sellOffersByUserID(
+    userID: $userID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      image
+      images
+      rfqType
+      packageType
+      packageDesc
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      userID
+      commoditycategoryID
+      Orders {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SellOffersByUserIDQueryVariables,
+  APITypes.SellOffersByUserIDQuery
+>;
+export const sellOffersByCommoditycategoryID =
+  /* GraphQL */ `query SellOffersByCommoditycategoryID(
+  $commoditycategoryID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSellOfferFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  sellOffersByCommoditycategoryID(
+    commoditycategoryID: $commoditycategoryID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      image
+      images
+      rfqType
+      packageType
+      packageDesc
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      userID
+      commoditycategoryID
+      Orders {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+    APITypes.SellOffersByCommoditycategoryIDQueryVariables,
+    APITypes.SellOffersByCommoditycategoryIDQuery
+  >;
 export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
   getRFQ(id: $id) {
     id
+    rfqNo
     rfqType
     title
+    countryName
+    city
     requestCategory
     description
     documents
@@ -205,6 +470,7 @@ export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
     paymentMethod
     warranty
     returnPolicy
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -212,15 +478,16 @@ export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -228,9 +495,6 @@ export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -242,8 +506,11 @@ export const listRFQS =
   listRFQS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      rfqNo
       rfqType
       title
+      countryName
+      city
       requestCategory
       description
       documents
@@ -263,14 +530,12 @@ export const listRFQS =
       paymentMethod
       warranty
       returnPolicy
+      commoditycategoryID
       userID
       Orders {
         nextToken
         __typename
       }
-      countryFlag
-      countryName
-      city
       createdAt
       updatedAt
       __typename
@@ -280,6 +545,65 @@ export const listRFQS =
   }
 }
 ` as GeneratedQuery<APITypes.ListRFQSQueryVariables, APITypes.ListRFQSQuery>;
+export const rFQSByCommoditycategoryID =
+  /* GraphQL */ `query RFQSByCommoditycategoryID(
+  $commoditycategoryID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelRFQFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  rFQSByCommoditycategoryID(
+    commoditycategoryID: $commoditycategoryID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      rfqNo
+      rfqType
+      title
+      countryName
+      city
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      placeOrigin
+      landmark
+      unit
+      incoterms
+      placeDestination
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      warranty
+      returnPolicy
+      commoditycategoryID
+      userID
+      Orders {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+    APITypes.RFQSByCommoditycategoryIDQueryVariables,
+    APITypes.RFQSByCommoditycategoryIDQuery
+  >;
 export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
   $userID: ID!
   $sortDirection: ModelSortDirection
@@ -296,8 +620,11 @@ export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
   ) {
     items {
       id
+      rfqNo
       rfqType
       title
+      countryName
+      city
       requestCategory
       description
       documents
@@ -317,14 +644,12 @@ export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
       paymentMethod
       warranty
       returnPolicy
+      commoditycategoryID
       userID
       Orders {
         nextToken
         __typename
       }
-      countryFlag
-      countryName
-      city
       createdAt
       updatedAt
       __typename
@@ -340,8 +665,11 @@ export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
 export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
   getRFF(id: $id) {
     id
+    rffNo
     rffType
     title
+    countryName
+    city
     deliveryPeriod
     requestCategory
     productName
@@ -363,6 +691,7 @@ export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
     containerSize
     containerType
     containerCount
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -370,15 +699,16 @@ export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -386,9 +716,6 @@ export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -400,8 +727,11 @@ export const listRFFS =
   listRFFS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      rffNo
       rffType
       title
+      countryName
+      city
       deliveryPeriod
       requestCategory
       productName
@@ -423,14 +753,12 @@ export const listRFFS =
       containerSize
       containerType
       containerCount
+      commoditycategoryID
       userID
       Orders {
         nextToken
         __typename
       }
-      countryFlag
-      countryName
-      city
       createdAt
       updatedAt
       __typename
@@ -440,6 +768,67 @@ export const listRFFS =
   }
 }
 ` as GeneratedQuery<APITypes.ListRFFSQueryVariables, APITypes.ListRFFSQuery>;
+export const rFFSByCommoditycategoryID =
+  /* GraphQL */ `query RFFSByCommoditycategoryID(
+  $commoditycategoryID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelRFFFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  rFFSByCommoditycategoryID(
+    commoditycategoryID: $commoditycategoryID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      rffNo
+      rffType
+      title
+      countryName
+      city
+      deliveryPeriod
+      requestCategory
+      productName
+      handling
+      loadDate
+      weight
+      qty
+      packageType
+      length
+      width
+      height
+      placeOrigin
+      placeDestination
+      relatedServices
+      invoiceAmount
+      notes
+      loadType
+      container
+      containerSize
+      containerType
+      containerCount
+      commoditycategoryID
+      userID
+      Orders {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+    APITypes.RFFSByCommoditycategoryIDQueryVariables,
+    APITypes.RFFSByCommoditycategoryIDQuery
+  >;
 export const rFFSByUserID = /* GraphQL */ `query RFFSByUserID(
   $userID: ID!
   $sortDirection: ModelSortDirection
@@ -456,8 +845,11 @@ export const rFFSByUserID = /* GraphQL */ `query RFFSByUserID(
   ) {
     items {
       id
+      rffNo
       rffType
       title
+      countryName
+      city
       deliveryPeriod
       requestCategory
       productName
@@ -479,14 +871,12 @@ export const rFFSByUserID = /* GraphQL */ `query RFFSByUserID(
       containerSize
       containerType
       containerCount
+      commoditycategoryID
       userID
       Orders {
         nextToken
         __typename
       }
-      countryFlag
-      countryName
-      city
       createdAt
       updatedAt
       __typename
@@ -507,6 +897,7 @@ export const getCategories = /* GraphQL */ `query GetCategories($id: ID!) {
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -519,12 +910,15 @@ export const getCategories = /* GraphQL */ `query GetCategories($id: ID!) {
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -569,6 +963,205 @@ export const listCategories = /* GraphQL */ `query ListCategories(
   APITypes.ListCategoriesQueryVariables,
   APITypes.ListCategoriesQuery
 >;
+export const getCommodityCategory =
+  /* GraphQL */ `query GetCommodityCategory($id: ID!) {
+  getCommodityCategory(id: $id) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        image
+        title
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        deliveryTime
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
+        documents
+        commoditycategoryID
+        categoriesID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        landmark
+        unit
+        incoterms
+        placeDestination
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        rffNo
+        rffType
+        title
+        countryName
+        city
+        deliveryPeriod
+        requestCategory
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeDestination
+        relatedServices
+        invoiceAmount
+        notes
+        loadType
+        container
+        containerSize
+        containerType
+        containerCount
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+    APITypes.GetCommodityCategoryQueryVariables,
+    APITypes.GetCommodityCategoryQuery
+  >;
+export const listCommodityCategories =
+  /* GraphQL */ `query ListCommodityCategories(
+  $filter: ModelCommodityCategoryFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCommodityCategories(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      title
+      image
+      Products {
+        nextToken
+        __typename
+      }
+      RFQS {
+        nextToken
+        __typename
+      }
+      RFFS {
+        nextToken
+        __typename
+      }
+      SellOffers {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+    APITypes.ListCommodityCategoriesQueryVariables,
+    APITypes.ListCommodityCategoriesQuery
+  >;
 export const getReview = /* GraphQL */ `query GetReview($id: ID!) {
   getReview(id: $id) {
     id
@@ -576,6 +1169,7 @@ export const getReview = /* GraphQL */ `query GetReview($id: ID!) {
     rating
     comment
     userID
+    productID
     createdAt
     updatedAt
     __typename
@@ -594,6 +1188,7 @@ export const listReviews = /* GraphQL */ `query ListReviews(
       rating
       comment
       userID
+      productID
       createdAt
       updatedAt
       __typename
@@ -626,6 +1221,7 @@ export const reviewsByUserID = /* GraphQL */ `query ReviewsByUserID(
       rating
       comment
       userID
+      productID
       createdAt
       updatedAt
       __typename
@@ -638,9 +1234,43 @@ export const reviewsByUserID = /* GraphQL */ `query ReviewsByUserID(
   APITypes.ReviewsByUserIDQueryVariables,
   APITypes.ReviewsByUserIDQuery
 >;
+export const reviewsByProductID = /* GraphQL */ `query ReviewsByProductID(
+  $productID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelReviewFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  reviewsByProductID(
+    productID: $productID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      rating
+      comment
+      userID
+      productID
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ReviewsByProductIDQueryVariables,
+  APITypes.ReviewsByProductIDQuery
+>;
 export const getProduct = /* GraphQL */ `query GetProduct($id: ID!) {
   getProduct(id: $id) {
     id
+    image
     title
     images
     description
@@ -653,14 +1283,32 @@ export const getProduct = /* GraphQL */ `query GetProduct($id: ID!) {
     packageType
     quantity
     fobPrice
-    basePrice
     deliveryTime
     paymentType
-    expiry
-    packageDescription
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDoc
     documents
+    commoditycategoryID
     categoriesID
     userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -678,6 +1326,7 @@ export const listProducts = /* GraphQL */ `query ListProducts(
   listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      image
       title
       images
       description
@@ -690,14 +1339,21 @@ export const listProducts = /* GraphQL */ `query ListProducts(
       packageType
       quantity
       fobPrice
-      basePrice
       deliveryTime
       paymentType
-      expiry
-      packageDescription
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
       documents
+      commoditycategoryID
       categoriesID
       userID
+      Reviews {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -710,6 +1366,63 @@ export const listProducts = /* GraphQL */ `query ListProducts(
   APITypes.ListProductsQueryVariables,
   APITypes.ListProductsQuery
 >;
+export const productsByCommoditycategoryID =
+  /* GraphQL */ `query ProductsByCommoditycategoryID(
+  $commoditycategoryID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelProductFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  productsByCommoditycategoryID(
+    commoditycategoryID: $commoditycategoryID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      image
+      title
+      images
+      description
+      rating
+      tags
+      productCertification
+      supplyCapacity
+      minOrderQty
+      unit
+      packageType
+      quantity
+      fobPrice
+      deliveryTime
+      paymentType
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
+      documents
+      commoditycategoryID
+      categoriesID
+      userID
+      Reviews {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+    APITypes.ProductsByCommoditycategoryIDQueryVariables,
+    APITypes.ProductsByCommoditycategoryIDQuery
+  >;
 export const productsByCategoriesID =
   /* GraphQL */ `query ProductsByCategoriesID(
   $categoriesID: ID!
@@ -727,6 +1440,7 @@ export const productsByCategoriesID =
   ) {
     items {
       id
+      image
       title
       images
       description
@@ -739,14 +1453,21 @@ export const productsByCategoriesID =
       packageType
       quantity
       fobPrice
-      basePrice
       deliveryTime
       paymentType
-      expiry
-      packageDescription
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
       documents
+      commoditycategoryID
       categoriesID
       userID
+      Reviews {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -775,6 +1496,7 @@ export const productsByUserID = /* GraphQL */ `query ProductsByUserID(
   ) {
     items {
       id
+      image
       title
       images
       description
@@ -787,14 +1509,21 @@ export const productsByUserID = /* GraphQL */ `query ProductsByUserID(
       packageType
       quantity
       fobPrice
-      basePrice
       deliveryTime
       paymentType
-      expiry
-      packageDescription
+      transportMode
+      placeOrigin
+      dateAvailable
+      productSpec
+      productDoc
       documents
+      commoditycategoryID
       categoriesID
       userID
+      Reviews {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -850,15 +1579,16 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -869,6 +1599,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -881,12 +1612,15 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -903,6 +1637,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         rating
         comment
         userID
+        productID
         createdAt
         updatedAt
         __typename
@@ -913,8 +1648,11 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     RFQS {
       items {
         id
+        rfqNo
         rfqType
         title
+        countryName
+        city
         requestCategory
         description
         documents
@@ -934,10 +1672,8 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         paymentMethod
         warranty
         returnPolicy
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
         createdAt
         updatedAt
         __typename
@@ -948,8 +1684,11 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     RFFS {
       items {
         id
+        rffNo
         rffType
         title
+        countryName
+        city
         deliveryPeriod
         requestCategory
         productName
@@ -971,10 +1710,41 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         containerSize
         containerType
         containerCount
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
         createdAt
         updatedAt
         __typename
@@ -1047,6 +1817,10 @@ export const listUsers = /* GraphQL */ `query ListUsers(
         __typename
       }
       RFFS {
+        nextToken
+        __typename
+      }
+      SellOffers {
         nextToken
         __typename
       }

@@ -73,6 +73,21 @@ const sourceLocation = [
   },
 ];
 
+const freight = [
+  {
+    id: 0,
+    type: 'Air',
+  },
+  {
+    id: 1,
+    type: 'Ocean',
+  },
+  {
+    id: 2,
+    type: 'Land',
+  },
+];
+
 const freight_service = [
   {
     id: `0`,
@@ -107,12 +122,6 @@ const quote_service = [
     text: 'Domestic & International',
     icon: require('../assets/images/advance.png'),
   },
-  // {
-  //   id: `2`,
-  //   label: 'International',
-  //   text: 'Serving international delivery',
-  //   icon: require('../assets/images/international.png'),
-  // },
 ];
 
 const advance_rfq = [
@@ -621,6 +630,32 @@ const charges = [
   },
 ];
 
+const loadType = [
+  {
+    id: 1,
+    type: 'Full Container Load',
+  },
+  {
+    id: 2,
+    type: 'Full Truck Load',
+  },
+  {
+    id: 3,
+    type: 'Less Truck Load',
+  },
+];
+
+const priceOffer = [
+  {
+    id: 1,
+    type: 'Fixed',
+  },
+  {
+    id: 2,
+    type: 'Negotiable',
+  },
+];
+
 const payType = [
   {
     id: 1,
@@ -654,6 +689,17 @@ const freightType = [
   },
 ];
 
+const storeProducts = [
+  {
+    id: `0`,
+    label: 'My Store',
+  },
+  {
+    id: `1`,
+    label: 'Add New Products',
+  },
+];
+
 export default {
   freightType,
   countries,
@@ -661,6 +707,7 @@ export default {
   requestType,
   weight,
   orderTabs,
+  storeProducts,
   payType,
   languages,
   exploreTabs,
@@ -691,4 +738,7 @@ export default {
   sellerService,
   identification,
   searchType2,
+  loadType,
+  priceOffer,
+  freight,
 };

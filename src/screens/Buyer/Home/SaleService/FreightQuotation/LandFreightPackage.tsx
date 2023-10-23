@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -10,6 +10,8 @@ import {
   AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
+import FastImage from 'react-native-fast-image';
+import {useMutation} from '@apollo/client';
 
 import {
   FreightType,
@@ -28,10 +30,19 @@ import {
   images,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
-import FastImage from 'react-native-fast-image';
+import {updateRFF} from '../../../../../queries/RequestQueries';
+import {
+  UpdateRFFInput,
+  UpdateRFFMutation,
+  UpdateRFFMutationVariables,
+} from '../../../../../API';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 const LandFreightPackage = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
+  const route = useRoute<any>();
+
+  const {userID} = useAuthContext();
 
   const {control, handleSubmit}: any = useForm();
 
@@ -43,22 +54,9 @@ const LandFreightPackage = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [productName, setProductName] = useState('');
-  const [productNameType, setProductNameType] = useState<any>([
-    {
-      id: 1,
-      type: 'Full Container Load',
-    },
-    {
-      id: 2,
-      type: 'Full Truck Load',
-    },
-    {
-      id: 3,
-      type: 'Less Truck Load',
-    },
-  ]);
-
-  // console.log(value);
+  const [productNameType, setProductNameType] = useState<any>(
+    constants.loadType,
+  );
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -70,13 +68,32 @@ const LandFreightPackage = () => {
     }
   };
 
+  // CREATE UPDATE RFF
+  const [doUpdateRFQ] = useMutation<
+    UpdateRFFMutation,
+    UpdateRFFMutationVariables
+  >(updateRFF);
+
   const onSubmit = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: UpdateRFFInput = {
+        id: route?.params.rffID,
+        packageType: productName,
+        loadType: value,
+        qty: quantity,
+        userID,
+      };
+      await doUpdateRFQ({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('LandPickupProcess', {rffID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -94,18 +111,18 @@ const LandFreightPackage = () => {
         style={{
           marginHorizontal: SIZES.semi_margin,
         }}>
-        {/* Weight*/}
+        {/* Load Type*/}
         <Controller
           control={control}
-          name="productName"
+          name="loadType"
           rules={{
-            required: 'Job type is required',
+            required: 'Load type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <>
               <Text
                 style={{
-                  marginTop: SIZES.margin,
+                  marginTop: SIZES.padding,
                   color: COLORS.Neutral1,
                   ...FONTS.body3,
                   fontWeight: '500',
@@ -164,10 +181,11 @@ const LandFreightPackage = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -177,7 +195,7 @@ const LandFreightPackage = () => {
         />
 
         {/* Package Type */}
-        <View style={{marginTop: SIZES.margin}}>
+        <View style={{marginTop: SIZES.padding}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
             Package Type
           </Text>
@@ -198,7 +216,7 @@ const LandFreightPackage = () => {
                   }}
                   onPress={() => {
                     setSelectedOptions(item.id);
-                    setValue(item.label);
+                    setValue(item.type);
                   }}
                 />
               );
@@ -212,6 +230,7 @@ const LandFreightPackage = () => {
           handleDecrease={handleDecrease}
           handleIncrease={handleIncrease}
           qty={quantity}
+          containerStyle={{marginTop: SIZES.padding * 1.2}}
         />
       </View>
     );
@@ -264,7 +283,7 @@ const LandFreightPackage = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('LandPickupProcess')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

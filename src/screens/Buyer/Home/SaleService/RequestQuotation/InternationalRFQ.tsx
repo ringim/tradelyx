@@ -1,10 +1,10 @@
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {v4 as uuidV4} from 'uuid';
 import {
@@ -34,10 +34,14 @@ import {
   CreateRFQInput,
   CreateRFQMutation,
   CreateRFQMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
   RFQTYPE,
 } from '../../../../../API';
 import {createRFQ} from '../../../../../queries/RequestQueries';
 import {useAuthContext} from '../../../../../context/AuthContext';
+import {referralCode} from '../../../../../utilities/Utils';
+import {getUser} from '../../../../../queries/UserQueries';
 
 interface IRequestQuotation {
   title: string;
@@ -56,6 +60,17 @@ const InternationalRFQ = () => {
   const [type, setType] = useState('');
   const [jobType, setJobType] = useState<any>(constants?.product_categories);
 
+  // GET USER
+  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
   // CREATE REQUEST QUOTATION
   const [doCreateRFQ] = useMutation<
     CreateRFQMutation,
@@ -70,6 +85,8 @@ const InternationalRFQ = () => {
     try {
       const input: CreateRFQInput = {
         id: uuidV4(),
+        rfqNo: referralCode(),
+        countryName: userInfo?.country,
         title,
         requestCategory: type,
         rfqType: RFQTYPE.INTERNATIONAL,
@@ -118,7 +135,7 @@ const InternationalRFQ = () => {
           control={control}
           name="category"
           rules={{
-            required: 'Job type is required',
+            required: 'Category type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <>
@@ -184,10 +201,11 @@ const InternationalRFQ = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -213,6 +231,14 @@ const InternationalRFQ = () => {
             padding: SIZES.base,
           }}
         />
+      </View>
+    );
+  }
+
+  if (onLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }

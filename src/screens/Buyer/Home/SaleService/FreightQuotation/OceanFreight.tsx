@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -6,6 +6,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import dayjs from 'dayjs';
+import {useMutation, useQuery} from '@apollo/client';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
   ALERT_TYPE,
@@ -13,6 +14,7 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
+import {v4 as uuidV4} from 'uuid';
 
 import {
   FormInput,
@@ -22,7 +24,6 @@ import {
   QuotationProgress2,
   ExpiryDate,
 } from '../../../../../components';
-
 import {
   COLORS,
   FONTS,
@@ -33,6 +34,18 @@ import {
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {AirFreightRouteProp} from '../../../../../components/navigation/BuyerNav/type/navigation';
+import {
+  CreateRFFInput,
+  CreateRFFMutation,
+  CreateRFFMutationVariables,
+  RFFTYPE,
+  GetUserQuery,
+  GetUserQueryVariables,
+} from '../../../../../API';
+import {createRFF} from '../../../../../queries/RequestQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
+import {getUser} from '../../../../../queries/UserQueries';
+import {referralCode} from '../../../../../utilities/Utils';
 
 interface IFreight {
   name: string;
@@ -42,8 +55,9 @@ const OceanFreight = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<AirFreightRouteProp>();
 
+  const {userID} = useAuthContext();
+
   const {label, text}: any = route.params?.freightType;
-  // console.log('air freight detail', text, label);
 
   const {control, handleSubmit}: any = useForm();
 
@@ -51,12 +65,27 @@ const OceanFreight = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
 
-  // console.log(value);
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
   const [jobType, setJobType] = useState<any>(constants.product_categories);
+
+  // GET USER
+  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  // UPDATE REQUEST QUOTATION
+  const [doCreateRFF] = useMutation<
+    CreateRFFMutation,
+    CreateRFFMutationVariables
+  >(createRFF);
 
   const onSubmit = async ({name}: IFreight) => {
     if (loading) {
@@ -64,7 +93,24 @@ const OceanFreight = () => {
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: CreateRFFInput = {
+        id: uuidV4(),
+        rffNo: referralCode(),
+        countryName: userInfo?.country,
+        requestCategory: type,
+        rffType: RFFTYPE.OCEAN,
+        productName: name,
+        loadDate: date,
+        userID,
+      };
+
+      await doCreateRFF({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('OceanContainerDetails', {rffID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -102,7 +148,7 @@ const OceanFreight = () => {
           control={control}
           name="category"
           rules={{
-            required: 'Job type is required',
+            required: 'Category type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <>
@@ -168,10 +214,11 @@ const OceanFreight = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -201,6 +248,14 @@ const OceanFreight = () => {
           title={'Ready to Load'}
           containerStyle={{marginTop: SIZES.margin}}
         />
+      </View>
+    );
+  }
+
+  if (onLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }
@@ -254,7 +309,7 @@ const OceanFreight = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('OceanContainerDetails')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

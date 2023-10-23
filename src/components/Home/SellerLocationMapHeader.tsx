@@ -49,7 +49,8 @@ const SellerLocationMapHeader = ({
           padding: SIZES.padding,
           marginTop: SIZES.margin,
           height: 120,
-          width: '100%',
+          alignSelf: 'center',
+          width: '95%',
           ...mapContStyle,
         }}>
         {children}

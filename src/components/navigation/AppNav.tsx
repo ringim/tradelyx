@@ -50,7 +50,8 @@ const AppNav = ({onBoarded}: any) => {
 
   const [connection, setConnection] = useState<any>(true);
 
-  const {data: onData, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
     {
       variables: {
@@ -58,7 +59,7 @@ const AppNav = ({onBoarded}: any) => {
       },
     },
   );
-  const userInfo: any = onData?.getUser;
+  const userInfo: any = data?.getUser;
 
   // Switching between different Wi-Fi does not send events in iOS
   useEffect(() => {

@@ -11,7 +11,7 @@ const Freight = () => {
   const [selectedItem, setSelectedItem] = useState<any>('');
   const [freightItem, setFreightItem] = useState<any>(null);
 
-  console.log('selectedItem', selectedItem);
+  // console.log('selectedItem', selectedItem);
 
   return (
     <View
@@ -36,8 +36,8 @@ const Freight = () => {
         </Text>
       </View>
 
+      {/* Service Request */}
       <View style={{flex: 1}}>
-        {/* Service Request */}
         {constants.freight_service.map((item, index) => {
           return (
             <FreightTab

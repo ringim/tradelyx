@@ -15,15 +15,16 @@ export const onCreateOrder =
     orderType
     orderStatus
     agreement
-    userID
-    orderDate
-    rfqID
-    rffID
     toImage
     toCountry
     fromImage
     fromCountry
     orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
     createdAt
     updatedAt
     __typename
@@ -40,15 +41,16 @@ export const onUpdateOrder =
     orderType
     orderStatus
     agreement
-    userID
-    orderDate
-    rfqID
-    rffID
     toImage
     toCountry
     fromImage
     fromCountry
     orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
     createdAt
     updatedAt
     __typename
@@ -65,15 +67,16 @@ export const onDeleteOrder =
     orderType
     orderStatus
     agreement
-    userID
-    orderDate
-    rfqID
-    rffID
     toImage
     toCountry
     fromImage
     fromCountry
     orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
     createdAt
     updatedAt
     __typename
@@ -83,12 +86,192 @@ export const onDeleteOrder =
     APITypes.OnDeleteOrderSubscriptionVariables,
     APITypes.OnDeleteOrderSubscription
   >;
+export const onCreateSellOffer =
+  /* GraphQL */ `subscription OnCreateSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
+  onCreateSellOffer(filter: $filter) {
+    id
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateSellOfferSubscriptionVariables,
+    APITypes.OnCreateSellOfferSubscription
+  >;
+export const onUpdateSellOffer =
+  /* GraphQL */ `subscription OnUpdateSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
+  onUpdateSellOffer(filter: $filter) {
+    id
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateSellOfferSubscriptionVariables,
+    APITypes.OnUpdateSellOfferSubscription
+  >;
+export const onDeleteSellOffer =
+  /* GraphQL */ `subscription OnDeleteSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
+  onDeleteSellOffer(filter: $filter) {
+    id
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteSellOfferSubscriptionVariables,
+    APITypes.OnDeleteSellOfferSubscription
+  >;
 export const onCreateRFQ =
   /* GraphQL */ `subscription OnCreateRFQ($filter: ModelSubscriptionRFQFilterInput) {
   onCreateRFQ(filter: $filter) {
     id
+    rfqNo
     rfqType
     title
+    countryName
+    city
     requestCategory
     description
     documents
@@ -108,6 +291,7 @@ export const onCreateRFQ =
     paymentMethod
     warranty
     returnPolicy
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -115,15 +299,16 @@ export const onCreateRFQ =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -131,9 +316,6 @@ export const onCreateRFQ =
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -147,8 +329,11 @@ export const onUpdateRFQ =
   /* GraphQL */ `subscription OnUpdateRFQ($filter: ModelSubscriptionRFQFilterInput) {
   onUpdateRFQ(filter: $filter) {
     id
+    rfqNo
     rfqType
     title
+    countryName
+    city
     requestCategory
     description
     documents
@@ -168,6 +353,7 @@ export const onUpdateRFQ =
     paymentMethod
     warranty
     returnPolicy
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -175,15 +361,16 @@ export const onUpdateRFQ =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -191,9 +378,6 @@ export const onUpdateRFQ =
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -207,8 +391,11 @@ export const onDeleteRFQ =
   /* GraphQL */ `subscription OnDeleteRFQ($filter: ModelSubscriptionRFQFilterInput) {
   onDeleteRFQ(filter: $filter) {
     id
+    rfqNo
     rfqType
     title
+    countryName
+    city
     requestCategory
     description
     documents
@@ -228,6 +415,7 @@ export const onDeleteRFQ =
     paymentMethod
     warranty
     returnPolicy
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -235,15 +423,16 @@ export const onDeleteRFQ =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -251,9 +440,6 @@ export const onDeleteRFQ =
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -267,8 +453,11 @@ export const onCreateRFF =
   /* GraphQL */ `subscription OnCreateRFF($filter: ModelSubscriptionRFFFilterInput) {
   onCreateRFF(filter: $filter) {
     id
+    rffNo
     rffType
     title
+    countryName
+    city
     deliveryPeriod
     requestCategory
     productName
@@ -290,6 +479,7 @@ export const onCreateRFF =
     containerSize
     containerType
     containerCount
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -297,15 +487,16 @@ export const onCreateRFF =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -313,9 +504,6 @@ export const onCreateRFF =
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -329,8 +517,11 @@ export const onUpdateRFF =
   /* GraphQL */ `subscription OnUpdateRFF($filter: ModelSubscriptionRFFFilterInput) {
   onUpdateRFF(filter: $filter) {
     id
+    rffNo
     rffType
     title
+    countryName
+    city
     deliveryPeriod
     requestCategory
     productName
@@ -352,6 +543,7 @@ export const onUpdateRFF =
     containerSize
     containerType
     containerCount
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -359,15 +551,16 @@ export const onUpdateRFF =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -375,9 +568,6 @@ export const onUpdateRFF =
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -391,8 +581,11 @@ export const onDeleteRFF =
   /* GraphQL */ `subscription OnDeleteRFF($filter: ModelSubscriptionRFFFilterInput) {
   onDeleteRFF(filter: $filter) {
     id
+    rffNo
     rffType
     title
+    countryName
+    city
     deliveryPeriod
     requestCategory
     productName
@@ -414,6 +607,7 @@ export const onDeleteRFF =
     containerSize
     containerType
     containerCount
+    commoditycategoryID
     userID
     Orders {
       items {
@@ -421,15 +615,16 @@ export const onDeleteRFF =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -437,9 +632,6 @@ export const onDeleteRFF =
       nextToken
       __typename
     }
-    countryFlag
-    countryName
-    city
     createdAt
     updatedAt
     __typename
@@ -460,6 +652,7 @@ export const onCreateCategories =
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -472,12 +665,15 @@ export const onCreateCategories =
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -507,6 +703,7 @@ export const onUpdateCategories =
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -519,12 +716,15 @@ export const onUpdateCategories =
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -554,6 +754,7 @@ export const onDeleteCategories =
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -566,12 +767,15 @@ export const onDeleteCategories =
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -590,6 +794,480 @@ export const onDeleteCategories =
     APITypes.OnDeleteCategoriesSubscriptionVariables,
     APITypes.OnDeleteCategoriesSubscription
   >;
+export const onCreateCommodityCategory =
+  /* GraphQL */ `subscription OnCreateCommodityCategory(
+  $filter: ModelSubscriptionCommodityCategoryFilterInput
+) {
+  onCreateCommodityCategory(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        image
+        title
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        deliveryTime
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
+        documents
+        commoditycategoryID
+        categoriesID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        landmark
+        unit
+        incoterms
+        placeDestination
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        rffNo
+        rffType
+        title
+        countryName
+        city
+        deliveryPeriod
+        requestCategory
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeDestination
+        relatedServices
+        invoiceAmount
+        notes
+        loadType
+        container
+        containerSize
+        containerType
+        containerCount
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateCommodityCategorySubscriptionVariables,
+    APITypes.OnCreateCommodityCategorySubscription
+  >;
+export const onUpdateCommodityCategory =
+  /* GraphQL */ `subscription OnUpdateCommodityCategory(
+  $filter: ModelSubscriptionCommodityCategoryFilterInput
+) {
+  onUpdateCommodityCategory(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        image
+        title
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        deliveryTime
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
+        documents
+        commoditycategoryID
+        categoriesID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        landmark
+        unit
+        incoterms
+        placeDestination
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        rffNo
+        rffType
+        title
+        countryName
+        city
+        deliveryPeriod
+        requestCategory
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeDestination
+        relatedServices
+        invoiceAmount
+        notes
+        loadType
+        container
+        containerSize
+        containerType
+        containerCount
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateCommodityCategorySubscriptionVariables,
+    APITypes.OnUpdateCommodityCategorySubscription
+  >;
+export const onDeleteCommodityCategory =
+  /* GraphQL */ `subscription OnDeleteCommodityCategory(
+  $filter: ModelSubscriptionCommodityCategoryFilterInput
+) {
+  onDeleteCommodityCategory(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        image
+        title
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        deliveryTime
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
+        documents
+        commoditycategoryID
+        categoriesID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        landmark
+        unit
+        incoterms
+        placeDestination
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        rffNo
+        rffType
+        title
+        countryName
+        city
+        deliveryPeriod
+        requestCategory
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeDestination
+        relatedServices
+        invoiceAmount
+        notes
+        loadType
+        container
+        containerSize
+        containerType
+        containerCount
+        commoditycategoryID
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteCommodityCategorySubscriptionVariables,
+    APITypes.OnDeleteCommodityCategorySubscription
+  >;
 export const onCreateReview =
   /* GraphQL */ `subscription OnCreateReview($filter: ModelSubscriptionReviewFilterInput) {
   onCreateReview(filter: $filter) {
@@ -598,6 +1276,7 @@ export const onCreateReview =
     rating
     comment
     userID
+    productID
     createdAt
     updatedAt
     __typename
@@ -615,6 +1294,7 @@ export const onUpdateReview =
     rating
     comment
     userID
+    productID
     createdAt
     updatedAt
     __typename
@@ -632,6 +1312,7 @@ export const onDeleteReview =
     rating
     comment
     userID
+    productID
     createdAt
     updatedAt
     __typename
@@ -645,6 +1326,7 @@ export const onCreateProduct =
   /* GraphQL */ `subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
   onCreateProduct(filter: $filter) {
     id
+    image
     title
     images
     description
@@ -657,14 +1339,32 @@ export const onCreateProduct =
     packageType
     quantity
     fobPrice
-    basePrice
     deliveryTime
     paymentType
-    expiry
-    packageDescription
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDoc
     documents
+    commoditycategoryID
     categoriesID
     userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -678,6 +1378,7 @@ export const onUpdateProduct =
   /* GraphQL */ `subscription OnUpdateProduct($filter: ModelSubscriptionProductFilterInput) {
   onUpdateProduct(filter: $filter) {
     id
+    image
     title
     images
     description
@@ -690,14 +1391,32 @@ export const onUpdateProduct =
     packageType
     quantity
     fobPrice
-    basePrice
     deliveryTime
     paymentType
-    expiry
-    packageDescription
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDoc
     documents
+    commoditycategoryID
     categoriesID
     userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -711,6 +1430,7 @@ export const onDeleteProduct =
   /* GraphQL */ `subscription OnDeleteProduct($filter: ModelSubscriptionProductFilterInput) {
   onDeleteProduct(filter: $filter) {
     id
+    image
     title
     images
     description
@@ -723,14 +1443,32 @@ export const onDeleteProduct =
     packageType
     quantity
     fobPrice
-    basePrice
     deliveryTime
     paymentType
-    expiry
-    packageDescription
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDoc
     documents
+    commoditycategoryID
     categoriesID
     userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     __typename
@@ -784,15 +1522,16 @@ export const onCreateUser =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -803,6 +1542,7 @@ export const onCreateUser =
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -815,12 +1555,15 @@ export const onCreateUser =
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -837,6 +1580,7 @@ export const onCreateUser =
         rating
         comment
         userID
+        productID
         createdAt
         updatedAt
         __typename
@@ -847,8 +1591,11 @@ export const onCreateUser =
     RFQS {
       items {
         id
+        rfqNo
         rfqType
         title
+        countryName
+        city
         requestCategory
         description
         documents
@@ -868,10 +1615,8 @@ export const onCreateUser =
         paymentMethod
         warranty
         returnPolicy
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
         createdAt
         updatedAt
         __typename
@@ -882,8 +1627,11 @@ export const onCreateUser =
     RFFS {
       items {
         id
+        rffNo
         rffType
         title
+        countryName
+        city
         deliveryPeriod
         requestCategory
         productName
@@ -905,10 +1653,41 @@ export const onCreateUser =
         containerSize
         containerType
         containerCount
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
         createdAt
         updatedAt
         __typename
@@ -969,15 +1748,16 @@ export const onUpdateUser =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -988,6 +1768,7 @@ export const onUpdateUser =
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -1000,12 +1781,15 @@ export const onUpdateUser =
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -1022,6 +1806,7 @@ export const onUpdateUser =
         rating
         comment
         userID
+        productID
         createdAt
         updatedAt
         __typename
@@ -1032,8 +1817,11 @@ export const onUpdateUser =
     RFQS {
       items {
         id
+        rfqNo
         rfqType
         title
+        countryName
+        city
         requestCategory
         description
         documents
@@ -1053,10 +1841,8 @@ export const onUpdateUser =
         paymentMethod
         warranty
         returnPolicy
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
         createdAt
         updatedAt
         __typename
@@ -1067,8 +1853,11 @@ export const onUpdateUser =
     RFFS {
       items {
         id
+        rffNo
         rffType
         title
+        countryName
+        city
         deliveryPeriod
         requestCategory
         productName
@@ -1090,10 +1879,41 @@ export const onUpdateUser =
         containerSize
         containerType
         containerCount
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
         createdAt
         updatedAt
         __typename
@@ -1154,15 +1974,16 @@ export const onDeleteUser =
         orderType
         orderStatus
         agreement
-        userID
-        orderDate
-        rfqID
-        rffID
         toImage
         toCountry
         fromImage
         fromCountry
         orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
         createdAt
         updatedAt
         __typename
@@ -1173,6 +1994,7 @@ export const onDeleteUser =
     Products {
       items {
         id
+        image
         title
         images
         description
@@ -1185,12 +2007,15 @@ export const onDeleteUser =
         packageType
         quantity
         fobPrice
-        basePrice
         deliveryTime
         paymentType
-        expiry
-        packageDescription
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDoc
         documents
+        commoditycategoryID
         categoriesID
         userID
         createdAt
@@ -1207,6 +2032,7 @@ export const onDeleteUser =
         rating
         comment
         userID
+        productID
         createdAt
         updatedAt
         __typename
@@ -1217,8 +2043,11 @@ export const onDeleteUser =
     RFQS {
       items {
         id
+        rfqNo
         rfqType
         title
+        countryName
+        city
         requestCategory
         description
         documents
@@ -1238,10 +2067,8 @@ export const onDeleteUser =
         paymentMethod
         warranty
         returnPolicy
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
         createdAt
         updatedAt
         __typename
@@ -1252,8 +2079,11 @@ export const onDeleteUser =
     RFFS {
       items {
         id
+        rffNo
         rffType
         title
+        countryName
+        city
         deliveryPeriod
         requestCategory
         productName
@@ -1275,10 +2105,41 @@ export const onDeleteUser =
         containerSize
         containerType
         containerCount
+        commoditycategoryID
         userID
-        countryFlag
-        countryName
-        city
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        userID
+        commoditycategoryID
         createdAt
         updatedAt
         __typename

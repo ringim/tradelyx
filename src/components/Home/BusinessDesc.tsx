@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
 
-const BusinessDesc = ({productItem}: any) => {
+const BusinessDesc = ({productItem, title}: any) => {
   return (
     <View
       style={{
@@ -21,15 +21,16 @@ const BusinessDesc = ({productItem}: any) => {
         }}>
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={icons.info}
+            source={icons.content}
             resizeMode={FastImage.resizeMode.cover}
-            style={{width: 25, height: 25}}
+            tintColor={COLORS.secondary1}
+            style={{width: 20, height: 20}}
           />
         </View>
 
         <View
           style={{flex: 1, marginLeft: SIZES.radius, justifyContent: 'center'}}>
-          <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>Description</Text>
+          <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>{title}</Text>
         </View>
       </View>
 

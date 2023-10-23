@@ -35,6 +35,7 @@ import PopularProducts from './Home/PopularProducts';
 import PopularItem from './Home/PopularItem';
 import VendorItem from './Home/VendorItem';
 import NotificationTab from './Home/NotificationTab';
+import ProductItem from './Home/ProductItem';
 import SearchItem from './Home/SearchItem';
 import ImageCaption from './Home/ImageCaption';
 import StoreInfo from './Home/StoreInfo';
@@ -44,8 +45,10 @@ import Review from './Home/Review';
 import SeeAll from './Home/SeeAll';
 import PriceQty from './Home/PriceQty';
 import MainMarket from './Home/MainMarket';
+import ProductImage from './Home/ProductImage';
 import FileSection from './Home/FileSection';
 import RelatedService from './Home/RelatedService';
+import QuotationProgress1 from './Home/QuotationProgress1';
 import UploadDocs from './Home/UploadDocs';
 import AgentRequestItem from './Home/AgentRequestItem';
 import ReqQuote from './Home/ReqQuote';
@@ -63,10 +66,15 @@ import PackageType from './Home/PackageType';
 import ContainerType from './Home/ContainerType';
 import OriginDestinationDetails from './Home/OriginDestinationDetails';
 import SearchItem3 from './Home/SearchItem3';
+import Shipment from './Home/Shipment';
 import SearchBox3 from './Home/SearchBox3';
 import SourceLocationItem from './Home/SourceLocationItem';
 import SliderContainer from './Home/SliderContainer';
 import SellOfferSuccess from './Home/SellOfferSuccess';
+import Options from './Home/Options';
+import ViewProductImage from './Home/ViewProductImage';
+import Packaging from './Home/Packaging';
+import ProductInfo from './Home/ProductInfo';
 
 // OTHERS
 import FormInput from './Others/FormInput';
@@ -76,6 +84,9 @@ import CategoryOption from './Others/CategoryOption';
 import CountryDropDown from './Others/CountryDropDown';
 import AddressPickup from './Others/AddressPickup';
 import NoItem from './Others/NoItem';
+import ImageUpload from './Others/ImageUpload';
+import MultipleImages from './Others/MultipleImages';
+import SingleImage from './Others/SingleImage';
 
 //ORDER
 import OrderItem from './Order/OrderItem';
@@ -93,6 +104,7 @@ import NoSection from './Others/NoSection';
 import TransactionItem from './Profile/TransactionItem';
 import TransactDate from './Profile/TransactDate';
 import AddressDetails from './Profile/AddressDetails';
+import ProductSuccess from './Profile/ProductSuccess';
 
 //Chat
 // import ChatHeader from './message/ChatHeader';
@@ -112,15 +124,23 @@ import QuoteTab from './Modal/QuoteTab';
 import QuotationAdvancedTypes from './Modal/QuotationAdvancedTypes';
 
 export {
+  MultipleImages,
+  Packaging,
   Handling,
   FileSection,
+  ViewProductImage,
+  ProductImage,
+  ProductItem,
   ExpiryDate,
+  SingleImage,
   AddressDetails,
   SearchModal2,
   SellerOrderItem,
   ServiceModal2,
   QtySection,
   OrderDetailItem,
+  QuotationProgress,
+  ImageUpload,
   BusinessDesc,
   SourceLocationItem,
   SliderContainer,
@@ -131,8 +151,10 @@ export {
   TransactionItem,
   OrderItem,
   BalanceSection,
+  ProductInfo,
   FinanceTabs,
   QuoteRequestItem2,
+  Options,
   PerformanceTab,
   ListItem,
   Review,
@@ -153,10 +175,11 @@ export {
   RFQSuccess,
   UploadDocs,
   FreightType,
-  QuotationProgress,
+  QuotationProgress1,
   OrderTabItem,
   StoreBannerInfo,
   ReqQuote,
+  ProductSuccess,
   QuoteType,
   QuotationAdvancedTypes,
   SellerLocationMapHeader,
@@ -165,6 +188,7 @@ export {
   SeeAll,
   TabHeader,
   RelatedService,
+  Shipment,
   QuoteTab,
   FormInput,
   SearchItem3,

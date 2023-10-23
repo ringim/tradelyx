@@ -40,6 +40,8 @@ import InternationalDestinationAddress from './Home/SaleService/RequestQuotation
 import InternationalPaymentQuotation from './Home/SaleService/RequestQuotation/InternationalPaymentQuotation';
 import LandPickupAddress from './Home/SaleService/FreightQuotation/LandPickupAddress';
 import LandPickupAddress2 from './Home/SaleService/FreightQuotation/LandPickupAddress2';
+import OceanPortOriginAddress from './Home/SaleService/FreightQuotation/OceanPortOriginAddress';
+import OceanDestinationAddress from './Home/SaleService/FreightQuotation/OceanDestinationAddress';
 
 // Explore
 import Explore from './Explore/Explore';
@@ -63,7 +65,7 @@ import Account from './Home/Profile/Account';
 import Wallet from './Home/Profile/Wallet';
 import Favorites from './Home/Profile/Favorites';
 import Refer from './Home/Profile/Refer';
-import AccountAddress from './Home/Profile/AccountAddress'
+import AccountAddress from './Home/Profile/AccountAddress';
 import Contact from './Home/Profile/Contact';
 
 export {
@@ -84,6 +86,8 @@ export {
   InternationalDestinationAddress,
   InviteFriends,
   SearchAddressFilter,
+  OceanDestinationAddress,
+  OceanPortOriginAddress,
   InternationalEngagementTerms,
   ReplyList,
   AirPortOriginAddress,

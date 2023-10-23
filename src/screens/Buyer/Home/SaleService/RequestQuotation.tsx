@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import React, {useMemo, useRef, useCallback, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -8,7 +8,7 @@ import DocumentPicker from 'react-native-document-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import {Storage} from 'aws-amplify';
 import {
   ALERT_TYPE,
@@ -32,9 +32,13 @@ import {
   CreateRFQInput,
   CreateRFQMutation,
   CreateRFQMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
   RFQTYPE,
 } from '../../../../API';
 import {useAuthContext} from '../../../../context/AuthContext';
+import {referralCode} from '../../../../utilities/Utils';
+import {getUser} from '../../../../queries/UserQueries';
 
 interface IRequestQuotation {
   title: string;
@@ -94,6 +98,17 @@ const RequestQuotation = () => {
     }
   };
 
+  // GET USER
+  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
   // CREATE REQUEST QUOTATION
   const [doCreateRFQ] = useMutation<
     CreateRFQMutation,
@@ -107,6 +122,8 @@ const RequestQuotation = () => {
     setLoading(true);
     try {
       const input: CreateRFQInput = {
+        rfqNo: referralCode(),
+        countryName: userInfo?.country,
         title: title,
         requestCategory: type,
         rfqType: RFQTYPE.STANDARD,
@@ -175,7 +192,7 @@ const RequestQuotation = () => {
           control={control}
           name="category"
           rules={{
-            required: 'Job type is required',
+            required: 'Category type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <>
@@ -241,10 +258,11 @@ const RequestQuotation = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -270,6 +288,14 @@ const RequestQuotation = () => {
             padding: SIZES.base,
           }}
         />
+      </View>
+    );
+  }
+
+  if (onLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }
@@ -330,7 +356,10 @@ const RequestQuotation = () => {
                 }}
               />
             ) : (
-              <UploadDocs selectFile={selectFile} />
+              <UploadDocs
+                title={'Attach Supporting Document'}
+                selectFile={selectFile}
+              />
             )}
           </View>
         </KeyboardAwareScrollView>

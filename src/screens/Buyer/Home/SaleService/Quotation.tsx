@@ -14,7 +14,7 @@ const Quotation = () => {
   const [advanceRFQ, setAdvanceRFQ] = useState<any>(null);
 
   // console.log('selectedItem', quoteItem);
-  console.log('selectedItem', advanceRFQ);
+  // console.log('selectedItem', advanceRFQ);
 
   return (
     <View

@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const PriceQty = ({productItem}: any) => {
+const PriceQty = ({price, qty, supply, paymentType}: any) => {
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -27,7 +27,8 @@ const PriceQty = ({productItem}: any) => {
         }}>
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={icons.info}
+            source={icons.pricing}
+            tintColor={COLORS.secondary1}
             resizeMode={FastImage.resizeMode.cover}
             style={{width: 24, height: 24}}
           />
@@ -36,7 +37,7 @@ const PriceQty = ({productItem}: any) => {
         <View
           style={{flex: 1, marginLeft: SIZES.radius, justifyContent: 'center'}}>
           <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            Price and Minimum Quantity
+            Price and Minimum Quantity:
           </Text>
         </View>
       </View>
@@ -50,16 +51,36 @@ const PriceQty = ({productItem}: any) => {
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Price in USD
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Price in USD:
           </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
             numberOfLines={2}
             style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
-            ${productItem?.usdPrice.toLocaleString('en-US', options)}
+            ${price.toLocaleString('en-US', options)}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: SIZES.radius,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Payment type:
+          </Text>
+        </View>
+        <View style={{justifyContent: 'center'}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
+            {paymentType}
           </Text>
         </View>
       </View>
@@ -78,8 +99,10 @@ const PriceQty = ({productItem}: any) => {
           </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
-          <Text numberOfLines={2} style={{...FONTS.body3, color: COLORS.Neutral1}}>
-            {productItem?.qty}
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.body3, color: COLORS.Neutral1}}>
+            {qty}
           </Text>
         </View>
       </View>
@@ -96,8 +119,10 @@ const PriceQty = ({productItem}: any) => {
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Sample</Text>
         </View>
         <View style={{justifyContent: 'center'}}>
-          <Text numberOfLines={2} style={{...FONTS.body3, color: COLORS.Neutral1}}>
-            {productItem?.sample}
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.body3, color: COLORS.Neutral1}}>
+            {supply}
           </Text>
         </View>
       </View>

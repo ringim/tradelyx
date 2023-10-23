@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -13,6 +13,8 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
+import {useMutation, useQuery} from '@apollo/client';
+import {v4 as uuidV4} from 'uuid';
 
 import {
   FormInput,
@@ -33,18 +35,30 @@ import {
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {AirFreightRouteProp} from '../../../../../components/navigation/BuyerNav/type/navigation';
+import {createRFF} from '../../../../../queries/RequestQueries';
+import {
+  CreateRFFInput,
+  CreateRFFMutation,
+  CreateRFFMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
+  RFFTYPE,
+} from '../../../../../API';
+import {useAuthContext} from '../../../../../context/AuthContext';
+import {getUser} from '../../../../../queries/UserQueries';
+import {referralCode} from '../../../../../utilities/Utils';
 
 interface IFreight {
   name: string;
-  handling: string;
 }
 
 const AirFreight = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<AirFreightRouteProp>();
 
+  const {userID} = useAuthContext();
+
   const {label, text}: any = route.params?.freightType;
-  // console.log('air freight detail', text, label);
 
   const {control, handleSubmit}: any = useForm();
 
@@ -54,20 +68,52 @@ const AirFreight = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
 
-  // console.log(value);
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
   const [jobType, setJobType] = useState<any>(constants.product_categories);
 
-  const onSubmit = async ({handling, name}: IFreight) => {
+  // GET USER
+  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  // CREATE RFF
+  const [doCreateRFQ] = useMutation<
+    CreateRFFMutation,
+    CreateRFFMutationVariables
+  >(createRFF);
+
+  const onSubmit = async ({name}: IFreight) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: CreateRFFInput = {
+        id: uuidV4(),
+        rffNo: referralCode(),
+        countryName: userInfo?.country,
+        title: name,
+        requestCategory: type,
+        rffType: RFFTYPE.AIR,
+        handling: value,
+        loadDate: date,
+        userID,
+      };
+      await doCreateRFQ({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('FreightPackage', {rffID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -105,7 +151,7 @@ const AirFreight = () => {
           control={control}
           name="category"
           rules={{
-            required: 'Job type is required',
+            required: 'Category type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <>
@@ -171,10 +217,11 @@ const AirFreight = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -212,9 +259,11 @@ const AirFreight = () => {
                   key={`Handling-${index}`}
                   item={item}
                   selected={item.id == selectedOption}
-                  containerStyle={{
-                    marginLeft: index != 0 ? SIZES.radius : 0,
-                  }}
+                  containerStyle={
+                    {
+                      // marginLeft: index != 0 ? SIZES.radius : 0,
+                    }
+                  }
                   onPress={() => {
                     setSelectedOptions(item.id);
                     setValue(item.label);
@@ -232,6 +281,14 @@ const AirFreight = () => {
           title={'Ready to Load'}
           containerStyle={{marginTop: SIZES.margin}}
         />
+      </View>
+    );
+  }
+
+  if (onLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }
@@ -284,7 +341,7 @@ const AirFreight = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('FreightPackage')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

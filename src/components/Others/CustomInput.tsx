@@ -89,10 +89,11 @@ const CustomInput = ({
           {error && (
             <Text
               style={{
-                color: COLORS.Rose5,
-                paddingLeft: 10,
-                paddingTop: 10,
-                ...FONTS.body3,
+                ...FONTS.cap1,
+                color: COLORS.Rose4,
+                top: 14,
+                left: 5,
+                marginBottom: 2,
               }}>
               {error.message || 'Error'}
             </Text>

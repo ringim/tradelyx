@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -12,7 +12,9 @@ import {
   AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
+import {useMutation, useQuery} from '@apollo/client';
 import FastImage from 'react-native-fast-image';
+import {v4 as uuidV4} from 'uuid';
 
 import {
   FormInput,
@@ -22,21 +24,38 @@ import {
   QuotationProgress2,
   ExpiryDate,
 } from '../../../../../components';
-import {COLORS, FONTS, SIZES, constants, icons, images} from '../../../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SIZES,
+  constants,
+  icons,
+  images,
+} from '../../../../../constants';
 import {
   AirFreightRouteProp,
   HomeStackNavigatorParamList,
 } from '../../../../../components/navigation/BuyerNav/type/navigation';
-
+import {createRFF} from '../../../../../queries/RequestQueries';
+import {
+  CreateRFFInput,
+  CreateRFFMutation,
+  CreateRFFMutationVariables,
+  RFFTYPE,
+  GetUserQuery,
+  GetUserQueryVariables,
+} from '../../../../../API';
+import {useAuthContext} from '../../../../../context/AuthContext';
+import {getUser} from '../../../../../queries/UserQueries';
 interface IFreight {
   name: string;
-  category: string;
-  handling: string;
 }
 
 const LandFreight = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<AirFreightRouteProp>();
+
+  const {userID} = useAuthContext();
 
   // console.log(route.params?.freightType);
   const {label, text}: any = route.params?.freightType;
@@ -47,20 +66,49 @@ const LandFreight = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
 
-  // console.log(value);
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.product_categories);;
+  const [jobType, setJobType] = useState<any>(constants.product_categories);
 
-  const onSubmit = async ({handling, category, name}: IFreight) => {
+  // GET USER
+  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  // CREATE RFF
+  const [doCreateRFQ] = useMutation<
+    CreateRFFMutation,
+    CreateRFFMutationVariables
+  >(createRFF);
+
+  const onSubmit = async ({name}: IFreight) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: CreateRFFInput = {
+        id: uuidV4(),
+        productName: name,
+        requestCategory: type,
+        rffType: RFFTYPE.LAND,
+        loadDate: date,
+        userID,
+      };
+      await doCreateRFQ({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('LandFreightPackage', {rffID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -164,10 +212,11 @@ const LandFreight = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -197,6 +246,14 @@ const LandFreight = () => {
           title={'Ready to Load'}
           containerStyle={{marginTop: SIZES.margin}}
         />
+      </View>
+    );
+  }
+
+  if (onLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }
@@ -253,7 +310,7 @@ const LandFreight = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('LandFreightPackage')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

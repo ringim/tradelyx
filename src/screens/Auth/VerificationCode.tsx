@@ -130,10 +130,11 @@ const VerificationCode = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
+                    ...FONTS.cap1,
                     color: COLORS.Rose4,
-                    top: 5,
+                    top: 14,
                     left: 5,
+                    marginBottom: 2
                   }}>
                   This field is required.
                 </Text>

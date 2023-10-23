@@ -245,7 +245,7 @@ const TypeQuotation = () => {
           control={control}
           name="unit"
           rules={{
-            required: 'Job type is required',
+            required: 'Unit type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View>
@@ -310,10 +310,11 @@ const TypeQuotation = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -327,7 +328,7 @@ const TypeQuotation = () => {
           control={control}
           name="frequency"
           rules={{
-            required: 'Job type is required',
+            required: 'Frequency type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View style={{marginTop: SIZES.radius}}>
@@ -392,10 +393,11 @@ const TypeQuotation = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>

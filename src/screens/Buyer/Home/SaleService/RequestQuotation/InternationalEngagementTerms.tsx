@@ -26,7 +26,7 @@ import {
   SellerLocationMapHeader,
 } from '../../../../../components';
 import {
-  COLORS,
+  COLORS, 
   FONTS,
   SIZES,
   constants,
@@ -40,7 +40,6 @@ import {
   UpdateRFQMutationVariables,
 } from '../../../../../API';
 import {updateRFQ} from '../../../../../queries/RequestQueries';
-import {useAuthContext} from '../../../../../context/AuthContext';
 
 interface IProductQuotation {
   files: string;
@@ -49,8 +48,6 @@ interface IProductQuotation {
 const InternationalEngagementTerms = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
-
-  const {userID} = useAuthContext();
 
   const mapRef = useRef(null);
 
@@ -85,7 +82,6 @@ const InternationalEngagementTerms = () => {
         placeDestination: address2?.description?.formatted_address,
         incoterms,
         documents: files,
-        userID,
       };
 
       if (singleFile && fileName) {
@@ -154,6 +150,19 @@ const InternationalEngagementTerms = () => {
     if (route.params?.userAddress) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
+    }
+    return () => {
+      unmounted = true;
+    };
+  }, [
+    setValue,
+    route.params?.userAddress,
+    address?.description?.formatted_address,
+  ]);
+
+  useEffect(() => {
+    let unmounted = false;
+    if (route.params?.userAddress2) {
       setAddress2(route.params?.userAddress2);
       setValue('address2', address2?.description?.formatted_address);
     }
@@ -161,9 +170,7 @@ const InternationalEngagementTerms = () => {
       unmounted = true;
     };
   }, [
-    route.params?.userAddress,
     setValue,
-    address?.description?.formatted_address,
     route.params?.userAddress2,
     address2?.description?.formatted_address,
   ]);
@@ -243,10 +250,11 @@ const InternationalEngagementTerms = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -427,7 +435,7 @@ const InternationalEngagementTerms = () => {
             style={{
               flex: 1,
               justifyContent: 'center',
-              marginBottom: 100
+              marginBottom: 100,
             }}>
             {singleFile != null ? (
               <FileSection
@@ -440,6 +448,7 @@ const InternationalEngagementTerms = () => {
               />
             ) : (
               <UploadDocs
+                title="Attach Supporting Document"
                 selectFile={selectFile}
                 containerStyle={{
                   marginTop: address2 ? SIZES.margin : SIZES.padding * 2,

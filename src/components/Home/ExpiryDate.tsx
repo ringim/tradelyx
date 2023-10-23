@@ -18,7 +18,7 @@ const ExpiryDate = ({onPress, date, title, containerStyle}: any) => {
       </View>
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           justifyContent: 'space-between',
           flexDirection: 'row',
         }}>
@@ -29,10 +29,10 @@ const ExpiryDate = ({onPress, date, title, containerStyle}: any) => {
             borderColor: COLORS.Neutral7,
             backgroundColor: COLORS.white,
             paddingHorizontal: 20,
-            borderRadius: SIZES.semi_margin,
+            borderRadius: SIZES.radius,
             padding: SIZES.base,
-            width: 240,
-            height: 45,
+            width: 260,
+            height: 50,
           }}>
           {date ? (
             <Text

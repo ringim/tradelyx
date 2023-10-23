@@ -14,6 +14,7 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
+import {useMutation} from '@apollo/client';
 
 import {
   COLORS,
@@ -33,6 +34,13 @@ import {
   SourceLocationItem,
   TextButton,
 } from '../../../components';
+import {crateTypes} from '../../../../types/types';
+import {
+  UpdateSellOfferInput,
+  UpdateSellOfferMutation,
+  UpdateSellOfferMutationVariables,
+} from '../../../API';
+import {updateSellOffer} from '../../../queries/RequestQueries';
 
 interface ISellOffer {
   detail: string;
@@ -48,87 +56,17 @@ const PackingShipment = () => {
 
   const mapRef = useRef(null);
 
-  const [item, setItem] = useState<any>(null);
+  const [item, setItem] = useState<any>('International');
   const [selectedItem, setSelectedItem] = useState<any>(true);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
 
-  // console.log('photos', photos);
-  // console.log('selectedPhoto', selectedPhoto);
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>([
-    {
-      id: '0',
-      type: 'Bag',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/bag.png')}
-          style={{width: 20, height: 20}}
-        />
-      ),
-    },
-    {
-      id: '1',
-      type: 'Box',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/box.png')}
-          style={{width: 20, height: 20}}
-        />
-      ),
-    },
-    {
-      id: '2',
-      type: 'Crate',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/crate.png')}
-          style={{width: 20, height: 20}}
-        />
-      ),
-    },
-    {
-      id: '3',
-      type: 'Barrel',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/barrel.png')}
-          style={{width: 20, height: 20}}
-        />
-      ),
-    },
-    {
-      id: '4',
-      type: 'Pallet',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/pallet.png')}
-          style={{width: 20, height: 20}}
-        />
-      ),
-    },
-    {
-      id: '5',
-      type: 'Container',
-      icon: () => (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          source={require('../../../assets/icons/container.png')}
-          style={{width: 20, height: 20}}
-        />
-      ),
-    },
-  ]);
+  const [jobType, setJobType] = useState<any>(crateTypes);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -144,13 +82,35 @@ const PackingShipment = () => {
     hideDatePicker();
   };
 
-  const onSubmit = async ({detail, landmark, supply}: ISellOffer) => {
+  // UPDATE REQUEST QUOTATION
+  const [doCreateSellOffer] = useMutation<
+    UpdateSellOfferMutation,
+    UpdateSellOfferMutationVariables
+  >(updateSellOffer);
+
+  const onSubmit = async ({landmark, detail}: ISellOffer) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: UpdateSellOfferInput = {
+        id: route?.params.sellOfferID,
+        rfqType: item,
+        requestCategory: type,
+        packageDesc: detail,
+        placeOrigin: address1?.description?.formatted_address,
+        landmark,
+        deliveryDate: date,
+      };
+
+      await doCreateSellOffer({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('MiniumOrderPayment', {sellOfferID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -209,7 +169,7 @@ const PackingShipment = () => {
         {/* Package type */}
         <Controller
           control={control}
-          name="package"
+          name="packageType"
           rules={{
             required: 'Package type is required',
           }}
@@ -278,10 +238,11 @@ const PackingShipment = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2
                   }}>
                   This field is required.
                 </Text>
@@ -455,7 +416,7 @@ const PackingShipment = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('MiniumOrderPayment')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

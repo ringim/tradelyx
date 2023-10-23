@@ -288,7 +288,10 @@ const EngagementTerms = () => {
                 }}
               />
             ) : (
-              <UploadDocs selectFile={selectFile} />
+              <UploadDocs
+                title="Attach Supporting Document"
+                selectFile={selectFile}
+              />
             )}
           </View>
         </KeyboardAwareScrollView>

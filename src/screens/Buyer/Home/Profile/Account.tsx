@@ -1,4 +1,4 @@
-import {View, Text, Alert, ActivityIndicator, Pressable} from 'react-native';
+import {View, Text, Alert, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -7,7 +7,6 @@ import {Controller, useForm} from 'react-hook-form';
 import {useMutation, useQuery} from '@apollo/client';
 import {Auth} from 'aws-amplify';
 import FastImage from 'react-native-fast-image';
-import Geocoder from 'react-native-geocoding';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
@@ -41,7 +40,7 @@ import {
   Header,
   TextIconButton,
 } from '../../../../components';
-import {COLORS, SIZES, FONTS, icons, constants} from '../../../../constants';
+import {COLORS, SIZES, FONTS, icons} from '../../../../constants';
 import {uploadMedia} from '../../../../utilities/service';
 import {IEditableUser} from '../../../../components/Others/CustomInput';
 import {CountryCodeList} from '../../../../../types/types';
@@ -64,10 +63,6 @@ const Account = () => {
   const [value2, setValue2] = useState(null);
   const [country, setCountry] = useState('');
   const [countryType, setCountryType] = useState<any>(CountryCodeList);
-
-  console.log('address', country);
-
-  Geocoder.init(GOOGLE_MAPS_APIKEY, {language: 'en'});
 
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -164,6 +159,7 @@ const Account = () => {
     DeleteUserMutationVariables
   >(deleteUser);
 
+  // CONFIRM DELETE
   const confirmDelete = () => {
     Alert.alert('Are you sure?', 'Deleting your profile is permanent', [
       {
@@ -316,6 +312,7 @@ const Account = () => {
                 schema={{
                   label: 'name',
                   value: 'name',
+                  icon: 'icon',
                 }}
                 onChangeValue={onChange}
                 open={open2}
@@ -369,6 +366,7 @@ const Account = () => {
                     color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>

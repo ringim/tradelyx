@@ -13,6 +13,7 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {useMutation} from '@apollo/client';
 
 import {
   FormInput,
@@ -33,17 +34,25 @@ import {
   images,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {updateRFF} from '../../../../../queries/RequestQueries';
+import {
+  UpdateRFFInput,
+  UpdateRFFMutation,
+  UpdateRFFMutationVariables,
+} from '../../../../../API';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 interface IFreight {
-  notes: number;
+  notes: string;
   amount: number;
 }
 
 const LandPickupProcess = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
-
   const mapRef = useRef(null);
+
+  const {userID} = useAuthContext();
 
   const {control, handleSubmit, setValue}: any = useForm();
 
@@ -51,9 +60,6 @@ const LandPickupProcess = () => {
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
   const [address2, setAddress2] = useState<any>('');
-
-  // console.log('address1', address1);
-  // console.log('address2', address2);
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -71,13 +77,34 @@ const LandPickupProcess = () => {
 
   // console.log(value);
 
+  // CREATE UPDATE RFF
+  const [doUpdateRFQ] = useMutation<
+    UpdateRFFMutation,
+    UpdateRFFMutationVariables
+  >(updateRFF);
+
   const onSubmit = async ({notes, amount}: IFreight) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: UpdateRFFInput = {
+        id: route?.params.rffID,
+        placeOrigin: address1?.description?.formatted_address,
+        placeDestination: address2?.description?.formatted_address,
+        relatedServices: selectedCategories,
+        invoiceAmount: amount,
+        notes,
+        userID,
+      };
+      await doUpdateRFQ({
+        variables: {
+          input,
+        },
+      });
+      handlePresentModalPress();
+      // console.log('job data', input);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -93,18 +120,29 @@ const LandPickupProcess = () => {
     let unmounted = false;
     if (route.params?.userAddress) {
       setAddress1(route.params?.userAddress);
-      setAddress2(route.params?.userAddress2);
       setValue('address1', address1?.description?.formatted_address);
-      setValue('address2', address2?.description?.formatted_address);
     }
     return () => {
       unmounted = true;
     };
   }, [
     route.params?.userAddress,
-    route.params?.userAddress2,
     setValue,
     address1?.description?.formatted_address,
+  ]);
+
+  useEffect(() => {
+    let unmounted = false;
+    if (route.params?.userAddress2) {
+      setAddress2(route.params?.userAddress2);
+      setValue('address2', address2?.description?.formatted_address);
+    }
+    return () => {
+      unmounted = true;
+    };
+  }, [
+    route.params?.userAddress2,
+    setValue,
     address2?.description?.formatted_address,
   ]);
 
@@ -350,9 +388,15 @@ const LandPickupProcess = () => {
           name="notes"
           control={control}
           placeholder="Add notes"
+          multiline={true}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.radius, marginBottom: 50}}
+          inputContainerStyle={{
+            marginTop: SIZES.radius,
+            height: 120,
+            padding: SIZES.base,
+            marginBottom: 120,
+          }}
         />
       </View>
     );
@@ -424,8 +468,7 @@ const LandPickupProcess = () => {
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Send"
             labelStyle={{...FONTS.h4}}
-            // onPress={handleSubmit(onSubmit)}
-            onPress={handlePresentModalPress}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

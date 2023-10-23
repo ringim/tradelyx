@@ -167,7 +167,14 @@ const SignUp = () => {
                 }}
               />
               {error && (
-                <Text style={{color: 'red', alignSelf: 'stretch'}}>
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
                   {error.message || 'Error'}
                 </Text>
               )}

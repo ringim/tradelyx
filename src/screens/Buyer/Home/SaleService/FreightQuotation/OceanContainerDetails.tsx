@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -10,6 +10,7 @@ import {
   AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
+import {useMutation} from '@apollo/client';
 import FastImage from 'react-native-fast-image';
 
 import {
@@ -29,16 +30,27 @@ import {
   images,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {
+  UpdateRFFInput,
+  UpdateRFFMutation,
+  UpdateRFFMutationVariables,
+} from '../../../../../API';
+import {updateRFF} from '../../../../../queries/RequestQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 const OceanContainerDetails = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-
+  const route = useRoute<any>();
   const {control, handleSubmit}: any = useForm();
+
+  const {userID} = useAuthContext();
 
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(5);
   const [selectedOption, setSelectedOptions] = useState(true);
-  const [value, setValue] = useState(null);
+  const [contType, setContType] = useState(null);
+  const [selectedOption2, setSelectedOptions2] = useState(true);
+  const [contSize, setContSize] = useState(null);
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
@@ -60,13 +72,34 @@ const OceanContainerDetails = () => {
     }
   };
 
+  // CREATE UPDATE RFF
+  const [doUpdateRFQ] = useMutation<
+    UpdateRFFMutation,
+    UpdateRFFMutationVariables
+  >(updateRFF);
+
   const onSubmit = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: UpdateRFFInput = {
+        id: route?.params.rffID,
+        container: contType,
+        containerCount: quantity,
+        containerSize: contSize,
+        containerType: type,
+        weight: type2,
+        userID,
+      };
+      await doUpdateRFQ({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      navigation.navigate('OceanPickupProcess', {rffID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -107,7 +140,7 @@ const OceanContainerDetails = () => {
                   }}
                   onPress={() => {
                     setSelectedOptions(item.id);
-                    setValue(item.label);
+                    setContType(item.label);
                   }}
                 />
               );
@@ -132,13 +165,13 @@ const OceanContainerDetails = () => {
                 <ContainerType
                   key={`ContainerType-${index}`}
                   item={item}
-                  selected={item.id == selectedOption}
+                  selected={item.id == selectedOption2}
                   containerStyle={{
                     width: 105,
                   }}
                   onPress={() => {
-                    setSelectedOptions(item.id);
-                    setValue(item.label);
+                    setSelectedOptions2(item.id);
+                    setContSize(item.label);
                   }}
                 />
               );
@@ -215,10 +248,11 @@ const OceanContainerDetails = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -296,10 +330,11 @@ const OceanContainerDetails = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -367,7 +402,7 @@ const OceanContainerDetails = () => {
           <TextButton
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Continue"
-            onPress={() => navigation.navigate('OceanPickupProcess')}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>

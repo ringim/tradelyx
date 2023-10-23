@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const UploadDocs = ({selectFile, containerStyle}: any) => {
+const UploadDocs = ({selectFile, title, containerStyle}: any) => {
   return (
     <View
       style={{
@@ -12,7 +12,7 @@ const UploadDocs = ({selectFile, containerStyle}: any) => {
         marginHorizontal: SIZES.padding,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        ...containerStyle
+        ...containerStyle,
       }}>
       <View style={{justifyContent: 'center'}}>
         <Text
@@ -20,7 +20,7 @@ const UploadDocs = ({selectFile, containerStyle}: any) => {
             ...FONTS.body3,
             color: COLORS.Neutral1,
           }}>
-          Attach Supporting Document
+          {title}
         </Text>
       </View>
       <TouchableOpacity

@@ -1,9 +1,12 @@
-import { Alert, PanResponder } from 'react-native';
+import {Alert, PanResponder} from 'react-native';
 import axios from 'axios';
-import { COLORS } from '../constants';
+import {COLORS} from '../constants';
 
 export const DEFAULT_PROFILE_IMAGE =
   'https://res.cloudinary.com/dy6v7jqqk/image/upload/v1674481850/Riturnit/Customer/assets/icons/avatar.png';
+
+export const DUMMY_IMAGE =
+  'https://res.cloudinary.com/dy6v7jqqk/image/upload/v1698008732/dummyImage_y65wfu.jpg';
 
 export const getDetailedCoinData = async () => {
   try {
@@ -54,7 +57,7 @@ export const optionalConfigObject = {
 // Function to group transactions by date
 export const groupTransactionsByDate = (data: any[]) => {
   const groupedData: any = {};
-  data.forEach((transaction: { date: any }) => {
+  data.forEach((transaction: {date: any}) => {
     const date = transaction.date;
     if (!groupedData[date]) {
       groupedData[date] = [];
@@ -62,4 +65,15 @@ export const groupTransactionsByDate = (data: any[]) => {
     groupedData[date].push(transaction);
   });
   return groupedData;
+};
+
+export const referralCode = () => {
+  let result = '';
+  let length = 8;
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 };

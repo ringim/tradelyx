@@ -51,7 +51,7 @@ const InternationalPaymentQuotation = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '65%'], []);
+  const snapPoints = useMemo(() => ['65%', '65%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -215,10 +215,11 @@ const InternationalPaymentQuotation = () => {
               {error && (
                 <Text
                   style={{
-                    ...FONTS.body3,
-                    color: COLORS.Rose1,
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>

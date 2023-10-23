@@ -1,5 +1,5 @@
-import {ActivityIndicator, Text, StyleSheet, View} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {Text, StyleSheet, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useState, useMemo, useRef, useCallback, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
@@ -7,6 +7,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
+import {useMutation} from '@apollo/client';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
@@ -33,9 +34,16 @@ import {
   icons,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {updateRFF} from '../../../../../queries/RequestQueries';
+import {
+  UpdateRFFInput,
+  UpdateRFFMutation,
+  UpdateRFFMutationVariables,
+} from '../../../../../API';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 interface IFreight {
-  notes: number;
+  notes: string;
   amount: number;
 }
 
@@ -45,15 +53,14 @@ const AirPickupProcess = () => {
 
   const mapRef = useRef(null);
 
+  const {userID} = useAuthContext();
+
   const {control, handleSubmit, setValue}: any = useForm();
 
   const [selectedCategories, setSelectedCategories] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
   const [address2, setAddress2] = useState<any>('');
-
-  // console.log('address1', address1);
-  // console.log('address2', address2);
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -71,13 +78,34 @@ const AirPickupProcess = () => {
 
   // console.log(value);
 
+  // CREATE UPDATE RFF
+  const [doUpdateRFQ] = useMutation<
+    UpdateRFFMutation,
+    UpdateRFFMutationVariables
+  >(updateRFF);
+
   const onSubmit = async ({notes, amount}: IFreight) => {
     if (loading) {
       return;
     }
     setLoading(true);
     try {
-      // console.log('job data', res);
+      const input: UpdateRFFInput = {
+        id: route?.params.rffID,
+        placeOrigin: address1?.description?.formatted_address,
+        placeDestination: address2?.description?.formatted_address,
+        relatedServices: selectedCategories,
+        invoiceAmount: amount,
+        notes: notes,
+        userID,
+      };
+      await doUpdateRFQ({
+        variables: {
+          input,
+        },
+      });
+      // console.log('job data', input);
+      handlePresentModalPress();
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -93,18 +121,29 @@ const AirPickupProcess = () => {
     let unmounted = false;
     if (route.params?.userAddress) {
       setAddress1(route.params?.userAddress);
-      setAddress2(route.params?.userAddress2);
       setValue('address1', address1?.description?.formatted_address);
-      setValue('address2', address2?.description?.formatted_address);
     }
     return () => {
       unmounted = true;
     };
   }, [
     route.params?.userAddress,
-    route.params?.userAddress2,
     setValue,
     address1?.description?.formatted_address,
+  ]);
+
+  useEffect(() => {
+    let unmounted = false;
+    if (route.params?.userAddress2) {
+      setAddress2(route.params?.userAddress2);
+      setValue('address2', address2?.description?.formatted_address);
+    }
+    return () => {
+      unmounted = true;
+    };
+  }, [
+    route.params?.userAddress2,
+    setValue,
     address2?.description?.formatted_address,
   ]);
 
@@ -353,9 +392,15 @@ const AirPickupProcess = () => {
           name="notes"
           control={control}
           placeholder="Add notes"
+          multiline={true}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.radius, marginBottom: 50}}
+          inputContainerStyle={{
+            marginTop: SIZES.radius,
+            height: 120,
+            padding: SIZES.base,
+            marginBottom: 120,
+          }}
         />
       </View>
     );
@@ -427,8 +472,7 @@ const AirPickupProcess = () => {
             buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
             label="Send"
             labelStyle={{...FONTS.h4}}
-            // onPress={handleSubmit(onSubmit)}
-            onPress={handlePresentModalPress}
+            onPress={handleSubmit(onSubmit)}
           />
         </View>
       </View>
