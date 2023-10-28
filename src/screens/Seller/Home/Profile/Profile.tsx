@@ -43,7 +43,11 @@ const Profile = () => {
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
-    {variables: {id: userID}},
+    {
+      variables: {id: userID},
+      fetchPolicy: 'cache-first',
+      nextFetchPolicy: 'cache-and-network',
+    },
   );
   const user: any = data?.getUser;
 
@@ -65,7 +69,7 @@ const Profile = () => {
         textStyle={{color: COLORS.transparentNeutral12}}
         overlayColor={'rgba(0,0,0,0.5)'}
       />
-      <View style={{flex: 1, backgroundColor: '#F9FAFB'}}>
+      <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header title={'Profile'} tintColor={COLORS.Neutral1} />
 
         <KeyboardAwareScrollView
@@ -82,7 +86,7 @@ const Profile = () => {
           />
 
           {/* Profile items */}
-          <View style={{marginTop: 0, marginHorizontal: SIZES.radius}}>
+          <View style={{marginTop: 0, marginHorizontal: SIZES.base}}>
             <ProfileItem
               label={'My Profile'}
               icon={icons.user}
@@ -93,6 +97,15 @@ const Profile = () => {
                 borderTopRightRadius: SIZES.radius,
               }}
               onPress={() => navigation.navigate('Account')}
+            />
+
+            {/* Contracts */}
+            <ProfileItem
+              label={'Products & Sell Offers'}
+              tintColor={COLORS.primary1}
+              icon={icons.content}
+              showRight={true}
+              onPress={() => navigation.navigate('StoreProduct')}
             />
 
             {/* Wallet */}

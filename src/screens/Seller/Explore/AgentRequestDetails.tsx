@@ -15,7 +15,7 @@ const AgentRequestDetails = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<AgentRequestDetailsRouteProp>();
 
-  console.log(route?.params?.agentItem);
+  // console.log(route?.params?.agentItem);
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>

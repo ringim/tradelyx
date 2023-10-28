@@ -10,7 +10,7 @@ import {Storage} from 'aws-amplify';
 import DocumentPicker from 'react-native-document-picker';
 import {v4 as uuidV4} from 'uuid';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import appConfig from '../../app.json';
 
@@ -99,7 +99,27 @@ export const uploadMedia = async (uri: string) => {
     const uriParts = uri.split('.');
     const extension = uriParts[uriParts.length - 1];
 
-    console.log(uri);
+    // console.log(uri);
+
+    // upload file (blob) to s3
+    const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
+    return s3Response.key;
+  } catch (error) {
+    Alert.alert('Error uploading the file', (error as Error).message);
+  }
+};
+
+export const uploadMedia3 = async (uri: string) => {
+  try {
+    // get the Blob of the file from uri
+    const response = await fetch(uri);
+    const blob = await response?.blob();
+
+    // file extension splitting
+    const uriParts = uri.split('.');
+    const extension = uriParts[uriParts.length - 1];
+
+    // console.log(uri);
 
     // upload file (blob) to s3
     const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
@@ -112,12 +132,12 @@ export const uploadMedia = async (uri: string) => {
 // SELECT FILE
 export const selectFile = async (setSingleFile: any, setFileName: any) => {
   try {
-    const res = await DocumentPicker.pickSingle({
+    const res = await DocumentPicker.pick({
       type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
-      allowMultiSelection: false,
+      allowMultiSelection: true,
     });
-    setSingleFile(res.uri);
-    setFileName(res.name);
+    setSingleFile(res);
+    setFileName(res);
   } catch (err) {
     setSingleFile(null);
     if (DocumentPicker.isCancel(err)) {
@@ -145,11 +165,45 @@ export const onChangePhoto = (setSelectedPhoto: any) => {
   );
 };
 
+// UPLOAD VIA CAMERA
+export const onCameraPress = (setSelectedPhoto: any) => {
+  launchCamera(
+    {mediaType: 'photo', quality: 0.5},
+    ({didCancel, errorCode, assets}) => {
+      if (!didCancel && !errorCode && assets && assets.length > 0) {
+        setSelectedPhoto(assets[0]);
+      }
+    },
+  );
+};
+
 // UPLOAD FILE TO STORAGE
 export const uploadFile = async (fileName: any, singleFile: any) => {
   try {
     // upload file (blob) to s3
     const s3Response = await Storage.put(fileName, singleFile);
+    return s3Response.key;
+  } catch (err) {
+    Toast.show({
+      type: ALERT_TYPE.DANGER,
+      textBody: (err as Error).message,
+      autoClose: 2000,
+    });
+  }
+};
+
+export const uploadFile2 = async (singleFile: any) => {
+  try {
+    // get the Blob of the file from uri
+    const response = await fetch(singleFile);
+    const blob = await response?.blob();
+
+    // file extension splitting
+    const uriParts = singleFile.split('.');
+    const extension = uriParts[uriParts.length - 1];
+
+    // upload file (blob) to s3
+    const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
     return s3Response.key;
   } catch (err) {
     Toast.show({

@@ -1,6 +1,10 @@
 import {ActivityIndicator, Text, View} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -24,14 +28,7 @@ import {
   QuotationProgress2,
   ExpiryDate,
 } from '../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  SIZES,
-  constants,
-  icons,
-  images,
-} from '../../../../../constants';
+import {COLORS, FONTS, SIZES, icons, images} from '../../../../../constants';
 import {
   AirFreightRouteProp,
   HomeStackNavigatorParamList,
@@ -44,9 +41,13 @@ import {
   RFFTYPE,
   GetUserQuery,
   GetUserQueryVariables,
+  ListCommodityCategoriesQuery,
+  ListCommodityCategoriesQueryVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
 import {getUser} from '../../../../../queries/UserQueries';
+import {listCommodityCategories} from '../../../../../queries/ProductQueries';
+import { referralCode } from '../../../../../utilities/Utils';
 interface IFreight {
   name: string;
 }
@@ -62,14 +63,35 @@ const LandFreight = () => {
 
   const {control, handleSubmit}: any = useForm();
 
+  // LIST COMMODITY CATEGORIES
+  const {data: newData, loading: newLoad} = useQuery<
+    ListCommodityCategoriesQuery,
+    ListCommodityCategoriesQueryVariables
+  >(listCommodityCategories, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.product_categories);
+  const [type, setType] = useState<any>('');
+  const [jobType, setJobType] = useState<any>();
+  const [ccID, setCCID] = useState<any>('');
+
+  useFocusEffect(
+    useCallback(() => {
+      const allCommodityCategories: any =
+        newData?.listCommodityCategories?.items.filter(
+          (item: any) => !item?._deleted,
+        ) || [];
+      setJobType(allCommodityCategories);
+    }, [newLoad]),
+  );
 
   // GET USER
   const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -96,10 +118,13 @@ const LandFreight = () => {
     try {
       const input: CreateRFFInput = {
         id: uuidV4(),
+        rffNo: referralCode(),
+        SType: 'RFF',
         productName: name,
-        requestCategory: type,
+        requestCategory: type?.title,
         rffType: RFFTYPE.LAND,
         loadDate: date,
+        commoditycategoryID: ccID,
         userID,
       };
       await doCreateRFQ({
@@ -142,88 +167,67 @@ const LandFreight = () => {
           marginHorizontal: SIZES.semi_margin,
         }}>
         {/* Category Type */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'category is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <>
-              <Text
-                style={{
-                  marginTop: SIZES.radius,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Product Category
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Category"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.radius,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select your category"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </>
-          )}
-        />
+        <View>
+          <Text
+            style={{
+              marginTop: SIZES.radius,
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Product Category
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'title',
+              value: 'id',
+            }}
+            loading={newLoad}
+            open={open}
+            showArrowIcon={true}
+            placeholder="Select Category"
+            showTickIcon={true}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            value={value1}
+            items={jobType}
+            setOpen={setOpen}
+            setValue={setValue1}
+            setItems={setJobType}
+            style={{
+              borderRadius: SIZES.base,
+              height: 40,
+              marginTop: SIZES.radius,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 24,
+              height: 24,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select your category"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onChangeValue={(value: any) => {
+              setCCID(value);
+            }}
+            onSelectItem={(value: any) => {
+              setType(value);
+            }}
+          />
+        </View>
 
         {/* product name */}
         <FormInput

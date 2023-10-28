@@ -22,6 +22,8 @@ import {COLORS} from '../../constants';
 import {GetUserQuery, GetUserQueryVariables} from '../../API';
 import {getUser} from '../../queries/UserQueries';
 import {ChooseCategory} from '../../screens';
+import SellerAuthStack from './SellerNav/SellerAuthStack';
+import BuyerAuthStack from './BuyerNav/BuyerAuthStack';
 
 const Stack = createNativeStackNavigator<any>();
 const options: any = {
@@ -57,6 +59,8 @@ const AppNav = ({onBoarded}: any) => {
       variables: {
         id: userID,
       },
+      // fetchPolicy: 'cache-first',
+      // nextFetchPolicy: 'cache-and-network',
     },
   );
   const userInfo: any = data?.getUser;
@@ -90,9 +94,9 @@ const AppNav = ({onBoarded}: any) => {
     };
   }, [connection]);
 
-  // if (!connection) {
-  //   return <NoInternet />;
-  // }
+  if (!connection) {
+    return <NoInternet />;
+  }
 
   let stackScreens = null;
 
@@ -121,13 +125,13 @@ const AppNav = ({onBoarded}: any) => {
           options={() => options}
         />
         <Stack.Screen
-          name="BuyerStack"
-          component={BuyerStack}
+          name="BuyerAuthStack"
+          component={BuyerAuthStack}
           options={() => options}
         />
         <Stack.Screen
-          name="SellerStack"
-          component={SellerStack}
+          name="SellerAuthStack"
+          component={SellerAuthStack}
           options={() => options}
         />
       </>

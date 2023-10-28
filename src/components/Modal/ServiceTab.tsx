@@ -22,7 +22,7 @@ const ServiceTab = ({item, selected, onPress}: any) => {
       <View
         style={{
           justifyContent: 'center',
-          padding: SIZES.radius,
+          padding: SIZES.base,
           backgroundColor: selected ? COLORS.white : COLORS.lightYellow,
           borderRadius: SIZES.radius,
         }}>
@@ -35,8 +35,11 @@ const ServiceTab = ({item, selected, onPress}: any) => {
 
       <View
         style={{justifyContent: 'center', flex: 1, marginLeft: SIZES.radius}}>
-        <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>{item?.label}</Text>
-        <Text style={{...FONTS.cap1, color: COLORS.Neutral5, paddingTop: 3}}>
+        <Text
+          style={{...FONTS.cap1, fontWeight: '600', color: COLORS.Neutral1}}>
+          {item?.label}
+        </Text>
+        <Text style={{...FONTS.cap2, color: COLORS.Neutral5, paddingTop: 3}}>
           {item?.text}
         </Text>
       </View>

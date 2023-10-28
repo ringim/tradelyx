@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {SIZES, COLORS, FONTS, icons} from '../../constants';
 
-const Review = () => {
+const Review = ({contentStyle}: any) => {
   return (
     <View
       style={{
@@ -14,6 +14,7 @@ const Review = () => {
         backgroundColor: COLORS.white,
         marginTop: SIZES.radius,
         marginHorizontal: SIZES.semi_margin,
+        ...contentStyle,
       }}>
       <View
         style={{

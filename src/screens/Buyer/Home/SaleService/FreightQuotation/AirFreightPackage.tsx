@@ -43,7 +43,7 @@ interface IFreight {
   width: number;
 }
 
-const FreightPackage = () => {
+const AirFreightPackage = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
 
@@ -56,14 +56,12 @@ const FreightPackage = () => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(null);
 
-  console.log(route.params);
-
   const handleIncrease = () => {
     setQuantity(quantity + 1);
   };
 
   const handleDecrease = () => {
-    if (quantity > 10) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
@@ -113,7 +111,7 @@ const FreightPackage = () => {
       <View
         style={{
           marginTop: SIZES.radius,
-          marginHorizontal: SIZES.margin,
+          marginHorizontal: SIZES.semi_margin,
           marginBottom: 100,
         }}>
         {/* Weight*/}
@@ -155,7 +153,7 @@ const FreightPackage = () => {
 
         {/* Qty Handler */}
         <QtySection
-          title={'Quantity'}
+          title={'Container Quantity'}
           handleDecrease={handleDecrease}
           handleIncrease={handleIncrease}
           qty={quantity}
@@ -173,7 +171,7 @@ const FreightPackage = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            {constants.packageType.map((item: any, index: any) => {
+            {constants.packageType2.map((item: any, index: any) => {
               return (
                 <PackageType
                   key={`PackageType-${index}`}
@@ -184,7 +182,7 @@ const FreightPackage = () => {
                   }}
                   onPress={() => {
                     setSelectedOptions(item.id);
-                    setValue(item.label);
+                    setValue(item.type);
                   }}
                 />
               );
@@ -238,7 +236,7 @@ const FreightPackage = () => {
               keyboardType={'numeric'}
               placeholder="Height"
               rules={{
-                required: 'weight is required',
+                required: 'height is required',
               }}
               containerStyle={{marginTop: -SIZES.radius}}
               labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -339,7 +337,7 @@ const FreightPackage = () => {
           enableOnAndroid={true}>
           <FreightType
             freightType={'Air Freight'}
-            image={images.land}
+            image={images.airFreight}
             freightDesc={'Delivery within 7-10 days'}
             info="Package Details"
           />
@@ -360,4 +358,4 @@ const FreightPackage = () => {
   );
 };
 
-export default FreightPackage;
+export default AirFreightPackage;

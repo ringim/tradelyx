@@ -15,6 +15,7 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useMutation} from '@apollo/client';
 import {Storage} from 'aws-amplify';
+import Geocoder from 'react-native-geocoding';
 
 import {
   FileSection,
@@ -26,7 +27,7 @@ import {
   SellerLocationMapHeader,
 } from '../../../../../components';
 import {
-  COLORS, 
+  COLORS,
   FONTS,
   SIZES,
   constants,
@@ -58,11 +59,60 @@ const InternationalEngagementTerms = () => {
   const [loading, setLoading] = useState(false);
   const [singleFile, setSingleFile] = useState<any>(null);
   const [fileName, setFileName] = useState<any>('');
+  const [countryCity, setCountryCity] = useState<any>('');
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [incoterms, setIncoterms] = useState('');
   const [incotermsType, setIncotermsType] = useState<any>(constants.incoterms2);
+  const [countryCode, setCountryCode] = useState<any>('');
+  const [countryName, setCountryName] = useState<any>('');
+  const [countryCode2, setCountryCode2] = useState<any>('');
+  const [countryName2, setCountryName2] = useState<any>('');
+
+  const {location} = address;
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(location?.lat, location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode(code);
+              setCountryName(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address]);
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(address2?.location?.lat, address2?.location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode2(code);
+              setCountryName2(name);
+            }
+            if (component.types.includes('locality')) {
+              const city = component.long_name;
+              setCountryCity(city);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address2]);
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateRFQ] = useMutation<
@@ -79,7 +129,14 @@ const InternationalEngagementTerms = () => {
       const input: UpdateRFQInput = {
         id: route?.params.rfqID,
         placeOrigin: address?.description?.formatted_address,
+        placeOriginFlag: `https://flagcdn.com/32x24/${countryCode}.png`, //flag
+        city: countryCity, //city,
+        placeOriginName: countryName, //country
+        countryName: countryName, //country
         placeDestination: address2?.description?.formatted_address,
+        placeDestinationName: address2?.description?.vicinity, //city destination
+        destinationCountry: countryName2, //country
+        placeDestinationFlag: `https://flagcdn.com/32x24/${countryCode2}.png`,
         incoterms,
         documents: files,
       };
@@ -93,7 +150,7 @@ const InternationalEngagementTerms = () => {
           input,
         },
       });
-      console.log('job data', input);
+      // console.log('job data', input);
       navigation.navigate('InternationalPaymentQuotation', {rfqID: input.id});
     } catch (error) {
       Toast.show({
@@ -339,7 +396,9 @@ const InternationalEngagementTerms = () => {
           rules={{
             required: 'Address is required',
           }}
-          containerStyle={{marginTop: SIZES.padding * 1.3}}
+          containerStyle={{
+            marginTop: address ? SIZES.radius : SIZES.padding * 1.3,
+          }}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.radius}}
           onPress={() => navigation.navigate('InternationalDestinationAddress')}
@@ -434,16 +493,18 @@ const InternationalEngagementTerms = () => {
           <View
             style={{
               flex: 1,
+              marginTop: address2 ? -10 : 0,
               justifyContent: 'center',
               marginBottom: 100,
+              marginHorizontal: SIZES.margin,
             }}>
             {singleFile != null ? (
               <FileSection
                 file={fileName ? fileName : ''}
                 onPress={() => setSingleFile(null)}
                 containerStyle={{
-                  marginHorizontal: SIZES.margin,
-                  marginTop: SIZES.margin,
+                  marginHorizontal: SIZES.base,
+                  marginTop: SIZES.radius,
                 }}
               />
             ) : (

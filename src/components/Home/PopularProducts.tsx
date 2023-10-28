@@ -20,7 +20,7 @@ const PopularProducts = ({
           justifyContent: 'space-between',
           marginHorizontal: SIZES.semi_margin,
           marginTop: 32,
-          marginBottom: SIZES.radius,
+          marginBottom: SIZES.base,
           ...containerStyle,
         }}>
         <View style={{justifyContent: 'center'}}>
@@ -37,7 +37,7 @@ const PopularProducts = ({
 
         {showViewAll && (
           <TouchableOpacity
-            style={{marginLeft: 80, justifyContent: 'center', top: -2}}
+            style={{marginLeft: 100, justifyContent: 'center', top: -2}}
             onPress={onPress}>
             <Text
               style={{
@@ -50,7 +50,7 @@ const PopularProducts = ({
         )}
 
         {showViewAll && (
-          <TouchableOpacity style={{justifyContent: 'center', top: -2}}>
+          <TouchableOpacity onPress={onPress} style={{justifyContent: 'center', top: -2}}>
             <FastImage
               source={icons.right_arrow}
               tintColor={COLORS.primary1}

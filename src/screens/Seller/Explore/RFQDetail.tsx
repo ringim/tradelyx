@@ -15,8 +15,6 @@ const RFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<RFQDetailRouteProp>();
 
-  console.log('detail', route?.params?.sellerItem);
-
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,

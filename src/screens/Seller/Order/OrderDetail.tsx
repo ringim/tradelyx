@@ -27,7 +27,6 @@ const OrderDetail = () => {
           padding: SIZES.semi_margin,
         }}>
         {dummyData?.shipping_status?.map((item, index) => {
-          console.log('status', item);
 
           return (
             <View

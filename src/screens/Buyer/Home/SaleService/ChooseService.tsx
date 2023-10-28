@@ -106,7 +106,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
             style={{
               paddingHorizontal: 5,
               justifyContent: 'center',
-              width: 200,
+              width: 180,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View
@@ -118,8 +118,9 @@ const Tabs = ({scrollX, onTabPress}: any) => {
               <Animated.Text
                 style={{
                   color: textColor,
-                  ...FONTS.h5,
+                  ...FONTS.cap1,
                   textAlign: 'center',
+                  fontWeight: '600'
                 }}>
                 {item.label}
               </Animated.Text>

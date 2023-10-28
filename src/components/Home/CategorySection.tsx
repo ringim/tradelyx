@@ -3,12 +3,12 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
+import {FlatList} from 'react-native-gesture-handler';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextIconButton from '../Button/TextIconButton';
 import {listCategories} from '../../queries/ProductQueries';
 import {ListCategoriesQuery, ListCategoriesQueryVariables} from '../../API';
-import {FlatList} from 'react-native-gesture-handler';
 
 const CategorySection = () => {
   const navigation = useNavigation<any>();
@@ -21,6 +21,9 @@ const CategorySection = () => {
     variables: {
       limit: 8,
     },
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
   });
   const allCategories: any =
     data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];
@@ -47,8 +50,7 @@ const CategorySection = () => {
           keyExtractor={item => `${item?.id}`}
           showsVerticalScrollIndicator={false}
           numColumns={4}
-          ListHeaderComponent={<View style={{marginTop: 6}} />}
-          style={{marginTop: -10, marginLeft: 5}}
+          style={{marginTop: -10, marginLeft: -8}}
           renderItem={({item, index}) =>
             item && (
               <TouchableOpacity

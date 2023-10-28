@@ -1,4 +1,4 @@
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, ActivityIndicator} from 'react-native';
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -17,8 +17,9 @@ import {
   Packaging,
   ProductInfo,
   TextButton,
+  MultipleFiles,
 } from '../../../components';
-import {COLORS, FONTS, SIZES} from '../../../constants';
+import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {
   HomeStackNavigatorParamList,
   StoreItemRouteProp,
@@ -28,12 +29,13 @@ import {
   DeleteProductMutationVariables,
 } from '../../../API';
 import {deleteProduct} from '../../../queries/ProductQueries';
+import FastImage from 'react-native-fast-image';
 
 const StoreItem = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<StoreItemRouteProp>();
 
-  console.log(route.params);
+  // console.log(route.params);
   const {
     id,
     description,
@@ -41,19 +43,23 @@ const StoreItem = () => {
     quantity,
     fobPrice,
     supplyCapacity,
+    productImage,
+    productDocs,
     dateAvailable,
     transportMode,
+    unit,
+    productCertification,
     productSpec,
     packageType,
     placeOrigin,
     productDoc,
-    image,
     title,
     documents,
     tags,
+    minOrderQty,
   }: any = route?.params?.storeItem;
 
-  const [doDeleteProduct] = useMutation<
+  const [doDeleteProduct, {loading}] = useMutation<
     DeleteProductMutation,
     DeleteProductMutationVariables
   >(deleteProduct, {
@@ -92,6 +98,16 @@ const StoreItem = () => {
     }
   };
 
+  if (loading) {
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator
+        style={{justifyContent: 'center'}}
+        size={'large'}
+        color={COLORS.primary4}
+      />
+    </View>;
+  }
+
   return (
     <AlertNotificationRoot>
       <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
@@ -107,7 +123,7 @@ const StoreItem = () => {
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {/* Product info */}
-          <ProductInfo name={title} image={image} tags={tags} />
+          <ProductInfo name={title} image={productImage} tags={tags} />
 
           {/* Product Description */}
           <BusinessDesc productItem={description} title={'Description'} />
@@ -120,6 +136,7 @@ const StoreItem = () => {
             price={fobPrice}
             qty={quantity}
             supply={supplyCapacity}
+            moq={minOrderQty}
             paymentType={paymentType}
           />
 
@@ -133,9 +150,83 @@ const StoreItem = () => {
           {/* Packaging */}
           <Packaging
             file={productDoc}
-            file2={documents}
+            unit={unit}
             packageType={packageType}
+            productCert={productCertification}
           />
+
+          {/*  Product Certification */}
+          <View
+            style={{
+              backgroundColor: COLORS.white,
+              margin: SIZES.semi_margin,
+              padding: SIZES.margin,
+              borderRadius: SIZES.radius,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <FastImage
+                  source={icons.docs}
+                  tintColor={COLORS.secondary1}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={{width: 24, height: 24}}
+                />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: SIZES.radius,
+                  justifyContent: 'center',
+                }}>
+                <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+                  Product Certification
+                </Text>
+              </View>
+            </View>
+            <MultipleFiles data={productDocs} />
+          </View>
+
+          {/* Specification*/}
+          <View
+            style={{
+              backgroundColor: COLORS.white,
+              margin: SIZES.semi_margin,
+              padding: SIZES.margin,
+              borderRadius: SIZES.radius,
+              top: -10
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <FastImage
+                  source={icons.docs}
+                  tintColor={COLORS.secondary1}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={{width: 24, height: 24}}
+                />
+              </View>
+
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: SIZES.radius,
+                  justifyContent: 'center',
+                }}>
+                <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+                  Product Specification
+                </Text>
+              </View>
+            </View>
+            <MultipleFiles data={documents} />
+          </View>
 
           <TextButton
             buttonContainerStyle={{

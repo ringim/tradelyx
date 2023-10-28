@@ -2,6 +2,7 @@ import {View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {FlashList} from '@shopify/flash-list';
 
 import {Header, OrderItem, ReplyListItem} from '../../../components';
 import {COLORS, SIZES, dummyData} from '../../../constants';
@@ -67,10 +68,14 @@ const ReplyList = () => {
         }}
       /> */}
 
-      <FlatList
+      <FlashList
         data={filteredDataSource}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => `${item?.id}`}
+        estimatedItemSize={200}
+        getItemType={({item}: any) => {
+          return item;
+        }}
         renderItem={({item, index}) => {
           return (
             <ReplyListItem

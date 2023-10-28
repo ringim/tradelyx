@@ -11,6 +11,7 @@ const ExpiryDate = ({onPress, date, title, containerStyle}: any) => {
         <Text
           style={{
             ...FONTS.body3,
+            fontWeight: '500',
             color: COLORS.Neutral1,
           }}>
           {title}
@@ -31,7 +32,7 @@ const ExpiryDate = ({onPress, date, title, containerStyle}: any) => {
             paddingHorizontal: 20,
             borderRadius: SIZES.radius,
             padding: SIZES.base,
-            width: 260,
+            width: 220,
             height: 50,
           }}>
           {date ? (

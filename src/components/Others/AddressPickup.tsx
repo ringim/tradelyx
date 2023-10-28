@@ -67,8 +67,8 @@ const AddressPickup = ({
         query={{
           key: 'AIzaSyALS8aQiGBvny1Zg-pBqvPyptOzvDcPRyg',
           language: 'en',
-          components: 'country:nga',
-          type: ['establishment', 'address'],
+          // components: 'country:nga',
+          type: ['establishment', 'address', 'all'],
         }}
         styles={{...containerStyle}}
         textInputProps={{

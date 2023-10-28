@@ -349,6 +349,8 @@ PODS:
     - React-Core
   - react-native-document-picker (9.0.1):
     - React-Core
+  - react-native-document-scanner-plugin (0.9.1):
+    - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
   - react-native-get-random-values (1.9.0):
@@ -462,6 +464,8 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
+  - RNFlashList (1.6.2):
+    - React-Core
   - RNFS (2.20.0):
     - React-Core
   - RNGestureHandler (2.13.3):
@@ -569,6 +573,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-document-scanner-plugin (from `../node_modules/react-native-document-scanner-plugin`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
@@ -596,6 +601,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -694,6 +700,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-contacts"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-document-scanner-plugin:
+    :path: "../node_modules/react-native-document-scanner-plugin"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-get-random-values:
@@ -748,6 +756,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNFlashList:
+    :path: "../node_modules/@shopify/flash-list"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -816,6 +826,7 @@ SPEC CHECKSUMS:
   React-logger: a6c0b3a807a8e81f6d7fea2e72660766f55daa50
   react-native-contacts: 61971364bf9f11a846587eeb736a4e65632815d4
   react-native-document-picker: 2b8f18667caee73a96708a82b284a4f40b30a156
+  react-native-document-scanner-plugin: bcb4b5a6770ebb10080c8f051de1e9c1bb81afac
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-get-random-values: dee677497c6a740b71e5612e8dbd83e7539ed5bb
   react-native-google-maps: 356b9d01da0920be13e4c4dc83673b30e8a22c16
@@ -843,6 +854,7 @@ SPEC CHECKSUMS:
   RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
   RNDateTimePicker: 8fb39263b721223e095248acaf6f406d5b7f6713
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
+  RNFlashList: 1983f915ae34e9253e413f31387959590d102f5e
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: fa40ab6b6cafaa7609294d31f8e8fbbd0cce8ea6
   RNReanimated: 3e6ca8eed2ebe7ffa4103fcd925a11ea7ccbff5c

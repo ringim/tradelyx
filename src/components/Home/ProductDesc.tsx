@@ -11,7 +11,7 @@ const ProductDesc = ({
   sub1,
   sub2,
   mainMarket,
-  language,
+  children,
   sub3,
   sub4,
   sub5,
@@ -164,7 +164,7 @@ const ProductDesc = ({
                 ...FONTS.h3,
                 color: COLORS.Neutral1,
               }}>
-              ₦{sub3?.toLocaleString('en-US', options)}
+              ₦{sub3?.toLocaleString('en-US', options) || 0}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -174,7 +174,7 @@ const ProductDesc = ({
                 ...FONTS.h3,
                 color: COLORS.Neutral1,
               }}>
-              {sub4}
+              {sub4 || 0}
             </Text>
           </View>
         </View>
@@ -251,7 +251,7 @@ const ProductDesc = ({
       </View>
 
       {/* Languages spoken */}
-      <LanguageSpoken language={language} />
+     {children}
     </View>
   );
 };

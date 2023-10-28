@@ -1,52 +1,43 @@
 import {View, Text, ActivityIndicator} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {useQuery} from '@apollo/client';
+import {FlashList} from '@shopify/flash-list';
+import {
+  ALERT_TYPE,
+  AlertNotificationRoot,
+  Toast,
+} from 'react-native-alert-notification';
 
-import {COLORS, FONTS, SIZES, dummyData, images} from '../../../constants';
+import {COLORS, FONTS, SIZES, images} from '../../../constants';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
-import {GetUserQuery, GetUserQueryVariables} from '../../../API';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  ModelSortDirection,
+  SellOffersByDateQuery,
+  SellOffersByDateQueryVariables,
+} from '../../../API';
 import {
   PopularProducts,
   PromoSection,
-  SearchBox,
+  SearchBox2,
   SearchItem,
   TabHeader,
 } from '../../../components';
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
+import {sellOffersByDate} from '../../../queries/RequestQueries';
 
 const Explore = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const route = useRoute<any>();
 
   const {userID} = useAuthContext();
 
-  console.log('explore filtered criteria', route.params?.exploreData);
-  // const { quantity,
-  //   date,
-  //   type,
-  //   type4,
-  //   type3,
-  //   city,
-  //   type2,}: any = route?.params?.exploreData
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [search, setSearch] = useState<any>('');
-  const [filteredDataSource, setFilteredDataSource] = useState<any>('');
-
-  // SEARCH FILTER
-  useEffect(() => {
-    const filteredItems = dummyData?.storeProducts.filter(
-      item =>
-        item?.name.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.supplier.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.address2.toLowerCase().includes(search?.toLowerCase()),
-    );
-    setFilteredDataSource(filteredItems);
-  }, [search]);
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
+  const [masterDataSource, setMasterDataSource] = useState<any>([]);
 
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -55,7 +46,56 @@ const Explore = () => {
   );
   const user: any = data?.getUser;
 
-  if (loading) {
+  // LIST SELL OFFERS
+  const {data: newData, loading: newLoad} = useQuery<
+    SellOffersByDateQuery,
+    SellOffersByDateQueryVariables
+  >(sellOffersByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      SType: 'SELLOFFER',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
+  // SEARCH FILTER
+  const searchFilterFunction = (text: any) => {
+    if (text) {
+      const newData = masterDataSource.filter(function (item: any) {
+        const itemData = item.title
+          ? item.title.toLowerCase()
+          : ''.toLowerCase();
+        const textData = text.toLowerCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const items =
+        newData?.sellOffersByDate?.items?.filter(
+          (item: any) => !item?._deleted,
+        ) || [];
+      setFilteredDataSource(items);
+      setMasterDataSource(items);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        textBody: `${(error as Error).message}`,
+        autoClose: 1500,
+      });
+    }
+  }, [loading]);
+
+  if (loading || newLoad) {
     <ActivityIndicator
       style={{flex: 1, justifyContent: 'center'}}
       size={'large'}
@@ -64,73 +104,82 @@ const Explore = () => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <TabHeader userImage={user?.logo} />
+    <AlertNotificationRoot>
+      <View style={{flex: 1, backgroundColor: COLORS.white}}>
+        <TabHeader userImage={user?.logo} />
 
-      {/* all items */}
-      <FlatList
-        data={filteredDataSource}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={item => `${item?.id}`}
-        ListHeaderComponent={
-          <>
-            {/* Promo */}
-            <PromoSection containerStyle={{marginTop: SIZES.margin}} />
+        {/* all items */}
+        <FlashList
+          data={filteredDataSource}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => `${item?.id}`}
+          estimatedItemSize={200}
+          getItemType={({item}: any) => {
+            return item;
+          }}
+          ListHeaderComponent={
+            <>
+              {/* Promo */}
+              <PromoSection containerStyle={{marginTop: SIZES.margin}} />
 
-            {/* Search Box */}
-            <SearchBox
-              onSearch={() => navigation.navigate('Search')}
-              onPress={() => navigation.navigate('ExploreFilter')}
-              searchTerm={'Search for sell offers'}
-              containerStyle={{
-                marginTop: SIZES.padding * 1.2,
-                marginHorizontal: 14,
-              }}
+              {/* Search Box */}
+              <SearchBox2
+                searchFilterFunction={(text: any) => searchFilterFunction(text)}
+                search={search}
+                showFiler={true}
+                containerStyle={{margin: SIZES.semi_margin}}
+              />
+
+              <PopularProducts
+                title={'Latest Sale Offers'}
+                containerStyle={{marginTop: SIZES.base}}
+              />
+            </>
+          }
+          renderItem={({item, index}) => {
+            return (
+              <SearchItem
+                key={index}
+                item={item}
+                logo={item?.storeImage}
+                item_image={item?.image}
+                item_image2={item?.images[0]}
+                onPress={() =>
+                  navigation.navigate('SellerDetail', {sellerItem: item})
+                }
+                onView={() =>
+                  navigation.navigate('OfferDetail', {detail: item})
+                }
+              />
+            );
+          }}
+          ListFooterComponent={
+            <View style={{height: filteredDataSource?.length - 1 && 200}} />
+          }
+        />
+
+        {/* No search items */}
+        {!filteredDataSource && (
+          <View style={{alignItems: 'center', top: -250}}>
+            <FastImage
+              source={images.NoItems}
+              style={{width: 150, height: 150}}
+              resizeMode={FastImage.resizeMode.contain}
             />
-
-            <PopularProducts
-              title={'Latest Sale Offers'}
-              containerStyle={{marginTop: SIZES.base}}
-            />
-          </>
-        }
-        renderItem={({item, index}) => {
-          return (
-            <SearchItem
-              key={index}
-              item={item}
-              onPress={() =>
-                navigation.navigate('ProductDetail', {productItem: item})
-              }
-              onView={() => navigation.navigate('OfferDetail', {detail: item})}
-            />
-          );
-        }}
-        ListFooterComponent={<View style={{height: 200}} />}
-      />
-
-      {/* No search items */}
-      {filteredDataSource.length === 0 && (
-        <View style={{alignItems: 'center', top: -200}}>
-          <FastImage
-            source={images.NoItems}
-            style={{width: 100, height: 100}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <Text
-            style={{
-              ...FONTS.body3,
-              color: COLORS.Neutral6,
-              textAlign: 'center',
-              margin: SIZES.margin,
-              lineHeight: 24,
-            }}>
-            Type in keywords to find what you want. You can search for products,
-            companies or sell offers
-          </Text>
-        </View>
-      )}
-    </View>
+            <Text
+              style={{
+                ...FONTS.body2,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
+                margin: SIZES.margin,
+                lineHeight: 24,
+              }}>
+              There are no sell offer at the moment
+            </Text>
+          </View>
+        )}
+      </View>
+    </AlertNotificationRoot>
   );
 };
 

@@ -6,8 +6,8 @@ import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS, SIZES, constants} from '../../../constants';
 import QuotesRequest from './QuotesRequest';
 import AgentRequest from './AgentRequest';
-import {PromoSection, SearchBox} from '../../../components';
-import { ExploreStackNavigatorParamList } from '../../../components/navigation/SellerNav/type/navigation';
+import {PromoSection} from '../../../components';
+import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 
 const scheduleTabs = constants.freightType.map(bottom_tab => ({
   ...bottom_tab,
@@ -180,7 +180,7 @@ const RFFList = () => {
           decelerationRate="fast"
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
-          data={constants.service}
+          data={constants.freightType}
           keyExtractor={item => `HomeTabs-${item.id}`}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollX}}}],
@@ -219,19 +219,6 @@ const RFFList = () => {
           <View style={{marginTop: SIZES.radius}}>
             {/* Promo */}
             <PromoSection />
-
-            {/* Search Box */}
-            <View
-              style={{
-                marginHorizontal: SIZES.semi_margin,
-                marginTop: SIZES.radius,
-              }}>
-              <SearchBox
-                searchTerm={'Search RFF item'}
-                onSearch={() => navigation.navigate('RFFSearch')}
-                onPress={() => navigation.navigate('Filter')}
-              />
-            </View>
 
             <View
               style={{marginTop: SIZES.margin, marginHorizontal: SIZES.margin}}>

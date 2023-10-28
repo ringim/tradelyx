@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, ActivityIndicator, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -15,7 +15,7 @@ import {
   AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 
 import {
   FormInput,
@@ -30,6 +30,8 @@ import {
   UpdateProductInput,
   UpdateProductMutation,
   UpdateProductMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../../API';
 import {updateProduct} from '../../../queries/ProductQueries';
 import {
@@ -40,10 +42,14 @@ import {
   SIZES,
   icons,
 } from '../../../constants';
+import {useAuthContext} from '../../../context/AuthContext';
+import {getUser} from '../../../queries/UserQueries';
 
 const InternationalEngagementTerms = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
+
+  const {userID} = useAuthContext();
 
   const mapRef = useRef(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -87,6 +93,17 @@ const InternationalEngagementTerms = () => {
     hideDatePicker();
   };
 
+  // GET USER DETAILS
+  const {data, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+  const userInfo: any = data?.getUser;
+
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
     UpdateProductMutation,
@@ -104,13 +121,16 @@ const InternationalEngagementTerms = () => {
         placeOrigin: address?.description?.formatted_address,
         transportMode: tpMode,
         dateAvailable: date,
+        storeName: userInfo?.businessName,
+        storeImage: userInfo?.logo,
+        storeAddress: `${userInfo?.city}${', '} ${userInfo?.country}`,
       };
       await doUpdateProduct({
         variables: {
           input,
         },
       });
-      console.log('product shipment', input);
+      // console.log('product shipment', input);
       handlePresentModalPress();
     } catch (error) {
       Toast.show({
@@ -303,6 +323,14 @@ const InternationalEngagementTerms = () => {
     );
   }
 
+  if (newLoad) {
+    <ActivityIndicator
+      style={{flex: 1, justifyContent: 'center'}}
+      size={'large'}
+      color={COLORS.primary6}
+    />;
+  }
+
   return (
     <AlertNotificationRoot>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -330,9 +358,7 @@ const InternationalEngagementTerms = () => {
             style={{
               padding: SIZES.padding,
             }}>
-            <ProductSuccess
-              onPress={() => navigation.navigate('Home')}
-            />
+            <ProductSuccess onPress={() => navigation.navigate('Home')} />
           </View>
         </BottomSheetModal>
 

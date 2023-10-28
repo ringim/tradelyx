@@ -44,7 +44,6 @@ import {COLORS, SIZES, FONTS, icons} from '../../../../constants';
 import {uploadMedia} from '../../../../utilities/service';
 import {IEditableUser} from '../../../../components/Others/CustomInput';
 import {CountryCodeList} from '../../../../../types/types';
-import {GOOGLE_MAPS_APIKEY} from '../../../../utilities/Utils';
 
 const Account = () => {
   const navigation = useNavigation<ProfileStackNavigatorParamList>();
@@ -154,7 +153,7 @@ const Account = () => {
   };
 
   // DELETE USER
-  const [doDeleteUser] = useMutation<
+  const [doDeleteUser, {loading: deleteLoading}] = useMutation<
     DeleteUserMutation,
     DeleteUserMutationVariables
   >(deleteUser);
@@ -220,7 +219,7 @@ const Account = () => {
     });
   };
 
-  if (loading || updateLoading) {
+  if (loading || updateLoading || deleteLoading) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -232,8 +231,7 @@ const Account = () => {
 
   function renderForm() {
     return (
-      <View
-        style={{marginHorizontal: SIZES.semi_margin, marginTop: SIZES.radius}}>
+      <View style={{marginHorizontal: SIZES.semi_margin, marginTop: 260}}>
         {/* Full Name */}
         <FormInput
           control={control}
@@ -302,11 +300,11 @@ const Account = () => {
               <Text
                 style={{
                   marginTop: SIZES.radius,
-                  color: COLORS.Neutral4,
+                  color: COLORS.Neutral1,
                   ...FONTS.body3,
                   fontWeight: '500',
                 }}>
-                Country
+                Operating Country
               </Text>
               <DropDownPicker
                 schema={{
@@ -314,6 +312,8 @@ const Account = () => {
                   value: 'name',
                   icon: 'icon',
                 }}
+                searchable={true}
+                searchPlaceholder="Search..."
                 onChangeValue={onChange}
                 open={open2}
                 showArrowIcon={true}
@@ -332,6 +332,16 @@ const Account = () => {
                   marginTop: SIZES.base,
                   borderColor: COLORS.Neutral7,
                   borderWidth: 0.5,
+                }}
+                searchContainerStyle={{
+                  borderBottomColor: COLORS.Neutral7,
+                  marginBottom: SIZES.base,
+                }}
+                searchTextInputStyle={{
+                  height: 45,
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  marginBottom: SIZES.base,
                 }}
                 placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                 textStyle={{color: COLORS.Neutral1}}
@@ -397,21 +407,21 @@ const Account = () => {
         />
 
         {/* key products */}
-        <FormInput
+        {/* <FormInput
           control={control}
           label="Key Product"
           placeholder="Type your the key product"
           name="keyProduct"
           textInputStyle={{color: COLORS.gray}}
           containerStyle={{marginTop: SIZES.radius}}
-        />
+        /> */}
       </View>
     );
   }
 
   return (
     <AlertNotificationRoot>
-      <View style={{flex: 1, backgroundColor: COLORS.white}}>
+      <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header title={'My Profile'} tintColor={COLORS.Neutral1} />
 
         {/* upload profile image */}
@@ -438,6 +448,7 @@ const Account = () => {
           enableOnAndroid={true}>
           {/* Profile Pic */}
           <AccountImage
+            contentStyle={{top: 0}}
             name={userAccount?.name}
             onEdit={() => setShowUploadPhotoModal(true)}
             profile_image={selectedPhoto?.uri || userAccount?.logo}

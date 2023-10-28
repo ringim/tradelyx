@@ -8,6 +8,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
 import {useMutation} from '@apollo/client';
+import Geocoder from 'react-native-geocoding';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
@@ -41,6 +42,7 @@ import {
   UpdateRFFMutationVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
+import {GOOGLE_MAPS_APIKEY} from '../../../../../utilities/Utils';
 
 interface IFreight {
   notes: string;
@@ -48,6 +50,8 @@ interface IFreight {
 }
 
 const AirPickupProcess = () => {
+  Geocoder.init(GOOGLE_MAPS_APIKEY, {language: 'en'});
+
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
 
@@ -61,22 +65,65 @@ const AirPickupProcess = () => {
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
   const [address2, setAddress2] = useState<any>('');
+  const [countryCode, setCountryCode] = useState<any>('');
+  const [countryName, setCountryName] = useState<any>('');
+  const [countryCode2, setCountryCode2] = useState<any>('');
+  const [countryName2, setCountryName2] = useState<any>('');
+
+  const {location} = address1;
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(location?.lat, location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode(code);
+              setCountryName(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address1]);
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(address2?.location?.lat, address2?.location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode2(code);
+              setCountryName2(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address2]);
+
+  // console.log(address2?.location);
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '65%'], []);
-
+  const snapPoints = useMemo(() => ['50%', '50%'], []);
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+    return index;
   }, []);
-
-  // console.log(value);
 
   // CREATE UPDATE RFF
   const [doUpdateRFQ] = useMutation<
@@ -92,7 +139,11 @@ const AirPickupProcess = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
+        placeOriginFlag: `https://flagcdn.com/32x24/${countryCode}.png`,
+        placeOriginName: countryName,
         placeOrigin: address1?.description?.formatted_address,
+        placeDestinationFlag: `https://flagcdn.com/32x24/${countryCode2}.png`,
+        placeDestinationName: countryName2,
         placeDestination: address2?.description?.formatted_address,
         relatedServices: selectedCategories,
         invoiceAmount: amount,
@@ -460,7 +511,7 @@ const AirPickupProcess = () => {
           <FreightType
             freightType={'Air Freight'}
             info="Pickup Process"
-            image={images.land}
+            image={images.airFreight}
             freightDesc={'Delivery within 7-10 days'}
           />
 

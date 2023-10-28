@@ -1,7 +1,11 @@
 import {ActivityIndicator, Text, View} from 'react-native';
-import React, {useMemo, useRef, useCallback, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {Controller, useForm} from 'react-hook-form';
+import React, {useMemo, useRef, useCallback, useState, useEffect} from 'react';
+import {
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from '@react-navigation/native';
+import {useForm} from 'react-hook-form';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
 import DocumentPicker from 'react-native-document-picker';
@@ -32,13 +36,14 @@ import {
   CreateRFQInput,
   CreateRFQMutation,
   CreateRFQMutationVariables,
-  GetUserQuery,
-  GetUserQueryVariables,
+  ListCommodityCategoriesQuery,
+  ListCommodityCategoriesQueryVariables,
   RFQTYPE,
 } from '../../../../API';
 import {useAuthContext} from '../../../../context/AuthContext';
+import Geocoder from 'react-native-geocoding';
 import {referralCode} from '../../../../utilities/Utils';
-import {getUser} from '../../../../queries/UserQueries';
+import {listCommodityCategories} from '../../../../queries/ProductQueries';
 
 interface IRequestQuotation {
   title: string;
@@ -46,16 +51,16 @@ interface IRequestQuotation {
 }
 const RequestQuotation = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
+  const route = useRoute<any>();
 
   const {userID} = useAuthContext();
-
-  const {control, handleSubmit}: any = useForm();
+  const {control, setValue, handleSubmit}: any = useForm();
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '65%'], []);
+  const snapPoints = useMemo(() => ['50%', '50%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -65,14 +70,65 @@ const RequestQuotation = () => {
     return index;
   }, []);
 
+  // LIST COMMODITY CATEGORIES
+  const {data: newData, loading: newLoad} = useQuery<
+    ListCommodityCategoriesQuery,
+    ListCommodityCategoriesQueryVariables
+  >(listCommodityCategories, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+
   const [loading, setLoading] = useState(false);
+  const [countryCode, setCountryCode] = useState<any>('');
+  const [countryName, setCountryName] = useState<any>('');
+  const [countryCity, setCountryCity] = useState<any>('');
   const [singleFile, setSingleFile] = useState<any>(null);
   const [fileName, setFileName] = useState<any>(null);
+  const [address, setAddress] = useState<any>('');
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.product_categories);
+  const [type, setType] = useState<any>('');
+  const [jobType, setJobType] = useState<any>();
+  const [ccID, setCCIDs] = useState('');
+
+  const {location} = address;
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(location?.lat, location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode(code);
+              setCountryName(name);
+            }
+            if (component.types.includes('locality')) {
+              const city = component.long_name;
+              setCountryCity(city);
+              // console.log(`City: ${city}`);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const allCommodityCategories: any =
+        newData?.listCommodityCategories?.items.filter(
+          (item: any) => !item?._deleted,
+        ) || [];
+      setJobType(allCommodityCategories);
+    }, [newLoad]),
+  );
 
   // SELECT FILE
   const selectFile = async () => {
@@ -98,17 +154,6 @@ const RequestQuotation = () => {
     }
   };
 
-  // GET USER
-  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {
-        id: userID,
-      },
-    },
-  );
-  const userInfo: any = data?.getUser;
-
   // CREATE REQUEST QUOTATION
   const [doCreateRFQ] = useMutation<
     CreateRFQMutation,
@@ -123,11 +168,16 @@ const RequestQuotation = () => {
     try {
       const input: CreateRFQInput = {
         rfqNo: referralCode(),
-        countryName: userInfo?.country,
-        title: title,
-        requestCategory: type,
+        SType: 'RFQ',
+        placeOrigin: address?.description?.formatted_address,
+        placeOriginFlag: `https://flagcdn.com/32x24/${countryCode}.png`, //flag
+        city: countryCity, //city
+        countryName: countryName, //country
+        title,
+        requestCategory: type?.title,
         rfqType: RFQTYPE.STANDARD,
         description: requirements,
+        commoditycategoryID: ccID,
         documents: fileName,
         userID,
       };
@@ -168,6 +218,21 @@ const RequestQuotation = () => {
     }
   };
 
+  useEffect(() => {
+    let unmounted = false;
+    if (route.params?.userAddress) {
+      setAddress(route.params?.userAddress);
+      setValue('address', address?.description?.formatted_address);
+    }
+    return () => {
+      unmounted = true;
+    };
+  }, [
+    setValue,
+    route.params?.userAddress,
+    address?.description?.formatted_address,
+  ]);
+
   function requestForm() {
     return (
       <View
@@ -188,88 +253,65 @@ const RequestQuotation = () => {
         />
 
         {/* Category Type */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'Category type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <>
-              <Text
-                style={{
-                  marginTop: SIZES.semi_margin,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Product Category
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                  icon: 'icon',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Category"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                style={{
-                  borderRadius: SIZES.semi_margin,
-                  marginTop: SIZES.radius,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select your category"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </>
-          )}
-        />
+        <View>
+          <Text
+            style={{
+              marginTop: SIZES.semi_margin,
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Product Category
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'title',
+              value: 'id',
+            }}
+            open={open}
+            showArrowIcon={true}
+            placeholder="Select Category"
+            showTickIcon={true}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            value={value1}
+            items={jobType}
+            setOpen={setOpen}
+            setValue={setValue1}
+            setItems={setJobType}
+            style={{
+              borderRadius: SIZES.semi_margin,
+              marginTop: SIZES.radius,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 24,
+              height: 24,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select your category"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onChangeValue={(value: any) => {
+              setCCIDs(value);
+            }}
+            onSelectItem={(value: any) => {
+              setType(value);
+            }}
+          />
+        </View>
 
         <FormInput
           label="Fill in Requirements"
@@ -288,11 +330,27 @@ const RequestQuotation = () => {
             padding: SIZES.base,
           }}
         />
+
+        {/* Address  */}
+        <FormInput
+          label="Request Address"
+          name="address"
+          control={control}
+          editable={false}
+          placeholder="Add address"
+          rules={{
+            required: 'Address is required',
+          }}
+          containerStyle={{marginTop: SIZES.semi_margin}}
+          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
+          inputContainerStyle={{marginTop: SIZES.base}}
+          onPress={() => navigation.navigate('RequestQuotationAddress')}
+        />
       </View>
     );
   }
 
-  if (onLoad) {
+  if (newLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" color={COLORS.primary6} />
@@ -345,14 +403,16 @@ const RequestQuotation = () => {
             style={{
               flex: 1,
               justifyContent: 'center',
+              marginHorizontal: SIZES.semi_margin,
+              marginBottom: 100,
             }}>
             {singleFile != null ? (
               <FileSection
                 file={fileName ? fileName : ''}
                 onPress={() => setSingleFile(null)}
                 containerStyle={{
-                  marginHorizontal: SIZES.margin,
                   marginTop: SIZES.radius,
+                  marginHorizontal: SIZES.base,
                 }}
               />
             ) : (

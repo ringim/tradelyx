@@ -67,7 +67,7 @@ const ProductContextProvider = ({children}: {children: ReactNode}) => {
       // clear error
     }
 
-    console.log('Done.');
+    // console.log('Done.');
   };
 
   useEffect(() => {

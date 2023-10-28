@@ -104,7 +104,7 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Content */}
         <View
           style={{
-            marginTop: SIZES.padding,
+            marginTop: SIZES.semi_margin,
             paddingHorizontal: SIZES.margin,
             marginBottom: SIZES.base
           }}>

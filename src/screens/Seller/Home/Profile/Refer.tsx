@@ -19,7 +19,7 @@ const Refer = () => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.Neutral9}}>
+    <View style={{flex: 1, backgroundColor: COLORS.white}}>
       <Header title={'Refer & Earn'} tintColor={COLORS.Neutral1} />
 
       <View

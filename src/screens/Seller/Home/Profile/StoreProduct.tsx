@@ -8,13 +8,17 @@ import {
 import React, {useState, useCallback, useRef} from 'react';
 import {useQuery} from '@apollo/client';
 
-import {COLORS, SIZES, constants, FONTS} from '../../../constants';
-import {Header} from '../../../components';
-import {useAuthContext} from '../../../context/AuthContext';
-import {getUser} from '../../../queries/UserQueries';
-import {GetUserQuery, GetUserQueryVariables} from '../../../API';
-import AddProducts from './AddProducts';
+import {COLORS, SIZES, constants, FONTS} from '../../../../constants';
+import {Header} from '../../../../components';
+import {useAuthContext} from '../../../../context/AuthContext';
+import {
+  ModelSortDirection,
+  ProductByDateQuery,
+  ProductByDateQueryVariables,
+} from '../../../../API';
 import MyStore from './MyStore';
+import MySellOffers from './MySellOffers';
+import {productByDate} from '../../../../queries/ProductQueries';
 
 const scheduleTabs = constants.storeProducts.map(bottom_tab => ({
   ...bottom_tab,
@@ -116,7 +120,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
             style={{
               paddingHorizontal: 5,
               justifyContent: 'center',
-              width: 180,
+              width: 120,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View
@@ -128,7 +132,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
               <Animated.Text
                 style={{
                   color: textColor,
-                  ...FONTS.h5,
+                  ...FONTS.cap1,
                   fontWeight: 'bold',
                   textAlign: 'center',
                 }}>
@@ -148,16 +152,26 @@ const StoreProduct = () => {
 
   const {userID} = useAuthContext();
 
-  // GET USER DETAILS
-  const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {variables: {id: userID}},
-  );
-  const user: any = data?.getUser;
+  const {data, loading, refetch} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const userProducts =
+    data?.productByDate?.items
+      ?.filter(usrID => usrID?.userID === userID)
+      .filter((item: any) => !item?._deleted) || [];
 
   if (loading) {
     <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
+      style={{flex: 1, justifyContent: 'center', marginTop: SIZES.margin}}
       size={'large'}
       color={COLORS.primary6}
     />;
@@ -217,8 +231,14 @@ const StoreProduct = () => {
                   flex: 1,
                   width: SIZES.width,
                 }}>
-                {item?.id == 0 && <MyStore />}
-                {item?.id == 1 && <AddProducts />}
+                {item?.id == 0 && (
+                  <MyStore
+                    data={userProducts}
+                    loading={loading}
+                    refetch={refetch}
+                  />
+                )}
+                {item?.id == 1 && <MySellOffers />}
               </View>
             );
           }}

@@ -18,6 +18,7 @@ const UploadDocs = ({selectFile, title, containerStyle}: any) => {
         <Text
           style={{
             ...FONTS.body3,
+            fontWeight: '500',
             color: COLORS.Neutral1,
           }}>
           {title}

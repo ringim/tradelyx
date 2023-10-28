@@ -1,11 +1,31 @@
 import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
 import {SIZES, FONTS, icons, COLORS} from '../../constants';
 import TextButton from '../Button/TextButton';
+import {DUMMY_IMAGE} from '../../utilities/Utils';
 
-const StoreInfo = ({productItem, onPress, showDetail}: any) => {
+const StoreInfo = ({
+  address,
+  supplier,
+  locationStyle,
+  supplierStyle,
+  image,
+  logoStyle,
+  onPress,
+  showDetail,
+  addressStyle,
+}: any) => {
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (image) {
+      Storage.get(image).then(setImageUri2);
+    }
+  }, [image]);
+
   return (
     <View
       style={{
@@ -20,31 +40,30 @@ const StoreInfo = ({productItem, onPress, showDetail}: any) => {
       <View
         style={{
           justifyContent: 'center',
-          padding: SIZES.radius,
-          backgroundColor: COLORS.lightYellow,
-          borderRadius: SIZES.radius,
         }}>
         <FastImage
-          source={productItem?.storeImg}
+          source={{uri: imageUri2 || DUMMY_IMAGE}}
           resizeMode={FastImage.resizeMode.cover}
-          style={{width: 30, height: 30}}
+          style={{width: 40, height: 40, borderRadius: SIZES.base, ...logoStyle}}
         />
       </View>
 
       <View
         style={{
           flex: 1,
-          marginLeft: SIZES.semi_margin,
+          marginLeft: SIZES.radius,
           justifyContent: 'center',
         }}>
-        <Text numberOfLines={2} style={{...FONTS.h3, color: COLORS.Neutral1}}>
-          {productItem?.supplier}
+        <Text
+          numberOfLines={2}
+          style={{...FONTS.h4, color: COLORS.Neutral1, ...supplierStyle}}>
+          {supplier}
         </Text>
 
         <View
           style={{
             alignItems: 'center',
-            marginTop: SIZES.base,
+            marginTop: 5,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -54,21 +73,22 @@ const StoreInfo = ({productItem, onPress, showDetail}: any) => {
               resizeMode={FastImage.resizeMode.contain}
               source={icons.location}
               style={{
-                width: 20,
-                height: 20,
+                width: 18,
+                height: 18,
+                ...locationStyle,
               }}
             />
           </View>
           <View
             style={{
               flex: 1,
-              marginLeft: SIZES.base,
+              marginLeft: 4,
               justifyContent: 'center',
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.sh3, color: COLORS.Neutral6}}>
-              {productItem?.address2}
+              style={{...FONTS.cap1, color: COLORS.Neutral6, ...addressStyle}}>
+              {address}
             </Text>
           </View>
         </View>
@@ -85,7 +105,7 @@ const StoreInfo = ({productItem, onPress, showDetail}: any) => {
               backgroundColor: COLORS.white,
               borderWidth: 1,
               borderColor: COLORS.primary1,
-              borderRadius: SIZES.base
+              borderRadius: SIZES.base,
             }}
             label="Detail"
             labelStyle={{...FONTS.h4, color: COLORS.primary1}}

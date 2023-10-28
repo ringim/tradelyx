@@ -16,7 +16,7 @@ const Options = ({onEdit, onDelete}: any) => {
           marginTop: -4,
           height: 48,
         }}
-        label="Edit Product"
+        label="Edit Item"
         labelStyle={{...FONTS.h4}}
         onPress={onEdit}
       />
@@ -29,7 +29,7 @@ const Options = ({onEdit, onDelete}: any) => {
           marginTop: SIZES.semi_margin,
           height: 48,
         }}
-        label="Delete Product"
+        label="Delete Item"
         labelStyle={{...FONTS.h4, color: COLORS.Rose4}}
         onPress={onDelete}
       />

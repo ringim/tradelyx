@@ -38,9 +38,11 @@ const ProfilePhoto = ({userImage, name, location}: IDriverImage) => {
         source={{uri: imageUri || DEFAULT_PROFILE_IMAGE}}
         resizeMode={FastImage.resizeMode.cover}
         style={{
-          width: 100,
-          height: 100,
-          borderRadius: 60,
+          width: 150,
+          height: 150,
+          borderRadius: 200,
+          borderWidth: 1,
+          borderColor: COLORS.primary1
         }}
       />
 

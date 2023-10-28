@@ -39,21 +39,35 @@ const mergeList = (existing = {items: []}, incoming = {items: []}) => {
 };
 
 const typePolicies: TypePolicies = {
-  User: {
-    keyFields: [
-      'name',
-      'email',
-      'image',
-      'phone_number',
-      'backgroundImage',
-      'logo',
-    ],
+  // User: {
+  //   keyFields: [
+  //     'name',
+  //     'email',
+  //     'image',
+  //     'phone_number',
+  //     'backgroundImage',
+  //     'logo',
+  //   ],
+  // },
+  Categories: {
+    keyFields: ['id', 'title', 'image'],
+  },
+  CommodityCategory: {
+    keyFields: ['id', 'title', 'image'],
+  },
+  Query: {
+    fields: {
+      Categories: {
+        keyArgs: ['filter'],
+        merge: mergeList,
+      },
+    },
   },
 };
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({typePolicies}),
 });
 
 const Client = ({children}: IClient) => {

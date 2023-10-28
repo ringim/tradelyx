@@ -8,7 +8,6 @@ const OriginDestinationDetails = ({
   departDate,
   type,
   typeName,
-  name,
   address,
 }: any) => {
   return (
@@ -66,7 +65,7 @@ const OriginDestinationDetails = ({
         }}>
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: 5,
             justifyContent: 'center',
             padding: SIZES.base,
             width: 32,
@@ -90,13 +89,6 @@ const OriginDestinationDetails = ({
             marginLeft: SIZES.radius,
             justifyContent: 'center',
           }}>
-          <Text
-            style={{
-              ...FONTS.h5,
-              color: COLORS.Neutral1,
-            }}>
-            {name}
-          </Text>
           <Text
             style={{
               paddingTop: 4,

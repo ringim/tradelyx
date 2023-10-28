@@ -13,8 +13,7 @@ const Handling = ({selected, item, onPress}: any) => {
         justifyContent: 'space-between',
         borderRadius: SIZES.radius,
         borderWidth: 1,
-        padding: SIZES.radius,
-        marginRight: 50,
+        padding: SIZES.base,
         borderColor: selected ? COLORS.primary2 : COLORS.Neutral8,
         backgroundColor: selected ? COLORS.primary10 : 'transparent',
       }}>
@@ -24,7 +23,7 @@ const Handling = ({selected, item, onPress}: any) => {
         }}>
         <FastImage
           source={item?.image}
-          style={{width: 24, height: 24}}
+          style={{width: 20, height: 20}}
           resizeMode={FastImage.resizeMode.contain}
         />
       </View>
@@ -34,7 +33,7 @@ const Handling = ({selected, item, onPress}: any) => {
           marginLeft: SIZES.radius,
           justifyContent: 'center',
         }}>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
+        <Text style={{...FONTS.cap1, color: COLORS.Neutral1}}>
           {item?.label}
         </Text>
       </View>
@@ -47,7 +46,7 @@ const Handling = ({selected, item, onPress}: any) => {
           }}>
           <FastImage
             source={icons.checked}
-            style={{width: 24, height: 24}}
+            style={{width: 20, height: 20}}
             resizeMode={FastImage.resizeMode.contain}
           />
         </View>

@@ -10,30 +10,30 @@ const RFQSuccess = ({onPress, onPress2, requestType}: any) => {
     <View
       style={{
         backgroundColor: COLORS.white,
-        alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <View style={{marginTop: 0}}>
+      <View style={{marginTop: -12}}>
         <FastImage
           source={images.success_arrow}
           resizeMode={FastImage.resizeMode.contain}
           style={{
-            width: 140,
-            height: 140,
+            width: 120,
+            height: 120,
+            alignSelf: 'center'
           }}
         />
       </View>
-      <View style={{marginTop: SIZES.padding * 1.5}}>
+      <View style={{marginTop: SIZES.padding}}>
         <Text
-          style={{...FONTS.h4, textAlign: 'center', color: COLORS.Neutral1}}>
+          style={{...FONTS.h5, textAlign: 'center', color: COLORS.Neutral1}}>
           {requestType} Request Sent Successfully
         </Text>
       </View>
-      <View style={{margin: SIZES.padding}}>
+      <View style={{marginTop: SIZES.margin}}>
         <Text
           style={{
-            ...FONTS.body3,
-            lineHeight: 24,
+            ...FONTS.cap1,
+            lineHeight: 22,
             textAlign: 'center',
             color: COLORS.Neutral5,
           }}>
@@ -44,7 +44,9 @@ const RFQSuccess = ({onPress, onPress2, requestType}: any) => {
 
       <TextButton
         buttonContainerStyle={{
-          marginTop: SIZES.base,
+          marginTop: SIZES.margin,
+          height: 50,
+          width: 300
         }}
         label="Order Menu"
         labelStyle={{...FONTS.h4}}
@@ -54,7 +56,9 @@ const RFQSuccess = ({onPress, onPress2, requestType}: any) => {
       <TextButton
         buttonContainerStyle={{
           backgroundColor: COLORS.white,
-          marginTop: SIZES.semi_margin,
+          marginTop: SIZES.base,
+          height: 50,
+          width: 300
         }}
         label="Close"
         labelStyle={{...FONTS.h4, color: COLORS.primary1}}

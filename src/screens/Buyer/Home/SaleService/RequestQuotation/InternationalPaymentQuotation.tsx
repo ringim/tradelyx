@@ -51,7 +51,7 @@ const InternationalPaymentQuotation = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['65%', '65%'], []);
+  const snapPoints = useMemo(() => ['55%', '55%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -108,7 +108,7 @@ const InternationalPaymentQuotation = () => {
           input,
         },
       });
-      console.log('job data', input);
+      // console.log('job data', input);
       handlePresentModalPress();
     } catch (error) {
       Toast.show({
@@ -292,7 +292,7 @@ const InternationalPaymentQuotation = () => {
         {requestForm()}
       </View>
 
-      <View style={{justifyContent: 'flex-end'}}>
+      <View style={{justifyContent: 'flex-end', backgroundColor: COLORS.white}}>
         <TextButton
           buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
           label="Send"

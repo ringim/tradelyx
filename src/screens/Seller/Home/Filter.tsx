@@ -269,6 +269,7 @@ const Filter = () => {
           handleDecrease={handleDecrease}
           handleIncrease={handleIncrease}
           qty={quantity}
+          title={'Quantity'}
         />
 
         {/* Price range slider */}
@@ -325,7 +326,7 @@ const Filter = () => {
               ...FONTS.cap1,
               fontWeight: '600',
               marginLeft: 6,
-              color: COLORS.Neutral4,
+              color: COLORS.Neutral1,
             }}
             icon={icons.four_star}
             iconPosition={'LEFT'}

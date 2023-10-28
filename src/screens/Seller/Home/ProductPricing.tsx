@@ -13,7 +13,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {useAuthContext} from '../../../context/AuthContext';
 import {
   FormInput,
   Header,
@@ -76,7 +75,7 @@ const ProductPricing = () => {
           input,
         },
       });
-      console.log('job data', input);
+      // console.log('job data', input);
       navigation.navigate('ProductShipment', {productID: input.id});
     } catch (error) {
       Toast.show({
@@ -93,7 +92,7 @@ const ProductPricing = () => {
     return (
       <View
         style={{
-          marginHorizontal: SIZES.semi_margin,
+          marginHorizontal: SIZES.radius,
           marginBottom: 100,
         }}>
         {/* Price Offer */}
@@ -204,7 +203,7 @@ const ProductPricing = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 230,
+              width: 180,
             }}
           />
           {/* Quantity & Unit Measurement */}

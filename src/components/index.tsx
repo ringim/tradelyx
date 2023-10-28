@@ -18,6 +18,9 @@ import GalleryItem from './Home/GalleryItem';
 import StoreBannerInfo from './Home/StoreBannerInfo';
 import RFFQuoteItem from './Home/RFFQuoteItem';
 import RFQItem from './Home/RFQItem';
+import RFQItem3 from './Home/RFQItem3';
+import RFQItem2 from './Home/RFQItem2';
+import SellOfferItem from './Home/SellOfferItem';
 import LanguageSpoken from './Home/LanguageSpoken';
 import ProfileItem from './Home/ProfileItem';
 import SearchItem4 from './Home/SearchItem4';
@@ -31,6 +34,7 @@ import HorizontalItem from './Home/HorizontalItem';
 import CategorySection from './Home/CategorySection';
 import QuoteRequestItem from './Home/QuoteRequestItem';
 import PromoSection from './Home/PromoSection';
+import SellerItem from './Home/SellerItem'
 import PopularProducts from './Home/PopularProducts';
 import PopularItem from './Home/PopularItem';
 import VendorItem from './Home/VendorItem';
@@ -72,6 +76,7 @@ import SourceLocationItem from './Home/SourceLocationItem';
 import SliderContainer from './Home/SliderContainer';
 import SellOfferSuccess from './Home/SellOfferSuccess';
 import Options from './Home/Options';
+import UpdateProfilePhoto from './Home/UpdateProfilePhoto';
 import ViewProductImage from './Home/ViewProductImage';
 import Packaging from './Home/Packaging';
 import ProductInfo from './Home/ProductInfo';
@@ -87,6 +92,7 @@ import NoItem from './Others/NoItem';
 import ImageUpload from './Others/ImageUpload';
 import MultipleImages from './Others/MultipleImages';
 import SingleImage from './Others/SingleImage';
+import MultipleFiles from './Others/MultipleFiles';
 
 //ORDER
 import OrderItem from './Order/OrderItem';
@@ -95,6 +101,7 @@ import OrderDetailItem from './Order/OrderDetailItem';
 import ReplyListItem from './Order/ReplyListItem';
 import SelectLanguage from './Order/SelectLanguage';
 import SellerOrderItem from './Order/SellerOrderItem';
+import SOImage from './Others/SOImage';
 
 // PROFILE
 import AccountImage from './Profile/AccountImage';
@@ -129,6 +136,7 @@ export {
   Handling,
   FileSection,
   ViewProductImage,
+  SOImage,
   ProductImage,
   ProductItem,
   ExpiryDate,
@@ -150,6 +158,7 @@ export {
   SelectLanguage,
   TransactionItem,
   OrderItem,
+  SellerItem,
   BalanceSection,
   ProductInfo,
   FinanceTabs,
@@ -167,7 +176,9 @@ export {
   SearchBox3,
   QuotationProgress2,
   SearchItem4,
+  SellOfferItem,
   PackageType,
+  UpdateProfilePhoto,
   NoSection,
   AgentRequestItem,
   SearchModal,
@@ -182,6 +193,8 @@ export {
   ProductSuccess,
   QuoteType,
   QuotationAdvancedTypes,
+  RFQItem2,
+  RFQItem3,
   SellerLocationMapHeader,
   Header,
   GalleryItem,
@@ -224,6 +237,7 @@ export {
   IconButton,
   Paginator,
   SearchBox,
+  MultipleFiles,
   OptionButton,
   CheckBox,
   CountryDropDown,

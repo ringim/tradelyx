@@ -1,21 +1,22 @@
 import {View, Text} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import React from 'react';
 
 import {COLORS, FONTS, SIZES} from '../../constants';
 
-const LanguageSpoken = ({containerStyle, language}: any) => {
+const LanguageSpoken = ({containerStyle, languages}: any) => {
   return (
     <FlatList
-      data={language}
+      data={languages}
       keyExtractor={item => `${item?.id}`}
       showsHorizontalScrollIndicator={false}
+      scrollEnabled={false}
       renderItem={({item, index}) => (
         <View
           key={index}
           style={{
             backgroundColor: COLORS.white,
-            paddingBottom: 3,
+            paddingBottom: 2,
             ...containerStyle,
           }}>
           <View
@@ -46,8 +47,9 @@ const LanguageSpoken = ({containerStyle, language}: any) => {
                   ...FONTS.body3,
                   fontWeight: 'bold',
                   color: COLORS.Neutral1,
+                  top: 3,
                 }}>
-                {item?.lang}
+                {item}
               </Text>
             </View>
           </View>

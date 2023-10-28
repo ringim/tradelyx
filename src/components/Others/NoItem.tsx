@@ -22,7 +22,7 @@ const NoItem = () => {
 
       <View style={{marginHorizontal: 40, bottom: 40}}>
         <Text style={{textAlign: 'center', color: COLORS.gray, ...FONTS.body2}}>
-          Your search query can't be found!
+          No item found!
         </Text>
       </View>
     </View>

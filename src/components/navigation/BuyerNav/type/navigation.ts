@@ -8,11 +8,18 @@ export type RootNavigatorParamList = {
   Home: undefined;
 };
 
+export type SetupNavigatorParamList = {
+  reset(arg0: {index: number; routes: {name: string}[]}): unknown;
+  navigate: any;
+  goBack: any;
+  CompleteProfile: undefined;
+  UserAddress: undefined;
+};
+
 export type HomeStackNavigatorParamList = {
   reset: any;
   goBack: any;
   navigate: any;
-  Home: any;
   Profile: NavigatorScreenParams<ProfileStackNavigatorParamList>;
   AllCategories: undefined;
   CategoryItemList: {cateItem: string};
@@ -36,11 +43,12 @@ export type HomeStackNavigatorParamList = {
   AirDestinationAddress: undefined;
   LandPickupAddress: undefined;
   LandPickupAddress2: undefined;
+  RequestQuotationAddress: undefined;
   InternationalTypeQuotation: undefined;
   OceanFreight: {freightType: string};
   AirFreight: {freightType: string};
   LandFreight: {freightType: string};
-  FreightPackage: undefined;
+  AirFreightPackage: undefined;
   AirPickupProcess: undefined;
   LandFreightPackage: undefined;
   LandPickupProcess: undefined;
@@ -49,9 +57,10 @@ export type HomeStackNavigatorParamList = {
   InternationalPaymentQuotation: undefined;
   ExploreFilter: undefined;
   EngagementTermsAddress: undefined;
-  AllProducts: {filterItem: string};
+  AllProducts: undefined;
   Quotation: undefined;
   Freight: undefined;
+  AllSellers: undefined;
 };
 
 export type ProfileStackNavigatorParamList = {
@@ -107,11 +116,6 @@ export type OrderStackNavigatorParamList = {
 export type ProductDetailNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
   'ProductDetail'
->;
-
-export type AllProductsNavigationProp = NativeStackNavigationProp<
-  HomeStackNavigatorParamList,
-  'AllProducts'
 >;
 
 export type OfferDetailNavigationProp = NativeStackNavigationProp<
@@ -223,11 +227,6 @@ export type ReplyDetailRouteProp = RouteProp<
 export type ProgressOrderDetailRouteProp = RouteProp<
   OrderStackNavigatorParamList,
   'ProgressOrderDetail'
->;
-
-export type AllProductsRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
-  'AllProducts'
 >;
 
 export type OfferDetailRouteProp = RouteProp<

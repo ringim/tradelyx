@@ -1,5 +1,13 @@
-import {View, Text, Alert, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import Tags from 'react-native-tags';
+import DocumentScanner from 'react-native-document-scanner-plugin';
 import {
   Asset,
   launchCamera,
@@ -54,6 +62,8 @@ const Account = () => {
   const {userID, authUser} = useAuthContext();
 
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
+  const [selectedPhoto1, setSelectedPhoto1] = useState<any>('');
+  const [selectedPhoto2, setSelectedPhoto2] = useState<any>('');
   const [showUploadPhotoModal, setShowUploadPhotoModal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [displayAddress, setDisplayAddress] = useState('Add your address');
@@ -68,12 +78,26 @@ const Account = () => {
   const [country, setCountry] = useState('');
   const [countryType, setCountryType] = useState<any>(CountryCodeList);
 
+  const [open1, setOpen1] = useState(false);
+  const [value1, setValue1] = useState(null);
+  const [busType, setBusType] = useState('');
+  const [businessType, setBusinessType] = useState<any>(constants.businessType);
+
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
-    {variables: {id: userID}},
+    {
+      variables: {id: userID},
+      pollInterval: 300,
+      fetchPolicy: 'cache-first',
+      nextFetchPolicy: 'cache-and-network',
+    },
   );
   const userAccount = data?.getUser;
+  // console.log(userAccount)
+
+  const [initialTags, setInitialTags] = useState(userAccount?.mainMarkets);
+  const [initialTags2, setInitialTags2] = useState(userAccount?.languages);
 
   // UPDATE USER DETAILS
   const [doUpdateUser, {loading: updateLoading}] = useMutation<
@@ -88,11 +112,15 @@ const Account = () => {
       setValue('email', userAccount.email);
       setValue('phone_number', userAccount.phone_number);
       setValue('address', userAccount.address);
+      setValue('businessName', userAccount.businessName);
       setValue('city', userAccount.city);
       setValue('identification', userAccount.identification);
       setValue('zipCode', userAccount.zipCode);
       setValue('country', userAccount.country);
-      setValue('keyProduct', userAccount.keyProduct);
+      setValue('certifications', userAccount.certifications);
+      setValue('businessType', userAccount.businessType);
+      setValue('totalStaff', userAccount.totalStaff);
+      setValue('overview', userAccount?.overview);
     }
     return () => {
       unmounted = true;
@@ -108,11 +136,20 @@ const Account = () => {
       const input: UpdateUserInput = {
         id: userID,
         country,
+        identityImage: selectedPhoto1?.uri,
+        identification: identity,
         address: displayAddress,
+        businessType: busType,
+        mainMarkets: initialTags,
+        languages: initialTags2,
         ...formData,
       };
       if (selectedPhoto?.uri) {
         input.logo = await uploadMedia(selectedPhoto.uri);
+      }
+
+      if (selectedPhoto2?.uri) {
+        input.backgroundImage = await uploadMedia(selectedPhoto2.uri);
       }
 
       // console.log('edut ', data);
@@ -160,7 +197,7 @@ const Account = () => {
   };
 
   // DELETE USER
-  const [doDeleteUser] = useMutation<
+  const [doDeleteUser, {loading: deleteLoading}] = useMutation<
     DeleteUserMutation,
     DeleteUserMutationVariables
   >(deleteUser);
@@ -225,7 +262,127 @@ const Account = () => {
     });
   };
 
-  if (loading || updateLoading) {
+  const onTagPress = (index: any, tagLabel: any, event: any, deleted: any) => {
+    return {
+      index,
+      tagLabel,
+      event,
+      deleted: deleted ? 'deleted' : 'not deleted',
+    };
+  };
+
+  const onChangeTags = (tags: any) => {
+    setInitialTags(tags);
+  };
+
+  const renderTag = ({tag, index, onPress}: any) => {
+    return (
+      <TouchableOpacity
+        key={`${tag}-${index}`}
+        onPress={onPress}
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: COLORS.NeutralBlue6,
+          borderRadius: SIZES.semi_margin,
+          padding: SIZES.base,
+          paddingVertical: 5,
+          margin: SIZES.base,
+          marginRight: 2,
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
+            {tag}
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            padding: 5,
+            backgroundColor: COLORS.white,
+            borderRadius: SIZES.padding,
+            marginLeft: 4,
+          }}>
+          <FastImage
+            source={icons.close}
+            resizeMode={FastImage.resizeMode.contain}
+            tintColor={COLORS.NeutralBlue5}
+            style={{width: 6, height: 6}}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const onTagPress2 = (index: any, tagLabel: any, event: any, deleted: any) => {
+    return {
+      index,
+      tagLabel,
+      event,
+      deleted: deleted ? 'deleted' : 'not deleted',
+    };
+  };
+
+  const onChangeTags2 = (tags: any) => {
+    setInitialTags2(tags);
+  };
+
+  const renderTag2 = ({tag, index, onPress}: any) => {
+    return (
+      <TouchableOpacity
+        key={`${tag}-${index}`}
+        onPress={onPress}
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: COLORS.NeutralBlue6,
+          borderRadius: SIZES.semi_margin,
+          padding: SIZES.base,
+          paddingVertical: 5,
+          margin: SIZES.base,
+          marginRight: 2,
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
+            {tag}
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            padding: 5,
+            backgroundColor: COLORS.white,
+            borderRadius: SIZES.padding,
+            marginLeft: 4,
+          }}>
+          <FastImage
+            source={icons.close}
+            resizeMode={FastImage.resizeMode.contain}
+            tintColor={COLORS.NeutralBlue5}
+            style={{width: 6, height: 6}}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  // SCAN RECEIPT FUNCTION
+  const onScanPress = async () => {
+    const {scannedImages}: any | [] = await DocumentScanner.scanDocument({
+      maxNumDocuments: 1,
+    });
+    if (scannedImages.length > 0) {
+      setSelectedPhoto2(scannedImages[0]);
+    } else {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        textBody: 'Unable to scan document',
+        autoClose: 1500,
+      });
+    }
+  };
+
+  if (loading || deleteLoading || updateLoading) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -237,8 +394,7 @@ const Account = () => {
 
   function renderForm() {
     return (
-      <View
-        style={{marginHorizontal: SIZES.semi_margin, marginTop: SIZES.radius}}>
+      <View style={{marginHorizontal: SIZES.semi_margin, marginTop: 210}}>
         {/* Full Name */}
         <FormInput
           control={control}
@@ -263,24 +419,57 @@ const Account = () => {
           placeholder="Enter mobile number"
           name="phone_number"
           rules={{required: 'Mobile number is required'}}
-          editable={false}
-          inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           keyboardType={'phone-pad'}
           containerStyle={{marginTop: SIZES.radius}}
+          maxLength={15}
         />
 
         {/* email address */}
         <FormInput
           control={control}
           label="Email"
-          placeholder="Enter your email"
           name="email"
-          keyboardType="email-address"
-          textInputStyle={{color: COLORS.gray}}
+          editable={false}
+          inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           containerStyle={{marginTop: SIZES.radius}}
         />
 
-        {/* street Address */}
+        {/* Business name */}
+        <FormInput
+          control={control}
+          label="Business Name"
+          placeholder="Enter your Business name"
+          name="businessName"
+          rules={{
+            required: 'Business name is required',
+            minLength: {
+              value: 3,
+              message: 'names should be more than 5 characters',
+            },
+          }}
+          keyboardType={'default'}
+          containerStyle={{marginTop: SIZES.radius}}
+        />
+
+        {/* business overview */}
+        <FormInput
+          label="Business Overview"
+          name="overview"
+          control={control}
+          multiline={true}
+          placeholder="Provide a brief summary about your business"
+          rules={{
+            required: 'Business overview is required',
+          }}
+          containerStyle={{marginTop: SIZES.radius}}
+          inputContainerStyle={{
+            marginTop: SIZES.radius,
+            height: 120,
+            padding: SIZES.base,
+          }}
+        />
+
+        {/* Business Address */}
         <View style={{marginTop: SIZES.radius}}>
           <Text
             style={{
@@ -307,17 +496,20 @@ const Account = () => {
               <Text
                 style={{
                   marginTop: SIZES.radius,
-                  color: COLORS.Neutral4,
+                  color: COLORS.Neutral1,
                   ...FONTS.body3,
                   fontWeight: '500',
                 }}>
-                Country
+                Operating Country
               </Text>
               <DropDownPicker
                 schema={{
                   label: 'name',
                   value: 'name',
+                  icon: 'icon',
                 }}
+                searchable={true}
+                searchPlaceholder="Search..."
                 onChangeValue={onChange}
                 open={open2}
                 showArrowIcon={true}
@@ -336,6 +528,16 @@ const Account = () => {
                   marginTop: SIZES.base,
                   borderColor: COLORS.Neutral7,
                   borderWidth: 0.5,
+                }}
+                searchContainerStyle={{
+                  borderBottomColor: COLORS.Neutral7,
+                  marginBottom: SIZES.base,
+                }}
+                searchTextInputStyle={{
+                  height: 45,
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  marginBottom: SIZES.base,
                 }}
                 placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                 textStyle={{color: COLORS.Neutral1}}
@@ -370,6 +572,7 @@ const Account = () => {
                     color: COLORS.Rose4,
                     top: 14,
                     left: 5,
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -399,10 +602,207 @@ const Account = () => {
           containerStyle={{marginTop: SIZES.radius}}
         />
 
+        {/* Certification */}
+        <FormInput
+          control={control}
+          label="Certifications"
+          placeholder="E.g. NAFDAC, ISO900"
+          name="certifications"
+          rules={{
+            required: 'Business name is required',
+            minLength: {
+              value: 3,
+              message: 'names should be more than 5 characters',
+            },
+          }}
+          keyboardType={'default'}
+          containerStyle={{marginTop: SIZES.radius}}
+        />
+
+        {/* Total staff */}
+        <FormInput
+          control={control}
+          label="Total Staff"
+          placeholder="Enter your total number of staff"
+          name="totalStaff"
+          rules={{
+            required: 'Total number of staff is required',
+          }}
+          keyboardType={'numeric'}
+          containerStyle={{marginTop: SIZES.radius}}
+        />
+
+        {/* Business Type */}
+        <Controller
+          control={control}
+          name="businessType"
+          rules={{
+            required: 'Business Type is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <View>
+              <Text
+                style={{
+                  marginTop: SIZES.radius,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                }}>
+                Business Type
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'type',
+                }}
+                onChangeValue={onChange}
+                open={open1}
+                showArrowIcon={true}
+                placeholder="Select Business Type "
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value1 || value}
+                items={businessType}
+                setOpen={setOpen1}
+                setValue={setValue1}
+                setItems={setBusinessType}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.base,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select Identification"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setBusType(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
+        />
+
+        {/* Main Markets */}
+        <View style={{marginTop: SIZES.padding}}>
+          <Text
+            style={{
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+            }}>
+            Main Markets
+          </Text>
+
+          <View
+            style={{
+              flex: 1,
+              marginTop: 10,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+              borderRadius: SIZES.radius,
+            }}>
+            <Tags
+              containerStyle={{
+                margin: 4,
+                borderRadius: SIZES.base,
+                justifyContent: 'flex-start',
+              }}
+              initialText={''}
+              textInputProps={{
+                placeholderTextColor: COLORS.Neutral7,
+                placeholder: 'Add any type of item e.g. Africa, Asia',
+              }}
+              inputStyle={{
+                backgroundColor: COLORS.white,
+                color: COLORS.black,
+                ...FONTS.body3,
+              }}
+              initialTags={initialTags}
+              onChangeTags={onChangeTags}
+              onTagPress={onTagPress}
+              renderTag={renderTag}
+            />
+          </View>
+        </View>
+
+        {/* Languages */}
+        <View style={{marginTop: SIZES.radius}}>
+          <Text
+            style={{
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+            }}>
+            Languages Spoken
+          </Text>
+
+          <View
+            style={{
+              flex: 1,
+              marginTop: 10,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+              borderRadius: SIZES.radius,
+            }}>
+            <Tags
+              containerStyle={{
+                margin: 4,
+                borderRadius: SIZES.base,
+                justifyContent: 'flex-start',
+              }}
+              initialText={''}
+              textInputProps={{
+                placeholderTextColor: COLORS.Neutral7,
+                placeholder: 'Add any type of item e.g. English, French',
+              }}
+              inputStyle={{
+                backgroundColor: COLORS.white,
+                color: COLORS.black,
+                ...FONTS.body3,
+              }}
+              initialTags={initialTags2}
+              onChangeTags={onChangeTags2}
+              onTagPress={onTagPress2}
+              renderTag={renderTag2}
+            />
+          </View>
+        </View>
+
         {/* IDentification */}
         <Controller
           control={control}
-          name="IdType"
+          name="identification"
           rules={{
             required: 'Identification is required',
           }}
@@ -410,8 +810,8 @@ const Account = () => {
             <View>
               <Text
                 style={{
-                  marginTop: SIZES.semi_margin,
-                  color: COLORS.Neutral4,
+                  marginTop: SIZES.radius,
+                  color: COLORS.Neutral1,
                   ...FONTS.body3,
                   fontWeight: '500',
                 }}>
@@ -482,32 +882,71 @@ const Account = () => {
           )}
         />
 
-        {/* ID Number */}
-        <FormInput
-          control={control}
-          label="National Identification Number"
-          placeholder="Enter your ID Number"
-          name="IdNumber"
-          textInputStyle={{color: COLORS.gray}}
-          containerStyle={{marginTop: SIZES.padding}}
-        />
+        {/* Upload Identity Doc */}
+        <View style={{marginTop: SIZES.padding}}>
+          {!userAccount?.identityImage || !selectedPhoto1 ? (
+            <>
+              <Text
+                style={{
+                  color: COLORS.Neutral1,
+                  fontWeight: '500',
+                  ...FONTS.body2,
+                }}>
+                Upload Identity Document
+              </Text>
+              <Text style={{...FONTS.body3, color: COLORS.gray, paddingTop: 4}}>
+                Supported formats: .jpeg, .png, and .pdf files Maximum size of 5
+                Mb
+              </Text>
 
-        {/* key products */}
-        <FormInput
-          control={control}
-          label="Key Product"
-          placeholder="Type your the key product"
-          name="keyProduct"
-          textInputStyle={{color: COLORS.gray}}
-          containerStyle={{marginTop: SIZES.radius}}
-        />
+              <TouchableOpacity
+                style={{
+                  marginTop: SIZES.radius,
+                  justifyContent: 'center',
+                  width: 50,
+                  height: 50,
+                  borderRadius: SIZES.base,
+                  backgroundColor: COLORS.primary2,
+                  alignItems: 'center',
+                }}
+                onPress={onScanPress}>
+                <FastImage
+                  source={icons.upload}
+                  style={{width: 25, height: 25}}
+                  resizeMode={FastImage.resizeMode.contain}
+                  tintColor={COLORS.white}
+                />
+              </TouchableOpacity>
+            </>
+          ) : (
+            <View
+              style={{
+                alignItems: 'center',
+                marginHorizontal: SIZES.radius,
+                marginBottom: 50,
+              }}>
+              <FastImage
+                source={{
+                  uri: selectedPhoto2?.uri || userAccount?.identityImage,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+                style={{
+                  height: 300,
+                  width: 300,
+                  overflow: 'hidden',
+                  borderRadius: SIZES.radius,
+                }}
+              />
+            </View>
+          )}
+        </View>
       </View>
     );
   }
 
   return (
     <AlertNotificationRoot>
-      <View style={{flex: 1, backgroundColor: COLORS.white}}>
+      <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header title={'My Profile'} tintColor={COLORS.Neutral1} />
 
         {/* upload profile image */}
@@ -534,9 +973,12 @@ const Account = () => {
           enableOnAndroid={true}>
           {/* Profile Pic */}
           <AccountImage
+            showBanner={true}
             name={userAccount?.name}
             onEdit={() => setShowUploadPhotoModal(true)}
+            profile_image2={selectedPhoto2?.uri || userAccount?.backgroundImage}
             profile_image={selectedPhoto?.uri || userAccount?.logo}
+            onPress2={() => setShowUploadPhotoModal(true)}
           />
 
           {renderForm()}
@@ -549,6 +991,9 @@ const Account = () => {
             icon={icons.saver}
             iconStyle={COLORS.white}
             onPress={handleSubmit(onSubmit)}
+            containerStyle={{
+              marginTop: SIZES.padding * 1.5,
+            }}
           />
 
           {/* delete account */}

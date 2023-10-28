@@ -29,7 +29,7 @@ const OrderDetail = () => {
           padding: SIZES.semi_margin,
         }}>
         {dummyData?.shipping_status?.map((item, index) => {
-          console.log('status', item);
+          // console.log('status', item);
 
           return (
             <View
@@ -192,7 +192,7 @@ const OrderDetail = () => {
                     color: COLORS.primary1,
                     fontWeight: '600',
                   }}
-                  onPress={() => console.log('selected', item)}
+                  // onPress={() => console.log('selected', item)}
                 />
               )}
             </View>

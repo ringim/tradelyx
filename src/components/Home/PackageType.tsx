@@ -11,22 +11,23 @@ const PackageType = ({selected, item, onPress}: any) => {
         style={{
           borderRadius: SIZES.radius,
           borderWidth: selected ? 1 : 0,
-          padding: SIZES.semi_margin,
+          padding: SIZES.base,
           borderColor: selected ? COLORS.primary2 : '',
-          backgroundColor: selected ? COLORS.primary10 : COLORS.Neutral10,
+          backgroundColor: selected ? COLORS.primary10 : COLORS.Neutral9,
 
           justifyContent: 'center',
         }}>
         <FastImage
           source={item?.image}
-          style={{width: 40, height: 40}}
+          style={{width: 25, height: 25}}
           resizeMode={FastImage.resizeMode.contain}
         />
       </View>
       <Text
         style={{
-          ...FONTS.body3,
+          ...FONTS.cap1,
           color: COLORS.Neutral1,
+          fontWeight: '500',
           textAlign: 'center',
           paddingTop: SIZES.base,
         }}>

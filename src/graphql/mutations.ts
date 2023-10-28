@@ -14,6 +14,8 @@ export const createOrder = /* GraphQL */ `mutation CreateOrder(
 ) {
   createOrder(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     orderType
     orderStatus
     agreement
@@ -27,7 +29,6 @@ export const createOrder = /* GraphQL */ `mutation CreateOrder(
     rfqID
     rffID
     sellOfferID
-    createdAt
     updatedAt
     __typename
   }
@@ -42,6 +43,8 @@ export const updateOrder = /* GraphQL */ `mutation UpdateOrder(
 ) {
   updateOrder(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     orderType
     orderStatus
     agreement
@@ -55,7 +58,6 @@ export const updateOrder = /* GraphQL */ `mutation UpdateOrder(
     rfqID
     rffID
     sellOfferID
-    createdAt
     updatedAt
     __typename
   }
@@ -70,6 +72,8 @@ export const deleteOrder = /* GraphQL */ `mutation DeleteOrder(
 ) {
   deleteOrder(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     orderType
     orderStatus
     agreement
@@ -83,7 +87,6 @@ export const deleteOrder = /* GraphQL */ `mutation DeleteOrder(
     rfqID
     rffID
     sellOfferID
-    createdAt
     updatedAt
     __typename
   }
@@ -98,6 +101,8 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
 ) {
   createSellOffer(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     sellOfferID
     requestCategory
     title
@@ -119,11 +124,17 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
     userID
     commoditycategoryID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -137,14 +148,12 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -159,6 +168,8 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
 ) {
   updateSellOffer(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     sellOfferID
     requestCategory
     title
@@ -180,11 +191,17 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
     userID
     commoditycategoryID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -198,14 +215,12 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -220,6 +235,8 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
 ) {
   deleteSellOffer(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     sellOfferID
     requestCategory
     title
@@ -241,11 +258,17 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
     userID
     commoditycategoryID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -259,14 +282,12 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -281,6 +302,8 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
 ) {
   createRFQ(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     rfqNo
     rfqType
     title
@@ -295,10 +318,15 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
     buyFrequency
     budget
     placeOrigin
+    placeOriginFlag
+    placeOriginName
     landmark
     unit
     incoterms
+    placeDestinationName
     placeDestination
+    placeDestinationFlag
+    destinationCountry
     deliveryPeriod
     expiryDate
     paymentType
@@ -310,6 +338,8 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -323,14 +353,12 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -345,6 +373,8 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
 ) {
   updateRFQ(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     rfqNo
     rfqType
     title
@@ -359,10 +389,15 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
     buyFrequency
     budget
     placeOrigin
+    placeOriginFlag
+    placeOriginName
     landmark
     unit
     incoterms
+    placeDestinationName
     placeDestination
+    placeDestinationFlag
+    destinationCountry
     deliveryPeriod
     expiryDate
     paymentType
@@ -374,6 +409,8 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -387,14 +424,12 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -409,6 +444,8 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
 ) {
   deleteRFQ(input: $input, condition: $condition) {
     id
+    createdAt
+    SType
     rfqNo
     rfqType
     title
@@ -423,10 +460,15 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
     buyFrequency
     budget
     placeOrigin
+    placeOriginFlag
+    placeOriginName
     landmark
     unit
     incoterms
+    placeDestinationName
     placeDestination
+    placeDestinationFlag
+    destinationCountry
     deliveryPeriod
     expiryDate
     paymentType
@@ -438,6 +480,8 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -451,14 +495,12 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -473,13 +515,13 @@ export const createRFF = /* GraphQL */ `mutation CreateRFF(
 ) {
   createRFF(input: $input, condition: $condition) {
     id
+    SType
+    createdAt
     rffNo
     rffType
-    title
-    countryName
-    city
     deliveryPeriod
     requestCategory
+    rffRequestType
     productName
     handling
     loadDate
@@ -490,20 +532,27 @@ export const createRFF = /* GraphQL */ `mutation CreateRFF(
     width
     height
     placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
     placeDestination
     relatedServices
     invoiceAmount
+    document
     notes
-    loadType
     container
     containerSize
     containerType
-    containerCount
+    requestType
     commoditycategoryID
     userID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -517,14 +566,12 @@ export const createRFF = /* GraphQL */ `mutation CreateRFF(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -539,13 +586,13 @@ export const updateRFF = /* GraphQL */ `mutation UpdateRFF(
 ) {
   updateRFF(input: $input, condition: $condition) {
     id
+    SType
+    createdAt
     rffNo
     rffType
-    title
-    countryName
-    city
     deliveryPeriod
     requestCategory
+    rffRequestType
     productName
     handling
     loadDate
@@ -556,20 +603,27 @@ export const updateRFF = /* GraphQL */ `mutation UpdateRFF(
     width
     height
     placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
     placeDestination
     relatedServices
     invoiceAmount
+    document
     notes
-    loadType
     container
     containerSize
     containerType
-    containerCount
+    requestType
     commoditycategoryID
     userID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -583,14 +637,12 @@ export const updateRFF = /* GraphQL */ `mutation UpdateRFF(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -605,13 +657,13 @@ export const deleteRFF = /* GraphQL */ `mutation DeleteRFF(
 ) {
   deleteRFF(input: $input, condition: $condition) {
     id
+    SType
+    createdAt
     rffNo
     rffType
-    title
-    countryName
-    city
     deliveryPeriod
     requestCategory
+    rffRequestType
     productName
     handling
     loadDate
@@ -622,20 +674,27 @@ export const deleteRFF = /* GraphQL */ `mutation DeleteRFF(
     width
     height
     placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
     placeDestination
     relatedServices
     invoiceAmount
+    document
     notes
-    loadType
     container
     containerSize
     containerType
-    containerCount
+    requestType
     commoditycategoryID
     userID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -649,14 +708,12 @@ export const deleteRFF = /* GraphQL */ `mutation DeleteRFF(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -676,8 +733,11 @@ export const createCategories = /* GraphQL */ `mutation CreateCategories(
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -689,18 +749,22 @@ export const createCategories = /* GraphQL */ `mutation CreateCategories(
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -727,8 +791,11 @@ export const updateCategories = /* GraphQL */ `mutation UpdateCategories(
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -740,18 +807,22 @@ export const updateCategories = /* GraphQL */ `mutation UpdateCategories(
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -778,8 +849,11 @@ export const deleteCategories = /* GraphQL */ `mutation DeleteCategories(
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -791,18 +865,22 @@ export const deleteCategories = /* GraphQL */ `mutation DeleteCategories(
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -830,8 +908,11 @@ export const createCommodityCategory =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -843,18 +924,22 @@ export const createCommodityCategory =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -864,6 +949,8 @@ export const createCommodityCategory =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -878,10 +965,15 @@ export const createCommodityCategory =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -890,7 +982,6 @@ export const createCommodityCategory =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -900,13 +991,13 @@ export const createCommodityCategory =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -917,18 +1008,22 @@ export const createCommodityCategory =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -938,6 +1033,8 @@ export const createCommodityCategory =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -959,9 +1056,12 @@ export const createCommodityCategory =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -989,8 +1089,11 @@ export const updateCommodityCategory =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1002,18 +1105,22 @@ export const updateCommodityCategory =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1023,6 +1130,8 @@ export const updateCommodityCategory =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1037,10 +1146,15 @@ export const updateCommodityCategory =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1049,7 +1163,6 @@ export const updateCommodityCategory =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1059,13 +1172,13 @@ export const updateCommodityCategory =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1076,18 +1189,22 @@ export const updateCommodityCategory =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1097,6 +1214,8 @@ export const updateCommodityCategory =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1118,9 +1237,12 @@ export const updateCommodityCategory =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1148,8 +1270,11 @@ export const deleteCommodityCategory =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1161,18 +1286,22 @@ export const deleteCommodityCategory =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1182,6 +1311,8 @@ export const deleteCommodityCategory =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1196,10 +1327,15 @@ export const deleteCommodityCategory =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1208,7 +1344,6 @@ export const deleteCommodityCategory =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1218,13 +1353,13 @@ export const deleteCommodityCategory =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1235,18 +1370,22 @@ export const deleteCommodityCategory =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1256,6 +1395,8 @@ export const deleteCommodityCategory =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1277,9 +1418,12 @@ export const deleteCommodityCategory =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1361,8 +1505,11 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
 ) {
   createProduct(input: $input, condition: $condition) {
     id
-    image
+    createdAt
+    SType
     title
+    productImage
+    image
     images
     description
     rating
@@ -1374,14 +1521,19 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
     packageType
     quantity
     fobPrice
-    deliveryTime
     paymentType
     transportMode
     placeOrigin
     dateAvailable
     productSpec
-    productDoc
+    productDocs
+    productCert
     documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
     commoditycategoryID
     categoriesID
     userID
@@ -1400,7 +1552,6 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -1415,8 +1566,11 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
 ) {
   updateProduct(input: $input, condition: $condition) {
     id
-    image
+    createdAt
+    SType
     title
+    productImage
+    image
     images
     description
     rating
@@ -1428,14 +1582,19 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
     packageType
     quantity
     fobPrice
-    deliveryTime
     paymentType
     transportMode
     placeOrigin
     dateAvailable
     productSpec
-    productDoc
+    productDocs
+    productCert
     documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
     commoditycategoryID
     categoriesID
     userID
@@ -1454,7 +1613,6 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -1469,8 +1627,11 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
 ) {
   deleteProduct(input: $input, condition: $condition) {
     id
-    image
+    createdAt
+    SType
     title
+    productImage
+    image
     images
     description
     rating
@@ -1482,14 +1643,19 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
     packageType
     quantity
     fobPrice
-    deliveryTime
     paymentType
     transportMode
     placeOrigin
     dateAvailable
     productSpec
-    productDoc
+    productDocs
+    productCert
     documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
     commoditycategoryID
     categoriesID
     userID
@@ -1508,7 +1674,6 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -1530,6 +1695,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     accountType
     lat
     lng
+    ledgerBalance
     address
     city
     state
@@ -1539,6 +1705,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     level
     identification
     identificationNumber
+    identityImage
     keyProduct
     country
     inviteCode
@@ -1550,16 +1717,20 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     businessType
     certifications
     mainMarkets
+    memberShipType
+    sellerLevel
     estRevenue
     totalStaff
     responseTime
     languages
     legalRep
     overview
-    memberType
+    activeOrder
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -1573,7 +1744,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
@@ -1583,8 +1753,11 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1596,18 +1769,22 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1632,6 +1809,8 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1646,10 +1825,15 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1658,7 +1842,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1668,13 +1851,13 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1685,18 +1868,22 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1706,6 +1893,8 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1727,9 +1916,12 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1758,6 +1950,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     accountType
     lat
     lng
+    ledgerBalance
     address
     city
     state
@@ -1767,6 +1960,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     level
     identification
     identificationNumber
+    identityImage
     keyProduct
     country
     inviteCode
@@ -1778,16 +1972,20 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     businessType
     certifications
     mainMarkets
+    memberShipType
+    sellerLevel
     estRevenue
     totalStaff
     responseTime
     languages
     legalRep
     overview
-    memberType
+    activeOrder
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -1801,7 +1999,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
@@ -1811,8 +2008,11 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1824,18 +2024,22 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1860,6 +2064,8 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1874,10 +2080,15 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1886,7 +2097,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1896,13 +2106,13 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1913,18 +2123,22 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1934,6 +2148,8 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1955,9 +2171,12 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1986,6 +2205,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     accountType
     lat
     lng
+    ledgerBalance
     address
     city
     state
@@ -1995,6 +2215,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     level
     identification
     identificationNumber
+    identityImage
     keyProduct
     country
     inviteCode
@@ -2006,16 +2227,20 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     businessType
     certifications
     mainMarkets
+    memberShipType
+    sellerLevel
     estRevenue
     totalStaff
     responseTime
     languages
     legalRep
     overview
-    memberType
+    activeOrder
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -2029,7 +2254,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
@@ -2039,8 +2263,11 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -2052,18 +2279,22 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -2088,6 +2319,8 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -2102,10 +2335,15 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -2114,7 +2352,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -2124,13 +2361,13 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -2141,18 +2378,22 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -2162,6 +2403,8 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -2183,9 +2426,12 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }

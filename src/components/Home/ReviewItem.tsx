@@ -24,7 +24,7 @@ const ReviewItem = ({item}: any) => {
         {/* name */}
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {item?.user}
+            {item?.name}
           </Text>
         </View>
       </View>
@@ -58,7 +58,7 @@ const ReviewItem = ({item}: any) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            {parseFloat(item?.rate).toFixed(1)}
+            {parseFloat(item?.rating).toFixed(1)}
           </Text>
         </View>
 
@@ -77,7 +77,7 @@ const ReviewItem = ({item}: any) => {
 
       <View style={{marginTop: SIZES.base}}>
         <Text style={{...FONTS.body3, lineHeight: 24, color: COLORS.Neutral6}}>
-          {item?.description}
+          {item?.comment}
         </Text>
       </View>
 

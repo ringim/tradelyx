@@ -1,6 +1,6 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 
 import {COLORS, FONTS, SIZES} from '../../constants';
 
@@ -10,12 +10,13 @@ const PromoSection = ({containerStyle, markets}: any) => {
       data={markets}
       keyExtractor={item => `${item?.id}`}
       showsHorizontalScrollIndicator={false}
+      scrollEnabled={false}
       renderItem={({item, index}) => (
         <View
           key={index}
           style={{
             backgroundColor: COLORS.white,
-            paddingBottom: 3,
+            paddingBottom: 2,
             ...containerStyle,
           }}>
           <View
@@ -25,7 +26,6 @@ const PromoSection = ({containerStyle, markets}: any) => {
             }}>
             <View style={{justifyContent: 'center'}}>
               <Text
-                numberOfLines={2}
                 style={{
                   ...FONTS.body3,
                   fontWeight: 'bold',
@@ -46,8 +46,9 @@ const PromoSection = ({containerStyle, markets}: any) => {
                   ...FONTS.body3,
                   fontWeight: 'bold',
                   color: COLORS.Neutral1,
+                  top: 3
                 }}>
-                {item?.country}
+                {item}
               </Text>
             </View>
           </View>

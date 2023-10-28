@@ -1,38 +1,46 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {DUMMY_IMAGE} from '../../utilities/Utils';
 
 interface IItem {
   item: string | any;
   onPress: any;
   containerStyle?: any;
+  store_image?: any;
 }
 
-const VendorItem = ({containerStyle, item, onPress}: IItem) => {
+const VendorItem = ({containerStyle, item, store_image, onPress}: IItem) => {
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (store_image) {
+      Storage.get(store_image).then(setImageUri);
+    }
+  }, [store_image]);
+
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={{
         borderRadius: SIZES.semi_margin,
-        padding: SIZES.base,
+        padding: 17,
         paddingBottom: SIZES.semi_margin,
         ...containerStyle,
       }}>
       <View
         style={{
-          alignItems: 'center',
-          backgroundColor: COLORS.Neutral10,
-          width: 120,
-          paddingVertical: SIZES.padding,
           borderRadius: SIZES.radius,
         }}>
         <FastImage
-          source={item.image}
-          resizeMode={FastImage.resizeMode.contain}
+          source={{uri: imageUri || DUMMY_IMAGE}}
           style={{
-            width: 70,
-            height: 70,
+            width: 100,
+            height: 100,
+            borderRadius: SIZES.radius,
           }}
         />
       </View>
@@ -42,15 +50,19 @@ const VendorItem = ({containerStyle, item, onPress}: IItem) => {
         style={{
           marginTop: SIZES.base,
         }}>
-        <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-          {item?.supplier}
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit={true}
+          minimumFontScale={0.5}
+          style={{...FONTS.cap2, fontWeight: '600', color: COLORS.Neutral1}}>
+          {item?.businessName}
         </Text>
       </View>
 
       {/* Supplier address, */}
       <View
         style={{
-          marginTop: SIZES.base,
+          marginTop: 6,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
@@ -65,16 +77,19 @@ const VendorItem = ({containerStyle, item, onPress}: IItem) => {
             }}
           />
         </View>
-        <View
-          style={{flex: 1, marginLeft: SIZES.base, justifyContent: 'center'}}>
+        <View style={{flex: 1, paddingLeft: 4, justifyContent: 'center'}}>
           <Text
-            numberOfLines={2}
-            style={{...FONTS.cap1, color: COLORS.Neutral6}}>
-            {item?.address2}
+            numberOfLines={1}
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.5}
+            style={{...FONTS.cap2, color: COLORS.Neutral6}}>
+            {item?.city}
+            {', '}
+            {item?.country}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

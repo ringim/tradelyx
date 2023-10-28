@@ -19,6 +19,7 @@ const explore = require('../assets/icons/explore.png');
 const chat = require('../assets/icons/chat.png');
 const eye_off = require('../assets/icons/eye-off.png');
 const order = require('../assets/icons/order.png');
+const docs = require('../assets/icons/docs.png');
 const plus = require('../assets/icons/plus.png');
 const rate = require('../assets/icons/rate.png');
 const bell = require('../assets/icons/bell.png');
@@ -161,6 +162,7 @@ export default {
   call,
   logOut,
   save,
+  docs,
   email,
   network,
   bell,

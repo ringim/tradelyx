@@ -1,6 +1,7 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
+import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
@@ -18,6 +19,11 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   };
+
+  const expiryDateString = item?.expiryDate;
+  const expiryDate = dayjs(expiryDateString);
+  const currentDate = dayjs();
+  const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
 
   return (
     <View
@@ -43,7 +49,8 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             flex: 1,
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+          <Text
+            style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral6}}>
             Buyer from
           </Text>
         </View>
@@ -54,11 +61,11 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <FastImage
-            source={item?.toImg}
+            source={{uri: item?.placeOriginFlag}}
             resizeMode={FastImage.resizeMode.contain}
             style={{
-              width: 23,
-              height: 23,
+              width: 17,
+              height: 17,
             }}
           />
         </View>
@@ -67,14 +74,17 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
             padding: SIZES.base,
-            borderRadius: SIZES.radius,
+            alignItems: 'flex-end',
           }}>
           <Text
             style={{
-              ...FONTS.h5,
+              ...FONTS.cap1,
+              fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.to}
+            {item?.city}
+            {', '}
+            {item?.countryName}
           </Text>
         </View>
       </View>
@@ -82,7 +92,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
       {/* RFQ Number */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: 4,
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginHorizontal: SIZES.semi_margin,
@@ -92,7 +102,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             flex: 1,
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>RFQ No</Text>
+          <Text style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral6}}>RFQ No</Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
@@ -135,26 +145,28 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             source={icons.calender}
             resizeMode={FastImage.resizeMode.contain}
             style={{
-              width: 25,
-              height: 25,
+              width: 22,
+              height: 22,
             }}
           />
         </View>
         <View
           style={{flex: 1, marginLeft: SIZES.base, justifyContent: 'center'}}>
-          <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
+          <Text
+            style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral5}}>
             {item?.expiryDate}
           </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Exp in:</Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Exp in: </Text>
         </View>
         <View
           style={{
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {item?.expiry} days
+          <Text
+            style={{...FONTS.cap1, fontWeight: '600', color: COLORS.Neutral1}}>
+            {daysUntilExpiry} days
           </Text>
         </View>
       </View>
@@ -177,8 +189,10 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           marginHorizontal: SIZES.semi_margin,
           justifyContent: 'center',
         }}>
-        <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-          {item?.desc}
+        <Text
+          numberOfLines={2}
+          style={{...FONTS.cap1, fontWeight: '600', color: COLORS.Neutral1}}>
+          {item?.description}
         </Text>
       </View>
 
@@ -194,8 +208,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
             Product Name
           </Text>
         </View>
@@ -203,7 +216,12 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.h5, color: COLORS.Neutral1, lineHeight: 24}}>
+          <Text
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
+            }}>
             {item?.productName}
           </Text>
         </View>
@@ -212,7 +230,6 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
       {/* Qty */}
       <View
         style={{
-          marginTop: 4,
           flexDirection: 'row',
           marginHorizontal: SIZES.semi_margin,
           justifyContent: 'space-between',
@@ -221,8 +238,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
             Qty Required
           </Text>
         </View>
@@ -230,7 +246,12 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.h5, color: COLORS.Neutral1, lineHeight: 24}}>
+          <Text
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
+            }}>
             {item?.qty} bags
           </Text>
         </View>
@@ -239,7 +260,6 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
       {/* Payment terms */}
       <View
         style={{
-          marginTop: 4,
           flexDirection: 'row',
           marginHorizontal: SIZES.semi_margin,
           justifyContent: 'space-between',
@@ -248,8 +268,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
             Payment Terms
           </Text>
         </View>
@@ -257,8 +276,13 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.h5, color: COLORS.Neutral1, lineHeight: 24}}>
-            {item?.paymentTerms}
+          <Text
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
+            }}>
+            {item?.paymentType}
           </Text>
         </View>
       </View>
@@ -266,7 +290,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
       {/* Price */}
       <View
         style={{
-          marginTop: SIZES.semi_margin,
+          marginTop: SIZES.radius,
           flexDirection: 'row',
           justifyContent: 'space-between',
           backgroundColor: COLORS.Neutral10,
@@ -275,7 +299,10 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
           padding: SIZES.radius,
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Budget</Text>
+          <Text
+            style={{...FONTS.body3, fontWeight: '500', color: COLORS.Neutral6}}>
+            Budget
+          </Text>
           <Text
             style={{
               ...FONTS.h3,
@@ -283,7 +310,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
               letterSpacing: -1,
               paddingTop: SIZES.base,
             }}>
-            ₦{item?.price.toLocaleString('en-US', options)}
+            ₦{item?.budget?.toLocaleString('en-US', options)}
           </Text>
         </View>
 

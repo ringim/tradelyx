@@ -3,6 +3,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
+import {FlashList} from '@shopify/flash-list';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
 import {OrderItem, OrderTabItem} from '../../../components';

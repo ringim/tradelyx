@@ -49,7 +49,7 @@ const MiniumOrderPayment = () => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '45%'], []);
+  const snapPoints = useMemo(() => ['48%', '48%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -123,8 +123,8 @@ const MiniumOrderPayment = () => {
           input,
         },
       });
-      console.log('job data', input);
-      // handlePresentModalPress();
+      // console.log('job data', input);
+      handlePresentModalPress();
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -166,7 +166,7 @@ const MiniumOrderPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 230,
+              width: 180,
             }}
           />
           {/* Quantity & Unit Measurement */}
@@ -201,7 +201,7 @@ const MiniumOrderPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 155,
+                    width: 150,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -484,7 +484,7 @@ const MiniumOrderPayment = () => {
           date={date}
           onPress={showDatePicker}
           title="Offer Validity (1-30 days)"
-          containerStyle={{marginTop: SIZES.padding}}
+          containerStyle={{marginTop: SIZES.padding, marginBottom: 100}}
         />
       </View>
     );

@@ -1,11 +1,16 @@
-import {View, Text, Pressable} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {View, Text, Pressable, ActivityIndicator} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {Slider} from '@miblanchard/react-native-slider';
+import {useQuery} from '@apollo/client';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
@@ -22,6 +27,15 @@ import {
   TextButton,
 } from '../../../components';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
+import {
+  AccountCategoryType,
+  ListCategoriesQuery,
+  ListCategoriesQueryVariables,
+  ListUsersQuery,
+  ListUsersQueryVariables,
+} from '../../../API';
+import {listCategories} from '../../../queries/ProductQueries';
+import {listUsers} from '../../../queries/UserQueries';
 
 interface IFilter {
   address: string;
@@ -33,6 +47,27 @@ const Filter = () => {
 
   const {control, handleSubmit, setValue}: any = useForm();
 
+  // LIST COMMODITY CATEGORIES
+  const {data: newData, loading: newLoad} = useQuery<
+    ListCategoriesQuery,
+    ListCategoriesQueryVariables
+  >(listCategories, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+
+  // LIST SUPPLIERS
+  const {data: onData, loading: onLoad} = useQuery<
+    ListUsersQuery,
+    ListUsersQueryVariables
+  >(listUsers, {
+    variables: {limit: 4},
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+
   const [address, setAddress] = useState<any>('');
   const [isSelected, setIsSelected] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,17 +77,19 @@ const Filter = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.allCategories);
+  const [jobType, setJobType] = useState<any>();
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.requestType);
+  const [jobType2, setJobType2] = useState<any>();
 
   // console.log(isSelected);
-  // console.log('slider start value', sliderValue);
-
-  console.log(address?.description?.formatted_address);
+  console.log('slider start value', sliderValue);
+  console.log('category ', type);
+  console.log('suppliers ', type2);
+  console.log('address ', address?.description?.formatted_address);
+  console.log('quantity', quantity);
 
   useEffect(() => {
     let unmounted = false;
@@ -68,6 +105,25 @@ const Filter = () => {
     setValue,
     address?.description?.formatted_address,
   ]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const allCommodityCategories: any =
+        newData?.listCategories?.items.filter((item: any) => !item?._deleted) ||
+        [];
+      setJobType(allCommodityCategories);
+    }, [newLoad]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const suppliers: any =
+        onData?.listUsers?.items
+          .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
+          .filter((item: any) => !item?._deleted) || [];
+      setJobType2(suppliers);
+    }, [onLoad]),
+  );
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -116,173 +172,124 @@ const Filter = () => {
           marginHorizontal: SIZES.semi_margin,
         }}>
         {/* Select Category */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'Category is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: SIZES.radius}}>
-              <Text
-                style={{
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Product
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select type"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
+        <View style={{marginTop: SIZES.radius}}>
+          <Text
+            style={{
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Product Category
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'title',
+              value: 'id',
+            }}
+            open={open}
+            showArrowIcon={true}
+            placeholder="Select"
+            showTickIcon={true}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            loading={newLoad}
+            value={value1}
+            items={jobType}
+            setOpen={setOpen}
+            setValue={setValue1}
+            setItems={setJobType}
+            style={{
+              borderRadius: SIZES.base,
+              height: 40,
+              marginTop: SIZES.base,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 24,
+              height: 24,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select category"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onSelectItem={(value: any) => {
+              setType(value?.title);
+            }}
+          />
+        </View>
 
-        {/* Select Request Type */}
-        <Controller
-          control={control}
-          name="requestType"
-          rules={{
-            required: 'Request type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: SIZES.padding * 1.5}}>
-              <Text
-                style={{
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Seller
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open2}
-                showArrowIcon={true}
-                placeholder="Select"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value2}
-                items={jobType2}
-                setOpen={setOpen2}
-                setValue={setValue2}
-                setItems={setJobType2}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType2(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
+        {/* Supplier Type */}
+        <View style={{marginTop: SIZES.padding * 1.2}}>
+          <Text
+            style={{
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Suppliers
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'type',
+              value: 'type',
+            }}
+            open={open2}
+            showArrowIcon={true}
+            placeholder="Select"
+            showTickIcon={true}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            value={value2}
+            items={jobType2}
+            setOpen={setOpen2}
+            setValue={setValue2}
+            setItems={setJobType2}
+            style={{
+              borderRadius: SIZES.base,
+              height: 40,
+              marginTop: SIZES.base,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 24,
+              height: 24,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select Seller"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onSelectItem={(value: any) => {
+              setType2(value?.businessName);
+            }}
+          />
+        </View>
 
         {/* Price range slider */}
-        <View style={{marginTop: SIZES.padding * 1.5}}>
+        <View style={{marginTop: SIZES.padding * 1.2}}>
           <View style={{justifyContent: 'center'}}>
             <Text
               style={{
@@ -340,6 +347,7 @@ const Filter = () => {
               containerStyle={{marginTop: SIZES.margin}}
               labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
               inputContainerStyle={{marginTop: SIZES.radius}}
+              onPress={() => navigation.navigate('SearchAddressFilter')}
             />
           </Pressable>
         </Pressable>
@@ -353,6 +361,14 @@ const Filter = () => {
         />
       </View>
     );
+  }
+
+  if (newLoad || onLoad) {
+    <ActivityIndicator
+      style={{flex: 1, justifyContent: 'center'}}
+      size={'large'}
+      color={COLORS.primary6}
+    />;
   }
 
   return (

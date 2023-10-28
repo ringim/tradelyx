@@ -13,17 +13,17 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {FormInput, Header, TextButton} from '../../../../components';
-import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
-import {getProduct, updateProduct} from '../../../../queries/ProductQueries';
+import {FormInput, Header, TextButton} from '../../../../../components';
+import {COLORS, FONTS, SIZES, constants, icons} from '../../../../../constants';
+import {getProduct, updateProduct} from '../../../../../queries/ProductQueries';
 import {
   UpdateProductInput,
   UpdateProductMutation,
   UpdateProductMutationVariables,
   GetProductQuery,
   GetProductQueryVariables,
-} from '../../../../API';
-import {EditProductPriceRouteProp} from '../../../../components/navigation/SellerNav/type/navigation';
+} from '../../../../../API';
+import {EditProductPriceRouteProp, ProfileStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 
 interface ProductData {
   qty: number;
@@ -33,7 +33,7 @@ interface ProductData {
 }
 
 const EditProductPrice = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<ProfileStackNavigatorParamList>();
   const route = useRoute<EditProductPriceRouteProp>();
 
   const {id}: any = route?.params?.product;
@@ -59,7 +59,6 @@ const EditProductPrice = () => {
     variables: {id: id},
   });
   const productDetails: any = data?.getProduct;
-  console.log('infomat', productDetails);
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
@@ -85,7 +84,7 @@ const EditProductPrice = () => {
           input,
         },
       });
-      console.log('product data updated', input);
+      // console.log('product data updated', input);
       navigation.navigate('EditProductShipment', {product: productDetails});
     } catch (error) {
       Toast.show({

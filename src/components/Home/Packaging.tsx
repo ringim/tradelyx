@@ -4,15 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const Packaging = ({
-  packageType,
-  unit,
-  containerStyle,
-  file,
-  file2,
-  productCert,
-  contentStyle
-}: any) => {
+const Packaging = ({packageType, unit, productCert, contentStyle}: any) => {
   return (
     <View
       style={{
@@ -21,7 +13,7 @@ const Packaging = ({
         backgroundColor: COLORS.white,
         marginTop: SIZES.radius,
         marginHorizontal: SIZES.semi_margin,
-        ...contentStyle
+        ...contentStyle,
       }}>
       <View
         style={{
@@ -101,76 +93,13 @@ const Packaging = ({
         <View
           style={{
             flex: 1,
-            marginLeft: SIZES.semi_margin,
+            alignItems: 'flex-end',
             justifyContent: 'center',
           }}>
           <Text
             numberOfLines={3}
             style={{...FONTS.body3, color: COLORS.Neutral1}}>
             {productCert}
-          </Text>
-        </View>
-      </View>
-
-      {/* Documents */}
-      <View
-        style={{
-          marginTop: SIZES.radius,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          ...containerStyle,
-        }}>
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
-          <FastImage
-            tintColor={COLORS.secondary1}
-            source={icons.summary}
-            style={{width: 20, height: 20}}
-          />
-        </View>
-
-        {/* file name and date of upload */}
-        <View
-          style={{
-            flex: 1,
-            marginLeft: SIZES.base,
-            justifyContent: 'center',
-          }}>
-          <Text style={{...FONTS.h5, color: COLORS.primary1}} numberOfLines={2}>
-            {file}
-          </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          marginTop: SIZES.radius,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          ...containerStyle,
-        }}>
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
-          <FastImage
-            tintColor={COLORS.secondary1}
-            source={icons.summary}
-            style={{width: 20, height: 20}}
-          />
-        </View>
-
-        {/* file name and date of upload */}
-        <View
-          style={{
-            flex: 1,
-            marginLeft: SIZES.base,
-            justifyContent: 'center',
-          }}>
-          <Text style={{...FONTS.h5, color: COLORS.primary1}} numberOfLines={2}>
-            {file2}
           </Text>
         </View>
       </View>

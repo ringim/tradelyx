@@ -19,13 +19,12 @@ import {
   UserAddress,
   QuotesRequestDetails,
   RFQDetail,
-  RFQSearch,
-  RFFSearch,
   OrderDetail,
   ProgressOrderDetail,
   AgentRequestDetails,
   AccountAddress,
   EditProductPrice,
+  AddProducts,
   EditProductShipmentAddress,
   EditProductShipment,
   ProductSpecification,
@@ -35,6 +34,11 @@ import {
   ProductShipment,
   EditProductSpec,
   StoreItem,
+  SellOfferDetail,
+  EditSellOfferItem,
+  EditSellOfferPricing,
+  EditSellOfferShipment,
+  EditSellOfferShipmentAddress,
 } from '../../../screens/Seller';
 import CBottomTabs from './SBottomTabs';
 
@@ -104,6 +108,11 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
+        name="SellOfferDetail"
+        component={SellOfferDetail}
+        options={() => options}
+      />
+      <Stack.Screen
         name="Notifications"
         component={Notifications}
         options={() => options}
@@ -111,6 +120,16 @@ const SellerStack = () => {
       <Stack.Screen
         name="ProductShipmentAddress"
         component={ProductShipmentAddress}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="EditSellOfferShipment"
+        component={EditSellOfferShipment}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="EditSellOfferShipmentAddress"
+        component={EditSellOfferShipmentAddress}
         options={() => options}
       />
       <Stack.Screen
@@ -131,6 +150,11 @@ const SellerStack = () => {
       <Stack.Screen
         name="EditProductShipmentAddress"
         component={EditProductShipmentAddress}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="AddProducts"
+        component={AddProducts}
         options={() => options}
       />
       <Stack.Screen
@@ -180,6 +204,16 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
+        name="EditSellOfferItem"
+        component={EditSellOfferItem}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="EditSellOfferPricing"
+        component={EditSellOfferPricing}
+        options={() => options}
+      />
+      <Stack.Screen
         name="EditProductItem"
         component={EditProductItem}
         options={() => options}
@@ -192,16 +226,6 @@ const SellerStack = () => {
       <Stack.Screen
         name="ProductShipment"
         component={ProductShipment}
-        options={() => options}
-      />
-      <Stack.Screen
-        name="RFFSearch"
-        component={RFFSearch}
-        options={() => options}
-      />
-      <Stack.Screen
-        name="RFQSearch"
-        component={RFQSearch}
         options={() => options}
       />
       <Stack.Screen

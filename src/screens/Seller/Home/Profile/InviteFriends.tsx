@@ -6,7 +6,7 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
+import { FlashList } from '@shopify/flash-list';
 import Contacts from 'react-native-contacts';
 import FastImage from 'react-native-fast-image';
 import * as SMS from 'expo-sms';
@@ -135,16 +135,20 @@ const InviteFriends = () => {
         </View>
       </View>
 
-      <FlatList
+      <FlashList
         data={allContacts}
         keyExtractor={item => item.recordID}
+        estimatedItemSize={200}
+        getItemType={({item}: any) => {
+          return item;
+        }}
         renderItem={(contact: any) => {
           const openComposer = async () => {
             const {result} = await SMS.sendSMSAsync(
               [contact.item.phoneNumbers[0].number],
               `${msg}`,
             );
-            console.log(result);
+            // console.log(result);
           };
           return (
             <ListItem

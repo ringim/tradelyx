@@ -1,37 +1,24 @@
-import {ActivityIndicator, View} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {ActivityIndicator, RefreshControl, View} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
 
-import {COLORS, SIZES} from '../../../constants';
-import {SearchBox2, ProductItem} from '../../../components';
-import {ListProductsQuery, ListProductsQueryVariables} from '../../../API';
-import {useQuery} from '@apollo/client';
-import {listProducts} from '../../../queries/ProductQueries';
-import {useAuthContext} from '../../../context/AuthContext';
+import {COLORS, SIZES} from '../../../../constants';
+import {SearchBox2, ProductItem, NoItem} from '../../../../components';
 
-const MyStore = () => {
+const MyStore = ({data, refetch, loading}: any) => {
   const navigation = useNavigation<any>();
-  const {userID} = useAuthContext();
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
   const [masterDataSource, setMasterDataSource] = useState<any>([]);
 
-  const {data, loading} = useQuery<
-    ListProductsQuery,
-    ListProductsQueryVariables
-  >(listProducts, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
-  });
+  // console.log('list products', filteredDataSource)
 
   // SEARCH FILTER
   const searchFilterFunction = (text: any) => {
@@ -53,10 +40,7 @@ const MyStore = () => {
 
   useEffect(() => {
     try {
-      const items =
-        data?.listProducts?.items
-          ?.filter(usrID => usrID?.userID === userID)
-          .filter((item: any) => !item?._deleted) || [];
+      const items = data;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -69,7 +53,7 @@ const MyStore = () => {
   }, [loading]);
 
   if (loading) {
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, justifyContent: 'center'}}>
       <ActivityIndicator
         style={{justifyContent: 'center'}}
         size={'large'}
@@ -85,27 +69,42 @@ const MyStore = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
+          showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
+        {/* list of items */}
+        {!filteredDataSource && <NoItem />}
 
-        {/* list of categories */}
-        <FlatList
+        <FlashList
           data={filteredDataSource}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => `${item?.id}`}
+          estimatedItemSize={200}
+          getItemType={({item}: any) => {
+            return item;
+          }}
           renderItem={({item, index}) => {
             return (
               <ProductItem
                 key={index}
                 item={item}
-                product_image={item?.image}
+                product_image={item?.productImage}
                 onPress={() =>
                   navigation.navigate('StoreItem', {storeItem: item})
                 }
               />
             );
           }}
-          ListFooterComponent={<View style={{height: 200}} />}
+          refreshControl={
+            <RefreshControl
+              tintColor={COLORS.primary4}
+              refreshing={loading}
+              onRefresh={() => refetch()}
+            />
+          }
+          ListFooterComponent={
+            <View style={{height: filteredDataSource?.length - 1 && 200}} />
+          }
         />
       </View>
     </AlertNotificationRoot>

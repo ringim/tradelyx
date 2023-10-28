@@ -1,22 +1,54 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
+import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
+import {DUMMY_IMAGE} from '../../utilities/Utils';
+import {FlatList} from 'react-native-gesture-handler';
 
 interface IItem {
   item: string | any;
   onPress: any;
   containerStyle?: any;
+  profile_image: any;
+  profile_image2: any;
 }
 
-const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
+const SearchItem4 = ({
+  containerStyle,
+  item,
+  onPress,
+  profile_image2,
+  profile_image,
+}: IItem) => {
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   };
+
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (profile_image) {
+      Storage.get(profile_image).then(setImageUri);
+    }
+  }, [profile_image]);
+
+  useEffect(() => {
+    if (profile_image2) {
+      Storage.get(profile_image2).then(setImageUri2);
+    }
+  }, [profile_image2]);
+
+  const expiryDateString = item?.offerValidity;
+  const expiryDate = dayjs(expiryDateString);
+  const currentDate = dayjs();
+  const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
 
   return (
     <TouchableOpacity
@@ -40,19 +72,14 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
         <View
           style={{
             justifyContent: 'center',
-            width: 32,
-            height: 32,
-            alignSelf: 'center',
-            backgroundColor: COLORS.lightYellow,
-            borderRadius: SIZES.base,
           }}>
           <FastImage
-            source={item?.storeImg}
-            resizeMode={FastImage.resizeMode.contain}
+            source={{uri: imageUri2 || DUMMY_IMAGE}}
+            resizeMode={FastImage.resizeMode.cover}
             style={{
-              width: 20,
-              height: 20,
-              left: 6,
+              width: 32,
+              height: 32,
+              borderRadius: SIZES.base,
             }}
           />
         </View>
@@ -65,7 +92,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {item?.supplier}
+            {item?.storeName}
           </Text>
 
           {/* Rating, */}
@@ -94,7 +121,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                {parseFloat(item?.rating).toFixed(1)}
+                {parseFloat(item?.storeRating).toFixed(0)}
               </Text>
             </View>
           </View>
@@ -109,8 +136,8 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
             alignSelf: 'center',
           }}>
           <FastImage
+            source={{uri: imageUri || DUMMY_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
-            source={item?.image}
             style={{
               width: 325,
               height: 145,
@@ -128,7 +155,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
           <Text
             numberOfLines={2}
             style={{...FONTS.h4, color: COLORS.Neutral1, lineHeight: 24}}>
-            {item?.name}
+            {item?.title}
           </Text>
         </View>
 
@@ -154,13 +181,13 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
           <View
             style={{
               flex: 1,
-              marginLeft: SIZES.radius,
+              marginLeft: 4,
               justifyContent: 'center',
             }}>
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {item?.address2}
+              {item?.storeAddress}
             </Text>
           </View>
         </View>
@@ -168,21 +195,25 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
         {/* Qty required */}
         <View
           style={{
-            marginTop: SIZES.radius,
-            marginHorizontal: SIZES.semi_margin,
+            marginTop: SIZES.base,
+            marginHorizontal: SIZES.margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Quantity Required
+              Quantity required
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {item?.qtyOffered} bags
+              style={{
+                ...FONTS.body3,
+                fontWeight: '600',
+                color: COLORS.Neutral1,
+              }}>
+              {item?.qtyMeasure}
             </Text>
           </View>
         </View>
@@ -190,7 +221,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
         {/* expiry */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             marginHorizontal: SIZES.radius,
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -210,7 +241,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {item?.expiryDays} days
+              {daysUntilExpiry} days
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -227,7 +258,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-              {item?.expiry}
+              {item?.offerValidity}
             </Text>
           </View>
         </View>
@@ -247,7 +278,7 @@ const SearchItem4 = ({containerStyle, item, onPress}: IItem) => {
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Text
             style={{...FONTS.h3, color: COLORS.primary1, letterSpacing: -1}}>
-            ₦{item?.price.toLocaleString('en-US', options)}
+            ₦{item?.fobPrice.toLocaleString('en-US', options)}
           </Text>
         </View>
 

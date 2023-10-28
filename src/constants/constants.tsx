@@ -1,3 +1,5 @@
+import FastImage from 'react-native-fast-image';
+
 const register_options = [
   {
     id: 0,
@@ -190,32 +192,86 @@ const packageType = [
   {
     id: 1,
     type: 'Bag',
-    image: require('../assets/icons/bag.png'),
+    icon: () => (
+      <FastImage
+        source={require('../assets/icons/bag.png')}
+        resizeMode={FastImage.resizeMode.contain}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    ),
   },
   {
     id: 2,
     type: 'Box',
-    image: require('../assets/icons/box.png'),
+    icon: () => (
+      <FastImage
+        source={require('../assets/icons/box.png')}
+        resizeMode={FastImage.resizeMode.contain}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    ),
   },
   {
     id: 3,
     type: 'Crate',
-    image: require('../assets/icons/crate.png'),
+    icon: () => (
+      <FastImage
+        source={require('../assets/icons/crate.png')}
+        resizeMode={FastImage.resizeMode.contain}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    ),
   },
   {
     id: 4,
     type: 'Barrel',
-    image: require('../assets/icons/barrel.png'),
+    icon: () => (
+      <FastImage
+        source={require('../assets/icons/barrel.png')}
+        resizeMode={FastImage.resizeMode.contain}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    ),
   },
   {
     id: 5,
     type: 'Pallet',
-    image: require('../assets/icons/pallet.png'),
+    icon: () => (
+      <FastImage
+        source={require('../assets/icons/pallet.png')}
+        resizeMode={FastImage.resizeMode.contain}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    ),
   },
   {
     id: 6,
     type: 'Container',
-    image: require('../assets/icons/container.png'),
+    icon: () => (
+      <FastImage
+        source={require('../assets/icons/container.png')}
+        resizeMode={FastImage.resizeMode.contain}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    ),
   },
 ];
 
@@ -445,16 +501,24 @@ const contSize = [
 
 const searchType = [
   {
+    id: 0,
+    label: 'All',
+    value: 'All',
+  },
+  {
     id: 1,
-    label: 'Products',
+    label: 'Product',
+    value: 'Product',
   },
   {
     id: 2,
-    label: 'Companies',
+    label: 'Sell Offer',
+    value: 'SellOffer',
   },
   {
     id: 3,
-    label: 'Location',
+    label: 'Suppliers',
+    value: 'User',
   },
 ];
 
@@ -596,6 +660,33 @@ const requestType = [
   },
 ];
 
+const businessType = [
+  {
+    id: 0,
+    type: 'Cooperation',
+  },
+  {
+    id: 1,
+    type: 'Distribution',
+  },
+  {
+    id: 1,
+    type: 'Manufacturing',
+  },
+  {
+    id: 1,
+    type: 'Retail',
+  },
+  {
+    id: 1,
+    type: 'Supply Chain',
+  },
+  {
+    id: 2,
+    type: 'Wholesale',
+  },
+];
+
 const languages = [
   {
     id: 1,
@@ -689,6 +780,21 @@ const freightType = [
   },
 ];
 
+const RFFType = [
+  {
+    id: `0`,
+    label: 'Standard',
+  },
+  {
+    id: `1`,
+    label: 'Domestic',
+  },
+  {
+    id: `2`,
+    label: 'International',
+  },
+];
+
 const storeProducts = [
   {
     id: `0`,
@@ -696,7 +802,50 @@ const storeProducts = [
   },
   {
     id: `1`,
-    label: 'Add New Products',
+    label: 'Sell Offers',
+  },
+];
+
+const packageType2 = [
+  {
+    id: 1,
+    type: 'Bag',
+    image: require('../assets/icons/bag.png'),
+  },
+  {
+    id: 2,
+    type: 'Box',
+    image: require('../assets/icons/box.png'),
+  },
+  {
+    id: 3,
+    type: 'Crate',
+    image: require('../assets/icons/crate.png'),
+  },
+  {
+    id: 4,
+    type: 'Barrel',
+    image: require('../assets/icons/barrel.png'),
+  },
+  {
+    id: 5,
+    type: 'Pallet',
+    image: require('../assets/icons/pallet.png'),
+  },
+  {
+    id: 6,
+    type: 'Container',
+    image: require('../assets/icons/container.png'),
+  },
+  {
+    id: 8,
+    type: 'Less Truck Load',
+    image: require('../assets/icons/fullTruck.png'),
+  },
+  {
+    id: 9,
+    type: 'Full Truck Load',
+    image: require('../assets/icons/fullTruck.png'),
   },
 ];
 
@@ -708,6 +857,7 @@ export default {
   weight,
   orderTabs,
   storeProducts,
+  packageType2,
   payType,
   languages,
   exploreTabs,
@@ -741,4 +891,6 @@ export default {
   loadType,
   priceOffer,
   freight,
+  RFFType,
+  businessType,
 };

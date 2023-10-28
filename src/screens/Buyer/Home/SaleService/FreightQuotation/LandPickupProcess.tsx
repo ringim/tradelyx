@@ -7,6 +7,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
+import Geocoder from 'react-native-geocoding';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
@@ -60,22 +61,66 @@ const LandPickupProcess = () => {
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
   const [address2, setAddress2] = useState<any>('');
+  const [countryCode, setCountryCode] = useState<any>('');
+  const [countryName, setCountryName] = useState<any>('');
+  const [countryCode2, setCountryCode2] = useState<any>('');
+  const [countryName2, setCountryName2] = useState<any>('');
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '65%'], []);
+  const snapPoints = useMemo(() => ['50%', '50%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+    return index;
   }, []);
 
   // console.log(value);
+
+  const {location} = address1;
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(location?.lat, location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode(code);
+              setCountryName(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address1]);
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(address2?.location?.lat, address2?.location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode2(code);
+              setCountryName2(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address2]);
 
   // CREATE UPDATE RFF
   const [doUpdateRFQ] = useMutation<
@@ -91,8 +136,12 @@ const LandPickupProcess = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
+        placeOriginFlag: `https://flagcdn.com/32x24/${countryCode}.png`,
+        placeOriginName: countryName,
         placeOrigin: address1?.description?.formatted_address,
         placeDestination: address2?.description?.formatted_address,
+        placeDestinationFlag: `https://flagcdn.com/32x24/${countryCode2}.png`,
+        placeDestinationName: countryName2,
         relatedServices: selectedCategories,
         invoiceAmount: amount,
         notes,

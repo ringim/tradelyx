@@ -32,7 +32,7 @@ const SellerLocationMapHeader = ({
               source={icons.placeholder}
               tintColor={COLORS.secondary1}
               resizeMode={FastImage.resizeMode.cover}
-              style={{width: 24, height: 24}}
+              style={{width: 20, height: 20}}
             />
           </View>
 
@@ -57,7 +57,7 @@ const SellerLocationMapHeader = ({
       </View>
 
       {showAddress && (
-        <View style={{marginTop: SIZES.semi_margin}}>
+        <View style={{marginTop: SIZES.semi_margin, marginLeft: SIZES.radius}}>
           <Text
             numberOfLines={2}
             style={{...FONTS.sh3, color: COLORS.Neutral6}}>

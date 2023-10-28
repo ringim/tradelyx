@@ -1,5 +1,5 @@
 import {ActivityIndicator, View} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
@@ -26,7 +26,11 @@ const AllCategories = () => {
   const {data, loading} = useQuery<
     ListCategoriesQuery,
     ListCategoriesQueryVariables
-  >(listCategories);
+  >(listCategories, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
   const allCategories: any =
     data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];
 
@@ -60,7 +64,7 @@ const AllCategories = () => {
         autoClose: 1500,
       });
     }
-  }, []);
+  }, [loading]);
 
   if (loading) {
     <ActivityIndicator
@@ -76,22 +80,24 @@ const AllCategories = () => {
         <Header title={'All Categories'} tintColor={COLORS.Neutral1} />
 
         {/* Search Box */}
-        <View style={{marginHorizontal: SIZES.radius}}>
-          <SearchBox2
-            searchFilterFunction={(text: any) => searchFilterFunction(text)}
-            search={search}
-            containerStyle={{marginBottom: SIZES.base}}
-          />
-        </View>
+        <SearchBox2
+          searchFilterFunction={(text: any) => searchFilterFunction(text)}
+          search={search}
+          containerStyle={{marginBottom: SIZES.base}}
+        />
 
         {/* list of categories */}
-        {filteredDataSource?.length === 0 ? (
+        {!filteredDataSource ? (
           <NoItem />
         ) : (
-          <FlatList
+          <FlashList
             data={filteredDataSource}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item?.id}`}
+            estimatedItemSize={200}
+            getItemType={({item}: any) => {
+              return item;
+            }}
             renderItem={({item, index}) => {
               return (
                 <HorizontalItem

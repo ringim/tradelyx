@@ -1,7 +1,6 @@
 import {View, Text, ImageBackground} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlashList} from '@shopify/flash-list';
 import React, {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
 
 import {
   Header,
@@ -62,10 +61,14 @@ const Wallet = () => {
                 Recent History
               </Text>
             </View>
-            <FlatList
+            <FlashList
               data={groupedTransactionList}
               showsVerticalScrollIndicator={false}
               keyExtractor={item => `${item?.date}`}
+              estimatedItemSize={200}
+              getItemType={({item}: any) => {
+                return item;
+              }}
               renderItem={({item, index}) => {
                 return (
                   <View key={index} style={{flex: 1}}>

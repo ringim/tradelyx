@@ -1,4 +1,10 @@
-import {View, Text, StyleSheet, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -14,7 +20,7 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 
 import {
   COLORS,
@@ -39,8 +45,12 @@ import {
   UpdateSellOfferInput,
   UpdateSellOfferMutation,
   UpdateSellOfferMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../../API';
 import {updateSellOffer} from '../../../queries/RequestQueries';
+import {getUser} from '../../../queries/UserQueries';
+import {useAuthContext} from '../../../context/AuthContext';
 
 interface ISellOffer {
   detail: string;
@@ -51,7 +61,7 @@ interface ISellOffer {
 const PackingShipment = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
-
+  const {userID} = useAuthContext();
   const {control, setValue, handleSubmit}: any = useForm();
 
   const mapRef = useRef(null);
@@ -66,7 +76,7 @@ const PackingShipment = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(crateTypes);
+  const [jobType, setJobType] = useState<any>(constants.packageType);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -81,6 +91,17 @@ const PackingShipment = () => {
     setDate(selectedDate);
     hideDatePicker();
   };
+
+  // GET USER
+  const {data, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+  const userInfo: any = data?.getUser;
 
   // UPDATE REQUEST QUOTATION
   const [doCreateSellOffer] = useMutation<
@@ -97,11 +118,15 @@ const PackingShipment = () => {
       const input: UpdateSellOfferInput = {
         id: route?.params.sellOfferID,
         rfqType: item,
-        requestCategory: type,
         packageDesc: detail,
+        packageType: type,
         placeOrigin: address1?.description?.formatted_address,
         landmark,
         deliveryDate: date,
+        storeImage: userInfo?.logo,
+        storeRating: userInfo?.rating,
+        storeName: userInfo?.businessName,
+        storeAddress: `${userInfo?.city}${', '} ${userInfo?.country}`,
       };
 
       await doCreateSellOffer({
@@ -188,6 +213,7 @@ const PackingShipment = () => {
                 schema={{
                   label: 'type',
                   value: 'type',
+                  icon: 'icon',
                 }}
                 onChangeValue={onChange}
                 open={open}
@@ -242,7 +268,7 @@ const PackingShipment = () => {
                     color: COLORS.Rose4,
                     top: 14,
                     left: 5,
-                    marginBottom: 2
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>
@@ -355,6 +381,14 @@ const PackingShipment = () => {
           title={'Expected Delivery Date'}
           containerStyle={{marginTop: SIZES.semi_margin, marginBottom: 150}}
         />
+      </View>
+    );
+  }
+
+  if (newLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary4} />
       </View>
     );
   }

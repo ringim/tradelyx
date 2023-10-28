@@ -25,17 +25,30 @@ export const listCategories = gql`
   }
 `;
 
-export const listProducts = gql`
-  query ListProducts(
+export const productByDate = gql`
+  query ProductByDate(
+    $SType: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
     $filter: ModelProductFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    productByDate(
+      SType: $SType
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -47,18 +60,26 @@ export const listProducts = gql`
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
+        Reviews {
+          nextToken
+          __typename
+        }
         updatedAt
         __typename
       }
@@ -72,8 +93,10 @@ export const getProduct = gql`
   query GetProduct($id: ID!) {
     getProduct(id: $id) {
       id
-      image
+      SType
       title
+      productImage
+      image
       images
       description
       rating
@@ -85,14 +108,19 @@ export const getProduct = gql`
       packageType
       quantity
       fobPrice
-      deliveryTime
       paymentType
       transportMode
       placeOrigin
       dateAvailable
       productSpec
-      productDoc
+      productDocs
+      productCert
       documents
+      storeName
+      storeImage
+      storeAddress
+      category
+      commodityCategory
       commoditycategoryID
       categoriesID
       userID
@@ -163,8 +191,10 @@ export const productsByCategoriesID = gql`
     ) {
       items {
         id
-        image
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -176,14 +206,19 @@ export const productsByCategoriesID = gql`
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
@@ -204,8 +239,10 @@ export const createProduct = gql`
   ) {
     createProduct(input: $input, condition: $condition) {
       id
-      image
+      SType
       title
+      productImage
+      image
       images
       description
       rating
@@ -217,14 +254,19 @@ export const createProduct = gql`
       packageType
       quantity
       fobPrice
-      deliveryTime
       paymentType
       transportMode
       placeOrigin
       dateAvailable
       productSpec
-      productDoc
+      productDocs
+      productCert
       documents
+      storeName
+      storeImage
+      storeAddress
+      category
+      commodityCategory
       commoditycategoryID
       categoriesID
       userID
@@ -242,8 +284,10 @@ export const updateProduct = gql`
   ) {
     updateProduct(input: $input, condition: $condition) {
       id
-      image
+      SType
       title
+      productImage
+      image
       images
       description
       rating
@@ -255,14 +299,19 @@ export const updateProduct = gql`
       packageType
       quantity
       fobPrice
-      deliveryTime
       paymentType
       transportMode
       placeOrigin
       dateAvailable
       productSpec
-      productDoc
+      productDocs
+      productCert
       documents
+      storeName
+      storeImage
+      storeAddress
+      category
+      commodityCategory
       commoditycategoryID
       categoriesID
       userID

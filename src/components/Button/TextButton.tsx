@@ -18,7 +18,7 @@ const TextButton = ({
         justifyContent: 'center',
         backgroundColor: COLORS.primary1,
         marginTop: SIZES.padding,
-        borderRadius: SIZES.semi_margin,
+        borderRadius: SIZES.radius,
         height: 60,
         width: 340,
         ...buttonContainerStyle,

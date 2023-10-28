@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
+import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SIZES, dummyData} from '../../../constants';
@@ -17,31 +17,37 @@ const AgentRequest = () => {
         marginTop: SIZES.radius,
         backgroundColor: COLORS.white,
       }}>
-      <FlatList
-        data={dummyData?.rffAgentReq}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-        keyExtractor={item => `${item.id}`}
-        renderItem={({item, index}) => {
-          /* AgentRequestItem items */
-          return (
-            <AgentRequestItem
-              key={index}
-              item={item}
-              onPress={() =>
-                navigation.navigate('AgentRequestDetails', {agentItem: item})
-              }
+      <View style={{minHeight: 2}}>
+        <FlashList
+          data={dummyData?.rffAgentReq}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
+          keyExtractor={item => `${item.id}`}
+          estimatedItemSize={200}
+          getItemType={({item}: any) => {
+            return item;
+          }}
+          renderItem={({item, index}) => {
+            /* AgentRequestItem items */
+            return (
+              <AgentRequestItem
+                key={index}
+                item={item}
+                onPress={() =>
+                  navigation.navigate('AgentRequestDetails', {agentItem: item})
+                }
+              />
+            );
+          }}
+          ListFooterComponent={
+            <View
+              style={{
+                marginBottom: dummyData?.rffAgentReq?.length - 1 && 200,
+              }}
             />
-          );
-        }}
-        ListFooterComponent={
-          <View
-            style={{
-              marginBottom: 200,
-            }}
-          />
-        }
-      />
+          }
+        />
+      </View>
     </View>
   );
 };

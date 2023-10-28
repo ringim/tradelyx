@@ -35,8 +35,8 @@ const FreightTab = ({item, selected, onPress}: any) => {
 
       <View
         style={{justifyContent: 'center', flex: 1, marginLeft: SIZES.radius}}>
-        <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>{item?.label}</Text>
-        <Text style={{...FONTS.sh3, paddingTop: 4, color: COLORS.Neutral5}}>
+        <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>{item?.label}</Text>
+        <Text style={{...FONTS.cap1, paddingTop: 4, color: COLORS.Neutral5}}>
           {item?.text}
         </Text>
       </View>

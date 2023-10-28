@@ -11,6 +11,7 @@ export const getUser = gql`
       accountType
       lat
       lng
+      ledgerBalance
       address
       city
       state
@@ -20,6 +21,7 @@ export const getUser = gql`
       level
       identification
       identificationNumber
+      identityImage
       keyProduct
       country
       inviteCode
@@ -31,13 +33,15 @@ export const getUser = gql`
       businessType
       certifications
       mainMarkets
+      memberShipType
+      sellerLevel
       estRevenue
       totalStaff
       responseTime
       languages
       legalRep
       overview
-      memberType
+      activeOrder
       createdAt
       updatedAt
       __typename
@@ -61,6 +65,7 @@ export const listUsers = gql`
         accountType
         lat
         lng
+        ledgerBalance
         address
         city
         state
@@ -70,6 +75,7 @@ export const listUsers = gql`
         level
         identification
         identificationNumber
+        identityImage
         keyProduct
         country
         inviteCode
@@ -81,13 +87,15 @@ export const listUsers = gql`
         businessType
         certifications
         mainMarkets
+        memberShipType
+        sellerLevel
         estRevenue
         totalStaff
         responseTime
         languages
         legalRep
         overview
-        memberType
+        activeOrder
         createdAt
         updatedAt
         __typename
@@ -112,6 +120,7 @@ export const updateUser = gql`
       accountType
       lat
       lng
+      ledgerBalance
       address
       city
       state
@@ -121,6 +130,7 @@ export const updateUser = gql`
       level
       identification
       identificationNumber
+      identityImage
       keyProduct
       country
       inviteCode
@@ -132,13 +142,15 @@ export const updateUser = gql`
       businessType
       certifications
       mainMarkets
+      memberShipType
+      sellerLevel
       estRevenue
       totalStaff
       responseTime
       languages
       legalRep
       overview
-      memberType
+      activeOrder
       createdAt
       updatedAt
       __typename
@@ -155,6 +167,30 @@ export const deleteUser = gql`
       id
       createdAt
       updatedAt
+      __typename
+    }
+  }
+`;
+
+export const listReviews = gql`
+  query ListReviews(
+    $filter: ModelReviewFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listReviews(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
       __typename
     }
   }

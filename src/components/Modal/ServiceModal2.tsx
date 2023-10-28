@@ -19,9 +19,9 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
   // Bottom Sheet
   const snapPoints = useMemo(() => {
     if (Platform.OS === 'ios') {
-      return ['45%'];
+      return ['47%'];
     } else {
-      return ['45%'];
+      return ['47%'];
     }
   }, []);
 
@@ -136,10 +136,11 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Button */}
         <TextButton
           label="Continue"
+          buttonContainerStyle={{height: 50}}
           onPress={() => {
             value === 'Post Sell Offer'
               ? navigation.navigate('SellOffer')
-              : navigation.navigate('StoreProduct');
+              : navigation.navigate('AddProducts');
             hideModal();
           }}
         />

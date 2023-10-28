@@ -16,15 +16,22 @@ import {
   ServiceModal,
   SeeAll,
 } from '../../../components';
-import {COLORS, SIZES, dummyData} from '../../../constants';
+import {COLORS, SIZES} from '../../../constants';
 import {toggleCameraModal} from '../../../redux/modal/modalActions';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import {GetUserQuery, GetUserQueryVariables} from '../../../API';
-import {getUser} from '../../../queries/UserQueries';
+import {
+  AccountCategoryType,
+  GetUserQuery,
+  GetUserQueryVariables,
+  ModelSortDirection,
+  ProductByDateQuery,
+  ProductByDateQueryVariables,
+  ListUsersQuery,
+  ListUsersQueryVariables,
+} from '../../../API';
+import {getUser, listUsers} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
-
-const suppliers = dummyData?.storeProducts;
-const stores = dummyData?.stores;
+import {productByDate} from '../../../queries/ProductQueries';
 
 const Home = ({showCameraModal, toggleCameraModal}: any) => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -47,6 +54,38 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
+  // LIST PRODUCTS
+  const {data: newData, loading: newLoad} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      limit: 4,
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allProducts: any =
+    newData?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
+
+  // LIST SUPPLIERS
+  const {data: onData, loading: onLoad} = useQuery<
+    ListUsersQuery,
+    ListUsersQueryVariables
+  >(listUsers, {
+    variables: {limit: 4},
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+  const suppliers: any =
+    onData?.listUsers?.items
+      .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
+      .filter((item: any) => !item?._deleted) || [];
+
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
@@ -60,10 +99,11 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     }
   }, [showCameraModal]);
 
+  // ALL SUPPLIERS
   function renderRecommended() {
     return (
       <FlatList
-        data={stores}
+        data={suppliers}
         keyExtractor={item => `${item?.id}`}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -71,12 +111,13 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
           <VendorItem
             key={index}
             item={item}
+            store_image={item?.logo}
             onPress={() =>
-              navigation.navigate('ProviderProfile', {productItem: item})
+              navigation.navigate('BusinessDetail', {businessItem: item})
             }
             containerStyle={{
-              marginLeft: index == 0 ? SIZES.semi_margin : SIZES.padding,
-              marginRight: index == stores.length - 12 ? SIZES.padding : -18,
+              marginLeft: index == 0 ? 0 : 12 * 1.4,
+              marginRight: index == suppliers.length - 1 ? SIZES.padding : -30,
             }}
           />
         )}
@@ -84,7 +125,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     );
   }
 
-  if (loading) {
+  if (loading || newLoad || onLoad) {
     <ActivityIndicator
       style={{flex: 1, justifyContent: 'center'}}
       size={'large'}
@@ -114,8 +155,9 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
         }}
       />
 
+      {/* ALL PRODUCTS */}
       <FlatList
-        data={suppliers}
+        data={allProducts}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => `${item.id}`}
         ListHeaderComponent={
@@ -136,6 +178,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
               <PopularItem
                 key={index}
                 item={item}
+                store_image={item?.productImage}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }
@@ -146,16 +189,15 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: 150,
+              marginBottom: allProducts?.length - 1 && 150,
               backgroundColor: COLORS.white,
             }}>
-            <SeeAll />
-
-            {/* Recommended Sellers */}
+            <SeeAll onPress={() => navigation.navigate('AllProducts')} />
             <PopularProducts
               title={'Recommended Seller'}
               showViewAll={true}
-              containerStyle={{marginTop: 32}}
+              containerStyle={{marginTop: SIZES.margin}}
+              onPress={() => navigation.navigate('AllSellers')}
             />
             {renderRecommended()}
           </View>

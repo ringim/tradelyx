@@ -13,7 +13,7 @@ const ProgressOrderDetail = () => {
   const navigation = useNavigation<OrderStackNavigatorParamList>();
   const route = useRoute<ProgressOrderDetailRouteProp>();
 
-  console.log('order ship details', route?.params?.orderItem);
+  // console.log('order ship details', route?.params?.orderItem);
   const {status}: any = route?.params?.orderItem;
 
   function renderFAQ() {

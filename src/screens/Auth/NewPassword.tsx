@@ -6,7 +6,7 @@ import {useForm} from 'react-hook-form';
 import Spinner from 'react-native-loading-spinner-overlay/lib';
 import {Auth} from 'aws-amplify';
 
-import {FONTS, SIZES, COLORS, icons} from '../../constants';
+import {FONTS, SIZES, COLORS, icons, images} from '../../constants';
 import {FormInput, Header, TextButton} from '../../components';
 import {AuthStackNavigatorParamList} from '../../components/navigation/navigation';
 
@@ -14,13 +14,11 @@ type NewPasswordType = {
   email: string;
   code: string;
   password: string;
-  repeatPassword: string;
 };
 
 const NewPassword = () => {
   const navigation = useNavigation<AuthStackNavigatorParamList>();
 
-  const [showPass, setShowPass] = useState(false);
   const [showPass2, setShowPass2] = useState(false);
   const [loading, setLoading] = useState(false);
   const {control, handleSubmit, reset} = useForm<NewPasswordType>();
@@ -46,50 +44,34 @@ const NewPassword = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
-          marginTop: SIZES.margin,
+          marginTop: -SIZES.base,
         }}>
-        {/* Password */}
+        {/* UserName / Email */}
         <FormInput
-          label="Create New Password"
-          secureTextEntry={!showPass}
-          name="password"
+          name="email"
+          label="Email Address"
           control={control}
-          rules={{
-            required: 'Password is required',
-            minLength: {
-              value: 8,
-              message: 'Password should be at least 8 characters long',
-            },
-          }}
-          placeholder={'Create new password'}
-          inputContainerStyle={{marginTop: SIZES.base}}
+          placeholder={'Email address'}
           containerStyle={{marginTop: SIZES.margin}}
-          appendComponent={
-            <TouchableOpacity
-              style={{
-                width: 40,
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-              }}
-              onPress={() => setShowPass(!showPass)}>
-              <FastImage
-                source={showPass ? icons.eye : icons.eye_off}
-                tintColor={showPass ? COLORS.primary1 : COLORS.gray}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  height: 24,
-                  width: 24,
-                }}
-              />
-            </TouchableOpacity>
-          }
         />
 
-        {/* Confirm Password */}
+        {/* Password */}
         <FormInput
-          label="Repeat New Password"
+          label={'Confirmation Code'}
+          autoCompleteType="number"
+          keyboardType={'numeric'}
+          name="code"
+          control={control}
+          rules={{required: 'Code is required'}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
+          placeholder="Enter your confirmation code"
+        />
+
+        {/* New Password */}
+        <FormInput
+          label="New Password"
           secureTextEntry={!showPass2}
-          name="repeatPassword"
+          name="password"
           control={control}
           rules={{
             required: 'Password is required',
@@ -100,7 +82,7 @@ const NewPassword = () => {
           }}
           placeholder={'Confirm new password'}
           inputContainerStyle={{marginTop: SIZES.base}}
-          containerStyle={{marginTop: SIZES.padding}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
           appendComponent={
             <TouchableOpacity
               style={{
@@ -139,13 +121,36 @@ const NewPassword = () => {
         overlayColor={'rgba(0,0,0,0.5)'}
       />
 
+      <View
+        style={{
+          marginHorizontal: SIZES.margin,
+        }}>
+        {/* mail image */}
+        <View
+          style={{
+            alignItems: 'center',
+          }}>
+          <FastImage
+            source={images.logo}
+            resizeMode={FastImage.resizeMode.contain}
+            style={{width: 150, height: 150}}
+          />
+        </View>
+      </View>
+
       {/* intro text */}
       <View
         style={{
-          marginTop: SIZES.base,
+          top: -20,
           marginHorizontal: SIZES.margin,
         }}>
-        <Text style={{...FONTS.sh3, color: COLORS.gray, marginTop: SIZES.base}}>
+        <Text
+          style={{
+            ...FONTS.body1,
+            color: COLORS.Neutral6,
+            fontWeight: '500',
+            marginTop: SIZES.base,
+          }}>
           Create a new password that is at least 8 characters long
         </Text>
       </View>

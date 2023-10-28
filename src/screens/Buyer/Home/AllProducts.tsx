@@ -1,25 +1,43 @@
-import {View,} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {ActivityIndicator, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
+import {useQuery} from '@apollo/client';
 
-import {
-  AllProductsRouteProp,
-  HomeStackNavigatorParamList,
-} from '../../../components/navigation/BuyerNav/type/navigation';
-import {COLORS, dummyData} from '../../../constants';
+import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
+import {COLORS, SIZES} from '../../../constants';
 import {Header, SearchBox2, SearchItem2} from '../../../components';
+import {productByDate} from '../../../queries/ProductQueries';
+import {
+  ModelSortDirection,
+  ProductByDateQuery,
+  ProductByDateQueryVariables,
+} from '../../../API';
 
 const AllProducts = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const route = useRoute<AllProductsRouteProp>();
 
-  console.log(route?.params.filterItem);
+  // LIST PRODUCTS
+  const {data: newData, loading} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      limit: 4,
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allProducts: any =
+    newData?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
@@ -29,7 +47,9 @@ const AllProducts = () => {
   const searchFilterFunction = (text: any) => {
     if (text) {
       const newData = masterDataSource.filter(function (item: any) {
-        const itemData = item.name ? item.name.toLowerCase() : ''.toLowerCase();
+        const itemData = item.title
+          ? item.title.toLowerCase()
+          : ''.toLowerCase();
         const textData = text.toLowerCase();
         return itemData.indexOf(textData) > -1;
       });
@@ -43,7 +63,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     try {
-      const items = dummyData?.storeProducts;
+      const items = allProducts;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -53,17 +73,26 @@ const AllProducts = () => {
         autoClose: 1500,
       });
     }
-  }, []);
+  }, [loading]);
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
+      </View>
+    );
+  }
 
   return (
     <AlertNotificationRoot>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'Filtered Products'} tintColor={COLORS.Neutral1} />
+        <Header title={'All Products'} tintColor={COLORS.Neutral1} />
 
         {/* Search Box */}
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
+          containerStyle={{marginHorizontal: SIZES.margin}}
         />
 
         {/* list of categories */}
@@ -76,13 +105,17 @@ const AllProducts = () => {
               <SearchItem2
                 key={index}
                 item={item}
+                profile_image={item?.productImage}
+                profile_image2={item?.storeImage}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }
               />
             );
           }}
-          ListFooterComponent={<View style={{height: 200}} />}
+          ListFooterComponent={
+            <View style={{height: filteredDataSource?.length - 1 && 200}} />
+          }
         />
       </View>
     </AlertNotificationRoot>

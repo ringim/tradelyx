@@ -5,15 +5,17 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {v4 as uuidV4} from 'uuid';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Controller, useForm} from 'react-hook-form';
 import Tags from 'react-native-tags';
-import {Asset} from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
+import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {FlatList} from 'react-native-gesture-handler';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
   ALERT_TYPE,
@@ -21,14 +23,17 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {useAuthContext} from '../../../context/AuthContext';
 import {
-  FileSection,
   FormInput,
+  Header,
+  ImageUpload,
   ProductImage,
   QuotationProgress1,
+  SingleImage,
   TextButton,
   UploadDocs,
   ViewProductImage,
@@ -47,19 +52,13 @@ import {
   ListCommodityCategoriesQuery,
   ListCommodityCategoriesQueryVariables,
 } from '../../../API';
-import {
-  onChangePhoto,
-  selectFile,
-  uploadFile,
-  uploadMedia,
-} from '../../../utilities/service';
-import {Storage} from 'aws-amplify';
+import {onChangePhoto, uploadMedia} from '../../../utilities/service';
 
 interface IAddProduct {
   title: string;
   desc: string;
   cert: string;
-  file: string;
+  file: any;
 }
 
 const AddProducts = () => {
@@ -71,35 +70,21 @@ const AddProducts = () => {
   const {data, loading: onLoad} = useQuery<
     ListCategoriesQuery,
     ListCategoriesQueryVariables
-  >(listCategories, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
-  });
-  const allCategories: any =
-    data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];
+  >(listCategories);
+
   // console.log(allCategories);
 
   // LIST COMMODITY CATEGORIES
   const {data: newData, loading: newLoad} = useQuery<
     ListCommodityCategoriesQuery,
     ListCommodityCategoriesQueryVariables
-  >(listCommodityCategories, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
-  });
-  const allCommodityCategories: any =
-    newData?.listCommodityCategories?.items.filter(
-      (item: any) => !item?._deleted,
-    ) || [];
-  // console.log(allCategories);
+  >(listCommodityCategories);
 
-  const [imageUri, setImageUri] = useState<any>(null);
+  const [productImage, setProductImage] = useState<any | Asset>('');
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
+  const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>([]);
   const [loading, setLoading] = useState(false);
-  const [singleFile, setSingleFile] = useState<any>(null);
-  const [fileName, setFileName] = useState<any>('');
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [initialTags, setInitialTags] = useState([
     'vegetable',
     'grains',
@@ -108,19 +93,52 @@ const AddProducts = () => {
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(allCategories);
+  const [type, setType] = useState<any>('');
+  const [jobType, setJobType] = useState<any>();
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
-  const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(allCommodityCategories);
+  const [type2, setType2] = useState<any>('');
+  const [jobType2, setJobType2] = useState<any>();
+  const [ccID, setCCID] = useState<any>('');
+  const [cID, setCID] = useState<any>('');
 
-  useEffect(() => {
-    if (allCommodityCategories?.image) {
-      Storage.get(allCommodityCategories?.image).then(setImageUri);
-    }
-  }, [allCommodityCategories?.image]);
+  // console.log('singleFile', singleFile);
+
+  useFocusEffect(
+    useCallback(() => {
+      const allCommodityCategories: any =
+        newData?.listCommodityCategories?.items.filter(
+          (item: any) => !item?._deleted,
+        ) || [];
+      setJobType2(allCommodityCategories);
+    }, [newLoad]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const allCategories: any =
+        data?.listCategories?.items.filter((item: any) => !item?._deleted) ||
+        [];
+      setJobType(allCategories);
+    }, [onLoad]),
+  );
+
+  const openImageGallery = () => {
+    launchImageLibrary(
+      {mediaType: 'photo', selectionLimit: 7, quality: 0.5},
+      ({didCancel, errorCode, assets}) => {
+        if (!didCancel && !errorCode && assets && assets.length > 0) {
+          if (assets.length === 1) {
+            setSelectedPhoto(assets[0].uri);
+          } else if (assets.length > 1) {
+            assets.map(asset => asset.uri) as string[];
+            setSelectedPhotos(assets);
+          }
+        }
+      },
+    );
+  };
 
   // CREATE REQUEST QUOTATION
   const [doCreateProduct] = useMutation<
@@ -128,7 +146,7 @@ const AddProducts = () => {
     CreateProductMutationVariables
   >(createProduct);
 
-  const onSubmit = async ({cert, desc, file, title}: IAddProduct) => {
+  const onSubmit = async ({cert, file, desc, title}: IAddProduct) => {
     if (loading) {
       return;
     }
@@ -136,20 +154,40 @@ const AddProducts = () => {
     try {
       const input: CreateProductInput = {
         id: uuidV4(),
+        SType: 'JOB',
         image: selectedPhoto,
-        categoriesID: type,
+        images: selectedPhotos,
+        productImage: productImage,
+        categoriesID: cID,
         tags: initialTags,
         title,
         description: desc,
         documents: file,
         productCertification: cert,
-        commoditycategoryID: type2,
+        commoditycategoryID: ccID,
+        category: type?.title,
+        commodityCategory: type2?.title,
         userID,
       };
 
-      if (singleFile && fileName) {
-        input.documents = await uploadFile(fileName, singleFile);
-        input.image = await uploadMedia(selectedPhoto.uri);
+      // upload file or multiple files
+      if (singleFile) {
+        input.productImage = await uploadMedia(productImage.uri);
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile2: any) => uploadFile(singleFile2?.uri)),
+        );
+        input.documents = fileKeys;
+      }
+
+      // single or multiple image brochures upload
+      if (selectedPhoto) {
+        const imageKey = await uploadMedia(selectedPhoto);
+        input.image = imageKey;
+      } else if (selectedPhotos) {
+        const imageKeys = await Promise.all(
+          selectedPhotos.map((img: any) => uploadMedia(img?.uri)),
+        );
+        input.images = imageKeys;
       }
 
       await doCreateProduct({
@@ -157,13 +195,13 @@ const AddProducts = () => {
           input,
         },
       });
-      console.log('product data', input);
+      // console.log('product data', input);
       navigation.navigate('ProductSpecification', {productID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
         title: (error as Error).message,
-        autoClose: 1500,
+        autoClose: 15000,
       });
     } finally {
       setLoading(false);
@@ -171,7 +209,12 @@ const AddProducts = () => {
   };
 
   const onTagPress = (index: any, tagLabel: any, event: any, deleted: any) => {
-    console.log(index, tagLabel, event, deleted ? 'deleted' : 'not deleted');
+    return {
+      index,
+      tagLabel,
+      event,
+      deleted: deleted ? 'deleted' : 'not deleted',
+    };
   };
 
   const onChangeTags = (tags: any) => {
@@ -217,6 +260,63 @@ const AddProducts = () => {
     );
   };
 
+  // Delete a single image
+  const deleteItem = (itemId: any) => {
+    setSelectedPhotos((prevData: any) =>
+      prevData.filter((item: any) => item.uri !== itemId),
+    );
+  };
+  // Delete a single image
+  const deleteItem2 = (itemId: any) => {
+    setSingleFile((prevData: any) =>
+      prevData.filter((item: any) => item.uri !== itemId),
+    );
+  };
+
+  const selectFile = async (setSingleFile: any) => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
+        allowMultiSelection: true,
+      });
+      setSingleFile([...singleFile, ...res]);
+    } catch (err) {
+      setSingleFile(null);
+      if (DocumentPicker.isCancel(err)) {
+        return;
+      } else {
+        Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: 'Unknown Error: ' + JSON.stringify(err),
+          autoClose: 1500,
+        });
+        throw err;
+      }
+    }
+  };
+
+  // UPLOAD FILE TO STORAGE
+  const uploadFile = async (uri: string) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response?.blob();
+
+      // file extension splitting
+      const uriParts = uri.split('.');
+      const extension = uriParts[uriParts.length - 1];
+
+      // upload file (blob) to s3
+      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
+      return s3Response.key;
+    } catch (err) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        textBody: (err as Error).message,
+        autoClose: 2000,
+      });
+    }
+  };
+
   function requestForm() {
     return (
       <View
@@ -226,194 +326,143 @@ const AddProducts = () => {
         }}>
         {/* ProductImage */}
         <View>
-          {!selectedPhoto ? (
-            <ProductImage onChange={() => onChangePhoto(setSelectedPhoto)} />
+          {!productImage ? (
+            <ProductImage onChange={() => onChangePhoto(setProductImage)} />
           ) : (
             <ViewProductImage
-              setSelectedPhoto={setSelectedPhoto}
-              selectedPhoto={selectedPhoto}
+              setSelectedPhoto={setProductImage}
+              selectedPhoto={productImage}
             />
           )}
         </View>
 
         {/* Commodity Category Type */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'Category type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <>
-              <Text
-                style={{
-                  marginTop: SIZES.margin,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Product Category
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'title',
-                  value: 'id',
-                  icon: () => (
-                    <FastImage
-                      resizeMode={FastImage.resizeMode.contain}
-                      source={{uri: imageUri}}
-                      style={{width: 15, height: 15}}
-                    />
-                  ),
-                }}
-                onChangeValue={onChange}
-                open={open2}
-                showArrowIcon={true}
-                placeholder="Select Product Category"
-                showTickIcon={true}
-                loading={newLoad}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value2}
-                items={jobType2}
-                setOpen={setOpen2}
-                setValue={setValue2}
-                setItems={setJobType2}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 25,
-                  height: 25,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select your category"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType2(value?.id);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </>
-          )}
-        />
+        <View>
+          <Text
+            style={{
+              marginTop: SIZES.margin,
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Product Category
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'title',
+              value: 'id',
+            }}
+            open={open2}
+            showArrowIcon={true}
+            placeholder="Select product category"
+            showTickIcon={true}
+            loading={newLoad}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            value={value2}
+            items={jobType2}
+            setOpen={setOpen2}
+            setValue={setValue2}
+            setItems={setJobType2}
+            style={{
+              borderRadius: SIZES.base,
+              height: 40,
+              marginTop: SIZES.base,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 25,
+              height: 25,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select your category"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onChangeValue={(value: any) => {
+              setCCID(value);
+            }}
+            onSelectItem={(value: any) => {
+              setType2(value);
+            }}
+          />
+        </View>
 
         {/* Category Type */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'Category type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View>
-              <Text
-                style={{
-                  marginTop: SIZES.padding,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Category
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'title',
-                  value: 'id',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Category"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                loading={onLoad}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                activityIndicatorSize={50}
-                activityIndicatorColor={COLORS.primary4}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 25,
-                  height: 25,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select your category"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.id);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
+        <View>
+          <Text
+            style={{
+              marginTop: SIZES.padding,
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Category
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'title',
+              value: 'id',
+            }}
+            open={open}
+            showArrowIcon={true}
+            placeholder="Select Category"
+            showTickIcon={true}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            value={value1}
+            items={jobType}
+            setOpen={setOpen}
+            setValue={setValue1}
+            setItems={setJobType}
+            loading={onLoad}
+            style={{
+              borderRadius: SIZES.base,
+              height: 40,
+              marginTop: SIZES.base,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            activityIndicatorSize={50}
+            activityIndicatorColor={COLORS.primary4}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 25,
+              height: 25,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select your category"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onChangeValue={(value: any) => {
+              setCID(value);
+            }}
+            onSelectItem={(value: any) => {
+              setType(value);
+            }}
+          />
+        </View>
 
         {/* Product name */}
         <FormInput
@@ -452,8 +501,9 @@ const AddProducts = () => {
         <View style={{marginTop: SIZES.semi_margin}}>
           <Text
             style={{
-              color: COLORS.Neutral4,
+              color: COLORS.Neutral1,
               ...FONTS.body3,
+              fontWeight: '500',
             }}>
             Tags or Keywords
           </Text>
@@ -500,8 +550,7 @@ const AddProducts = () => {
             required: 'Product certification is required',
           }}
           placeholder="e.g Organic, Non-GMO, SON, ISO"
-          containerStyle={{marginTop: SIZES.margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
+          containerStyle={{marginTop: SIZES.radius}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
 
@@ -510,26 +559,160 @@ const AddProducts = () => {
           style={{
             flex: 1,
             justifyContent: 'center',
-            marginBottom: 50,
           }}>
-          {singleFile != null ? (
-            <FileSection
-              file={fileName ? fileName : ''}
-              onPress={() => setSingleFile(null)}
-              containerStyle={{
-                marginHorizontal: SIZES.margin,
-                marginTop: SIZES.margin,
-              }}
-            />
+          {singleFile?.length >= 1 ? (
+            <View style={{marginTop: SIZES.radius}}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                  color: COLORS.Neutral1,
+                }}>
+                Product Brochure
+              </Text>
+
+              <FlatList
+                data={singleFile}
+                keyExtractor={item => item.uri}
+                renderItem={({item}) => (
+                  <View style={{marginTop: SIZES.semi_margin}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        backgroundColor: COLORS.white,
+                      }}>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                        }}>
+                        <FastImage
+                          tintColor={COLORS.secondary1}
+                          source={icons.summary}
+                          style={{width: 20, height: 20}}
+                        />
+                      </View>
+
+                      {/* file name and date of upload */}
+                      <View
+                        style={{
+                          flex: 1,
+                          marginLeft: SIZES.base,
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{...FONTS.h5, color: COLORS.primary1}}
+                          numberOfLines={2}>
+                          {item?.name}
+                        </Text>
+                      </View>
+
+                      {/* delete file */}
+                      <TouchableOpacity
+                        style={{
+                          justifyContent: 'center',
+                          marginRight: SIZES.base,
+                        }}
+                        onPress={() => deleteItem2(item?.uri)}>
+                        <FastImage
+                          tintColor={COLORS.Rose4}
+                          source={icons.remove}
+                          style={{width: 20, height: 20}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+              />
+            </View>
           ) : (
             <UploadDocs
               title={'Product Brochure'}
-              selectFile={() => selectFile(setSingleFile, setFileName)}
+              selectFile={() => selectFile(setSingleFile)}
               containerStyle={{
-                marginTop: SIZES.margin,
-                marginHorizontal: 4,
+                marginTop: SIZES.semi_margin,
+                marginHorizontal: 3,
               }}
             />
+          )}
+        </View>
+
+        {/* product images */}
+        <View
+          style={{
+            marginTop: singleFile?.length >= 1 ? SIZES.margin : SIZES.margin,
+            marginHorizontal: singleFile?.length >= 1 ? 0 : 4,
+            marginBottom: 100,
+          }}>
+          <Text
+            style={{...FONTS.body3, fontWeight: '500', color: COLORS.Neutral1}}>
+            Product Images
+          </Text>
+          {!selectedPhoto && selectedPhotos?.length === 0 ? (
+            <ImageUpload onPress={openImageGallery} />
+          ) : selectedPhoto ? (
+            <SingleImage
+              selectedPhoto={selectedPhoto}
+              setSelectedPhoto={setSelectedPhoto}
+            />
+          ) : (
+            <View
+              style={{
+                marginTop: selectedPhotos ? SIZES.semi_margin : SIZES.radius,
+              }}>
+              <FlatList
+                data={selectedPhotos}
+                keyExtractor={(item: any) => `${item.uri}`}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item, index}) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        width: 100,
+                        height: 100,
+                        marginLeft: index == 0 ? 2 : 15,
+                        marginRight:
+                          index == selectedPhotos.length - 1
+                            ? SIZES.padding
+                            : 0,
+                        marginTop: SIZES.radius,
+                      }}>
+                      <FastImage
+                        source={item}
+                        style={{
+                          width: 100,
+                          height: 100,
+                          borderRadius: SIZES.base,
+                        }}
+                        resizeMode={FastImage.resizeMode.cover}
+                      />
+                      <TouchableOpacity
+                        onPress={() => deleteItem(item?.uri)}
+                        style={{
+                          padding: 6,
+                          top: -18,
+                          right: -10,
+                          borderRadius: SIZES.margin,
+                          backgroundColor: COLORS.white,
+                          position: 'absolute',
+                        }}>
+                        <FastImage
+                          source={icons.remove}
+                          style={{width: 17, height: 17}}
+                          tintColor={COLORS.Rose5}
+                          resizeMode={FastImage.resizeMode.contain}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                }}
+                ListFooterComponent={
+                  <View style={{marginBottom: selectedPhotos?.length - 100}} />
+                }
+              />
+            </View>
           )}
         </View>
       </View>
@@ -547,6 +730,8 @@ const AddProducts = () => {
   return (
     <AlertNotificationRoot>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
+        <Header title={'Add Product'} tintColor={COLORS.Neutral1} />
+
         <Spinner
           visible={loading}
           animation={'fade'}

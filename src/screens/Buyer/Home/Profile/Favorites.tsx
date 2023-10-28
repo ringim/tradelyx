@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
-import {Header, IconButton, PopularItem} from '../../../../components';
+import {Header, IconButton, NoItem, PopularItem} from '../../../../components';
 import {COLORS, SIZES, icons} from '../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 import {useProductContext} from '../../../../context/ProductContext';
@@ -39,8 +39,10 @@ const Favorites = () => {
   }, [savedProductItem]);
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+    <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
       <Header title={'My Favorites'} tintColor={COLORS.Neutral1} />
+
+      {items?.length === 0 && <NoItem />}
 
       <SwipeListView
         data={items}
@@ -53,6 +55,7 @@ const Favorites = () => {
             <PopularItem
               key={index}
               item={item}
+              store_image={item?.image}
               onPress={() =>
                 navigation.navigate('ProductDetail', {productItem: item})
               }

@@ -6,6 +6,7 @@ import {useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import Geocoder from 'react-native-geocoding';
 import {
   ALERT_TYPE,
   AlertNotificationRoot,
@@ -59,19 +60,63 @@ const OceanPickupProcess = () => {
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
   const [address2, setAddress2] = useState<any>('');
+  const [countryCode, setCountryCode] = useState<any>('');
+  const [countryName, setCountryName] = useState<any>('');
+  const [countryCode2, setCountryCode2] = useState<any>('');
+  const [countryName2, setCountryName2] = useState<any>('');
+
+  const {location} = address1;
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(location?.lat, location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode(code);
+              setCountryName(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address1]);
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(address2?.location?.lat, address2?.location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode2(code);
+              setCountryName2(name);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address2]);
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '65%'], []);
+  const snapPoints = useMemo(() => ['55%', '55%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
+    return index
   }, []);
 
   // console.log(value);
@@ -89,9 +134,13 @@ const OceanPickupProcess = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
+        placeOriginFlag: `https://flagcdn.com/32x24/${countryCode}.png`,
+        placeOriginName: countryName,
         placeOrigin: address1?.description?.formatted_address,
         placeDestination: address2?.description?.formatted_address,
-        relatedServices: selectedCategories,
+        placeDestinationFlag: `https://flagcdn.com/32x24/${countryCode2}.png`,
+        placeDestinationName: countryName2,
+        relatedServices: selectedCategories?.label,
         invoiceAmount: amount,
         notes,
         userID,
@@ -180,7 +229,7 @@ const OceanPickupProcess = () => {
             contentStyle={{
               marginBottom: SIZES.padding,
               marginHorizontal: 0,
-              marginTop: 0,
+              marginTop: address1 ? SIZES.semi_margin : 0,
             }}>
             {address1?.location?.lat ? (
               <MapView
@@ -232,7 +281,7 @@ const OceanPickupProcess = () => {
             rules={{
               required: 'Destination is required',
             }}
-            containerStyle={{marginTop: SIZES.margin}}
+            containerStyle={{marginTop: SIZES.base}}
             labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
             inputContainerStyle={{marginTop: SIZES.base}}
             onPress={() => navigation.navigate('OceanDestinationAddress')}
@@ -243,7 +292,7 @@ const OceanPickupProcess = () => {
             mapContStyle={{marginTop: 0}}
             contentStyle={{
               marginHorizontal: 0,
-              marginTop: 0,
+              marginTop: address2 ? SIZES.semi_margin : 0,
               marginBottom: SIZES.padding * 2,
             }}>
             {address2?.location?.lat ? (

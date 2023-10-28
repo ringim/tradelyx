@@ -36,7 +36,7 @@ const SearchModal = ({isVisible, onClose, children}: any) => {
     inputRange: [0, 1],
     outputRange: [
       SIZES.height,
-      SIZES.height > 700 ? SIZES.height - 350 : SIZES.height - 350,
+      SIZES.height > 700 ? SIZES.height - 340 : SIZES.height - 340,
     ],
   });
 

@@ -153,7 +153,7 @@ const InternationalTypeQuotation = () => {
           input,
         },
       });
-      console.log('job data', input);
+      // console.log('job data', input);
       navigation.navigate('InternationalEngagementTerms', {rfqID: input.id});
     } catch (error) {
       Toast.show({
@@ -189,7 +189,7 @@ const InternationalTypeQuotation = () => {
         <View style={{marginTop: SIZES.semi_margin}}>
           <Text
             style={{
-              color: COLORS.Neutral4,
+              color: COLORS.Neutral1,
               ...FONTS.body3,
             }}>
             Tags or Keywords

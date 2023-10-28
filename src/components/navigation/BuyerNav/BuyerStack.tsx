@@ -20,13 +20,14 @@ import {
   EngagementTerms,
   PaymentQuotation,
   ReplyList,
+  RequestQuotationAddress,
   SearchAddress,
   AirFreight,
   InternationalPaymentQuotation,
   OceanFreight,
   LandFreight,
   ReplyDetail,
-  FreightPackage,
+  AirFreightPackage,
   AirPickupProcess,
   EngagementTermsAddress,
   AirPortOriginAddress,
@@ -48,6 +49,7 @@ import {
   Wallet,
   Favorites,
   SearchAddressFilter,
+  AllSellers,
   Contact,
   Refer,
   InviteFriends,
@@ -146,6 +148,11 @@ const BuyerStack = () => {
       <Stack.Screen
         name="OfferDetail"
         component={OfferDetail}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="AllSellers"
+        component={AllSellers}
         options={() => options}
       />
       <Stack.Screen name="Search" component={Search} options={() => options} />
@@ -275,8 +282,8 @@ const BuyerStack = () => {
         options={() => options}
       />
       <Stack.Screen
-        name="FreightPackage"
-        component={FreightPackage}
+        name="AirFreightPackage"
+        component={AirFreightPackage}
         options={() => options}
       />
       <Stack.Screen
@@ -333,6 +340,11 @@ const BuyerStack = () => {
       <Stack.Screen
         name="Favorites"
         component={Favorites}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="RequestQuotationAddress"
+        component={RequestQuotationAddress}
         options={() => options}
       />
       <Stack.Screen name="Refer" component={Refer} options={() => options} />

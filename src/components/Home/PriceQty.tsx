@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const PriceQty = ({price, qty, supply, paymentType}: any) => {
+const PriceQty = ({price, moq, supply, paymentType}: any) => {
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -85,7 +85,7 @@ const PriceQty = ({price, qty, supply, paymentType}: any) => {
         </View>
       </View>
 
-      {/* Qty */}
+      {/*Min Order Qty */}
       <View
         style={{
           alignItems: 'center',
@@ -102,7 +102,7 @@ const PriceQty = ({price, qty, supply, paymentType}: any) => {
           <Text
             numberOfLines={2}
             style={{...FONTS.body3, color: COLORS.Neutral1}}>
-            {qty}
+            {moq}
           </Text>
         </View>
       </View>
@@ -116,7 +116,7 @@ const PriceQty = ({price, qty, supply, paymentType}: any) => {
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Sample</Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Sample Capacity</Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text

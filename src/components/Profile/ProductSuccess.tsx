@@ -13,13 +13,13 @@ const ProductSuccess = ({onPress2, onPress}: any) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <View style={{marginTop: 10}}>
+      <View style={{marginTop: 0}}>
         <FastImage
           source={images.success_arrow}
           resizeMode={FastImage.resizeMode.contain}
           style={{
-            width: 140,
-            height: 140,
+            width: 120,
+            height: 120,
           }}
         />
       </View>
@@ -30,7 +30,7 @@ const ProductSuccess = ({onPress2, onPress}: any) => {
         </Text>
       </View>
 
-      <View style={{margin: SIZES.padding}}>
+      <View style={{margin: SIZES.margin}}>
         <Text
           style={{
             ...FONTS.body3,
@@ -44,9 +44,10 @@ const ProductSuccess = ({onPress2, onPress}: any) => {
 
       <TextButton
         buttonContainerStyle={{
-          marginTop: SIZES.base,
+          marginTop: 5,
+          height: 50,
         }}
-        label="My Store"
+        label="Home"
         labelStyle={{...FONTS.h4}}
         onPress={onPress}
       />

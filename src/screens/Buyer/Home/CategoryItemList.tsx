@@ -8,30 +8,40 @@ import {
   CategoryItemListRouteProp,
   HomeStackNavigatorParamList,
 } from '../../../components/navigation/BuyerNav/type/navigation';
-import {COLORS, SIZES, dummyData} from '../../../constants';
+import {COLORS, SIZES} from '../../../constants';
 import {Header, NoItem, SearchBox2, SearchItem2} from '../../../components';
-import {getCategories} from '../../../queries/ProductQueries';
-import {GetCategoriesQuery, GetCategoriesQueryVariables} from '../../../API';
+import {listProducts} from '../../../queries/ProductQueries';
+import {ListProductsQuery, ListProductsQueryVariables} from '../../../API';
 
 const CategoryItemList = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<CategoryItemListRouteProp>();
 
+  const {title}: any = route.params.cateItem;
+
   const [search, setSearch] = useState<any>('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>('');
 
+  // LIST ALL PRODUCT BY CATEGORY ID
   const {data, loading} = useQuery<
-    GetCategoriesQuery,
-    GetCategoriesQueryVariables
-  >(getCategories, {variables: route?.params?.cateItem});
-  const categoryName: any = data?.getCategories?.title;
+    ListProductsQuery,
+    ListProductsQueryVariables
+  >(listProducts, {
+    pollInterval: 300,
+    nextFetchPolicy: 'cache-first',
+  });
+  const allProducts: any =
+    data?.listProducts?.items
+      .filter(cty => cty?.category === title)
+      .filter((item: any) => !item?._deleted) || [];
+
+  // console.log(allProducts);
 
   useEffect(() => {
-    const filteredItems = dummyData?.storeProducts.filter(
-      item =>
-        item?.name.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.supplier.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.address2.toLowerCase().includes(search?.toLowerCase()),
+    const filteredItems = allProducts.filter(
+      (item: {title: string; storeName: string}) =>
+        item?.title.toLowerCase().includes(search?.toLowerCase()) ||
+        item?.storeName.toLowerCase().includes(search?.toLowerCase()),
     );
     setFilteredDataSource(filteredItems);
   }, [search]);
@@ -46,7 +56,7 @@ const CategoryItemList = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <Header title={categoryName} tintColor={COLORS.Neutral1} />
+      <Header title={title} tintColor={COLORS.Neutral1} />
 
       {/* Search box */}
       <View style={{marginHorizontal: SIZES.radius}}>
@@ -57,28 +67,29 @@ const CategoryItemList = () => {
       </View>
 
       {/* Category Items */}
-      {!filteredDataSource ? (
-        <NoItem />
-      ) : (
-        <FlatList
-          data={filteredDataSource}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => `${item?.id}`}
-          renderItem={({item, index}) => {
-            return (
-              <SearchItem2
-                containerStyle={{marginTop: SIZES.radius}}
-                key={index}
-                item={item}
-                onPress={() =>
-                  navigation.navigate('ProductDetail', {productItem: item})
-                }
-              />
-            );
-          }}
-          ListFooterComponent={<View style={{height: 200}} />}
-        />
-      )}
+      {filteredDataSource?.length <= 0 && <NoItem />}
+      <FlatList
+        data={filteredDataSource}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => `${item?.id}`}
+        renderItem={({item, index}) => {
+          return (
+            <SearchItem2
+              containerStyle={{marginTop: SIZES.radius}}
+              key={index}
+              profile_image={item?.image}
+              profile_image2={item?.storeImage}
+              item={item}
+              onPress={() =>
+                navigation.navigate('ProductDetail', {productItem: item})
+              }
+            />
+          );
+        }}
+        ListFooterComponent={
+          <View style={{height: filteredDataSource?.length && 200}} />
+        }
+      />
     </View>
   );
 };

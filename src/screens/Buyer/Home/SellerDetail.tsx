@@ -1,7 +1,8 @@
-import { Text, View} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {ActivityIndicator, Text, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
+import {useQuery} from '@apollo/client';
 
 import {
   GalleryItem,
@@ -10,20 +11,54 @@ import {
   StoreBannerInfo,
   PopularItem,
 } from '../../../components';
-import {COLORS, FONTS, SIZES, dummyData} from '../../../constants';
+import {COLORS, FONTS, SIZES} from '../../../constants';
 import {
   HomeStackNavigatorParamList,
   ProductDetailRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
-
-const suppliers = dummyData?.storeProducts;
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  ModelSortDirection,
+  ProductByDateQuery,
+  ProductByDateQueryVariables,
+} from '../../../API';
+import {getUser} from '../../../queries/UserQueries';
+import {productByDate} from '../../../queries/ProductQueries';
 
 const SellerDetail = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<ProductDetailRouteProp>();
 
-  // console.log('SellerId', route?.params?.sellerItem);
-  const sellerItem: any = route?.params?.sellerItem;
+  const sellerItem: any = route?.params?.sellerItem?.userID;
+
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: route?.params?.sellerItem?.userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  // LIST PRODUCTS
+  const {data: newData, loading: newLoad} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+    variables: {
+      limit: 4,
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allProducts: any =
+    newData?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
 
   function renderGallery() {
     return (
@@ -47,6 +82,14 @@ const SellerDetail = () => {
     );
   }
 
+  if (loading || newLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
+      </View>
+    );
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
       <Header
@@ -57,18 +100,27 @@ const SellerDetail = () => {
       />
 
       <FlatList
-        data={suppliers}
+        data={allProducts}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => `${item.id}`}
         ListHeaderComponent={
           <>
             {/* Store Contact & Info */}
-            <StoreBannerInfo sellerItem={sellerItem} />
+            <StoreBannerInfo
+              onPress={() =>
+                navigation.navigate('BusinessDetail', {businessItem: userInfo})
+              }
+              address={`${userInfo?.city}${', '} ${userInfo?.country}`}
+              supplierName={userInfo?.businessName}
+              banner_image={userInfo?.backgroundImage}
+              logo={userInfo?.logo}
+            />
 
             {/* Store images */}
             <View
               style={{
                 margin: SIZES.margin,
+                marginTop: SIZES.padding * 1.5,
               }}>
               <Text style={{color: COLORS.Neutral1, ...FONTS.h4}}>Gallery</Text>
             </View>
@@ -83,6 +135,7 @@ const SellerDetail = () => {
             <PopularItem
               key={index}
               item={item}
+              store_image={item?.productImage}
               onPress={() =>
                 navigation.navigate('ProductDetail', {productItem: item})
               }
@@ -92,7 +145,7 @@ const SellerDetail = () => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: 200,
+              marginBottom: allProducts?.length - 1 && 200,
             }}
           />
         }

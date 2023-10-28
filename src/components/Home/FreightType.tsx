@@ -61,7 +61,7 @@ const FreightType = ({freightType, freightDesc, info, image}: any) => {
       {/* RFQ Info */}
       <View
         style={{
-          marginTop: SIZES.padding,
+          marginTop: SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
         }}>
         <Text

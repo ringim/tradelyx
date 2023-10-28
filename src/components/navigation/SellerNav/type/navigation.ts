@@ -7,6 +7,15 @@ export type RootNavigatorParamList = {
   Home: undefined;
 };
 
+export type SetupNavigatorParamList = {
+  reset(arg0: {index: number; routes: {name: string}[]}): unknown;
+  navigate: any;
+  goBack: any;
+  CompleteProfile: undefined;
+  BusinessDetail: undefined
+  BusinessAddress: undefined;
+};
+
 export type BottomTabNavigatorParamList = {
   Home: undefined;
   Order: undefined;
@@ -30,8 +39,19 @@ export type ProfileStackNavigatorParamList = {
   Refer: undefined;
   Contact: undefined;
   InviteFriends: undefined;
+  StoreProduct: undefined;
+  SellOfferDetail: {sellOffer: string};
   UserAddress: undefined;
   AccountAddress: undefined;
+  EditProductItem: {product: string};
+  EditProductSpec: {product: string};
+  EditProductPrice: {product: string};
+  EditProductShipment: {product: string};
+  EditProductShipmentAddress: undefined;
+  EditSellOfferItem: {sellOffer: string};
+  EditSellOfferPricing: {sellOffer: string};
+  EditSellOfferShipment: undefined
+  EditSellOfferShipmentAddress: undefined;
 };
 
 export type HomeStackNavigatorParamList = {
@@ -39,13 +59,8 @@ export type HomeStackNavigatorParamList = {
   goBack: any;
   navigate: any;
   Notifications: undefined;
-  EditProductItem: {product: string};
-  EditProductSpec: {product: string};
-  EditProductPrice: {product: string};
-  EditProductShipment: {product: string};
-  EditProductShipmentAddress: undefined
   Home: undefined;
-  StoreProduct: undefined;
+  AddProducts: undefined;
   SellOffer: undefined;
   PackingShipment: undefined;
   PackageShipmentAddress: undefined;
@@ -58,8 +73,6 @@ export type ExploreStackNavigatorParamList = {
   reset: any;
   goBack: any;
   navigate: any;
-  RFQSearch: undefined;
-  RFFSearch: undefined;
   Explore: undefined;
   Filter: undefined;
   RFQFilter: undefined;
@@ -144,21 +157,36 @@ export type StoreItemRouteProp = RouteProp<
 >;
 
 export type EditProductItemRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
+  ProfileStackNavigatorParamList,
   'EditProductItem'
 >;
 
 export type EditProductSpecRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
+  ProfileStackNavigatorParamList,
   'EditProductSpec'
 >;
 
 export type EditProductPriceRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
+  ProfileStackNavigatorParamList,
   'EditProductPrice'
 >;
 
 export type EditProductShipmentRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
+  ProfileStackNavigatorParamList,
   'EditProductShipment'
+>;
+
+export type SellOfferDetailRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'SellOfferDetail'
+>;
+
+export type EditSellOfferItemRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditSellOfferItem'
+>;
+
+export type EditSellOfferPricingRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditSellOfferPricing'
 >;

@@ -1,27 +1,63 @@
 import {View, Text} from 'react-native';
-import React from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {useRoute} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {ScrollView} from 'react-native-gesture-handler';
+import {Storage} from 'aws-amplify';
+import dayjs from 'dayjs';
 
 import {Header, TextIconButton} from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
-import {
-  HomeStackNavigatorParamList,
-  OfferDetailRouteProp,
-} from '../../../components/navigation/BuyerNav/type/navigation';
+import {OfferDetailRouteProp} from '../../../components/navigation/BuyerNav/type/navigation';
+import {DUMMY_IMAGE} from '../../../utilities/Utils';
 
 const OfferDetail = () => {
-  const navigation = useNavigation<HomeStackNavigatorParamList>();
+  // const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<OfferDetailRouteProp>();
 
-  console.log(route?.params?.detail);
+  const {
+    storeName,
+    title,
+    basePrice,
+    fobPrice,
+    image,
+    description,
+    packageDesc,
+    images,
+    storeAddress,
+    qtyMeasure,
+    storeRating,
+    offerValidity,
+    storeImage,
+  }: any = route?.params?.detail;
 
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
+  const expiryDateString = offerValidity;
+  const expiryDate = dayjs(expiryDateString);
+  const currentDate = dayjs();
+  const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
+  // console.log('daysUntilExpiry', daysUntilExpiry)
+
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+  const [imageUri3, setImageUri3] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (storeImage) {
+      Storage.get(storeImage).then(setImageUri);
+    }
+  }, [storeImage]);
+
+  useEffect(() => {
+    if (image) {
+      Storage.get(image).then(setImageUri2);
+    }
+  }, [image]);
+
+  useEffect(() => {
+    if (images[0]) {
+      Storage.get(images[0]).then(setImageUri3);
+    }
+  }, [images[0]]);
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -38,19 +74,14 @@ const OfferDetail = () => {
           <View
             style={{
               justifyContent: 'center',
-              width: 32,
-              height: 32,
-              alignSelf: 'center',
-              backgroundColor: COLORS.lightYellow,
-              borderRadius: SIZES.base,
             }}>
             <FastImage
-              source={route?.params?.detail?.storeImg}
-              resizeMode={FastImage.resizeMode.contain}
+              source={{uri: imageUri || DUMMY_IMAGE}}
+              resizeMode={FastImage.resizeMode.cover}
               style={{
-                width: 20,
-                height: 20,
-                left: 6,
+                width: 32,
+                height: 32,
+                borderRadius: SIZES.base,
               }}
             />
           </View>
@@ -65,7 +96,7 @@ const OfferDetail = () => {
             <Text
               numberOfLines={2}
               style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {route?.params?.detail?.supplier}
+              {storeName}
             </Text>
 
             {/* Rating, */}
@@ -94,7 +125,7 @@ const OfferDetail = () => {
                   justifyContent: 'center',
                 }}>
                 <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                  {parseFloat(route?.params?.detail?.rating).toFixed(1)}
+                  {parseFloat(storeRating).toFixed(0)}
                 </Text>
               </View>
             </View>
@@ -103,21 +134,39 @@ const OfferDetail = () => {
 
         {/* Product Image */}
         <View style={{}}>
-          <View
-            style={{
-              marginHorizontal: SIZES.margin,
-              alignSelf: 'center',
-            }}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.cover}
-              source={route?.params?.detail?.image}
+          {image ? (
+            <View
               style={{
-                width: 360,
-                height: 150,
-                borderRadius: SIZES.radius,
-              }}
-            />
-          </View>
+                marginHorizontal: SIZES.margin,
+                alignSelf: 'center',
+              }}>
+              <FastImage
+                resizeMode={FastImage.resizeMode.cover}
+                source={{uri: imageUri2 || DUMMY_IMAGE}}
+                style={{
+                  width: 360,
+                  height: 150,
+                  borderRadius: SIZES.radius,
+                }}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                marginHorizontal: SIZES.margin,
+                alignSelf: 'center',
+              }}>
+              <FastImage
+                resizeMode={FastImage.resizeMode.cover}
+                source={{uri: imageUri3 || DUMMY_IMAGE}}
+                style={{
+                  width: 360,
+                  height: 150,
+                  borderRadius: SIZES.radius,
+                }}
+              />
+            </View>
+          )}
 
           {/* Product Name */}
           <View
@@ -128,14 +177,14 @@ const OfferDetail = () => {
             <Text
               numberOfLines={2}
               style={{...FONTS.h4, color: COLORS.Neutral1}}>
-              {route?.params?.detail?.name}
+              {title}
             </Text>
           </View>
 
           {/* Supplier Location */}
           <View
             style={{
-              marginTop: SIZES.semi_margin,
+              marginTop: SIZES.radius,
               marginHorizontal: SIZES.semi_margin,
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -154,13 +203,13 @@ const OfferDetail = () => {
             <View
               style={{
                 flex: 1,
-                marginLeft: SIZES.radius,
+                marginLeft: SIZES.base,
                 justifyContent: 'center',
               }}>
               <Text
                 numberOfLines={2}
-                style={{...FONTS.body2, color: COLORS.Neutral5}}>
-                {route?.params?.detail?.address2}
+                style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                {storeAddress}
               </Text>
             </View>
           </View>
@@ -184,8 +233,12 @@ const OfferDetail = () => {
               }}>
               <Text
                 numberOfLines={2}
-                style={{...FONTS.body3, color: COLORS.Neutral1}}>
-                {route?.params?.detail?.qtyOffered} bags
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                {qtyMeasure} bags
               </Text>
             </View>
           </View>
@@ -209,12 +262,12 @@ const OfferDetail = () => {
               }}>
               <Text
                 numberOfLines={2}
-                style={{...FONTS.body3, color: COLORS.Neutral1}}>
-                ₦
-                {route?.params?.detail?.usdPrice.toLocaleString(
-                  'en-US',
-                  options,
-                )}
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                ₦{parseFloat(basePrice.toFixed(2))}
               </Text>
             </View>
           </View>
@@ -238,7 +291,11 @@ const OfferDetail = () => {
               }}>
               <Text
                 numberOfLines={2}
-                style={{...FONTS.body3, color: COLORS.Neutral1}}>
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
                 {route?.params?.detail?.paymentType}
               </Text>
             </View>
@@ -254,7 +311,7 @@ const OfferDetail = () => {
             }}>
             <View style={{justifyContent: 'center'}}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-                Delivery Duration
+                Offer Validity
               </Text>
             </View>
             <View
@@ -263,17 +320,32 @@ const OfferDetail = () => {
               }}>
               <Text
                 numberOfLines={2}
-                style={{...FONTS.body3, color: COLORS.Neutral1}}>
-                {route?.params?.detail?.deliveryDuration} days
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                {daysUntilExpiry} days
               </Text>
             </View>
           </View>
         </View>
 
+        {/* Horizontal Rule */}
+        <View
+          style={{
+            alignSelf: 'center',
+            width: '90%',
+            borderWidth: 0.4,
+            borderColor: COLORS.Neutral7,
+            marginTop: SIZES.margin,
+          }}
+        />
+
         {/* detailed desc */}
         <View
           style={{
-            marginTop: SIZES.semi_margin,
+            marginTop: SIZES.margin,
             marginHorizontal: SIZES.semi_margin,
           }}>
           <View style={{justifyContent: 'center'}}>
@@ -285,8 +357,12 @@ const OfferDetail = () => {
             style={{
               marginTop: SIZES.base,
             }}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {route?.params?.detail?.description}
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+              }}>
+              {description}
             </Text>
           </View>
         </View>
@@ -306,8 +382,12 @@ const OfferDetail = () => {
             style={{
               marginTop: SIZES.base,
             }}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {route?.params?.detail?.overview}
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+              }}>
+              {packageDesc}
             </Text>
           </View>
         </View>
@@ -322,7 +402,7 @@ const OfferDetail = () => {
             justifyContent: 'space-between',
             borderRadius: SIZES.base,
             padding: SIZES.radius,
-            marginBottom: 30,
+            marginBottom: 100,
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
@@ -337,8 +417,8 @@ const OfferDetail = () => {
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {route?.params?.detail?.expiryDays} days
+              style={{...FONTS.h5, fontWeight: '600', color: COLORS.Neutral1}}>
+              {daysUntilExpiry} days
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -353,7 +433,7 @@ const OfferDetail = () => {
           </View>
           <View style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
             <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-              {route?.params?.detail?.expiry}
+              {offerValidity}
             </Text>
           </View>
         </View>
@@ -371,10 +451,10 @@ const OfferDetail = () => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingHorizontal: SIZES.radius,
+            paddingHorizontal: SIZES.padding,
           }}>
           <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Price</Text>
+            <Text style={{...FONTS.h3, color: COLORS.Neutral5}}>Price</Text>
           </View>
 
           <View style={{justifyContent: 'center'}}>
@@ -383,9 +463,8 @@ const OfferDetail = () => {
                 ...FONTS.h3,
                 color: COLORS.primary1,
                 letterSpacing: -1,
-                paddingTop: SIZES.base,
               }}>
-              ₦{route?.params?.detail?.price.toLocaleString('en-US', options)}
+              ₦{parseFloat(fobPrice.toFixed(2))}
             </Text>
           </View>
         </View>
@@ -395,9 +474,9 @@ const OfferDetail = () => {
           iconPosition={'LEFT'}
           icon={icons.chat}
           iconStyle={COLORS.white}
-          onPress={() => navigation.navigate('AllCategories')}
+          // onPress={() => navigation.navigate('AllCategories')}
           containerStyle={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.margin,
             marginBottom: SIZES.base,
             width: 350,
           }}

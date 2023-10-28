@@ -1,4 +1,4 @@
-import {View, Text, Platform} from 'react-native';
+import {View, Text, Platform, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {
   ALERT_TYPE,
@@ -6,18 +6,18 @@ import {
   Toast,
 } from 'react-native-alert-notification';
 import {Controller, useForm} from 'react-hook-form';
-import {Storage} from 'aws-amplify';
 import FastImage from 'react-native-fast-image';
 import {useMutation} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {v4 as uuidV4} from 'uuid';
 import DocumentPicker from 'react-native-document-picker';
+import {FlatList} from 'react-native-gesture-handler';
+import {Storage} from 'aws-amplify';
 
-import {useAuthContext} from '../../../context/AuthContext';
 import {
-  FileSection,
   FormInput,
   Header,
   QuotationProgress1,
@@ -38,12 +38,12 @@ interface IAddProduct {
   packageType: string;
   desc: string;
   file: string;
+  file2: any;
 }
 
 const ProductSpecification = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const {userID} = useAuthContext();
 
   const {control, handleSubmit}: any = useForm();
 
@@ -52,8 +52,7 @@ const ProductSpecification = () => {
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
   const [jobType, setJobType] = useState<any>(constants.filterUnit);
-  const [singleFile, setSingleFile] = useState<any>(null);
-  const [fileName, setFileName] = useState<any>('');
+  const [singleFile, setSingleFile] = useState<any>([]);
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
@@ -64,7 +63,7 @@ const ProductSpecification = () => {
   const onSubmit = async ({
     moq,
     supply,
-    file,
+    file2,
     desc,
     packageType,
   }: IAddProduct) => {
@@ -78,13 +77,17 @@ const ProductSpecification = () => {
         minOrderQty: moq,
         supplyCapacity: supply,
         productSpec: desc,
-        productDoc: file,
+        productDocs: file2,
         packageType,
         unit: type,
       };
 
-      if (singleFile && fileName) {
-        input.productDoc = await uploadFile();
+      // upload file or multiple files
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile2: any) => uploadFile(singleFile2?.uri)),
+        );
+        input.productDocs = fileKeys;
       }
 
       await doUpdateProduct({
@@ -92,7 +95,7 @@ const ProductSpecification = () => {
           input,
         },
       });
-      console.log('job data', input);
+      // console.log('job data', input);
       navigation.navigate('ProductPricing', {productID: input.id});
     } catch (error) {
       Toast.show({
@@ -105,30 +108,14 @@ const ProductSpecification = () => {
     }
   };
 
-  // UPLOAD FILE TO STORAGE
-  const uploadFile = async () => {
-    try {
-      // upload file (blob) to s3
-      const s3Response = await Storage.put(fileName, singleFile);
-      return s3Response.key;
-    } catch (err) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: (err as Error).message,
-        autoClose: 2000,
-      });
-    }
-  };
-
   // SELECT FILE
-  const selectFile = async () => {
+  const selectFile = async (setSingleFile: any) => {
     try {
-      const res = await DocumentPicker.pickSingle({
+      const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
-        allowMultiSelection: false,
+        allowMultiSelection: true,
       });
-      setSingleFile(res.uri);
-      setFileName(res.name);
+      setSingleFile([...singleFile, ...res]);
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {
@@ -142,6 +129,35 @@ const ProductSpecification = () => {
         throw err;
       }
     }
+  };
+
+  // UPLOAD FILE TO STORAGE
+  const uploadFile = async (uri: string) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response?.blob();
+
+      // file extension splitting
+      const uriParts = uri.split('.');
+      const extension = uriParts[uriParts.length - 1];
+
+      // upload file (blob) to s3
+      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
+      return s3Response.key;
+    } catch (err) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        textBody: (err as Error).message,
+        autoClose: 2000,
+      });
+    }
+  };
+
+  // Delete a single image
+  const deleteItem2 = (itemId: any) => {
+    setSingleFile((prevData: any) =>
+      prevData.filter((item: any) => item.uri !== itemId),
+    );
   };
 
   function requestForm() {
@@ -192,7 +208,7 @@ const ProductSpecification = () => {
           rules={{
             required: 'Product certification is required',
           }}
-          placeholder=""
+          placeholder="E.g. 1 Tonne"
           containerStyle={{marginTop: SIZES.margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
@@ -300,24 +316,80 @@ const ProductSpecification = () => {
           style={{
             flex: 1,
             justifyContent: 'center',
-            marginBottom: 50,
           }}>
-          {singleFile != null ? (
-            <FileSection
-              file={fileName ? fileName : ''}
-              onPress={() => setSingleFile(null)}
-              containerStyle={{
-                marginHorizontal: SIZES.margin,
-                marginTop: SIZES.margin,
-              }}
-            />
+          {singleFile?.length >= 1 ? (
+            <View style={{marginTop: SIZES.radius, marginBottom: 100}}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                  color: COLORS.Neutral1,
+                }}>
+                Product Specification
+              </Text>
+
+              <FlatList
+                data={singleFile}
+                keyExtractor={item => item.uri}
+                renderItem={({item}) => (
+                  <View style={{marginTop: SIZES.semi_margin}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        backgroundColor: COLORS.white,
+                      }}>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                        }}>
+                        <FastImage
+                          tintColor={COLORS.secondary1}
+                          source={icons.summary}
+                          style={{width: 20, height: 20}}
+                        />
+                      </View>
+
+                      {/* file name and date of upload */}
+                      <View
+                        style={{
+                          flex: 1,
+                          marginLeft: SIZES.base,
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{...FONTS.h5, color: COLORS.primary1}}
+                          numberOfLines={2}>
+                          {item?.name}
+                        </Text>
+                      </View>
+
+                      {/* delete file */}
+                      <TouchableOpacity
+                        style={{
+                          justifyContent: 'center',
+                          marginRight: SIZES.base,
+                        }}
+                        onPress={() => deleteItem2(item?.uri)}>
+                        <FastImage
+                          tintColor={COLORS.Rose4}
+                          source={icons.remove}
+                          style={{width: 20, height: 20}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+              />
+            </View>
           ) : (
             <UploadDocs
-              title={'Attach Product Specifications'}
-              selectFile={selectFile}
+              title={'Product Brochure'}
+              selectFile={() => selectFile(setSingleFile)}
               containerStyle={{
-                marginTop: SIZES.margin,
-                marginHorizontal: 4,
+                marginTop: SIZES.semi_margin,
+                marginHorizontal: 3,
+                marginBottom: 100,
               }}
             />
           )}

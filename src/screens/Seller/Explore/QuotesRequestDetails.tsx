@@ -1,7 +1,9 @@
-import {View, Platform} from 'react-native';
+import {View, Platform, Text} from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {ScrollView} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 
 import {
   ExploreStackNavigatorParamList,
@@ -14,14 +16,29 @@ import {
   QuoteRequestItem2,
   TextButton,
 } from '../../../components';
-import {SIZES, COLORS} from '../../../constants';
-import {ScrollView} from 'react-native-gesture-handler';
+import {SIZES, COLORS, FONTS, icons} from '../../../constants';
 
 const QuotesRequestDetails = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<QuotesRequestDetailsRouteProp>();
 
   console.log(route?.params?.quoteItem);
+  const {
+    placeOrigin,
+    loadDate,
+    qty,
+    containerSize,
+    placeDestination,
+    productName,
+    rffType,
+    rffNo,
+    placeOriginName,
+    packageType,
+    placeDestinationName,
+    placeOriginFlag,
+    placeDestinationFlag,
+    relatedServices,
+  } = route?.params?.quoteItem;
 
   const onCopy = () => {
     Clipboard.setString(route?.params?.quoteItem?.orderID);
@@ -47,41 +64,87 @@ const QuotesRequestDetails = () => {
             backgroundColor: COLORS.white,
           }}>
           <QuoteRequestItem
-            to={route?.params?.quoteItem?.to}
-            from={route?.params?.quoteItem?.from}
-            fromImg={route?.params?.quoteItem?.fromImg}
-            toImg={route?.params?.quoteItem?.toImg}
+            to={placeDestinationName}
+            from={placeOriginName}
+            fromImg={placeOriginFlag}
+            toImg={placeDestinationFlag}
           />
 
           <QuoteRequestItem2
-            orderID={route?.params?.quoteItem?.orderID}
+            orderID={rffNo}
             onCopy={onCopy}
-            packageType={route?.params?.quoteItem?.packageType}
-            name={route?.params?.quoteItem?.productInfo?.name}
-            containerCount={
-              route?.params?.quoteItem?.productInfo?.containerCount
-            }
-            transportMode={route?.params?.quoteItem?.transportMode}
-            containerSize={route?.params?.quoteItem?.productInfo?.containerSize}
-            relatedServices={route?.params?.quoteItem?.relatedServices}
+            packageType={packageType}
+            name={productName}
+            containerCount={qty}
+            transportMode={rffType}
+            containerSize={containerSize}
+            languages={relatedServices}
           />
 
           {/* Origin Details*/}
           <OriginDestinationDetails
-            address={route?.params?.quoteItem?.departAddress}
+            address={placeOrigin}
             name={route?.params?.quoteItem?.name}
             type={'Origin'}
-            departDate={route?.params?.quoteItem?.departDate}
+            departDate={loadDate}
             typeName={'Departure Date'}
           />
+
           {/* Destination Details  */}
-          <OriginDestinationDetails
-            address={route?.params?.quoteItem?.arrivalAddress}
-            name={route?.params?.quoteItem?.name}
-            type={'Destination'}
-            departDate={route?.params?.quoteItem?.arrivalDate}
-            typeName={'Arrival Date'}
-          />
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.base,
+              borderRadius: SIZES.radius,
+              padding: SIZES.semi_margin,
+              backgroundColor: COLORS.Neutral10,
+            }}>
+            <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
+              Destination
+            </Text>
+            <View
+              style={{
+                marginTop: SIZES.radius,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View
+                style={{
+                  marginTop: 5,
+                  justifyContent: 'center',
+                  padding: SIZES.base,
+                  width: 32,
+                  height: 32,
+                  borderRadius: SIZES.radius,
+                  backgroundColor: COLORS.secondary10,
+                }}>
+                <FastImage
+                  source={icons?.location}
+                  tintColor={COLORS.secondary1}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: SIZES.radius,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    paddingTop: 4,
+                    ...FONTS.body3,
+                    color: COLORS.Neutral6,
+                  }}>
+                  {placeDestination}
+                </Text>
+              </View>
+            </View>
+          </View>
 
           {/* Button */}
           <TextButton

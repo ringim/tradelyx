@@ -1,6 +1,6 @@
 import {ActivityIndicator, Text, View} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useState, useCallback} from 'react';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -21,14 +21,7 @@ import {
   QuoteType,
   TextButton,
 } from '../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  SIZES,
-  constants,
-  icons,
-  images,
-} from '../../../../../constants';
+import {COLORS, FONTS, SIZES, icons, images} from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/BuyerNav/type/navigation';
 import {createRFQ} from '../../../../../queries/RequestQueries';
 import {
@@ -36,12 +29,12 @@ import {
   CreateRFQMutation,
   CreateRFQMutationVariables,
   RFQTYPE,
-  GetUserQuery,
-  GetUserQueryVariables,
+  ListCommodityCategoriesQuery,
+  ListCommodityCategoriesQueryVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
 import {referralCode} from '../../../../../utilities/Utils';
-import {getUser} from '../../../../../queries/UserQueries';
+import {listCommodityCategories} from '../../../../../queries/ProductQueries';
 
 interface IRequestQuotation {
   title: string;
@@ -55,23 +48,32 @@ const DomesticRFQ = () => {
 
   const {control, handleSubmit}: any = useForm();
 
-  const [loading, setLoading] = useState(false);
+  // LIST COMMODITY CATEGORIES
+  const {data: newData, loading: newLoad} = useQuery<
+    ListCommodityCategoriesQuery,
+    ListCommodityCategoriesQueryVariables
+  >(listCommodityCategories, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
 
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.product_categories);
+  const [type, setType] = useState<any>('');
+  const [jobType, setJobType] = useState<any>();
+  const [ccID, setCCID] = useState('');
 
-  // GET USER
-  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {
-        id: userID,
-      },
-    },
+  useFocusEffect(
+    useCallback(() => {
+      const allCommodityCategories: any =
+        newData?.listCommodityCategories?.items.filter(
+          (item: any) => !item?._deleted,
+        ) || [];
+      setJobType(allCommodityCategories);
+    }, [newLoad]),
   );
-  const userInfo: any = data?.getUser;
 
   // CREATE REQUEST QUOTATION
   const [doCreateRFQ] = useMutation<
@@ -87,12 +89,13 @@ const DomesticRFQ = () => {
     try {
       const input: CreateRFQInput = {
         id: uuidV4(),
+        SType: 'RFQ',
         rfqNo: referralCode(),
-        countryName: userInfo?.country,
         title,
-        requestCategory: type,
+        requestCategory: type?.title,
         rfqType: RFQTYPE.DOMESTIC,
         description: requirements,
+        commoditycategoryID: ccID,
         userID,
       };
       await doCreateRFQ({
@@ -101,7 +104,7 @@ const DomesticRFQ = () => {
         },
       });
 
-      console.log('job data', input);
+      // console.log('job data', input);
       navigation.navigate('TypeQuotation', {rfqID: input.id});
     } catch (error) {
       Toast.show({
@@ -134,87 +137,67 @@ const DomesticRFQ = () => {
         />
 
         {/* Category Type */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'Category type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <>
-              <Text
-                style={{
-                  marginTop: SIZES.semi_margin,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                }}>
-                Product Category
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Category"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1 || value}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.radius,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select your category"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </>
-          )}
-        />
+        <View>
+          <Text
+            style={{
+              marginTop: SIZES.semi_margin,
+              color: COLORS.Neutral1,
+              ...FONTS.body3,
+              fontWeight: '500',
+            }}>
+            Product Category
+          </Text>
+          <DropDownPicker
+            schema={{
+              label: 'title',
+              value: 'id',
+            }}
+            open={open}
+            showArrowIcon={true}
+            placeholder="Select Category"
+            showTickIcon={true}
+            dropDownDirection="AUTO"
+            listMode="MODAL"
+            value={value1}
+            loading={newLoad}
+            items={jobType}
+            setOpen={setOpen}
+            setValue={setValue1}
+            setItems={setJobType}
+            style={{
+              borderRadius: SIZES.base,
+              height: 40,
+              marginTop: SIZES.radius,
+              borderColor: COLORS.Neutral7,
+              borderWidth: 0.5,
+            }}
+            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+            textStyle={{color: COLORS.Neutral1}}
+            closeIconStyle={{
+              width: 24,
+              height: 24,
+            }}
+            modalProps={{
+              animationType: 'fade',
+            }}
+            ArrowDownIconComponent={({style}) => (
+              <FastImage source={icons.down} style={{width: 15, height: 15}} />
+            )}
+            modalContentContainerStyle={{
+              paddingHorizontal: SIZES.padding * 3,
+            }}
+            modalTitle="Select your category"
+            modalTitleStyle={{
+              fontWeight: '600',
+            }}
+            onChangeValue={(value: any) => {
+              setCCID(value);
+            }}
+            onSelectItem={(value: any) => {
+              setType(value);
+            }}
+          />
+        </View>
 
         <FormInput
           label="Detailed Description"
@@ -238,7 +221,7 @@ const DomesticRFQ = () => {
     );
   }
 
-  if (onLoad) {
+  if (newLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" color={COLORS.primary6} />

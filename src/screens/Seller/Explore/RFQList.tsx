@@ -1,15 +1,214 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {View, Text, Animated, TouchableOpacity} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import Clipboard from '@react-native-clipboard/clipboard';
+import {useNavigation} from '@react-navigation/native';
 
-import {COLORS, SIZES, FONTS, dummyData} from '../../../constants';
-import {PromoSection, RFQItem, SearchBox} from '../../../components';
+import {COLORS, FONTS, SIZES, constants} from '../../../constants';
+import {PromoSection} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
+import RFQStandard from './RFQStandard';
+import RFQDomestic from './RFQDomestic';
+import RFQInternational from './RFQInternational';
 
-const RFQList = () => {
+const scheduleTabs = constants.RFFType.map(bottom_tab => ({
+  ...bottom_tab,
+  ref: React.createRef(),
+}));
+
+const TabIndicator = ({measureLayout, scrollX}: any) => {
+  const inputRange = scheduleTabs.map((_, i) => i * SIZES.width - 20);
+
+  const tabIndicatorWidth = scrollX.interpolate({
+    inputRange,
+    outputRange: measureLayout.map((measure: {width: any}) => measure.width),
+  });
+
+  const translateX = scrollX.interpolate({
+    inputRange,
+    outputRange: measureLayout.map((measure: {x: any}) => measure.x),
+  });
+
+  return (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left: 0,
+        height: 3,
+        top: 30,
+        width: tabIndicatorWidth,
+        borderRadius: SIZES.radius,
+        transform: [
+          {
+            translateX,
+          },
+        ],
+      }}
+    />
+  );
+};
+
+const Tabs = ({scrollX, onTabPress}: any) => {
+  const [measureLayout, setMeasureLayout] = useState<any>([]);
+  const containerRef = useRef<any>();
+
+  const tabPosition = Animated.divide(scrollX, SIZES.width);
+
+  React.useEffect(() => {
+    let ml: any = [];
+
+    scheduleTabs.forEach((home_tab: any) => {
+      home_tab?.ref?.current?.measureLayout(
+        containerRef.current,
+        (x: any, y: any, width: any, height: any) => {
+          ml.push({
+            x,
+            y,
+            width,
+            height,
+          });
+
+          if (ml.length === scheduleTabs.length) {
+            setMeasureLayout(ml);
+          }
+        },
+      );
+    });
+  }, [containerRef.current]);
+
+  return (
+    <View
+      ref={containerRef}
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+      }}>
+      {/* Tab Indicator */}
+      {measureLayout.length > 0 ? (
+        <TabIndicator measureLayout={measureLayout} scrollX={scrollX} />
+      ) : (
+        <View />
+      )}
+
+      {/* Tabs */}
+      {scheduleTabs.map((item: any, index: any) => {
+        const textColor = tabPosition.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [COLORS.Neutral1, COLORS.primary1, COLORS.Neutral1],
+          extrapolate: 'clamp',
+        });
+
+        const bgColor = tabPosition.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [COLORS.white, COLORS.primary10, COLORS.white],
+          extrapolate: 'clamp',
+        });
+
+        return (
+          <TouchableOpacity
+            key={`HomeTabs-${index}`}
+            style={{
+              paddingHorizontal: 5,
+              width: 120,
+              justifyContent: 'center',
+            }}
+            onPress={() => onTabPress(index)}>
+            <Animated.View
+              style={{
+                backgroundColor: bgColor,
+                padding: SIZES.radius,
+                borderWidth: 0.5,
+                borderColor: COLORS.primary1,
+                borderRadius: SIZES.padding,
+              }}>
+              <Animated.Text
+                style={{
+                  color: textColor,
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  textAlign: 'center',
+                }}>
+                {item.label}
+              </Animated.Text>
+            </Animated.View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
+
+const RFFList = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
+
+  const flatListRef = useRef<any>();
+  const scrollX = useRef<any>(new Animated.Value(0)).current;
+
+  const onTabPress = useCallback((tabIndex: number) => {
+    flatListRef?.current?.scrollToOffset({
+      offset: tabIndex * SIZES.width,
+    });
+  }, []);
+
+  function renderTopTabBar() {
+    return (
+      <View
+        style={{
+          flex: 0.07,
+          alignItems: 'center',
+          marginTop: SIZES.radius,
+          marginBottom: SIZES.base,
+          borderRadius: SIZES.base,
+        }}>
+        <Tabs scrollX={scrollX} onTabPress={onTabPress} />
+      </View>
+    );
+  }
+
+  function renderScheduleTabContent() {
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+        }}>
+        <Animated.FlatList
+          horizontal
+          ref={flatListRef}
+          scrollEnabled={false}
+          pagingEnabled
+          style={{
+            flexDirection: 'row',
+          }}
+          snapToAlignment="center"
+          decelerationRate="fast"
+          scrollEventThrottle={16}
+          showsHorizontalScrollIndicator={false}
+          data={constants.RFFType}
+          keyExtractor={item => `HomeTabs-${item.id}`}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {
+              useNativeDriver: false,
+            },
+          )}
+          renderItem={({item, index}: any) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  flex: 1,
+                  width: SIZES.width,
+                }}>
+                {item?.id == 0 && <RFQStandard />}
+                {item?.id == 1 && <RFQDomestic />}
+                {item?.id == 2 && <RFQInternational />}
+              </View>
+            );
+          }}
+        />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -18,66 +217,39 @@ const RFQList = () => {
         backgroundColor: COLORS.white,
       }}>
       <FlatList
-        data={dummyData?.rfqItems}
+        data={[]}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => `${item.id}`}
         ListHeaderComponent={
           <View style={{marginTop: SIZES.radius}}>
             {/* Promo */}
-            <PromoSection
-              containerStyle={{
-                marginLeft: SIZES.radius,
-              }}
-            />
+            <PromoSection />
 
-            {/* Search Box */}
             <View
               style={{
-                marginHorizontal: SIZES.radius,
-                marginTop: SIZES.semi_margin,
+                marginTop: SIZES.margin,
+                marginHorizontal: SIZES.margin,
+                marginBottom: 5,
               }}>
-              <SearchBox
-                searchTerm={'Search RFQ item'}
-                onSearch={() => navigation.navigate('RFQSearch')}
-                onPress={() => navigation.navigate('RFQFilter')}
-              />
-            </View>
-
-            <View
-              style={{marginTop: SIZES.margin, marginHorizontal: SIZES.margin}}>
               <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
-                Latest RFQ
+                Latest Freight Quotes Request
               </Text>
             </View>
           </View>
         }
-        renderItem={({item, index}) => {
-          // copy to clipboard
-          const copyToClipboard = () => {
-            Clipboard.setString(item?.rfqNo);
-          };
-          /* RFQ items */
-          return (
-            <RFQItem
-              key={index}
-              item={item}
-              onCopy={copyToClipboard}
-              onPress={() =>
-                navigation.navigate('RFQDetail', {sellerItem: item})
-              }
-            />
-          );
-        }}
+        renderItem={() => <View />}
         ListFooterComponent={
           <View
             style={{
               marginBottom: 200,
-            }}
-          />
+            }}>
+            {renderTopTabBar()}
+
+            {renderScheduleTabContent()}
+          </View>
         }
       />
     </View>
   );
 };
 
-export default RFQList;
+export default RFFList;

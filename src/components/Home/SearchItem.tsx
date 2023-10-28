@@ -1,26 +1,67 @@
 import {View, Text, TouchableOpacity, Platform} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
+import {DUMMY_IMAGE} from '../../utilities/Utils';
+import dayjs from 'dayjs';
 
 interface IItem {
   item: string | any;
   onPress: any;
   onView?: any;
   containerStyle?: any;
+  logo: any;
+  item_image: any;
+  item_image2: any;
 }
 
-const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
+const SearchItem = ({
+  containerStyle,
+  logo,
+  onView,
+  item_image,
+  item,
+  onPress,
+  item_image2,
+}: IItem) => {
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imageUri3, setImageUri3] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (logo) {
+      Storage.get(logo).then(setImageUri2);
+    }
+  }, [logo]);
+
+  useEffect(() => {
+    if (item_image) {
+      Storage.get(item_image).then(setImageUri);
+    }
+  }, [item_image]);
+
+  useEffect(() => {
+    if (item_image2) {
+      Storage.get(item_image2).then(setImageUri3);
+    }
+  }, [item_image2]);
+
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   };
 
+  const expiryDateString = item?.deliveryDate;
+  const expiryDate = dayjs(expiryDateString);
+  const currentDate = dayjs();
+  const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
+
   return (
-    <TouchableOpacity
+    <View
       style={{
         marginTop: SIZES.radius,
         marginHorizontal: SIZES.semi_margin,
@@ -29,9 +70,9 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
         borderWidth: 1,
         borderColor: COLORS.Neutral8,
         ...containerStyle,
-      }}
-      onPress={onPress}>
-      <View
+      }}>
+      <TouchableOpacity
+        onPress={onPress}
         style={{
           margin: SIZES.radius,
           flexDirection: 'row',
@@ -41,19 +82,14 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
         <View
           style={{
             justifyContent: 'center',
-            width: 32,
-            height: 32,
-            alignSelf: 'center',
-            backgroundColor: COLORS.lightYellow,
-            borderRadius: SIZES.base,
           }}>
           <FastImage
-            source={item?.storeImg}
-            resizeMode={FastImage.resizeMode.contain}
+            source={{uri: imageUri2 || DUMMY_IMAGE}}
+            resizeMode={FastImage.resizeMode.cover}
             style={{
-              width: 20,
-              height: 20,
-              left: 6,
+              width: 32,
+              height: 32,
+              borderRadius: SIZES.base,
             }}
           />
         </View>
@@ -66,7 +102,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {item?.supplier}
+            {item?.storeName}
           </Text>
 
           {/* Rating, */}
@@ -95,30 +131,46 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                {parseFloat(item?.rating).toFixed(1)}
+                {item?.storeRating}
               </Text>
             </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
 
       {/* Product Image */}
       <View style={{marginTop: SIZES.base}}>
-        <View
-          style={{
-            marginHorizontal: SIZES.margin,
-            alignSelf: 'center',
-          }}>
-          <FastImage
-            resizeMode={FastImage.resizeMode.cover}
-            source={item?.image}
+        {item?.image ? (
+          <View
             style={{
-              width: Platform.OS === 'ios' ? 360 : 350,
-              height: 145,
-              borderRadius: SIZES.base,
-            }}
-          />
-        </View>
+              alignSelf: 'center',
+            }}>
+            <FastImage
+              resizeMode={FastImage.resizeMode.cover}
+              source={{uri: imageUri || DUMMY_IMAGE}}
+              style={{
+                width: 320,
+                height: 140,
+                borderRadius: SIZES.base,
+              }}
+            />
+          </View>
+        ) : (
+          <View
+            style={{
+              alignSelf: 'center',
+            }}>
+            <FastImage
+              resizeMode={FastImage.resizeMode.cover}
+              source={{uri: imageUri3 || DUMMY_IMAGE}}
+              style={{
+                width: 320,
+                height: 140,
+                borderRadius: SIZES.base,
+              }}
+            />
+          </View>
+        )}
 
         {/* Product Name */}
         <View
@@ -127,7 +179,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
             marginHorizontal: SIZES.semi_margin,
           }}>
           <Text numberOfLines={2} style={{...FONTS.h4, color: COLORS.Neutral1}}>
-            {item?.name}
+            {item?.productName}
           </Text>
         </View>
 
@@ -159,7 +211,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {item?.address2}
+              {item?.storeAddress}
             </Text>
           </View>
         </View>
@@ -168,7 +220,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
         <View
           style={{
             marginTop: SIZES.semi_margin,
-            marginHorizontal: SIZES.radius,
+            marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -184,7 +236,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {item?.qtyOffered} bags
+              {item?.qtyMeasure} bags
             </Text>
           </View>
         </View>
@@ -193,7 +245,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
         <View
           style={{
             marginTop: SIZES.radius,
-            marginHorizontal: SIZES.radius,
+            marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -209,7 +261,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              ₦{item?.usdPrice.toLocaleString('en-US', options)}
+              ₦{parseFloat(item?.basePrice).toFixed(2)}
             </Text>
           </View>
         </View>
@@ -218,7 +270,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
         <View
           style={{
             marginTop: SIZES.radius,
-            marginHorizontal: SIZES.radius,
+            marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -243,7 +295,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
         <View
           style={{
             marginTop: SIZES.radius,
-            marginHorizontal: SIZES.radius,
+            marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -259,7 +311,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {item?.deliveryDuration} days
+              {daysUntilExpiry} days
             </Text>
           </View>
         </View>
@@ -274,6 +326,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
           backgroundColor: COLORS.Neutral9,
           borderBottomLeftRadius: SIZES.radius,
           borderBottomRightRadius: SIZES.radius,
+          paddingHorizontal: SIZES.semi_margin,
           padding: SIZES.radius,
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -285,7 +338,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
               letterSpacing: -1,
               paddingTop: SIZES.base,
             }}>
-            ₦{item?.price.toLocaleString('en-US', options)}
+            ₦{item?.fobPrice.toLocaleString('en-US', options)}
           </Text>
         </View>
 
@@ -302,7 +355,7 @@ const SearchItem = ({containerStyle, onView, item, onPress}: IItem) => {
           onPress={onView}
         />
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

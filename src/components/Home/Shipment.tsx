@@ -94,8 +94,8 @@ const Shipment = ({transportMode, date, address}: any) => {
         <View
           style={{
             flex: 1,
-            marginLeft: SIZES.semi_margin,
             justifyContent: 'center',
+            alignItems: 'flex-end',
           }}>
           <Text
             numberOfLines={3}

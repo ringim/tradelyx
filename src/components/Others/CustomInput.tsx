@@ -21,7 +21,9 @@ export type IEditableUserField =
   | 'legalRep'
   | 'lga'
   | 'overview'
-  | 'keyProduct';
+  | 'identification'
+  | 'keyProduct'
+  | 'totalStaff';
 export type IEditableUser = Pick<User, IEditableUserField>;
 
 interface ICustomInput {

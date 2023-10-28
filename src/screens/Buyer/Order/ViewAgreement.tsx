@@ -16,8 +16,6 @@ const ViewAgreement = () => {
   const [showModal, setShowModal] = useState(false);
   const language = 'anvoav vi d vji oadvav ';
 
-  console.log('lang sel', language);
-
   const privacyPolicy = 'https://tradely.com/privacy-policy';
 
   return (

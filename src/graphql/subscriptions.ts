@@ -12,6 +12,8 @@ export const onCreateOrder =
   /* GraphQL */ `subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
   onCreateOrder(filter: $filter) {
     id
+    createdAt
+    SType
     orderType
     orderStatus
     agreement
@@ -25,7 +27,6 @@ export const onCreateOrder =
     rfqID
     rffID
     sellOfferID
-    createdAt
     updatedAt
     __typename
   }
@@ -38,6 +39,8 @@ export const onUpdateOrder =
   /* GraphQL */ `subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
   onUpdateOrder(filter: $filter) {
     id
+    createdAt
+    SType
     orderType
     orderStatus
     agreement
@@ -51,7 +54,6 @@ export const onUpdateOrder =
     rfqID
     rffID
     sellOfferID
-    createdAt
     updatedAt
     __typename
   }
@@ -64,6 +66,8 @@ export const onDeleteOrder =
   /* GraphQL */ `subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
   onDeleteOrder(filter: $filter) {
     id
+    createdAt
+    SType
     orderType
     orderStatus
     agreement
@@ -77,7 +81,6 @@ export const onDeleteOrder =
     rfqID
     rffID
     sellOfferID
-    createdAt
     updatedAt
     __typename
   }
@@ -90,6 +93,8 @@ export const onCreateSellOffer =
   /* GraphQL */ `subscription OnCreateSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
   onCreateSellOffer(filter: $filter) {
     id
+    createdAt
+    SType
     sellOfferID
     requestCategory
     title
@@ -111,11 +116,17 @@ export const onCreateSellOffer =
     paymentType
     paymentMethod
     offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
     userID
     commoditycategoryID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -129,14 +140,12 @@ export const onCreateSellOffer =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -149,6 +158,8 @@ export const onUpdateSellOffer =
   /* GraphQL */ `subscription OnUpdateSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
   onUpdateSellOffer(filter: $filter) {
     id
+    createdAt
+    SType
     sellOfferID
     requestCategory
     title
@@ -170,11 +181,17 @@ export const onUpdateSellOffer =
     paymentType
     paymentMethod
     offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
     userID
     commoditycategoryID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -188,14 +205,12 @@ export const onUpdateSellOffer =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -208,6 +223,8 @@ export const onDeleteSellOffer =
   /* GraphQL */ `subscription OnDeleteSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
   onDeleteSellOffer(filter: $filter) {
     id
+    createdAt
+    SType
     sellOfferID
     requestCategory
     title
@@ -229,11 +246,17 @@ export const onDeleteSellOffer =
     paymentType
     paymentMethod
     offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
     userID
     commoditycategoryID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -247,14 +270,12 @@ export const onDeleteSellOffer =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -267,6 +288,8 @@ export const onCreateRFQ =
   /* GraphQL */ `subscription OnCreateRFQ($filter: ModelSubscriptionRFQFilterInput) {
   onCreateRFQ(filter: $filter) {
     id
+    createdAt
+    SType
     rfqNo
     rfqType
     title
@@ -281,10 +304,15 @@ export const onCreateRFQ =
     buyFrequency
     budget
     placeOrigin
+    placeOriginFlag
+    placeOriginName
     landmark
     unit
     incoterms
+    placeDestinationName
     placeDestination
+    placeDestinationFlag
+    destinationCountry
     deliveryPeriod
     expiryDate
     paymentType
@@ -296,6 +324,8 @@ export const onCreateRFQ =
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -309,14 +339,12 @@ export const onCreateRFQ =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -329,6 +357,8 @@ export const onUpdateRFQ =
   /* GraphQL */ `subscription OnUpdateRFQ($filter: ModelSubscriptionRFQFilterInput) {
   onUpdateRFQ(filter: $filter) {
     id
+    createdAt
+    SType
     rfqNo
     rfqType
     title
@@ -343,10 +373,15 @@ export const onUpdateRFQ =
     buyFrequency
     budget
     placeOrigin
+    placeOriginFlag
+    placeOriginName
     landmark
     unit
     incoterms
+    placeDestinationName
     placeDestination
+    placeDestinationFlag
+    destinationCountry
     deliveryPeriod
     expiryDate
     paymentType
@@ -358,6 +393,8 @@ export const onUpdateRFQ =
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -371,14 +408,12 @@ export const onUpdateRFQ =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -391,6 +426,8 @@ export const onDeleteRFQ =
   /* GraphQL */ `subscription OnDeleteRFQ($filter: ModelSubscriptionRFQFilterInput) {
   onDeleteRFQ(filter: $filter) {
     id
+    createdAt
+    SType
     rfqNo
     rfqType
     title
@@ -405,10 +442,15 @@ export const onDeleteRFQ =
     buyFrequency
     budget
     placeOrigin
+    placeOriginFlag
+    placeOriginName
     landmark
     unit
     incoterms
+    placeDestinationName
     placeDestination
+    placeDestinationFlag
+    destinationCountry
     deliveryPeriod
     expiryDate
     paymentType
@@ -420,6 +462,8 @@ export const onDeleteRFQ =
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -433,14 +477,12 @@ export const onDeleteRFQ =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -453,13 +495,13 @@ export const onCreateRFF =
   /* GraphQL */ `subscription OnCreateRFF($filter: ModelSubscriptionRFFFilterInput) {
   onCreateRFF(filter: $filter) {
     id
+    SType
+    createdAt
     rffNo
     rffType
-    title
-    countryName
-    city
     deliveryPeriod
     requestCategory
+    rffRequestType
     productName
     handling
     loadDate
@@ -470,20 +512,27 @@ export const onCreateRFF =
     width
     height
     placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
     placeDestination
     relatedServices
     invoiceAmount
+    document
     notes
-    loadType
     container
     containerSize
     containerType
-    containerCount
+    requestType
     commoditycategoryID
     userID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -497,14 +546,12 @@ export const onCreateRFF =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -517,13 +564,13 @@ export const onUpdateRFF =
   /* GraphQL */ `subscription OnUpdateRFF($filter: ModelSubscriptionRFFFilterInput) {
   onUpdateRFF(filter: $filter) {
     id
+    SType
+    createdAt
     rffNo
     rffType
-    title
-    countryName
-    city
     deliveryPeriod
     requestCategory
+    rffRequestType
     productName
     handling
     loadDate
@@ -534,20 +581,27 @@ export const onUpdateRFF =
     width
     height
     placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
     placeDestination
     relatedServices
     invoiceAmount
+    document
     notes
-    loadType
     container
     containerSize
     containerType
-    containerCount
+    requestType
     commoditycategoryID
     userID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -561,14 +615,12 @@ export const onUpdateRFF =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -581,13 +633,13 @@ export const onDeleteRFF =
   /* GraphQL */ `subscription OnDeleteRFF($filter: ModelSubscriptionRFFFilterInput) {
   onDeleteRFF(filter: $filter) {
     id
+    SType
+    createdAt
     rffNo
     rffType
-    title
-    countryName
-    city
     deliveryPeriod
     requestCategory
+    rffRequestType
     productName
     handling
     loadDate
@@ -598,20 +650,27 @@ export const onDeleteRFF =
     width
     height
     placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
     placeDestination
     relatedServices
     invoiceAmount
+    document
     notes
-    loadType
     container
     containerSize
     containerType
-    containerCount
+    requestType
     commoditycategoryID
     userID
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -625,14 +684,12 @@ export const onDeleteRFF =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -652,8 +709,11 @@ export const onCreateCategories =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -665,18 +725,22 @@ export const onCreateCategories =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -703,8 +767,11 @@ export const onUpdateCategories =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -716,18 +783,22 @@ export const onUpdateCategories =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -754,8 +825,11 @@ export const onDeleteCategories =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -767,18 +841,22 @@ export const onDeleteCategories =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -805,8 +883,11 @@ export const onCreateCommodityCategory =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -818,18 +899,22 @@ export const onCreateCommodityCategory =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -839,6 +924,8 @@ export const onCreateCommodityCategory =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -853,10 +940,15 @@ export const onCreateCommodityCategory =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -865,7 +957,6 @@ export const onCreateCommodityCategory =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -875,13 +966,13 @@ export const onCreateCommodityCategory =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -892,18 +983,22 @@ export const onCreateCommodityCategory =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -913,6 +1008,8 @@ export const onCreateCommodityCategory =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -934,9 +1031,12 @@ export const onCreateCommodityCategory =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -963,8 +1063,11 @@ export const onUpdateCommodityCategory =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -976,18 +1079,22 @@ export const onUpdateCommodityCategory =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -997,6 +1104,8 @@ export const onUpdateCommodityCategory =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1011,10 +1120,15 @@ export const onUpdateCommodityCategory =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1023,7 +1137,6 @@ export const onUpdateCommodityCategory =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1033,13 +1146,13 @@ export const onUpdateCommodityCategory =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1050,18 +1163,22 @@ export const onUpdateCommodityCategory =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1071,6 +1188,8 @@ export const onUpdateCommodityCategory =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1092,9 +1211,12 @@ export const onUpdateCommodityCategory =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1121,8 +1243,11 @@ export const onDeleteCommodityCategory =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1134,18 +1259,22 @@ export const onDeleteCommodityCategory =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1155,6 +1284,8 @@ export const onDeleteCommodityCategory =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1169,10 +1300,15 @@ export const onDeleteCommodityCategory =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1181,7 +1317,6 @@ export const onDeleteCommodityCategory =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1191,13 +1326,13 @@ export const onDeleteCommodityCategory =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1208,18 +1343,22 @@ export const onDeleteCommodityCategory =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1229,6 +1368,8 @@ export const onDeleteCommodityCategory =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1250,9 +1391,12 @@ export const onDeleteCommodityCategory =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1326,8 +1470,11 @@ export const onCreateProduct =
   /* GraphQL */ `subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
   onCreateProduct(filter: $filter) {
     id
-    image
+    createdAt
+    SType
     title
+    productImage
+    image
     images
     description
     rating
@@ -1339,14 +1486,19 @@ export const onCreateProduct =
     packageType
     quantity
     fobPrice
-    deliveryTime
     paymentType
     transportMode
     placeOrigin
     dateAvailable
     productSpec
-    productDoc
+    productDocs
+    productCert
     documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
     commoditycategoryID
     categoriesID
     userID
@@ -1365,7 +1517,6 @@ export const onCreateProduct =
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -1378,8 +1529,11 @@ export const onUpdateProduct =
   /* GraphQL */ `subscription OnUpdateProduct($filter: ModelSubscriptionProductFilterInput) {
   onUpdateProduct(filter: $filter) {
     id
-    image
+    createdAt
+    SType
     title
+    productImage
+    image
     images
     description
     rating
@@ -1391,14 +1545,19 @@ export const onUpdateProduct =
     packageType
     quantity
     fobPrice
-    deliveryTime
     paymentType
     transportMode
     placeOrigin
     dateAvailable
     productSpec
-    productDoc
+    productDocs
+    productCert
     documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
     commoditycategoryID
     categoriesID
     userID
@@ -1417,7 +1576,6 @@ export const onUpdateProduct =
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -1430,8 +1588,11 @@ export const onDeleteProduct =
   /* GraphQL */ `subscription OnDeleteProduct($filter: ModelSubscriptionProductFilterInput) {
   onDeleteProduct(filter: $filter) {
     id
-    image
+    createdAt
+    SType
     title
+    productImage
+    image
     images
     description
     rating
@@ -1443,14 +1604,19 @@ export const onDeleteProduct =
     packageType
     quantity
     fobPrice
-    deliveryTime
     paymentType
     transportMode
     placeOrigin
     dateAvailable
     productSpec
-    productDoc
+    productDocs
+    productCert
     documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
     commoditycategoryID
     categoriesID
     userID
@@ -1469,7 +1635,6 @@ export const onDeleteProduct =
       nextToken
       __typename
     }
-    createdAt
     updatedAt
     __typename
   }
@@ -1489,6 +1654,7 @@ export const onCreateUser =
     accountType
     lat
     lng
+    ledgerBalance
     address
     city
     state
@@ -1498,6 +1664,7 @@ export const onCreateUser =
     level
     identification
     identificationNumber
+    identityImage
     keyProduct
     country
     inviteCode
@@ -1509,16 +1676,20 @@ export const onCreateUser =
     businessType
     certifications
     mainMarkets
+    memberShipType
+    sellerLevel
     estRevenue
     totalStaff
     responseTime
     languages
     legalRep
     overview
-    memberType
+    activeOrder
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -1532,7 +1703,6 @@ export const onCreateUser =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
@@ -1542,8 +1712,11 @@ export const onCreateUser =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1555,18 +1728,22 @@ export const onCreateUser =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1591,6 +1768,8 @@ export const onCreateUser =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1605,10 +1784,15 @@ export const onCreateUser =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1617,7 +1801,6 @@ export const onCreateUser =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1627,13 +1810,13 @@ export const onCreateUser =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1644,18 +1827,22 @@ export const onCreateUser =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1665,6 +1852,8 @@ export const onCreateUser =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1686,9 +1875,12 @@ export const onCreateUser =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1715,6 +1907,7 @@ export const onUpdateUser =
     accountType
     lat
     lng
+    ledgerBalance
     address
     city
     state
@@ -1724,6 +1917,7 @@ export const onUpdateUser =
     level
     identification
     identificationNumber
+    identityImage
     keyProduct
     country
     inviteCode
@@ -1735,16 +1929,20 @@ export const onUpdateUser =
     businessType
     certifications
     mainMarkets
+    memberShipType
+    sellerLevel
     estRevenue
     totalStaff
     responseTime
     languages
     legalRep
     overview
-    memberType
+    activeOrder
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -1758,7 +1956,6 @@ export const onUpdateUser =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
@@ -1768,8 +1965,11 @@ export const onUpdateUser =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -1781,18 +1981,22 @@ export const onUpdateUser =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1817,6 +2021,8 @@ export const onUpdateUser =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -1831,10 +2037,15 @@ export const onUpdateUser =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -1843,7 +2054,6 @@ export const onUpdateUser =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1853,13 +2063,13 @@ export const onUpdateUser =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -1870,18 +2080,22 @@ export const onUpdateUser =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -1891,6 +2105,8 @@ export const onUpdateUser =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -1912,9 +2128,12 @@ export const onUpdateUser =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }
@@ -1941,6 +2160,7 @@ export const onDeleteUser =
     accountType
     lat
     lng
+    ledgerBalance
     address
     city
     state
@@ -1950,6 +2170,7 @@ export const onDeleteUser =
     level
     identification
     identificationNumber
+    identityImage
     keyProduct
     country
     inviteCode
@@ -1961,16 +2182,20 @@ export const onDeleteUser =
     businessType
     certifications
     mainMarkets
+    memberShipType
+    sellerLevel
     estRevenue
     totalStaff
     responseTime
     languages
     legalRep
     overview
-    memberType
+    activeOrder
     Orders {
       items {
         id
+        createdAt
+        SType
         orderType
         orderStatus
         agreement
@@ -1984,7 +2209,6 @@ export const onDeleteUser =
         rfqID
         rffID
         sellOfferID
-        createdAt
         updatedAt
         __typename
       }
@@ -1994,8 +2218,11 @@ export const onDeleteUser =
     Products {
       items {
         id
-        image
+        createdAt
+        SType
         title
+        productImage
+        image
         images
         description
         rating
@@ -2007,18 +2234,22 @@ export const onDeleteUser =
         packageType
         quantity
         fobPrice
-        deliveryTime
         paymentType
         transportMode
         placeOrigin
         dateAvailable
         productSpec
-        productDoc
+        productDocs
+        productCert
         documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
         commoditycategoryID
         categoriesID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -2043,6 +2274,8 @@ export const onDeleteUser =
     RFQS {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -2057,10 +2290,15 @@ export const onDeleteUser =
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
@@ -2069,7 +2307,6 @@ export const onDeleteUser =
         returnPolicy
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -2079,13 +2316,13 @@ export const onDeleteUser =
     RFFS {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -2096,18 +2333,22 @@ export const onDeleteUser =
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
         commoditycategoryID
         userID
-        createdAt
         updatedAt
         __typename
       }
@@ -2117,6 +2358,8 @@ export const onDeleteUser =
     SellOffers {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
@@ -2138,9 +2381,12 @@ export const onDeleteUser =
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
         commoditycategoryID
-        createdAt
         updatedAt
         __typename
       }

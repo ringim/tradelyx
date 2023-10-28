@@ -18,7 +18,7 @@ const QuoteRequestItem = ({to, fromImg, toImg, from}: any) => {
           justifyContent: 'center',
         }}>
         <FastImage
-          source={fromImg}
+          source={{uri: fromImg}}
           resizeMode={FastImage.resizeMode.contain}
           style={{
             width: 23,
@@ -69,7 +69,7 @@ const QuoteRequestItem = ({to, fromImg, toImg, from}: any) => {
           justifyContent: 'center',
         }}>
         <FastImage
-          source={toImg}
+          source={{uri: toImg}}
           resizeMode={FastImage.resizeMode.contain}
           style={{
             width: 23,

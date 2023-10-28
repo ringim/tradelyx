@@ -7,13 +7,13 @@ export const createRFF = gql`
   ) {
     createRFF(input: $input, condition: $condition) {
       id
+      SType
+      createdAt
       rffNo
       rffType
-      title
-      countryName
-      city
       deliveryPeriod
       requestCategory
+      rffRequestType
       productName
       handling
       loadDate
@@ -24,39 +24,54 @@ export const createRFF = gql`
       width
       height
       placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeDestinationName
+      placeDestinationFlag
+      destinationCountry
       placeDestination
       relatedServices
       invoiceAmount
+      document
       notes
-      loadType
       container
       containerSize
       containerType
-      containerCount
+      requestType
+      commoditycategoryID
       userID
-      createdAt
       updatedAt
       __typename
     }
   }
 `;
 
-export const listRFFS = gql`
-  query ListRFFS(
+export const rffByDate = gql`
+  query RffByDate(
+    $SType: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
     $filter: ModelRFFFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listRFFS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    rffByDate(
+      SType: $SType
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
+        SType
+        createdAt
         rffNo
         rffType
-        title
-        countryName
-        city
         deliveryPeriod
         requestCategory
+        rffRequestType
         productName
         handling
         loadDate
@@ -67,21 +82,26 @@ export const listRFFS = gql`
         width
         height
         placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
         placeDestination
         relatedServices
         invoiceAmount
+        document
         notes
-        loadType
         container
         containerSize
         containerType
-        containerCount
+        requestType
+        commoditycategoryID
         userID
         Orders {
           nextToken
           __typename
         }
-        createdAt
         updatedAt
         __typename
       }
@@ -98,13 +118,13 @@ export const updateRFF = gql`
   ) {
     updateRFF(input: $input, condition: $condition) {
       id
+      SType
+      createdAt
       rffNo
       rffType
-      title
-      countryName
-      city
       deliveryPeriod
       requestCategory
+      rffRequestType
       productName
       handling
       loadDate
@@ -115,17 +135,22 @@ export const updateRFF = gql`
       width
       height
       placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeDestinationName
+      placeDestinationFlag
+      destinationCountry
       placeDestination
       relatedServices
       invoiceAmount
+      document
       notes
-      loadType
       container
       containerSize
       containerType
-      containerCount
+      requestType
+      commoditycategoryID
       userID
-      createdAt
       updatedAt
       __typename
     }
@@ -146,15 +171,27 @@ export const deleteRFF = gql`
   }
 `;
 
-export const listRFQS = gql`
-  query ListRFQS(
+export const rfqByDate = gql`
+  query RfqByDate(
+    $SType: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
     $filter: ModelRFQFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listRFQS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    rfqByDate(
+      SType: $SType
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
+        createdAt
+        SType
         rfqNo
         rfqType
         title
@@ -169,22 +206,27 @@ export const listRFQS = gql`
         buyFrequency
         budget
         placeOrigin
+        placeOriginFlag
+        placeOriginName
         landmark
         unit
         incoterms
+        placeDestinationName
         placeDestination
+        placeDestinationFlag
+        destinationCountry
         deliveryPeriod
         expiryDate
         paymentType
         paymentMethod
         warranty
         returnPolicy
+        commoditycategoryID
         userID
         Orders {
           nextToken
           __typename
         }
-        createdAt
         updatedAt
         __typename
       }
@@ -201,6 +243,7 @@ export const createRFQ = gql`
   ) {
     createRFQ(input: $input, condition: $condition) {
       id
+      SType
       rfqNo
       rfqType
       title
@@ -215,16 +258,22 @@ export const createRFQ = gql`
       buyFrequency
       budget
       placeOrigin
+      placeOriginFlag
+      placeOriginName
       landmark
       unit
       incoterms
+      placeDestinationName
       placeDestination
+      placeDestinationFlag
+      destinationCountry
       deliveryPeriod
       expiryDate
       paymentType
       paymentMethod
       warranty
       returnPolicy
+      commoditycategoryID
       userID
       createdAt
       updatedAt
@@ -254,6 +303,7 @@ export const updateRFQ = gql`
   ) {
     updateRFQ(input: $input, condition: $condition) {
       id
+      SType
       rfqNo
       rfqType
       title
@@ -268,16 +318,22 @@ export const updateRFQ = gql`
       buyFrequency
       budget
       placeOrigin
+      placeOriginFlag
+      placeOriginName
       landmark
       unit
       incoterms
+      placeDestinationName
       placeDestination
+      placeDestinationFlag
+      destinationCountry
       deliveryPeriod
       expiryDate
       paymentType
       paymentMethod
       warranty
       returnPolicy
+      commoditycategoryID
       userID
       createdAt
       updatedAt
@@ -286,22 +342,97 @@ export const updateRFQ = gql`
   }
 `;
 
-export const listSellOffers = gql`
-  query ListSellOffers(
+export const getSellOffer = gql`
+  query GetSellOffer($id: ID!) {
+    getSellOffer(id: $id) {
+      id
+      createdAt
+      SType
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      image
+      images
+      rfqType
+      packageType
+      packageDesc
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      storeName
+      storeImage
+      storeAddress
+      storeRating
+      userID
+      commoditycategoryID
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          orderType
+          orderStatus
+          agreement
+          toImage
+          toCountry
+          fromImage
+          fromCountry
+          orderMessage
+          orderDate
+          userID
+          rfqID
+          rffID
+          sellOfferID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+export const sellOffersByDate = gql`
+  query SellOffersByDate(
+    $SType: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
     $filter: ModelSellOfferFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listSellOffers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    sellOffersByDate(
+      SType: $SType
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
+        createdAt
+        SType
         sellOfferID
         requestCategory
         title
         tags
         productName
         description
-        images
+        image
         images
         rfqType
         packageType
@@ -316,12 +447,16 @@ export const listSellOffers = gql`
         paymentType
         paymentMethod
         offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
         userID
+        commoditycategoryID
         Orders {
           nextToken
           __typename
         }
-        createdAt
         updatedAt
         __typename
       }
@@ -338,20 +473,21 @@ export const createSellOffer = gql`
   ) {
     createSellOffer(input: $input, condition: $condition) {
       id
+      SType
       sellOfferID
       requestCategory
       title
       tags
       productName
       description
-      images
+      image
       images
       rfqType
-      unit
       packageType
       packageDesc
       placeOrigin
       landmark
+      unit
       deliveryDate
       qtyMeasure
       basePrice
@@ -359,7 +495,12 @@ export const createSellOffer = gql`
       paymentType
       paymentMethod
       offerValidity
+      storeName
+      storeImage
+      storeAddress
+      storeRating
       userID
+      commoditycategoryID
       createdAt
       updatedAt
       __typename
@@ -374,20 +515,21 @@ export const updateSellOffer = gql`
   ) {
     updateSellOffer(input: $input, condition: $condition) {
       id
+      SType
       sellOfferID
       requestCategory
       title
       tags
       productName
       description
-      images
+      image
       images
       rfqType
-      unit
       packageType
       packageDesc
       placeOrigin
       landmark
+      unit
       deliveryDate
       qtyMeasure
       basePrice
@@ -395,7 +537,12 @@ export const updateSellOffer = gql`
       paymentType
       paymentMethod
       offerValidity
+      storeName
+      storeImage
+      storeAddress
+      storeRating
       userID
+      commoditycategoryID
       createdAt
       updatedAt
       __typename

@@ -13,7 +13,7 @@ import {AddressPickup, Header, TextButton} from '../../../../components';
 import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 import {hasLocationPermission} from '../../../../utilities/service';
 
-const EditProductShipmentAddress = () => {
+const RequestQuotationAddress = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
 
   const animationRef = useRef<any>(null);
@@ -30,7 +30,7 @@ const EditProductShipmentAddress = () => {
     if (isValid) {
       let param = ref.current?.getAddressText();
       navigation.navigate({
-        name: 'EditProductShipment',
+        name: 'RequestQuotation',
         params: {userAddress: userAddressCoords},
         merge: true,
       });
@@ -184,4 +184,4 @@ const EditProductShipmentAddress = () => {
   );
 };
 
-export default EditProductShipmentAddress;
+export default RequestQuotationAddress;

@@ -1,9 +1,10 @@
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {StyleSheet, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useRef} from 'react';
 import {useRoute} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
+import {useQuery} from '@apollo/client';
 
 import {
   SellerLocationMapHeader,
@@ -13,21 +14,59 @@ import {
   ReviewItem,
   SeeAll,
   StoreInfo,
+  LanguageSpoken,
 } from '../../../components';
-import {COLORS, SIZES, dummyData, icons, images} from '../../../constants';
+import {
+  COLORS,
+  FONTS,
+  SIZES,
+  dummyData,
+  icons,
+  images,
+} from '../../../constants';
 import {BusinessDetailRouteProp} from '../../../components/navigation/BuyerNav/type/navigation';
+import {ListReviewsQuery, ListReviewsQueryVariables} from '../../../API';
+
+import {listReviews} from '../../../queries/UserQueries';
 
 const reviews = dummyData.reviews;
 
 const BusinessDetail = () => {
+  const mapRef = useRef(null);
   const route: any = useRoute<BusinessDetailRouteProp>();
+
   // console.log('businessId', route?.params?.businessItem);
   const businessItem: any = route?.params?.businessItem;
 
-  const mapRef = useRef(null);
+  const {
+    responseTime,
+    lat,
+    lng,
+    address,
+    totalOrders,
+    city,
+    country,
+    certifications,
+    mainMarkets,
+    languages,
+    businessType,
+    businessName,
+    totalStaff,
+    logo,
+    overview,
+    estRevenue,
+  }: any = route?.params.businessItem;
+
+  // LIST REVIEWS
+  const {data: newData, loading: newLoad} = useQuery<
+    ListReviewsQuery,
+    ListReviewsQueryVariables
+  >(listReviews);
+  const allReview: any =
+    newData?.listReviews?.items.filter((item: any) => !item?._deleted) || [];
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+    <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
       <Header
         title={'Business Details'}
         contentStyle={{marginBottom: 0}}
@@ -35,33 +74,42 @@ const BusinessDetail = () => {
       />
 
       <FlatList
-        data={reviews}
+        data={allReview}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => `${item.id}`}
         ListHeaderComponent={
           <>
             {/* Store Detail */}
-            <StoreInfo productItem={businessItem} />
+            <StoreInfo
+              address={`${city}${`, `} ${country}`}
+              image={logo}
+              supplier={businessName}
+              addressStyle={{...FONTS.body3}}
+              locationStyle={{height: 20, width: 20}}
+              supplierStyle={{...FONTS.h3}}
+              logoStyle={{height: 50, width: 50}}
+            />
 
             {/* Overview */}
             <ProductDesc
-              productItem={businessItem?.overview}
-              sub1={businessItem?.businessType}
-              sub2={businessItem?.cert}
-              mainMarket={businessItem?.mainMarket}
-              language={businessItem?.languages}
-              sub3={businessItem?.estRevenue}
-              sub4={businessItem?.totalStaff}
-              sub5={businessItem?.responseTime}
-              sub6={businessItem?.ordersCompleted}
-            />
+              productItem={overview}
+              sub1={businessType}
+              sub2={certifications}
+              mainMarket={mainMarkets}
+              sub3={estRevenue}
+              sub4={totalStaff}
+              sub5={responseTime}
+              sub6={totalOrders}>
+              <LanguageSpoken languages={languages} />
+            </ProductDesc>
 
             {/* Map location address */}
             <SellerLocationMapHeader
               showAddress={true}
               showHeader={true}
-              address2={businessItem?.address2}>
-              {businessItem?.latitude ? (
+              address2={address}
+              contentStyle={{backgroundColor: COLORS.white, padding: 13}}>
+              {businessItem?.lat ? (
                 <MapView
                   provider={PROVIDER_GOOGLE}
                   ref={mapRef}
@@ -73,16 +121,16 @@ const BusinessDetail = () => {
                   ]}
                   scrollEnabled={false}
                   initialRegion={{
-                    latitude: businessItem?.latitude,
-                    longitude: businessItem?.longitude,
+                    latitude: lat,
+                    longitude: lng,
                     latitudeDelta: 0.005,
                     longitudeDelta: 0.005,
                   }}>
                   <Marker
                     ref={mapRef}
                     coordinate={{
-                      latitude: businessItem?.latitude,
-                      longitude: businessItem?.longitude,
+                      latitude: lat,
+                      longitude: lng,
                     }}
                     anchor={{x: 0.84, y: 1}}>
                     <FastImage
@@ -97,13 +145,23 @@ const BusinessDetail = () => {
                 <FastImage
                   resizeMode={FastImage.resizeMode.cover}
                   source={images.dummyMap}
-                  style={{width: 350, height: 120, alignSelf: 'center'}}
+                  style={{
+                    width: 350,
+                    height: 120,
+                    alignSelf: 'center',
+                    marginTop: -25,
+                  }}
                 />
               )}
             </SellerLocationMapHeader>
 
             {/* Review header */}
-            <Review />
+            {!allReview && (
+              <>
+                <Review contentStyle={{gap: 10}} />
+                <SeeAll />
+              </>
+            )}
           </>
         }
         renderItem={({item, index}) => {
@@ -111,9 +169,7 @@ const BusinessDetail = () => {
           return <ReviewItem key={index} item={item} />;
         }}
         ListFooterComponent={
-          <View style={{marginBottom: 150}}>
-            <SeeAll />
-          </View>
+          <View style={{marginBottom: reviews?.length - 1 && 150}} />
         }
       />
     </View>

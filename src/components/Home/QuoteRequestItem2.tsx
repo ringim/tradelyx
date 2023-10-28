@@ -3,6 +3,7 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 
 import {SIZES, FONTS, COLORS, icons} from '../../constants';
+import {FlatList} from 'react-native-gesture-handler';
 
 const QuoteRequestItem2 = ({
   orderID,
@@ -12,7 +13,7 @@ const QuoteRequestItem2 = ({
   containerCount,
   transportMode,
   containerSize,
-  relatedServices
+  languages,
 }: any) => {
   return (
     <View>
@@ -252,13 +253,13 @@ const QuoteRequestItem2 = ({
         {/* Related service */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
           <View
             style={{
-              justifyContent: 'center',
+              flex: 1,
             }}>
             <Text
               style={{
@@ -269,18 +270,37 @@ const QuoteRequestItem2 = ({
               Related Services
             </Text>
           </View>
+
           <View
             style={{
               justifyContent: 'center',
             }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral1,
-                lineHeight: 24,
-              }}>
-              {relatedServices}
-            </Text>
+            <FlatList
+              data={languages}
+              keyExtractor={item => `${item?.id}`}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={false}
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      marginTop: 4,
+                    }}>
+                    <Text
+                      numberOfLines={6}
+                      style={{
+                        alignSelf: 'flex-end',
+                        ...FONTS.body3,
+                        color: COLORS.Neutral1,
+                        lineHeight: 24,
+                      }}>
+                      {item}
+                    </Text>
+                  </View>
+                );
+              }}
+            />
           </View>
         </View>
       </View>

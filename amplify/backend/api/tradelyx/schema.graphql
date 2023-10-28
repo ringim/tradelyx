@@ -24,6 +24,13 @@ enum OrderType {
 
 type Order @model @auth(rules: [{allow: public}]) {
   id: ID!
+  createdAt: AWSDateTime!
+  SType: String!
+    @index(
+      name: "ordersByDate"
+      queryField: "ordersByDate"
+      sortKeyFields: ["createdAt"]
+    )
   orderType: OrderType
   orderStatus: OrderStatus
   agreement: String
@@ -54,6 +61,13 @@ enum RFQTYPE {
 
 type SellOffer @model @auth(rules: [{allow: public}]) {
   id: ID!
+  createdAt: AWSDateTime!
+  SType: String!
+    @index(
+      name: "sellOffersByDate"
+      queryField: "sellOffersByDate"
+      sortKeyFields: ["createdAt"]
+    )
   sellOfferID: String!
   requestCategory: String
   title: String
@@ -75,6 +89,10 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
   paymentType: String
   paymentMethod: String
   offerValidity: String
+  storeName: String
+  storeImage: String
+  storeAddress: String
+  storeRating: Float
 
   userID: ID! @index(name: "byUser")
   commoditycategoryID: ID! @index(name: "byCommodityCategory")
@@ -83,6 +101,13 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
 
 type RFQ @model @auth(rules: [{allow: public}]) {
   id: ID!
+  createdAt: AWSDateTime!
+  SType: String!
+    @index(
+      name: "rfqByDate"
+      queryField: "rfqByDate"
+      sortKeyFields: ["createdAt"]
+    )
   rfqNo: String
   rfqType: RFQTYPE
   title: String
@@ -97,10 +122,15 @@ type RFQ @model @auth(rules: [{allow: public}]) {
   buyFrequency: String
   budget: Float
   placeOrigin: String
+  placeOriginFlag: String
+  placeOriginName: String
   landmark: String
   unit: String
   incoterms: String
+  placeDestinationName: String
   placeDestination: String
+  placeDestinationFlag: String
+  destinationCountry: String
   deliveryPeriod: String
   expiryDate: String
   paymentType: String
@@ -113,15 +143,25 @@ type RFQ @model @auth(rules: [{allow: public}]) {
   Orders: [Order] @hasMany(indexName: "byRFQ", fields: ["id"])
 }
 
+enum RFF_REQUEST_TYPE {
+  QUOTE_REQUEST
+  AGENT_REQUEST
+}
+
 type RFF @model @auth(rules: [{allow: public}]) {
   id: ID!
+  SType: String!
+    @index(
+      name: "rffByDate"
+      queryField: "rffByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  createdAt: AWSDateTime!
   rffNo: String
   rffType: RFFTYPE
-  title: String
-  countryName: String
-  city: String
   deliveryPeriod: String
   requestCategory: String
+  rffRequestType: String
   productName: String
   handling: String
   loadDate: String
@@ -132,15 +172,20 @@ type RFF @model @auth(rules: [{allow: public}]) {
   width: Float
   height: Float
   placeOrigin: String
+  placeOriginFlag: String
+  placeOriginName: String
+  placeDestinationName: String
+  placeDestinationFlag: String
+  destinationCountry: String
   placeDestination: String
   relatedServices: [String]
   invoiceAmount: Float
+  document: [String]
   notes: String
-  loadType: String
   container: String
   containerSize: String
   containerType: String
-  containerCount: Int
+  requestType: String
 
   commoditycategoryID: ID! @index(name: "byCommodityCategory")
   userID: ID! @index(name: "byUser")
@@ -177,8 +222,16 @@ type Review @model @auth(rules: [{allow: public}]) {
 
 type Product @model @auth(rules: [{allow: public}]) {
   id: ID!
-  image: String
+  createdAt: AWSDateTime!
+  SType: String!
+    @index(
+      name: "productByDate"
+      queryField: "productByDate"
+      sortKeyFields: ["createdAt"]
+    )
   title: String
+  productImage: String
+  image: String
   images: [String]
   description: String
   rating: Float
@@ -195,8 +248,14 @@ type Product @model @auth(rules: [{allow: public}]) {
   placeOrigin: String
   dateAvailable: String
   productSpec: String
-  productDoc: String
-  documents: String
+  productDocs: [String]
+  productCert: String
+  documents: [String]
+  storeName: String
+  storeImage: String
+  storeAddress: String
+  category: String
+  commodityCategory: String
 
   commoditycategoryID: ID! @index(name: "byCommodityCategory")
   categoriesID: ID! @index(name: "byCategories")
@@ -230,6 +289,7 @@ type User @model @auth(rules: [{allow: public}]) {
   accountType: String
   lat: Float
   lng: Float
+  ledgerBalance: Float
   address: String
   city: String
   state: String
@@ -237,8 +297,9 @@ type User @model @auth(rules: [{allow: public}]) {
   lga: String
   totalOrders: Int
   level: String
-  identification: IdentificationType
+  identification: String
   identificationNumber: String
+  identityImage: String
   keyProduct: String
   country: String
   inviteCode: String
@@ -248,15 +309,17 @@ type User @model @auth(rules: [{allow: public}]) {
   backgroundImage: String
   images: [String]
   businessType: String
-  certifications: [String]
+  certifications: String
   mainMarkets: [String]
+  memberShipType: String
+  sellerLevel: String
   estRevenue: Float
-  totalStaff: Int
-  responseTime: AWSTimestamp
+  totalStaff: String
+  responseTime: String
   languages: [String]
   legalRep: String
   overview: String
-  memberType: String
+  activeOrder: Float
   Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
   Products: [Product] @hasMany(indexName: "byUser", fields: ["id"])
   Reviews: [Review] @hasMany(indexName: "byUser", fields: ["id"])

@@ -1,5 +1,5 @@
-import {View} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {ActivityIndicator, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useRef} from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import Animated, {
@@ -9,8 +9,9 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+import {useQuery} from '@apollo/client';
 
-import {COLORS, FONTS, SIZES, dummyData, icons} from '../../../constants';
+import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {
   BusinessDesc,
   Header,
@@ -30,16 +31,36 @@ import {
   HomeStackNavigatorParamList,
   ProductDetailRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  ListReviewsQuery,
+  ListReviewsQueryVariables,
+} from '../../../API';
+import {getUser, listReviews} from '../../../queries/UserQueries';
 
-const reviews = dummyData.reviews;
 const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<ProductDetailRouteProp>();
 
+  const {
+    category,
+    storeName,
+    userID,
+    image,
+    images,
+    title,
+    storeAddress,
+    minOrderQty,
+    supplyCapacity,
+    commodityCategory,
+    paymentType,
+    fobPrice,
+    description,
+  }: any = route?.params.productItem;
+
   const {storeProductId, savedProductItem, removeProductItem}: any =
     useProductContext();
-
-  // console.log('Product context items', savedProductItem);
 
   const bottomSheetModalRef = useRef<any>(null);
 
@@ -53,7 +74,6 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   }, []);
 
   const hideModalWithNavigation = useCallback(() => {
-    console.log('hideModalWithNavigation');
     toggleCameraModal(false);
     bottomSheetModalRef.current?.dismiss();
     navigation.navigate('ScanProduct');
@@ -65,7 +85,6 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     }
   }, [showCameraModal]);
 
-  // console.log(route?.params.productItem);
   const productItem: any = route?.params.productItem;
 
   const scrollX = useSharedValue(0);
@@ -83,6 +102,25 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     return storeProductId(productItem);
   };
 
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  // LIST REVIEWS
+  const {data: newData, loading: newLoad} = useQuery<
+    ListReviewsQuery,
+    ListReviewsQueryVariables
+  >(listReviews);
+  const allReview: any =
+    newData?.listReviews?.items.filter((item: any) => !item?._deleted) || [];
+
   const Dots = () => {
     return (
       <View
@@ -99,7 +137,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           hideModalWithNavigation={hideModalWithNavigation}
         />
 
-        {productItem?.img.map((item: any, index: number) => {
+        {images.map((item: any, index: number) => {
           const dotOpacityAnimatedStyle = useAnimatedStyle(() => {
             return {
               opacity: interpolate(
@@ -135,28 +173,58 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     return (
       <View
         style={{
-          height: 470,
-          marginHorizontal: 17,
+          height: 450,
           borderRadius: SIZES.padding,
           marginTop: SIZES.margin,
         }}>
-        <Animated.FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          snapToAlignment="start"
-          decelerationRate="fast"
-          snapToInterval={SIZES.width - SIZES.padding}
-          scrollEventThrottle={32}
-          onScroll={onScroll}
-          data={productItem?.img}
-          // keyExtractor={item => `${item?.id}`}
-          renderItem={({item, index}: any) => {
-            return (
-              <ImageCaption key={index} productItem={productItem} item={item} />
-            );
-          }}
-        />
-        <Dots />
+        {image ? (
+          <ImageCaption
+            productItem={productItem}
+            item={image}
+            name={title}
+            supplierName={storeName}
+            commodityCategory={commodityCategory}
+            category={category}
+            banner_image={image}
+          />
+        ) : (
+          <>
+            <Animated.FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment="start"
+              decelerationRate="fast"
+              snapToInterval={SIZES.width - SIZES.padding * 2}
+              scrollEventThrottle={16}
+              onScroll={onScroll}
+              data={images}
+              keyExtractor={item => `${item}`}
+              renderItem={({item, index}: any) => {
+                return (
+                  <ImageCaption
+                    key={index}
+                    productItem={productItem}
+                    item={item}
+                    name={title}
+                    supplierName={storeName}
+                    commodityCategory={commodityCategory}
+                    category={category}
+                    banner_image={item}
+                  />
+                );
+              }}
+            />
+            <Dots />
+          </>
+        )}
+      </View>
+    );
+  }
+
+  if (loading || newLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }
@@ -173,7 +241,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
       />
 
       <FlatList
-        data={reviews}
+        data={allReview}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
@@ -182,7 +250,9 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
 
             {/* Store Detail */}
             <StoreInfo
-              productItem={productItem}
+              address={storeAddress}
+              image={userInfo?.logo}
+              supplier={storeName}
               showDetail={true}
               onPress={() =>
                 navigation.navigate('SellerDetail', {sellerItem: productItem})
@@ -190,16 +260,23 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
             />
 
             {/* Product Description */}
-            <BusinessDesc
-              productItem={productItem?.description}
-              title={'Description'}
-            />
+            <BusinessDesc productItem={description} title={'Description'} />
 
             {/* Price Qty */}
-            <PriceQty productItem={productItem} />
+            <PriceQty
+              price={fobPrice}
+              moq={minOrderQty}
+              paymentType={paymentType}
+              supply={supplyCapacity}
+            />
 
             {/* Review header */}
-            <Review />
+            {!allReview && (
+              <>
+                <Review />
+                <SeeAll />
+              </>
+            )}
           </>
         }
         renderItem={({item, index}) => {
@@ -209,10 +286,8 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: 200,
+              marginBottom: allReview?.length - 1 && 200,
             }}>
-            <SeeAll />
-
             <TextIconButton
               label={'Offer'}
               labelStyle={{

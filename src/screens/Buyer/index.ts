@@ -1,3 +1,7 @@
+// AUTH
+import CompleteProfile from '../Auth/BuyerAuth/CompleteProfile';
+import UserAddress from '../Auth/BuyerAuth/UserAddress';
+
 // Home
 import Home from './Home/Home';
 import AllCategories from './Home/AllCategories';
@@ -10,6 +14,7 @@ import Search from './Home/Search';
 import SellerDetail from './Home/SellerDetail';
 import BusinessDetail from './Home/BusinessDetail';
 import CategoryItemList from './Home/CategoryItemList';
+import AllSellers from './Home/AllSellers';
 
 // SERVICE
 import ChooseService from './Home/SaleService/ChooseService';
@@ -24,7 +29,7 @@ import SearchAddress from './Home/SaleService/RequestQuotation/SearchAddress';
 import LandFreight from './Home/SaleService/FreightQuotation/LandFreight';
 import AirFreight from './Home/SaleService/FreightQuotation/AirFreight';
 import OceanFreight from './Home/SaleService/FreightQuotation/OceanFreight';
-import FreightPackage from './Home/SaleService/FreightQuotation/FreightPackage';
+import AirFreightPackage from './Home/SaleService/FreightQuotation/AirFreightPackage';
 import AirPickupProcess from './Home/SaleService/FreightQuotation/AirPickupProcess';
 import AirDestinationAddress from './Home/SaleService/RequestQuotation/AirDestinationAddress';
 import AirPortOriginAddress from './Home/SaleService/RequestQuotation/AirPortOriginAddress';
@@ -42,6 +47,7 @@ import LandPickupAddress from './Home/SaleService/FreightQuotation/LandPickupAdd
 import LandPickupAddress2 from './Home/SaleService/FreightQuotation/LandPickupAddress2';
 import OceanPortOriginAddress from './Home/SaleService/FreightQuotation/OceanPortOriginAddress';
 import OceanDestinationAddress from './Home/SaleService/FreightQuotation/OceanDestinationAddress';
+import RequestQuotationAddress from './Home/SaleService/RequestQuotationAddress';
 
 // Explore
 import Explore from './Explore/Explore';
@@ -73,8 +79,11 @@ export {
   Account,
   EngagementTermsAddress,
   ViewAgreement,
+  AllSellers,
   OfferDetail,
   Favorites,
+  UserAddress,
+  CompleteProfile,
   ReplyDetail,
   Contact,
   Wallet,
@@ -97,13 +106,14 @@ export {
   LandPickupProcess,
   AllProducts,
   OceanPickupProcess,
+  RequestQuotationAddress,
   AirDestinationAddress,
   BusinessDetail,
   AccountAddress,
   LandFreightPackage,
   InternationalPaymentQuotation,
   OrderDetail,
-  FreightPackage,
+  AirFreightPackage,
   PaymentQuotation,
   ExploreFilter,
   EngagementTerms,

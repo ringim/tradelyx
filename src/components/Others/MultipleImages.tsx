@@ -5,11 +5,11 @@ import {FlatList} from 'react-native-gesture-handler';
 
 import {COLORS, SIZES, icons} from '../../constants';
 
-const MultipleImages = ({selectedPhotos, manyPhotos, onPress}: any) => {
+const MultipleImages = ({selectedPhotos, onPress}: any) => {
   return (
     <View
       style={{
-        marginTop: selectedPhotos ? SIZES.margin : SIZES.radius,
+        marginTop: selectedPhotos ? SIZES.semi_margin : SIZES.radius,
       }}>
       <FlatList
         data={selectedPhotos}
@@ -23,9 +23,10 @@ const MultipleImages = ({selectedPhotos, manyPhotos, onPress}: any) => {
               style={{
                 width: 100,
                 height: 100,
-                marginLeft: index == 0 ? 10 : 15,
-                marginRight: index == manyPhotos.length - 1 ? SIZES.padding : 0,
-                marginTop: SIZES.semi_margin,
+                marginLeft: index == 0 ? 2 : 15,
+                marginRight:
+                  index == selectedPhotos.length - 1 ? SIZES.padding : 0,
+                marginTop: SIZES.radius,
               }}>
               <FastImage
                 source={item}
@@ -37,7 +38,7 @@ const MultipleImages = ({selectedPhotos, manyPhotos, onPress}: any) => {
                 resizeMode={FastImage.resizeMode.cover}
               />
               <TouchableOpacity
-                onPress={() => onPress(item.uri)}
+                onPress={() => onPress(item?.uri)}
                 style={{
                   padding: 6,
                   top: -18,
@@ -56,7 +57,9 @@ const MultipleImages = ({selectedPhotos, manyPhotos, onPress}: any) => {
             </View>
           );
         }}
-        ListFooterComponent={<View style={{marginBottom: 100}} />}
+        ListFooterComponent={
+          <View style={{marginBottom: selectedPhotos?.length - 100}} />
+        }
       />
     </View>
   );

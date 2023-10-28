@@ -3,51 +3,53 @@ import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useMutation, useQuery} from '@apollo/client';
 import {Controller, useForm} from 'react-hook-form';
+import {Storage} from 'aws-amplify';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Storage} from 'aws-amplify';
+import {v4 as uuidV4} from 'uuid';
 import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DocumentPicker from 'react-native-document-picker';
+import {FlatList} from 'react-native-gesture-handler';
 import {
   AlertNotificationRoot,
   ALERT_TYPE,
   Toast,
 } from 'react-native-alert-notification';
 
-import {COLORS, SIZES, FONTS, icons, constants} from '../../../../constants';
+import {COLORS, SIZES, FONTS, icons, constants} from '../../../../../constants';
 import {
-  FileSection,
   FormInput,
   Header,
   TextButton,
   UploadDocs,
-} from '../../../../components';
+} from '../../../../../components';
 import {
-  EditProductSpecRouteProp,
-  HomeStackNavigatorParamList,
-} from '../../../../components/navigation/SellerNav/type/navigation';
-import {getProduct, updateProduct} from '../../../../queries/ProductQueries';
+  EditProductPriceRouteProp,
+  ProfileStackNavigatorParamList,
+} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {getProduct, updateProduct} from '../../../../../queries/ProductQueries';
 import {
   UpdateProductMutation,
   UpdateProductMutationVariables,
   GetProductQuery,
   GetProductQueryVariables,
   UpdateProductInput,
-} from '../../../../API';
+} from '../../../../../API';
+
 
 interface ProductData {
   supply: string;
   moq: string;
   packageType: string;
   spec: string;
-  file: string;
+  file: any;
   unit: string;
 }
 
 const EditProductSpec = () => {
-  const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const route = useRoute<EditProductSpecRouteProp>();
+  const navigation = useNavigation<ProfileStackNavigatorParamList>();
+  const route = useRoute<EditProductPriceRouteProp>();
 
   const {id}: any = route?.params?.product;
 
@@ -58,8 +60,7 @@ const EditProductSpec = () => {
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
   const [jobType, setJobType] = useState<any>(constants.filterUnit);
-  const [singleFile, setSingleFile] = useState<any>(null);
-  const [fileName, setFileName] = useState<any>('');
+  const [singleFile, setSingleFile] = useState<any>([]);
 
   // GET Product DETAIL
   const {loading: onLoad, data} = useQuery<
@@ -69,7 +70,6 @@ const EditProductSpec = () => {
     variables: {id: id},
   });
   const productDetails: any = data?.getProduct;
-  console.log('info', productDetails);
 
   // UPDATE USER DETAILS
   const [doUpdateProduct] = useMutation<
@@ -94,12 +94,17 @@ const EditProductSpec = () => {
         minOrderQty: moq,
         supplyCapacity: supply,
         productSpec: spec,
-        productDoc: file,
+        productDocs: file,
         packageType,
         unit: type,
       };
-      if (singleFile && fileName) {
-        input.productDoc = await uploadFile();
+
+      // upload file or multiple files
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile2: any) => uploadFile(singleFile2?.uri)),
+        );
+        input.productDocs = fileKeys;
       }
 
       await doUpdateProduct({
@@ -131,30 +136,14 @@ const EditProductSpec = () => {
     }
   }, [productDetails, setValue]);
 
-  // UPLOAD FILE TO STORAGE
-  const uploadFile = async () => {
-    try {
-      // upload file (blob) to s3
-      const s3Response = await Storage.put(fileName, singleFile);
-      return s3Response.key;
-    } catch (err) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: (err as Error).message,
-        autoClose: 2000,
-      });
-    }
-  };
-
   // SELECT FILE
-  const selectFile = async () => {
+  const selectFile = async (setSingleFile: any) => {
     try {
-      const res = await DocumentPicker.pickSingle({
+      const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
-        allowMultiSelection: false,
+        allowMultiSelection: true,
       });
-      setSingleFile(res.uri);
-      setFileName(res.name);
+      setSingleFile([...singleFile, ...res]);
     } catch (err) {
       setSingleFile(null);
       if (DocumentPicker.isCancel(err)) {
@@ -168,6 +157,35 @@ const EditProductSpec = () => {
         throw err;
       }
     }
+  };
+
+  // UPLOAD FILE TO STORAGE
+  const uploadFile = async (uri: string) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response?.blob();
+
+      // file extension splitting
+      const uriParts = uri.split('.');
+      const extension = uriParts[uriParts.length - 1];
+
+      // upload file (blob) to s3
+      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
+      return s3Response.key;
+    } catch (err) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        textBody: (err as Error).message,
+        autoClose: 2000,
+      });
+    }
+  };
+
+  // Delete a single image
+  const deleteItem2 = (itemId: any) => {
+    setSingleFile((prevData: any) =>
+      prevData.filter((item: any) => item.uri !== itemId),
+    );
   };
 
   if (onLoad) {
@@ -333,23 +351,80 @@ const EditProductSpec = () => {
           style={{
             flex: 1,
             justifyContent: 'center',
-            marginBottom: 50,
           }}>
-          {singleFile != null ? (
-            <FileSection
-              file={fileName ? fileName : ''}
-              onPress={() => setSingleFile(null)}
-              containerStyle={{
-                marginTop: SIZES.margin,
-              }}
-            />
+          {singleFile?.length >= 1 ? (
+            <View style={{marginTop: SIZES.radius, marginBottom: 100}}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                  color: COLORS.Neutral1,
+                }}>
+                Product Specification
+              </Text>
+
+              <FlatList
+                data={singleFile}
+                keyExtractor={item => item.uri}
+                renderItem={({item}) => (
+                  <View style={{marginTop: SIZES.semi_margin}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        backgroundColor: COLORS.white,
+                      }}>
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                        }}>
+                        <FastImage
+                          tintColor={COLORS.secondary1}
+                          source={icons.summary}
+                          style={{width: 20, height: 20}}
+                        />
+                      </View>
+
+                      {/* file name and date of upload */}
+                      <View
+                        style={{
+                          flex: 1,
+                          marginLeft: SIZES.base,
+                          justifyContent: 'center',
+                        }}>
+                        <Text
+                          style={{...FONTS.h5, color: COLORS.primary1}}
+                          numberOfLines={2}>
+                          {item?.name}
+                        </Text>
+                      </View>
+
+                      {/* delete file */}
+                      <TouchableOpacity
+                        style={{
+                          justifyContent: 'center',
+                          marginRight: SIZES.base,
+                        }}
+                        onPress={() => deleteItem2(item?.uri)}>
+                        <FastImage
+                          tintColor={COLORS.Rose4}
+                          source={icons.remove}
+                          style={{width: 20, height: 20}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+              />
+            </View>
           ) : (
             <UploadDocs
-              title={'Attach Product Specifications'}
-              selectFile={selectFile}
+              title={'Product Brochure'}
+              selectFile={() => selectFile(setSingleFile)}
               containerStyle={{
-                marginTop: SIZES.margin,
-                marginHorizontal: 4,
+                marginTop: SIZES.semi_margin,
+                marginHorizontal: 3,
+                marginBottom: 100,
               }}
             />
           )}

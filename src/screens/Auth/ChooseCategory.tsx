@@ -28,7 +28,6 @@ const ChooseCategory = () => {
     UpdateUserMutation,
     UpdateUserMutationVariables
   >(updateUser);
-
   const saveData = async () => {
     if (loading) {
       return;
@@ -43,7 +42,7 @@ const ChooseCategory = () => {
           },
         },
       });
-      console.log('data', response);
+      // console.log('data', response);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -61,10 +60,9 @@ const ChooseCategory = () => {
     }
     setLoading(true);
     try {
-      saveData();
       type === 'BUYER'
-        ? navigation.navigate('BuyerStack')
-        : navigation.navigate('SellerStack');
+        ? navigation.navigate('BuyerAuthStack')
+        : navigation.navigate('SellerAuthStack');
     } catch (error) {
       Alert.alert((error as Error).message);
     } finally {

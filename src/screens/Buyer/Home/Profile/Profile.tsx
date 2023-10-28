@@ -26,7 +26,11 @@ const Profile = () => {
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
-    {variables: {id: userID}},
+    {
+      variables: {id: userID},
+      fetchPolicy: 'cache-first',
+      nextFetchPolicy: 'cache-and-network',
+    },
   );
   const user: any = data?.getUser;
 
@@ -58,7 +62,7 @@ const Profile = () => {
 
   return (
     <Root>
-      <View style={{flex: 1, backgroundColor: '#F9FAFB'}}>
+      <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header title={'Profile'} tintColor={COLORS.Neutral1} />
 
         <Spinner
@@ -82,7 +86,7 @@ const Profile = () => {
           />
 
           {/* Profile items */}
-          <View style={{marginTop: 0, marginHorizontal: SIZES.radius}}>
+          <View style={{marginTop: 0, marginHorizontal: SIZES.base}}>
             <ProfileItem
               label={'My Profile'}
               icon={icons.user}

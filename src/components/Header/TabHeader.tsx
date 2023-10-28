@@ -25,8 +25,8 @@ const TabHeader = ({userImage}: any) => {
   return (
     <View
       style={{
-        paddingTop: Platform.OS == 'ios' ? 55 : SIZES.radius,
-        height: Platform.OS == 'ios' ? '13%' : '10%',
+        paddingTop: Platform.OS == 'ios' ? 45 : SIZES.radius,
+        height: Platform.OS == 'ios' ? '14%' : '10%',
         backgroundColor: COLORS.white,
       }}>
       <View
@@ -45,7 +45,13 @@ const TabHeader = ({userImage}: any) => {
           onPress={() => navigation.navigate('Profile')}>
           <FastImage
             source={{uri: imageUri || DEFAULT_PROFILE_IMAGE}}
-            style={{width: 50, height: 50, borderRadius: 100}}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 100,
+              borderWidth: 1,
+              borderColor: COLORS.primary1,
+            }}
             resizeMode={FastImage.resizeMode.cover}
           />
         </Pressable>

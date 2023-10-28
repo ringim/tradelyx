@@ -10,7 +10,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
     <View
       style={{
         marginTop: SIZES.radius,
-        marginHorizontal: SIZES.semi_margin,
+        marginHorizontal: SIZES.radius,
         borderRadius: SIZES.radius,
         backgroundColor: COLORS.white,
         borderWidth: 0.5,
@@ -20,7 +20,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       }}>
       <View
         style={{
-          margin: SIZES.radius,
+          margin: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginHorizontal: SIZES.semi_margin,
@@ -31,7 +31,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
             justifyContent: 'center',
           }}>
           <FastImage
-            source={item?.fromImg}
+            source={{uri: item?.placeOriginFlag}}
             resizeMode={FastImage.resizeMode.contain}
             style={{
               width: 23,
@@ -51,11 +51,12 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           <Text
             numberOfLines={2}
             style={{
-              ...FONTS.h5,
+              ...FONTS.cap1,
+              fontWeight: '600',
               marginTop: 2,
               color: COLORS.Neutral1,
             }}>
-            {item?.from}
+            {item?.placeOriginName}
           </Text>
         </View>
 
@@ -82,11 +83,11 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
             justifyContent: 'center',
           }}>
           <FastImage
-            source={item?.toImg}
+            source={{uri: item?.placeDestinationFlag}}
             resizeMode={FastImage.resizeMode.contain}
             style={{
-              width: 23,
-              height: 23,
+              width: 20,
+              height: 20,
             }}
           />
         </View>
@@ -101,11 +102,12 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           <Text
             numberOfLines={2}
             style={{
-              ...FONTS.h5,
+              ...FONTS.cap1,
+              fontWeight: '600',
               marginTop: 2,
               color: COLORS.Neutral1,
             }}>
-            {item?.to}
+            {item?.placeDestinationName}
           </Text>
         </View>
       </View>
@@ -114,7 +116,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       <View
         style={{
           alignSelf: 'center',
-          width: '90%',
+          width: '95%',
           borderWidth: 0.4,
           borderColor: COLORS.Neutral7,
           marginTop: SIZES.base,
@@ -124,17 +126,16 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* package type */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
-          marginHorizontal: SIZES.semi_margin,
+          marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
         }}>
         <View
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
             Package Type
           </Text>
         </View>
@@ -142,7 +143,13 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
+          <Text
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+              lineHeight: 24,
+            }}>
             {item?.packageType}
           </Text>
         </View>
@@ -151,17 +158,16 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* Transport Mode */}
       <View
         style={{
-          marginTop: 4,
+          marginTop: SIZES.base,
           flexDirection: 'row',
-          marginHorizontal: SIZES.semi_margin,
+          marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
         }}>
         <View
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 22}}>
             Mode of Transport
           </Text>
         </View>
@@ -169,8 +175,14 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-            {item?.transportMode}
+          <Text
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+              lineHeight: 24,
+            }}>
+            {item?.rffType}
           </Text>
         </View>
       </View>
@@ -178,26 +190,34 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* Port of Origin */}
       <View
         style={{
-          marginTop: 4,
+          marginTop: SIZES.base,
           flexDirection: 'row',
-          marginHorizontal: SIZES.semi_margin,
+          marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
         }}>
         <View
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 22}}>
             Port of Origin
           </Text>
         </View>
         <View
           style={{
+            flex: 1,
             justifyContent: 'center',
+            alignItems: 'flex-end',
+            marginLeft: SIZES.base,
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-            {item?.portOrigin}
+          <Text
+            numberOfLines={3}
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            {item?.placeOrigin}
           </Text>
         </View>
       </View>
@@ -205,9 +225,9 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* Port destination */}
       <View
         style={{
-          marginTop: 4,
+          marginTop: SIZES.base,
           flexDirection: 'row',
-          marginHorizontal: SIZES.semi_margin,
+          marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
           paddingBottom: SIZES.base,
         }}>
@@ -215,17 +235,25 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 22}}>
             Port of Destination
           </Text>
         </View>
         <View
           style={{
+            flex: 1,
+            alignItems: 'flex-end',
             justifyContent: 'center',
+            marginLeft: SIZES.base,
           }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-            {item?.portDestination}
+          <Text
+            numberOfLines={3}
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            {item?.placeDestination}
           </Text>
         </View>
       </View>
@@ -236,7 +264,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           height: 40,
           borderRadius: SIZES.radius,
           marginTop: SIZES.base,
-          width: 330
+          width: 330,
         }}
         label="View"
         onPress={onPress}

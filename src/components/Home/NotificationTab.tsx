@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
+import {FlashList} from '@shopify/flash-list';
 
 import {SIZES, FONTS, COLORS, icons} from '../../constants';
 
 const NotificationTab = ({item}: any) => {
   const onNavigate = (item: any) => {
-    console.log(item);
+    // console.log(item);
   };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -29,46 +29,54 @@ const NotificationTab = ({item}: any) => {
               {monthYearKey}
             </Text>
           </View>
-          <FlatList
-            data={item[monthYearKey]}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item?.id}`}
-            renderItem={({item, index}) => {
-              return (
-                <TouchableOpacity key={index} onPress={() => onNavigate(item)}>
-                  <View style={styles.container}>
-                    <View style={styles.subCont}>
-                      <FastImage
-                        source={icons.bell2}
-                        style={styles.logoImg}
-                        tintColor={COLORS.white}
-                        resizeMode={FastImage.resizeMode.contain}
-                      />
-                    </View>
-                    <View style={styles.cont2}>
-                      {/* title */}
-                      <Text style={[styles.text1, {color: COLORS.Neutral1}]}>
-                        {item?.title}
-                      </Text>
+          <View style={{minHeight: 2}}>
+            <FlashList
+              data={item[monthYearKey]}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={item => `${item?.id}`}
+              estimatedItemSize={200}
+              getItemType={({item}: any) => {
+                return item;
+              }}
+              renderItem={({item, index}) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => onNavigate(item)}>
+                    <View style={styles.container}>
+                      <View style={styles.subCont}>
+                        <FastImage
+                          source={icons.bell2}
+                          style={styles.logoImg}
+                          tintColor={COLORS.white}
+                          resizeMode={FastImage.resizeMode.contain}
+                        />
+                      </View>
+                      <View style={styles.cont2}>
+                        {/* title */}
+                        <Text style={[styles.text1, {color: COLORS.Neutral1}]}>
+                          {item?.title}
+                        </Text>
 
-                      {/* description */}
-                      <Text numberOfLines={1} style={styles.text2}>
-                        {item?.description}
-                      </Text>
-                    </View>
+                        {/* description */}
+                        <Text numberOfLines={1} style={styles.text2}>
+                          {item?.description}
+                        </Text>
+                      </View>
 
-                    {/* time */}
-                    <View style={styles.cont3}>
-                      <Text style={[styles.text3, {color: COLORS.Neutral6}]}>
-                        {item?.time}
-                      </Text>
+                      {/* time */}
+                      <View style={styles.cont3}>
+                        <Text style={[styles.text3, {color: COLORS.Neutral6}]}>
+                          {item?.time}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.hr} />
-                </TouchableOpacity>
-              );
-            }}
-          />
+                    <View style={styles.hr} />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
         </View>
       ))}
     </ScrollView>

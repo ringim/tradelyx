@@ -7,6 +7,7 @@ import {useForm} from 'react-hook-form';
 import {useMutation} from '@apollo/client';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
+import Geocoder from 'react-native-geocoding';
 import {Storage} from 'aws-amplify';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {
@@ -53,8 +54,36 @@ const EngagementTerms = () => {
   const [loading, setLoading] = useState(false);
   const [singleFile, setSingleFile] = useState<any>(null);
   const [fileName, setFileName] = useState<any>('');
+  const [countryCode, setCountryCode] = useState<any>('');
+  const [countryName, setCountryName] = useState<any>('');
+  const [countryCity, setCountryCity] = useState<any>('');
 
-  // console.log(address?.description?.formatted_address);
+  const {location} = address;
+
+  useEffect(() => {
+    const getCountryFlag = async () => {
+      Geocoder.from(location?.lat, location?.lng)
+        .then(json => {
+          const result = json.results[0];
+          for (const component of result.address_components) {
+            if (component.types.includes('country')) {
+              const name = component.long_name; // Full country name
+              const code = component.short_name?.toLowerCase(); // Country code (e.g., 'US' for the United States)
+              setCountryCode(code);
+              setCountryName(name);
+            }
+            if (component.types.includes('locality')) {
+              const city = component.long_name;
+              setCountryCity(city);
+            }
+          }
+        })
+        .catch(error => console.error(error));
+    };
+    getCountryFlag();
+  }, [address]);
+
+  // console.log(address);
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateRFQ] = useMutation<
@@ -70,6 +99,10 @@ const EngagementTerms = () => {
     try {
       const input: UpdateRFQInput = {
         id: route?.params.rfqID,
+        placeOriginFlag: `https://flagcdn.com/32x24/${countryCode}.png`, //flag
+        city: countryCity, //city
+        placeOriginName: countryName, //country
+        countryName: countryName, //country
         placeOrigin: address?.description?.formatted_address,
         landmark,
         documents: files,
@@ -85,7 +118,7 @@ const EngagementTerms = () => {
           input,
         },
       });
-      console.log('job data', input);
+      // console.log('job data', input);
       navigation.navigate('PaymentQuotation', {rfqID: input.id});
     } catch (error) {
       Toast.show({
@@ -176,7 +209,7 @@ const EngagementTerms = () => {
 
         {/* Map location address */}
         <SellerLocationMapHeader
-          mapContStyle={{marginTop: 10}}
+          mapContStyle={{marginTop: address ? 20 : -5}}
           contentStyle={{
             marginHorizontal: 0,
             marginTop: 0,
@@ -228,7 +261,7 @@ const EngagementTerms = () => {
           control={control}
           multiline={true}
           placeholder="Enter a Landmark or full address"
-          containerStyle={{marginTop: SIZES.padding * 1.5}}
+          containerStyle={{marginTop: address ? 8 : 30}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{
             marginTop: SIZES.radius,
@@ -243,7 +276,7 @@ const EngagementTerms = () => {
   return (
     <AlertNotificationRoot>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'Request Quotation'} F />
+        <Header title={'Request Quotation'} />
 
         <Spinner
           visible={loading}
@@ -277,20 +310,22 @@ const EngagementTerms = () => {
             style={{
               flex: 1,
               justifyContent: 'center',
+              marginHorizontal: SIZES.radius,
             }}>
             {singleFile != null ? (
               <FileSection
                 file={fileName ? fileName : ''}
                 onPress={() => setSingleFile(null)}
                 containerStyle={{
-                  marginHorizontal: SIZES.margin,
-                  marginTop: SIZES.margin,
+                  marginTop: SIZES.radius,
+                  marginHorizontal: SIZES.base,
                 }}
               />
             ) : (
               <UploadDocs
                 title="Attach Supporting Document"
                 selectFile={selectFile}
+                containerStyle={{marginHorizontal: 10}}
               />
             )}
           </View>

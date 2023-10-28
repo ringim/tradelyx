@@ -24,7 +24,7 @@ import {
   images,
   icons,
   constants,
-} from '../../../../constants';
+} from '../../../../../constants';
 import {
   ExpiryDate,
   FormInput,
@@ -32,23 +32,23 @@ import {
   ProductSuccess,
   SellerLocationMapHeader,
   TextButton,
-} from '../../../../components';
+} from '../../../../../components';
 import {
-  EditProductSpecRouteProp,
-  HomeStackNavigatorParamList,
-} from '../../../../components/navigation/SellerNav/type/navigation';
-import {getProduct, updateProduct} from '../../../../queries/ProductQueries';
+  EditProductPriceRouteProp,
+  ProfileStackNavigatorParamList,
+} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {getProduct, updateProduct} from '../../../../../queries/ProductQueries';
 import {
   UpdateProductMutation,
   UpdateProductMutationVariables,
   GetProductQuery,
   GetProductQueryVariables,
   UpdateProductInput,
-} from '../../../../API';
+} from '../../../../../API';
 
 const EditProductShipment = () => {
-  const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const routePrice = useRoute<EditProductSpecRouteProp>();
+  const navigation = useNavigation<ProfileStackNavigatorParamList>();
+  const routePrice = useRoute<EditProductPriceRouteProp>();
   const route = useRoute<any>();
 
   const {id}: any = routePrice?.params?.product;
@@ -101,7 +101,6 @@ const EditProductShipment = () => {
     variables: {id: id},
   });
   const productDetails: any = data?.getProduct;
-  console.log('infoasas', productDetails);
 
   // UPDATE USER DETAILS
   const [doUpdateProduct] = useMutation<
@@ -126,7 +125,7 @@ const EditProductShipment = () => {
           input,
         },
       });
-      console.log('product updated 10', input);
+      // console.log('product updated 10', input);
       handlePresentModalPress();
     } catch (error) {
       Toast.show({

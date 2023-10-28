@@ -19,7 +19,7 @@
       "function": {
         "tradelyxPostConfirmation": {
           "deploymentBucketName": "amplify-tradelyx-staging-182449-deployment",
-          "s3Key": "amplify-builds/tradelyxPostConfirmation-68564f696247514e4f38-build.zip"
+          "s3Key": "amplify-builds/tradelyxPostConfirmation-4a783841726f7665594d-build.zip"
         }
       },
       "api": {

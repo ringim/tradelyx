@@ -20,13 +20,13 @@ import {
   TextButton,
   QuotationProgress2,
   PackageType,
+  FormInput,
 } from '../../../../../components';
 import {
   COLORS,
   FONTS,
   SIZES,
   constants,
-  icons,
   images,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
@@ -37,6 +37,10 @@ import {
   UpdateRFFMutationVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
+
+interface IFreight {
+  weight: any;
+}
 
 const LandFreightPackage = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -51,19 +55,12 @@ const LandFreightPackage = () => {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(null);
 
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [productName, setProductName] = useState('');
-  const [productNameType, setProductNameType] = useState<any>(
-    constants.loadType,
-  );
-
   const handleIncrease = () => {
     setQuantity(quantity + 1);
   };
 
   const handleDecrease = () => {
-    if (quantity > 10) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
@@ -74,7 +71,7 @@ const LandFreightPackage = () => {
     UpdateRFFMutationVariables
   >(updateRFF);
 
-  const onSubmit = async () => {
+  const onSubmit = async ({weight}: IFreight) => {
     if (loading) {
       return;
     }
@@ -82,8 +79,8 @@ const LandFreightPackage = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
-        packageType: productName,
-        loadType: value,
+        packageType: value,
+        weight,
         qty: quantity,
         userID,
       };
@@ -111,89 +108,6 @@ const LandFreightPackage = () => {
         style={{
           marginHorizontal: SIZES.semi_margin,
         }}>
-        {/* Load Type*/}
-        <Controller
-          control={control}
-          name="loadType"
-          rules={{
-            required: 'Load type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <>
-              <Text
-                style={{
-                  marginTop: SIZES.padding,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Type of Load
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Load Type"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={productNameType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setProductNameType}
-                style={{
-                  borderRadius: SIZES.semi_margin,
-                  marginTop: SIZES.radius,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select Load Type"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setProductName(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </>
-          )}
-        />
-
         {/* Package Type */}
         <View style={{marginTop: SIZES.padding}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
@@ -205,7 +119,7 @@ const LandFreightPackage = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            {constants.packageType.map((item: any, index: any) => {
+            {constants.packageType2.map((item: any, index: any) => {
               return (
                 <PackageType
                   key={`PackageType-${index}`}
@@ -221,6 +135,43 @@ const LandFreightPackage = () => {
                 />
               );
             })}
+          </View>
+        </View>
+
+        {/* Weight*/}
+        <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <View style={{flex: 0.95, justifyContent: 'center'}}>
+            <FormInput
+              label="Weight"
+              name="weight"
+              control={control}
+              keyboardType={'numeric'}
+              placeholder="Add nominal"
+              rules={{
+                required: 'weight is required',
+              }}
+              containerStyle={{marginTop: SIZES.margin}}
+              labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
+              inputContainerStyle={{marginTop: SIZES.radius}}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              backgroundColor: COLORS.lightYellow,
+              width: 55,
+              height: 50,
+              top: 48,
+              borderRadius: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
+              }}>
+              Kg
+            </Text>
           </View>
         </View>
 

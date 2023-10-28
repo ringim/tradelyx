@@ -1,16 +1,27 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {DUMMY_IMAGE} from '../../utilities/Utils';
 
 interface IItem {
   item: string | any;
   onPress: any;
   containerStyle?: any;
+  profile_image: any;
 }
 
-const SearchItem3 = ({containerStyle, item, onPress}: IItem) => {
+const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (profile_image) {
+      Storage.get(profile_image).then(setImageUri);
+    }
+  }, [profile_image]);
+
   return (
     <TouchableOpacity
       style={{
@@ -33,7 +44,7 @@ const SearchItem3 = ({containerStyle, item, onPress}: IItem) => {
             borderRadius: SIZES.radius,
           }}>
           <FastImage
-            source={item?.storeImg}
+            source={{uri: imageUri || DUMMY_IMAGE}}
             resizeMode={FastImage.resizeMode.contain}
             style={{
               width: 66,

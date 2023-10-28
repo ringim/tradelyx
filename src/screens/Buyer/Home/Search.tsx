@@ -1,55 +1,133 @@
-import {View, Text} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {View, Text, ActivityIndicator} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import {useQuery} from '@apollo/client';
 
-import {
-  COLORS,
-  FONTS,
-  SIZES,
-  constants,
-  dummyData,
-  images,
-} from '../../../constants';
+import {COLORS, FONTS, SIZES, constants, images} from '../../../constants';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   Header,
-  SearchItem3,
   SearchItem2,
   SearchBox3,
   SearchModal,
   SearchItem4,
+  SearchItem3,
 } from '../../../components';
+import {
+  AccountCategoryType,
+  ListProductsQuery,
+  ListProductsQueryVariables,
+  ListUsersQuery,
+  ListUsersQueryVariables,
+  ListSellOffersQuery,
+  ListSellOffersQueryVariables,
+} from '../../../API';
 import SearchType from '../../../components/Modal/SearchType';
+import {listProducts} from '../../../queries/ProductQueries';
+import {listUsers} from '../../../queries/UserQueries';
+import {listSellOffers} from '../../../queries/RequestQueries';
 
 const Search = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
+
+  // LIST ALL PRODUCT BY CATEGORY ID
+  const {data, loading} = useQuery<
+    ListProductsQuery,
+    ListProductsQueryVariables
+  >(listProducts, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+  const allProducts: any =
+    data?.listProducts?.items.filter((item: any) => !item?._deleted) || [];
+
+  // LIST SUPPLIERS
+  const {data: onData, loading: onLoad} = useQuery<
+    ListUsersQuery,
+    ListUsersQueryVariables
+  >(listUsers, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+  const suppliers: any =
+    onData?.listUsers?.items
+      .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
+      .filter((item: any) => !item?._deleted) || [];
+
+  // LIST SELL OFFERS
+  const {data: newData, loading: newLoad} = useQuery<
+    ListSellOffersQuery,
+    ListSellOffersQueryVariables
+  >(listSellOffers, {
+    pollInterval: 300,
+    fetchPolicy: 'cache-first',
+    nextFetchPolicy: 'cache-and-network',
+  });
+  const allSellOffers =
+    newData?.listSellOffers?.items?.filter((item: any) => !item?._deleted) ||
+    [];
+
+  const mergedSearchType = [...allSellOffers, ...allProducts, ...suppliers];
+
+  // console.log('sell offer', allSellOffers);
+  // console.log('all products', allProducts);
+  // console.log('suppliers', suppliers);
 
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState<any>('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>('');
 
   const [selected, setSelected] = useState<any>(true);
-  const [itemSelected, setItemSelect] = useState<any>('Products');
+  const [itemSelected, setItemSelect] = useState<any>('All');
+  const [dataList, setDataList] = useState<any>(mergedSearchType);
 
-  const lastIndex = filteredDataSource?.orders?.length - 1;
+  // const lastIndex = filteredDataSource?.orders?.length - 1;
 
-  console.log(itemSelected);
+  useEffect(() => {
+    const onChangeSelectionItem = (item: any) => {
+      if (itemSelected === 'All') {
+        setDataList([...mergedSearchType]);
+      } else if (itemSelected === 'Product') {
+        setDataList([
+          ...mergedSearchType.filter(x => x?.__typename === itemSelected),
+        ]);
+      } else if (itemSelected === 'SellOffer') {
+        setDataList([
+          ...mergedSearchType.filter(x => x?.__typename === itemSelected),
+        ]);
+      } else if (itemSelected === 'User') {
+        setDataList([
+          ...mergedSearchType.filter(x => x?.__typename === itemSelected),
+        ]);
+      } else {
+        setItemSelect(item);
+      }
+    };
+    onChangeSelectionItem(itemSelected);
+  }, [itemSelected, newLoad]);
 
   // SEARCH FILTER
   useEffect(() => {
-    const filteredItems = dummyData?.storeProducts.filter(
-      item =>
-        item?.name.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.supplier.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.address2.toLowerCase().includes(search?.toLowerCase()),
+    const filteredItems = dataList?.filter((item: {title: string}) =>
+      item?.title.toLowerCase().includes(search?.toLowerCase()),
     );
     setFilteredDataSource(filteredItems);
-  }, [search]);
+  }, [search, dataList]);
+
+  if (loading || onLoad || newLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
+      </View>
+    );
+  }
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+    <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
       <Header title={'Search'} tintColor={COLORS.Neutral1} />
 
       {showModal && (
@@ -62,7 +140,7 @@ const Search = () => {
                 selected={item.id == selected}
                 onPress={() => {
                   setSelected(item.id);
-                  setItemSelect(item.label);
+                  setItemSelect(item.value);
                   setShowModal(false);
                 }}
               />
@@ -107,82 +185,64 @@ const Search = () => {
       </View>
 
       {/* all items */}
-      {itemSelected === 'Products' ? (
-        <FlatList
-          data={filteredDataSource}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => `${item?.id}`}
-          renderItem={({item, index}) => {
+      <FlashList
+        data={filteredDataSource}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => `${item?.id}`}
+        estimatedItemSize={200}
+        getItemType={({item}: any) => {
+          return item;
+        }}
+        renderItem={({item, index}) => {
+          // console.log(item)
+          if (item?.__typename === 'Product') {
             return (
               <SearchItem2
                 containerStyle={{marginTop: SIZES.radius}}
                 key={index}
                 item={item}
+                profile_image2={item?.storeImage}
+                profile_image={item?.productImage}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }
               />
             );
-          }}
-          ListFooterComponent={
-            <View
-              style={{
-                marginBottom: lastIndex ? 300 : 300,
-              }}
-            />
-          }
-        />
-      ) : itemSelected === 'Sell Offers' ? (
-        <FlatList
-          data={filteredDataSource}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => `${item?.id}`}
-          renderItem={({item, index}) => {
+          } else if (item?.__typename === 'SellOffer') {
             return (
               <SearchItem4
                 containerStyle={{marginTop: SIZES.radius}}
                 key={index}
                 item={item}
+                profile_image2={item?.storeImage}
+                profile_image={item?.image || item?.images[0]}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }
               />
             );
-          }}
-          ListFooterComponent={
-            <View
-              style={{
-                marginBottom: lastIndex ? 300 : 300,
-              }}
-            />
-          }
-        />
-      ) : (
-        <FlatList
-          data={filteredDataSource}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => `${item?.id}`}
-          renderItem={({item, index}) => {
+          } else {
             return (
               <SearchItem3
                 containerStyle={{marginTop: SIZES.radius}}
                 key={index}
                 item={item}
+                profile_image={item?.logo}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }
               />
             );
-          }}
-          ListFooterComponent={
-            <View
-              style={{
-                marginBottom: lastIndex ? 300 : 300,
-              }}
-            />
           }
-        />
-      )}
+        }}
+        ListFooterComponent={
+          <View
+            style={{
+              marginBottom: filteredDataSource?.length - 1 && 300,
+            }}
+          />
+        }
+      />
 
       {/* No search items */}
       {filteredDataSource.length === 0 && (

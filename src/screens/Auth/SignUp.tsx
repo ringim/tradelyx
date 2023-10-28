@@ -128,7 +128,7 @@ const SignUp = () => {
             <>
               <Text
                 style={{
-                  color: COLORS.Neutral4,
+                  color: COLORS.Neutral1,
                   ...FONTS.body3,
                   marginTop: SIZES.semi_margin,
                 }}>

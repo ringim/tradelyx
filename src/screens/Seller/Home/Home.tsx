@@ -43,7 +43,11 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
   // GET USER DETAILS
   const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
-    {variables: {id: userID}},
+    {
+      variables: {id: userID},
+      fetchPolicy: 'cache-first',
+      nextFetchPolicy: 'cache-and-network',
+    },
   );
   const user: any = data?.getUser;
 
@@ -86,12 +90,12 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
           }}>
           <FinanceTabs
             text={'Ledger Balance'}
-            amount={20000}
+            amount={user?.ledgerBalance}
             icon={icons.ledgerBalance}
           />
           <FinanceTabs
             text={'Total Earnings in June'}
-            amount={10500000}
+            amount={user?.estRevenue}
             icon={icons.earnings}
           />
         </View>
@@ -104,12 +108,12 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
           }}>
           <OrderTab
             text={'Active Orders'}
-            amount={3}
+            amount={user?.activeOrder}
             icon={icons.activeOrder}
           />
           <OrderTab
             text={'Finished Orders'}
-            amount={1500}
+            amount={user?.totalOrders}
             icon={icons.finishedOrder}
           />
         </View>
@@ -123,20 +127,27 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
           <PerformanceTab
             icon={icons.store}
             title={'Seller Level'}
-            content={'Level 01'}
+            content={user?.sellerLevel}
           />
 
           <PerformanceTab
             icon={icons.timer}
             title={'Response Time'}
-            content={'1 hour'}
+            content={user?.responseTime}
             contentStyle={{marginTop: SIZES.base}}
           />
 
           <PerformanceTab
             icon={icons.membership}
             title={'Membership Type'}
-            content={'Platinum'}
+            content={user?.memberShipType}
+            contentStyle={{marginTop: SIZES.base}}
+          />
+
+          <PerformanceTab
+            icon={icons.rate}
+            title={'Rating'}
+            content={user?.rating}
             contentStyle={{marginTop: SIZES.base}}
           />
         </View>

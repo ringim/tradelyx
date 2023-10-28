@@ -1,18 +1,42 @@
-import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {View, Text, ImageBackground} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
-import {COLORS, FONTS, SIZES, icons, images} from '../../constants';
+import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextIconButton from '../Button/TextIconButton';
+import {
+  DEFAULT_BANNER_IMAGE,
+  DEFAULT_PROFILE_IMAGE,
+} from '../../utilities/Utils';
 
-const StoreBannerInfo = ({sellerItem}: any) => {
-  const navigation = useNavigation<any>();
+const StoreBannerInfo = ({
+  onPress,
+  address,
+  supplierName,
+  onPress2,
+  banner_image,
+  logo,
+}: any) => {
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (banner_image) {
+      Storage.get(banner_image).then(setImageUri2);
+    }
+  }, [banner_image]);
+
+  useEffect(() => {
+    if (logo) {
+      Storage.get(logo).then(setImageUri);
+    }
+  }, [logo]);
 
   return (
     <View>
       <ImageBackground
-        source={sellerItem?.storeBanner || images.DEFAULT_STORE_BANNER}
+        source={{uri: imageUri || DEFAULT_BANNER_IMAGE}}
         resizeMode="cover"
         style={{width: '100%', height: 207}}>
         <View
@@ -23,22 +47,22 @@ const StoreBannerInfo = ({sellerItem}: any) => {
             height: 100,
             alignSelf: 'center',
             alignItems: 'center',
-            backgroundColor: COLORS.lightYellow,
+            backgroundColor: COLORS.Neutral10,
             borderRadius: SIZES.radius,
             marginTop: 90,
           }}>
           <FastImage
-            source={sellerItem?.storeImg}
-            style={{width: 60, height: 60}}
-            resizeMode={FastImage.resizeMode.contain}
+            source={{uri: imageUri2 || DEFAULT_PROFILE_IMAGE}}
+            style={{width: 80, height: 80, borderRadius: 40}}
+            resizeMode={FastImage.resizeMode.cover}
           />
         </View>
       </ImageBackground>
 
       {/* Supplier Name */}
       <View style={{marginTop: 15, alignItems: 'center'}}>
-        <Text style={{...FONTS.h1, color: COLORS.Neutral1}}>
-          {sellerItem?.supplier}
+        <Text style={{...FONTS.h2, color: COLORS.Neutral1}}>
+          {supplierName}
         </Text>
       </View>
 
@@ -46,7 +70,7 @@ const StoreBannerInfo = ({sellerItem}: any) => {
       <View
         style={{
           alignSelf: 'center',
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
@@ -62,8 +86,8 @@ const StoreBannerInfo = ({sellerItem}: any) => {
           />
         </View>
         <View style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
-          <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral6}}>
-            {sellerItem?.address2}
+          <Text numberOfLines={2} style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            {address}
           </Text>
         </View>
       </View>
@@ -72,7 +96,7 @@ const StoreBannerInfo = ({sellerItem}: any) => {
       <View
         style={{
           alignSelf: 'center',
-          marginTop: SIZES.margin,
+          marginTop: SIZES.radius,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
@@ -88,11 +112,7 @@ const StoreBannerInfo = ({sellerItem}: any) => {
           iconPosition={'LEFT'}
           icon={icons.info}
           iconStyle={COLORS.primary1}
-          onPress={() =>
-            navigation.navigate('BusinessDetail', {
-              businessItem: sellerItem,
-            })
-          }
+          onPress={onPress}
         />
         <TextIconButton
           label={'Contact'}
@@ -104,7 +124,7 @@ const StoreBannerInfo = ({sellerItem}: any) => {
           iconPosition={'LEFT'}
           icon={icons.chat}
           iconStyle={COLORS.white}
-          // onPress={() => navigation.navigate('AllCategories')}
+          onPress={onPress2}
         />
       </View>
     </View>

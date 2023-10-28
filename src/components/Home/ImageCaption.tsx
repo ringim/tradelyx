@@ -1,19 +1,37 @@
 import {View, Text, ImageBackground, Platform} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {DEFAULT_BANNER_IMAGE} from '../../utilities/Utils';
 
-const ImageCaption = ({productItem, item}: any) => {
+const ImageCaption = ({
+  productItem,
+  name,
+  commodityCategory,
+  banner_image,
+}: any) => {
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (banner_image) {
+      Storage.get(banner_image).then(setImageUri2);
+    }
+  }, [banner_image]);
+
   return (
     <ImageBackground
-      source={item?.image}
+      source={{uri: imageUri2 || DEFAULT_BANNER_IMAGE}}
       resizeMode="cover"
       imageStyle={{borderRadius: SIZES.semi_margin}}
       style={{
-        height: 470,
-        width: Platform.OS === 'ios' ? 405 : 380,
-        borderRadius: SIZES.padding,
+        borderRadius: 16,
+        overflow: 'hidden',
+        marginHorizontal: SIZES.semi_margin,
+        marginBottom: SIZES.margin,
+        height: 450,
+        width: SIZES.width - (SIZES.padding * 1.3),
       }}>
       <View
         style={{
@@ -35,7 +53,7 @@ const ImageCaption = ({productItem, item}: any) => {
               source={icons.category}
               resizeMode={FastImage.resizeMode.contain}
               tintColor={COLORS.white}
-              style={{width: 24, height: 24}}
+              style={{width: 20, height: 20}}
             />
           </View>
 
@@ -44,8 +62,9 @@ const ImageCaption = ({productItem, item}: any) => {
               justifyContent: 'center',
               marginLeft: SIZES.base,
             }}>
-            <Text style={{...FONTS.sh3, color: COLORS.white}}>
-              {productItem?.supplier}
+            <Text
+              style={{...FONTS.cap1, fontWeight: '600', color: COLORS.white}}>
+              {commodityCategory}
             </Text>
           </View>
 
@@ -62,17 +81,19 @@ const ImageCaption = ({productItem, item}: any) => {
             <FastImage
               source={icons.rate}
               resizeMode={FastImage.resizeMode.contain}
-              style={{width: 24, height: 24}}
+              tintColor={COLORS.white}
+              style={{width: 20, height: 20}}
             />
           </View>
 
           <View
             style={{
-              marginLeft: SIZES.base,
+              marginLeft: 4,
               justifyContent: 'center',
             }}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>
-              {parseFloat(productItem?.rating).toFixed(1)}
+            <Text
+              style={{...FONTS.body2, fontWeight: '500', color: COLORS.white}}>
+              {productItem?.rating || 0}
             </Text>
           </View>
         </View>
@@ -80,7 +101,7 @@ const ImageCaption = ({productItem, item}: any) => {
         {/* Product Name */}
         <View style={{marginTop: 5}}>
           <Text numberOfLines={2} style={{...FONTS.h3, color: COLORS.white}}>
-            {productItem?.name}
+            {name}
           </Text>
         </View>
       </View>

@@ -1,4 +1,10 @@
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
@@ -34,7 +40,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['20%', '20%'], []);
+  const snapPoints = useMemo(() => ['23%', '25%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -53,7 +59,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
     }
   }, [product_image]);
 
-  const [doDeleteProduct] = useMutation<
+  const [doDeleteProduct, {loading}] = useMutation<
     DeleteProductMutation,
     DeleteProductMutationVariables
   >(deleteProduct, {
@@ -79,7 +85,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
   };
 
   //delete from Cognito
-  const deleteItem = async (car: any) => {
+  const deleteItem = async () => {
     try {
       await doDeleteProduct();
     } catch (error) {
@@ -91,6 +97,16 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
       });
     }
   };
+
+  if (loading) {
+    return (
+      <ActivityIndicator
+        style={{flex: 1, justifyContent: 'center'}}
+        size={'large'}
+        color={COLORS.primary4}
+      />
+    );
+  }
 
   return (
     <AlertNotificationRoot>
@@ -139,6 +155,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
             />
           </View>
 
+          {/* delete icon */}
           <View
             style={{
               flex: 1,
