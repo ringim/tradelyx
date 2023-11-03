@@ -1,0 +1,14 @@
+{
+  "resourceName": "tradelyMedia",
+  "policyUUID": "cc7c150c",
+  "bucketName": "tradelyxfcd2cdd223184d7aad9dff133b166f8d",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

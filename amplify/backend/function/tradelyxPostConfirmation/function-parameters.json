@@ -1,0 +1,24 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "tradelyx",
+  "functionName": "tradelyxPostConfirmation",
+  "resourceName": "tradelyxPostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "/opt/homebrew/lib/node_modules/@aws-amplify/cli-internal/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "triggerEventPath": "PostConfirmation.event.json",
+  "roleName": "tradelyxPostConfirmation",
+  "skipEdit": true,
+  "permissions": {
+    "api": {
+      "tradelyx": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  }
+}
