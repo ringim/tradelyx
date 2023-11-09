@@ -12,7 +12,7 @@ export type SetupNavigatorParamList = {
   navigate: any;
   goBack: any;
   CompleteProfile: undefined;
-  BusinessDetail: undefined
+  BusinessDetail: undefined;
   BusinessAddress: undefined;
 };
 
@@ -43,19 +43,28 @@ export type ProfileStackNavigatorParamList = {
   SellOfferDetail: {sellOffer: string};
   UserAddress: undefined;
   AccountAddress: undefined;
+  EditAccountImage: {imageID: string};
+  EditAccountBGImage: {imageID: string};
   EditProductItem: {product: string};
+  EditProductImage: {productImage: string};
+  EditProductImages: {productImages: string};
   EditProductSpec: {product: string};
   EditProductPrice: {product: string};
+  EditProductDoc: {productDoc: string};
+  EditProductDocs2: {productDoc: string};
   EditProductShipment: {product: string};
   EditProductShipmentAddress: undefined;
   EditSellOfferItem: {sellOffer: string};
+  EditSellOfferImages: {sellOfferImages: string};
   EditSellOfferPricing: {sellOffer: string};
-  EditSellOfferShipment: undefined
+  EditSellOfferShipment: undefined;
   EditSellOfferShipmentAddress: undefined;
+  EditIdentityDoc: {idDoc: string};
+  EditCompanyDocs: {idDoc: string};
 };
 
 export type HomeStackNavigatorParamList = {
-  replace(arg0: string, arg1: { type: string; }): unknown;
+  replace(arg0: string, arg1: {type: string}): unknown;
   reset: any;
   goBack: any;
   navigate: any;
@@ -66,8 +75,8 @@ export type HomeStackNavigatorParamList = {
   PackingShipment: undefined;
   PackageShipmentAddress: undefined;
   MiniumOrderPayment: undefined;
-  Filter: undefined;
   StoreItem: {storeItem: string};
+  SuccessService2: {type: string};
 };
 
 export type ExploreStackNavigatorParamList = {
@@ -81,7 +90,9 @@ export type ExploreStackNavigatorParamList = {
   RFFList: undefined;
   AgentRequest: undefined;
   QuotesRequest: undefined;
-  RFQDetail: {sellerItem: string};
+  DomesticDomesticRFQDetail: {rfqItem: string};
+  StandardDomesticRFQDetail: {rfqItem: string};
+  InternationalDomesticRFQDetail: {rfqItem: string};
   QuotesRequestDetails: {quoteItem: string};
   AgentRequestDetails: {agentItem: string};
 };
@@ -101,10 +112,26 @@ export type OrderStackNavigatorParamList = {
 };
 
 // ---------NAVIGATION PROP------------
-export type RFQDetailNavigationProp = NativeStackNavigationProp<
+export type DomesticRFQDetailNavigationProp = NativeStackNavigationProp<
   ExploreStackNavigatorParamList,
-  'RFQDetail'
+  'DomesticDomesticRFQDetail'
 >;
+
+export type SuccessService2NavigationProp = NativeStackNavigationProp<
+  HomeStackNavigatorParamList,
+  'SuccessService2'
+>;
+
+export type StandardDomesticRFQDetailNavigationProp = NativeStackNavigationProp<
+  ExploreStackNavigatorParamList,
+  'StandardDomesticRFQDetail'
+>;
+
+export type InternationalDomesticRFQDetailNavigationProp =
+  NativeStackNavigationProp<
+    ExploreStackNavigatorParamList,
+    'InternationalDomesticRFQDetail'
+  >;
 
 export type QuotesRequestDetailsNavigationProp = NativeStackNavigationProp<
   ExploreStackNavigatorParamList,
@@ -126,10 +153,75 @@ export type OrderDetailNavigationProp = NativeStackNavigationProp<
   'OrderDetail'
 >;
 
+export type EditIdentityDocNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditIdentityDoc'
+>;
+
+export type EditCompanyDocsNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditCompanyDocs'
+>;
+
+export type EditProductItemNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductItem'
+>;
+
+export type EditProductImageNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductImage'
+>;
+
+export type EditAccountImageNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditAccountImage'
+>;
+
+export type EditAccountBGImageNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditAccountBGImage'
+>;
+
+export type EditSellOfferImagesNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditSellOfferImages'
+>;
+
+export type EditProductImagesNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductImages'
+>;
+
+export type EditProductSpecNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductSpec'
+>;
+
+export type EditProductPriceNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductPrice'
+>;
+
+export type EditProductDocNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductDoc'
+>;
+
+export type EditProductDocs2NavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductDocs2'
+>;
+
+export type EditProductShipmentNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductShipment'
+>;
+
 // ----------ROUTE PROPS -----------
-export type RFQDetailRouteProp = RouteProp<
+export type DomesticRFQDetailRouteProp = RouteProp<
   ExploreStackNavigatorParamList,
-  'RFQDetail'
+  'DomesticDomesticRFQDetail'
 >;
 
 export type QuotesRequestDetailsRouteProp = RouteProp<
@@ -162,6 +254,31 @@ export type EditProductItemRouteProp = RouteProp<
   'EditProductItem'
 >;
 
+export type EditProductImageRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductImage'
+>;
+
+export type EditProductImagesRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductImages'
+>;
+
+export type EditSellOfferImagesRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditSellOfferImages'
+>;
+
+export type EditAccountImageRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditAccountImage'
+>;
+
+export type EditAccountBGImageRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditAccountBGImage'
+>;
+
 export type EditProductSpecRouteProp = RouteProp<
   ProfileStackNavigatorParamList,
   'EditProductSpec'
@@ -177,6 +294,16 @@ export type EditProductShipmentRouteProp = RouteProp<
   'EditProductShipment'
 >;
 
+export type EditProductDocRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductDoc'
+>;
+
+export type EditProductDocs2RouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditProductDocs2'
+>;
+
 export type SellOfferDetailRouteProp = RouteProp<
   ProfileStackNavigatorParamList,
   'SellOfferDetail'
@@ -190,4 +317,29 @@ export type EditSellOfferItemRouteProp = RouteProp<
 export type EditSellOfferPricingRouteProp = RouteProp<
   ProfileStackNavigatorParamList,
   'EditSellOfferPricing'
+>;
+
+export type EditIdentityDocRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditIdentityDoc'
+>;
+
+export type EditCompanyDocsRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditCompanyDocs'
+>;
+
+export type StandardDomesticRFQDetailRouteProp = RouteProp<
+  ExploreStackNavigatorParamList,
+  'StandardDomesticRFQDetail'
+>;
+
+export type InternationalDomesticRFQDetailRouteProp = RouteProp<
+  ExploreStackNavigatorParamList,
+  'InternationalDomesticRFQDetail'
+>;
+
+export type SuccessService2RouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'SuccessService2'
 >;

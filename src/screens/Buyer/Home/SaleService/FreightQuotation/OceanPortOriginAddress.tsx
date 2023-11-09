@@ -1,10 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text} from 'react-native';
-import {
-  ALERT_TYPE,
-  Toast,
-  Root,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast, Root} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 
@@ -68,17 +64,19 @@ const OceanPortOriginAddress = () => {
   };
 
   useEffect(() => {
-    animationRef.current?.play();
-
-    // Or set a specific startFrame and endFrame with:
+    let isCurrent = true;
+    isCurrent && animationRef.current?.play();
     animationRef.current?.play(30, 120);
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   useEffect(() => {
-    let unmounted = false;
-    requestUserLocation();
+    let unmounted = true;
+    unmounted && requestUserLocation();
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, []);
 

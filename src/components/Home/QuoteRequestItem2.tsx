@@ -12,8 +12,16 @@ const QuoteRequestItem2 = ({
   name,
   containerCount,
   transportMode,
+  weight,
   containerSize,
+  container,
+  containerType,
+  handling,
   languages,
+  height,
+  rffType,
+  length,
+  notes,
 }: any) => {
   return (
     <View>
@@ -63,6 +71,38 @@ const QuoteRequestItem2 = ({
           </TouchableOpacity>
         </View>
 
+        {/* notes */}
+        <View
+          style={{
+            marginTop: SIZES.semi_margin,
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+              }}>
+              Notes
+            </Text>
+          </View>
+          <View
+            style={{
+              marginTop: 4,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+              }}>
+              {notes}
+            </Text>
+          </View>
+        </View>
+
         {/* Horizontal Rule */}
         <View
           style={{
@@ -70,14 +110,14 @@ const QuoteRequestItem2 = ({
             width: '100%',
             borderWidth: 0.4,
             borderColor: COLORS.Neutral7,
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
           }}
         />
 
         {/* package type */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -112,7 +152,7 @@ const QuoteRequestItem2 = ({
         {/* product Name */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -148,7 +188,7 @@ const QuoteRequestItem2 = ({
         {/* container count */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -183,7 +223,7 @@ const QuoteRequestItem2 = ({
         {/* container size */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -218,7 +258,7 @@ const QuoteRequestItem2 = ({
         {/* Transport Mode */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -246,6 +286,216 @@ const QuoteRequestItem2 = ({
                 lineHeight: 24,
               }}>
               {transportMode}
+            </Text>
+          </View>
+        </View>
+
+        {/* container Type */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Container Type
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {container}
+            </Text>
+          </View>
+        </View>
+
+        {/* container */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Container Type
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {containerType}
+            </Text>
+          </View>
+        </View>
+
+        {/* handling */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Handling
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {handling}
+            </Text>
+          </View>
+        </View>
+
+        {/* Weight */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Weight
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {weight} KG
+            </Text>
+          </View>
+        </View>
+
+        {/* height */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Height
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {height}
+            </Text>
+          </View>
+        </View>
+
+        {/* Length */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Length
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {length}
             </Text>
           </View>
         </View>

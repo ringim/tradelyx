@@ -56,7 +56,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
               marginTop: 2,
               color: COLORS.Neutral1,
             }}>
-            {item?.placeOriginName}
+            {item?.placeOrigin}
           </Text>
         </View>
 
@@ -107,7 +107,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
               marginTop: 2,
               color: COLORS.Neutral1,
             }}>
-            {item?.placeDestinationName}
+            {item?.placeDestination}
           </Text>
         </View>
       </View>

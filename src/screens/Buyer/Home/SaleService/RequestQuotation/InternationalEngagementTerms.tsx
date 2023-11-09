@@ -71,17 +71,28 @@ const InternationalEngagementTerms = () => {
   const {location} = address;
 
   useEffect(() => {
-    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+
+    return () => {
+      isCurrent = false;
+    };
   }, [address]);
 
   useEffect(() => {
-    getCountryFlag(
-      address2?.location?.lat,
-      address2?.location?.lng,
-      setCode2,
-      setCName2,
-      setCCity2,
-    );
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(
+        address2?.location?.lat,
+        address2?.location?.lng,
+        setCode2,
+        setCName2,
+        setCCity2,
+      );
+    return () => {
+      isCurrent = false;
+    };
   }, [address2]);
 
   // UPDATE REQUEST QUOTATION
@@ -137,13 +148,13 @@ const InternationalEngagementTerms = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     setValue,
@@ -152,13 +163,13 @@ const InternationalEngagementTerms = () => {
   ]);
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress2) {
+    let unmounted = true;
+    if (route.params?.userAddress2 && unmounted) {
       setAddress2(route.params?.userAddress2);
       setValue('address2', address2?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     setValue,
@@ -399,12 +410,13 @@ const InternationalEngagementTerms = () => {
           {singleFile?.length >= 1 ? (
             <FileSection
               file={singleFile}
+              title="Product Brochures"
               setSingleFile={setSingleFile}
               contentStyle={{marginHorizontal: 5}}
             />
           ) : (
             <UploadDocs
-              title={'Product Brochure'}
+              title={'Attach Product Brochure'}
               selectFile={() => selectFile(setSingleFile, singleFile)}
               containerStyle={{
                 marginTop: SIZES.semi_margin,

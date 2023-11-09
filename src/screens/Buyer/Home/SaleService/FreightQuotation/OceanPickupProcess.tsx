@@ -64,17 +64,27 @@ const OceanPickupProcess = () => {
   const {location} = address1;
 
   useEffect(() => {
-    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    return () => {
+      isCurrent = false;
+    };
   }, [address1]);
 
   useEffect(() => {
-    getCountryFlag(
-      address2?.location?.lat,
-      address2?.location?.lng,
-      setCode2,
-      setCName2,
-      setCCity2,
-    );
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(
+        address2?.location?.lat,
+        address2?.location?.lng,
+        setCode2,
+        setCName2,
+        setCCity2,
+      );
+    return () => {
+      isCurrent = false;
+    };
   }, [address2]);
 
   // console.log(value);
@@ -92,6 +102,7 @@ const OceanPickupProcess = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
+        SType: 'RFF',
         city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
         placeOrigin: cName, //country
@@ -124,13 +135,13 @@ const OceanPickupProcess = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setAddress1(route.params?.userAddress);
       setValue('address1', address1?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress,
@@ -139,13 +150,13 @@ const OceanPickupProcess = () => {
   ]);
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress2) {
+    let unmounted = true;
+    if (route.params?.userAddress2 && unmounted) {
       setAddress2(route.params?.userAddress2);
       setValue('address2', address2?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress2,

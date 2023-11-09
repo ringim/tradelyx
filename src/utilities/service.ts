@@ -13,6 +13,7 @@ import {v4 as uuidV4} from 'uuid';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Share from 'react-native-share';
+import DocumentScanner from 'react-native-document-scanner-plugin';
 
 import appConfig from '../../app.json';
 import {GOOGLE_MAPS_APIKEY} from './Utils';
@@ -139,6 +140,28 @@ export const selectFile = async (setSingleFile: any, singleFile: any) => {
   try {
     const res = await DocumentPicker.pick({
       type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
+      allowMultiSelection: false,
+    });
+    setSingleFile([...singleFile, ...res]);
+  } catch (err) {
+    setSingleFile(null);
+    if (DocumentPicker.isCancel(err)) {
+      return;
+    } else {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: 'Unknown Error: ' + JSON.stringify(err),
+        autoClose: 1500,
+      });
+      throw err;
+    }
+  }
+};
+
+export const selectFile2 = async (setSingleFile: any, singleFile: any) => {
+  try {
+    const res = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
       allowMultiSelection: true,
     });
     setSingleFile([...singleFile, ...res]);
@@ -160,7 +183,7 @@ export const selectFile = async (setSingleFile: any, singleFile: any) => {
 // UPLOAD VIA GALLERY
 export const onChangePhoto = (setSelectedPhoto: any) => {
   launchImageLibrary(
-    {mediaType: 'photo', quality: 0.5, selectionLimit: 1},
+    {mediaType: 'photo', quality: 0.4, selectionLimit: 1},
     ({didCancel, errorCode, assets}) => {
       if (!didCancel && !errorCode && assets && assets.length > 0) {
         setSelectedPhoto(assets[0]);
@@ -174,7 +197,7 @@ export const openImageGallery = (
   setSelectedPhotos: any,
 ) => {
   launchImageLibrary(
-    {mediaType: 'photo', selectionLimit: 7, quality: 0.5},
+    {mediaType: 'photo', selectionLimit: 7, quality: 0.4},
     ({didCancel, errorCode, assets}) => {
       if (!didCancel && !errorCode && assets && assets.length > 0) {
         if (assets.length === 1) {
@@ -191,7 +214,7 @@ export const openImageGallery = (
 // UPLOAD VIA CAMERA
 export const onCameraPress = (setSelectedPhoto: any) => {
   launchCamera(
-    {mediaType: 'photo', quality: 0.5},
+    {mediaType: 'photo', quality: 0.4},
     ({didCancel, errorCode, assets}) => {
       if (!didCancel && !errorCode && assets && assets.length > 0) {
         setSelectedPhoto(assets[0]);
@@ -216,7 +239,7 @@ export const uploadFile = async (uri: string) => {
   } catch (err) {
     Toast.show({
       type: ALERT_TYPE.DANGER,
-      textBody: (err as Error).message,
+      textBody: 'Error uploading file, try again!',
       autoClose: 2000,
     });
   }
@@ -238,7 +261,7 @@ export const uploadFile2 = async (singleFile: any) => {
   } catch (err) {
     Toast.show({
       type: ALERT_TYPE.DANGER,
-      textBody: (err as Error).message,
+      textBody: 'Error uploading file, try again!',
       autoClose: 2000,
     });
   }
@@ -284,4 +307,34 @@ export const shareOptions: any = {
   url: 'some share url',
   // social: Share.Social.WHATSAPP,
   // attributionURL: 'http://deep-link-to-app', //in beta
+};
+
+// SCAN RECEIPT FUNCTION
+export const onScanPress = async (setScannedImage: any) => {
+  if (
+    Platform.OS === 'android' &&
+    (await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    )) !== PermissionsAndroid.RESULTS.GRANTED
+  ) {
+    Alert.alert(
+      'Error',
+      'User must grant camera permissions to use document scanner.',
+    );
+    return;
+  }
+
+  const {scannedImages}: any | [] = await DocumentScanner.scanDocument({
+    croppedImageQuality: 40,
+    maxNumDocuments: 10,
+  });
+  if (scannedImages.length > 0) {
+    setScannedImage(scannedImages[0]);
+  } else {
+    Toast.show({
+      type: ALERT_TYPE.WARNING,
+      textBody: 'Unable to scan document',
+      autoClose: 1500,
+    });
+  }
 };

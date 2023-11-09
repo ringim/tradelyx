@@ -8,11 +8,7 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {FlatList} from 'react-native-gesture-handler';
-import {
-  Root,
-  ALERT_TYPE,
-  Toast,
-} from 'react-native-alert-notification';
+import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {
   useNavigation,
@@ -26,6 +22,9 @@ import {
   ImageUpload,
   SingleImage,
   TextButton,
+  Tags as RenderTags,
+  RequestTags,
+  ViewMultipleImages,
 } from '../../../../../components';
 import {COLORS, FONTS, icons, SIZES} from '../../../../../constants';
 import {
@@ -52,6 +51,7 @@ interface SellOffData {
   sellOffer: string;
   productName: string;
   desc: string;
+  category: string;
 }
 
 const EditSellOfferItem = () => {
@@ -86,8 +86,8 @@ const EditSellOfferItem = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>([]);
-  const [initialTags, setInitialTags] = useState([]);
-
+  const [initialTags, setInitialTags] = useState(sellOfferDetails?.tags);
+ 
   // UPDATE USER DETAILS
   const [doUpdateSellOffer] = useMutation<
     UpdateSellOfferMutation,
@@ -155,20 +155,20 @@ const EditSellOfferItem = () => {
   };
 
   useEffect(() => {
-    if (sellOfferDetails) {
+    let isCurrent = true;
+    if (sellOfferDetails && isCurrent) {
       setValue('sellOffer', sellOfferDetails?.title);
       setValue('productName', sellOfferDetails?.productName);
       setValue('desc', sellOfferDetails?.description);
+      setValue('category', sellOfferDetails?.commoditycategoryID);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [sellOfferDetails, setValue]);
 
-  const onTagPress = (index: any, tagLabel: any, event: any, deleted: any) => {
-    return {
-      index,
-      tagLabel,
-      event,
-      deleted: deleted ? 'deleted' : 'not deleted',
-    };
+  const onTagPress = (deleted: any) => {
+    return deleted ? 'deleted' : 'not deleted';
   };
 
   const onChangeTags = (tags: any) => {
@@ -176,47 +176,12 @@ const EditSellOfferItem = () => {
   };
 
   const renderTag = ({tag, index, onPress}: any) => {
-    return (
-      <TouchableOpacity
-        key={`${tag}-${index}`}
-        onPress={onPress}
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.NeutralBlue6,
-          borderRadius: SIZES.semi_margin,
-          padding: SIZES.base,
-          paddingVertical: 5,
-          margin: SIZES.base,
-          marginRight: 2,
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
-            {tag}
-          </Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: 5,
-            backgroundColor: COLORS.white,
-            borderRadius: SIZES.padding,
-            marginLeft: 4,
-          }}>
-          <FastImage
-            source={icons.close}
-            resizeMode={FastImage.resizeMode.contain}
-            tintColor={COLORS.NeutralBlue5}
-            style={{width: 6, height: 6}}
-          />
-        </View>
-      </TouchableOpacity>
-    );
+    return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
   const openImageGallery = () => {
     launchImageLibrary(
-      {mediaType: 'photo', selectionLimit: 7, quality: 0.5},
+      {mediaType: 'photo', selectionLimit: 7, quality: 0.4},
       ({didCancel, errorCode, assets}) => {
         if (!didCancel && !errorCode && assets && assets.length > 0) {
           if (assets.length === 1) {
@@ -245,67 +210,91 @@ const EditSellOfferItem = () => {
           marginHorizontal: SIZES.semi_margin,
         }}>
         {/* Commodity Category Type */}
-        <View>
-          <Text
-            style={{
-              marginTop: SIZES.semi_margin,
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-              fontWeight: '500',
-            }}>
-            Product Category
-          </Text>
-          <DropDownPicker
-            schema={{
-              label: 'title',
-              value: 'id',
-            }}
-            open={open}
-            showArrowIcon={true}
-            placeholder="Select Category"
-            showTickIcon={true}
-            dropDownDirection="AUTO"
-            listMode="MODAL"
-            value={value1}
-            items={jobType}
-            loading={onLoad}
-            setOpen={setOpen}
-            setValue={setValue1}
-            setItems={setJobType}
-            style={{
-              borderRadius: SIZES.base,
-              height: 40,
-              marginTop: SIZES.radius,
-              borderColor: COLORS.Neutral7,
-              borderWidth: 0.5,
-            }}
-            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-            textStyle={{color: COLORS.Neutral1}}
-            closeIconStyle={{
-              width: 24,
-              height: 24,
-            }}
-            modalProps={{
-              animationType: 'fade',
-            }}
-            ArrowDownIconComponent={({style}) => (
-              <FastImage source={icons.down} style={{width: 15, height: 15}} />
-            )}
-            modalContentContainerStyle={{
-              paddingHorizontal: SIZES.padding * 3,
-            }}
-            modalTitle="Select your category"
-            modalTitleStyle={{
-              fontWeight: '600',
-            }}
-            onChangeValue={(value: any) => {
-              setCCID(value);
-            }}
-            onSelectItem={(value: any) => {
-              setType(value);
-            }}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="category"
+          rules={{
+            required: 'Category type is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <View>
+              <Text
+                style={{
+                  marginTop: SIZES.semi_margin,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                }}>
+                Product Type
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'title',
+                  value: 'id',
+                }}
+                open={open}
+                showArrowIcon={true}
+                placeholder="Select Category"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value1 || value}
+                items={jobType}
+                loading={onLoad}
+                setOpen={setOpen}
+                setValue={setValue1}
+                setItems={setJobType}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.radius,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select your category"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onChangeValue={(value: any) => {
+                  setCCID(value);
+                }}
+                onSelectItem={(value: any) => {
+                  setType(value);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
+        />
 
         {/* Sell offer title */}
         <FormInput
@@ -316,53 +305,19 @@ const EditSellOfferItem = () => {
           rules={{
             required: 'Sell Offer is required',
           }}
-          containerStyle={{marginTop: SIZES.margin}}
+          containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
 
         {/* Tags or Keywords */}
-        <View style={{marginTop: SIZES.semi_margin}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-            }}>
-            Tags or Keywords
-          </Text>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 10,
-              borderWidth: 0.5,
-              borderColor: COLORS.Neutral7,
-              borderRadius: SIZES.semi_margin,
-            }}>
-            <Tags
-              containerStyle={{
-                margin: 4,
-                borderRadius: SIZES.base,
-                justifyContent: 'flex-start',
-              }}
-              initialText={''}
-              textInputProps={{
-                placeholderTextColor: COLORS.Neutral7,
-                placeholder:
-                  'Add any type of item e.g. vegetables, agriculture',
-              }}
-              inputStyle={{
-                backgroundColor: COLORS.white,
-                color: COLORS.black,
-                ...FONTS.body3,
-              }}
-              initialTags={initialTags}
-              onChangeTags={onChangeTags}
-              onTagPress={onTagPress}
-              renderTag={renderTag}
-            />
-          </View>
-        </View>
+        <RequestTags
+          initialTags={initialTags}
+          onChangeTags={onChangeTags}
+          onTagPress={onTagPress}
+          renderTag={renderTag}
+          title={'Tags or Keywords'}
+        />
 
         {/* Product name */}
         <FormInput
@@ -373,7 +328,7 @@ const EditSellOfferItem = () => {
           rules={{
             required: 'Sell Offer is required',
           }}
-          containerStyle={{marginTop: SIZES.radius}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
 
@@ -384,7 +339,7 @@ const EditSellOfferItem = () => {
           control={control}
           multiline={true}
           placeholder="Add a description"
-          containerStyle={{marginTop: SIZES.radius}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{
             marginTop: SIZES.base,
@@ -394,73 +349,65 @@ const EditSellOfferItem = () => {
         />
 
         {/* product images */}
-        <View style={{marginTop: SIZES.semi_margin}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
+        <View
+          style={{
+            marginTop: SIZES.margin,
+            marginHorizontal: 4,
+            marginBottom: 50,
+          }}>
+          <Text
+            style={{...FONTS.body3, fontWeight: '500', color: COLORS.Neutral1}}>
             Product Images
           </Text>
-
-          {!selectedPhoto && selectedPhotos?.length === 0 ? (
-            <ImageUpload onPress={openImageGallery} />
-          ) : selectedPhoto ? (
+          {sellOfferDetails?.image ? (
             <SingleImage
-              selectedPhoto={selectedPhoto}
-              setSelectedPhoto={setSelectedPhoto}
+              product={sellOfferDetails}
+              onPress={() =>
+                navigation.navigate('EditSellOfferImages', {
+                  sellOfferID: sellOfferDetails?.id,
+                })
+              }
             />
           ) : (
             <View
               style={{
-                marginTop: selectedPhotos ? SIZES.semi_margin : SIZES.radius,
+                marginTop: SIZES.base,
               }}>
               <FlatList
-                data={selectedPhotos}
-                keyExtractor={(item: any) => `${item.uri}`}
+                data={sellOfferDetails?.images}
+                keyExtractor={(item: any) => `${item}`}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 renderItem={({item, index}) => {
                   return (
-                    <View
+                    <ViewMultipleImages
                       key={index}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        marginLeft: index == 0 ? 2 : 15,
-                        marginRight:
-                          index == selectedPhotos.length - 1
-                            ? SIZES.padding
-                            : 0,
-                        marginTop: SIZES.radius,
-                      }}>
-                      <FastImage
-                        source={item}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: SIZES.base,
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                      />
-                      <TouchableOpacity
-                        onPress={() => deleteItem(item?.uri)}
-                        style={{
-                          padding: 6,
-                          top: -18,
-                          right: -10,
-                          borderRadius: SIZES.margin,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                        }}>
-                        <FastImage
-                          source={icons.remove}
-                          style={{width: 17, height: 17}}
-                          tintColor={COLORS.Rose5}
-                          resizeMode={FastImage.resizeMode.contain}
-                        />
-                      </TouchableOpacity>
-                    </View>
+                      index={index}
+                      images={item}
+                    />
                   );
                 }}
-                ListFooterComponent={
-                  <View style={{marginBottom: selectedPhotos?.length - 100}} />
+              />
+              <TextButton
+                label={'Edit photos'}
+                labelStyle={{
+                  ...FONTS.body3,
+                  fontWeight: 'bold',
+                  color: COLORS.primary1,
+                }}
+                buttonContainerStyle={{
+                  alignSelf: 'flex-start',
+                  width: 120,
+                  height: 35,
+                  borderRadius: SIZES.base,
+                  borderWidth: 1,
+                  borderColor: COLORS.primary1,
+                  backgroundColor: COLORS.white,
+                }}
+                onPress={() =>
+                  navigation.navigate('EditProductImages', {
+                    productID: sellOfferDetails?.id,
+                  })
                 }
               />
             </View>

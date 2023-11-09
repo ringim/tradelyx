@@ -5,8 +5,8 @@ import {FlatList} from 'react-native-gesture-handler';
 
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
 
-const FileSection = ({file, setSingleFile, contentStyle}: any) => {
-  // Delete a single image
+const FileSection = ({file, setSingleFile, title, contentStyle}: any) => {
+  // Delete a single file
   const deleteItem2 = (itemId: any) => {
     setSingleFile((prevData: any) =>
       prevData.filter((item: any) => item.uri !== itemId),
@@ -20,20 +20,25 @@ const FileSection = ({file, setSingleFile, contentStyle}: any) => {
           ...FONTS.body3,
           fontWeight: '500',
           color: COLORS.Neutral1,
+          marginBottom: 5,
         }}>
-        Product Brochure
+        {title}
       </Text>
 
       <FlatList
         data={file}
-        keyExtractor={item => item.uri}
-        renderItem={({item}) => (
-          <View style={{marginTop: SIZES.semi_margin}}>
+        keyExtractor={item => `${item?.uri}`}
+        scrollEnabled={false}
+        renderItem={({item, index}) => (
+          <View key={index} style={{marginTop: SIZES.base}}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 backgroundColor: COLORS.white,
+                paddingHorizontal: SIZES.base,
+                paddingVertical: SIZES.base,
+                borderRadius: SIZES.base,
               }}>
               <View
                 style={{
@@ -54,7 +59,11 @@ const FileSection = ({file, setSingleFile, contentStyle}: any) => {
                   justifyContent: 'center',
                 }}>
                 <Text
-                  style={{...FONTS.h5, color: COLORS.primary1}}
+                  style={{
+                    ...FONTS.cap1,
+                    fontWeight: '500',
+                    color: COLORS.primary1,
+                  }}
                   numberOfLines={2}>
                   {item?.name}
                 </Text>
@@ -64,7 +73,6 @@ const FileSection = ({file, setSingleFile, contentStyle}: any) => {
               <TouchableOpacity
                 style={{
                   justifyContent: 'center',
-                  marginRight: SIZES.base,
                 }}
                 onPress={() => deleteItem2(item?.uri)}>
                 <FastImage

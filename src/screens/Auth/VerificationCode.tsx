@@ -2,11 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, Alert} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import OTPTextView from 'react-native-otp-textinput';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Auth} from 'aws-amplify';
@@ -89,12 +85,17 @@ const VerificationCode = () => {
   }, []);
 
   useEffect(() => {
-    Toast.show({
-      type: ALERT_TYPE.SUCCESS,
-      title: 'Success',
-      textBody: 'OTP sent to your email',
-      autoClose: 1500,
-    });
+    let isCurrent = true;
+    isCurrent &&
+      Toast.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: 'Success',
+        textBody: 'OTP sent to your email',
+        autoClose: 1500,
+      });
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   function renderOTPInput() {
@@ -124,7 +125,7 @@ const VerificationCode = () => {
                 handleTextChange={onChange}
                 handleCellTextChange={handleCellTextChange}
                 keyboardType="numeric"
-                inputCount={6}  
+                inputCount={6}
                 inputCellLength={1}
               />
               {error && (
@@ -134,7 +135,7 @@ const VerificationCode = () => {
                     color: COLORS.Rose4,
                     top: 14,
                     left: 5,
-                    marginBottom: 2
+                    marginBottom: 2,
                   }}>
                   This field is required.
                 </Text>

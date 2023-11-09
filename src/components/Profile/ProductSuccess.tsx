@@ -47,7 +47,7 @@ const ProductSuccess = ({onPress2, onPress}: any) => {
           marginTop: 5,
           height: 50,
         }}
-        label="Home"
+        label="Go to Store"
         labelStyle={{...FONTS.h4}}
         onPress={onPress}
       />

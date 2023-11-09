@@ -55,14 +55,13 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
   }, []);
 
   // LIST PRODUCTS
-  const {
-    data: newData,
-    loading: newLoad,
-    refetch,
-  } = useQuery<ProductByDateQuery, ProductByDateQueryVariables>(productByDate, {
+  const {data: newData, refetch} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
     pollInterval: 500,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
     variables: {
       limit: 4,
       SType: 'JOB',
@@ -70,17 +69,19 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     },
   });
   const allProducts: any =
-    newData?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
+    newData?.productByDate?.items
+      .filter(st => st?.SType === 'JOB')
+      .filter((item: any) => !item?._deleted) || [];
 
   // LIST SUPPLIERS
-  const {data: onData, loading: onLoad} = useQuery<
+  const {data: onData, loading} = useQuery<
     ListUsersQuery,
     ListUsersQueryVariables
   >(listUsers, {
     variables: {limit: 4},
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
   });
   const suppliers: any =
     onData?.listUsers?.items
@@ -88,10 +89,9 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
       .filter((item: any) => !item?._deleted) || [];
 
   // GET USER DETAILS
-  const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {variables: {id: userID}},
-  );
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {id: userID},
+  });
   const user: any = data?.getUser;
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
           title={'Recommended Seller'}
           showViewAll={true}
           containerStyle={{marginTop: SIZES.margin}}
-          onPress={() => navigation.navigate('AllSellers')}
+          onPress={() => navigation.navigate('Search')}
         />
 
         <FlatList
@@ -123,7 +123,9 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
                 item={item}
                 store_image={item?.logo}
                 onPress={() =>
-                  navigation.navigate('CompanyDetail', {sellerItem: item})
+                  navigation.navigate('CompanyDetail', {
+                    ID: item?.id,
+                  })
                 }
                 containerStyle={{
                   marginLeft: index == 0 ? 0 : 12 * 1.4,
@@ -138,7 +140,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     );
   }
 
-  if (loading || newLoad || onLoad) {
+  if (loading) {
     <ActivityIndicator
       style={{flex: 1, justifyContent: 'center'}}
       size={'large'}
@@ -160,7 +162,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
       {/* Search Box */}
       <SearchBox
         onSearch={() => navigation.navigate('Search')}
-        onPress={() => navigation.navigate('Filter')}
+        onPress={() => navigation.navigate('SearchFilter')}
         searchTerm={'Search product or seller'}
         containerStyle={{
           marginHorizontal: SIZES.semi_margin,
@@ -172,7 +174,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
       <FlatList
         data={allProducts}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => `${item?.id}`}
         ListHeaderComponent={
           <View style={{backgroundColor: COLORS.white}}>
             {/* Category Tab */}
@@ -180,29 +182,28 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
 
             {/* Promo */}
             <PromoSection />
+
+            <PopularProducts title={'Most Popular Products'} />
           </View>
         }
         renderItem={({item, index}) => {
           /* Popular items */
           return (
-            <View style={{backgroundColor: COLORS.white}}>
-              <PopularProducts title={'Most Popular Products'} />
+            <View key={index} style={{backgroundColor: COLORS.white}}>
               <PopularItem
-                key={index}
                 item={item}
                 store_image={item?.productImage}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }
               />
-              <SeeAll onPress={() => navigation.navigate('AllProducts')} />
             </View>
           );
         }}
         refreshControl={
           <RefreshControl
             tintColor={COLORS.primary4}
-            refreshing={newLoad}
+            refreshing={loading}
             onRefresh={() => refetch()}
           />
         }
@@ -212,6 +213,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
               marginBottom: allProducts?.length - 1 && 150,
               backgroundColor: COLORS.white,
             }}>
+            <SeeAll onPress={() => navigation.navigate('Search')} />
             {/* Recommended sellers */}
             {renderRecommended()}
           </View>

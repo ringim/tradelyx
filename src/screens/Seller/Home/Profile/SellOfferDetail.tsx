@@ -1,33 +1,31 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, { useRef } from 'react';
+import {useRoute} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import ImageModal, {ImageDetail} from 'react-native-image-modal';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
 
 import {COLORS, SIZES, icons, FONTS} from '../../../../constants';
 import {Header, SOImage} from '../../../../components';
-import {
-  ProfileStackNavigatorParamList,
-  SellOfferDetailRouteProp,
-} from '../../../../components/navigation/SellerNav/type/navigation';
+import {SellOfferDetailRouteProp} from '../../../../components/navigation/SellerNav/type/navigation';
 
 const SellOfferDetail = () => {
-  const navigation = useNavigation<ProfileStackNavigatorParamList>();
   const route: any = useRoute<SellOfferDetailRouteProp>();
 
-  console.log(route?.params.sellOffer);
+  // console.log(route?.params.sellOffer);
 
   const {
     sellOfferID,
-    offerValidity,
     packageDesc,
-    storeAddress,
+    storeName,
+    offerValidity,
     title,
     fobPrice,
     paymentType,
     requestCategory,
     basePrice,
+    description,
     images,
     image,
     qtyMeasure,
@@ -44,6 +42,8 @@ const SellOfferDetail = () => {
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
+
+  const element = useRef<ImageDetail>(null);
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -66,11 +66,11 @@ const SellOfferDetail = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Buyer from
+              Sell Offer from
             </Text>
           </View>
 
-          {/* Buyer from */}
+          {/* Sell offer from */}
           <View
             style={{
               justifyContent: 'center',
@@ -96,7 +96,7 @@ const SellOfferDetail = () => {
                 ...FONTS.h5,
                 color: COLORS.Neutral1,
               }}>
-              {storeAddress}
+              {storeName}
             </Text>
           </View>
         </View>
@@ -104,7 +104,7 @@ const SellOfferDetail = () => {
         {/* RFQ Number */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: 4,
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: SIZES.semi_margin,
@@ -195,22 +195,48 @@ const SellOfferDetail = () => {
           }}
         />
 
-        {/* Description */}
+        {/* Package Description */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'center',
           }}>
-          <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {packageDesc}
-          </Text>
+          <View style={{justifyContent: 'center'}}>
+            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+              Package Description
+            </Text>
+          </View>
+          <View style={{justifyContent: 'center', marginTop: SIZES.base}}>
+            <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+              {packageDesc}
+            </Text>
+          </View>
+        </View>
+
+        {/* Detailed Description */}
+        <View
+          style={{
+            marginTop: SIZES.semi_margin,
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'center',
+          }}>
+          <View style={{justifyContent: 'center'}}>
+            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+              Detailed Description
+            </Text>
+          </View>
+          <View style={{justifyContent: 'center', marginTop: SIZES.base}}>
+            <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+              {description}
+            </Text>
+          </View>
         </View>
 
         {/* Product Name */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -238,7 +264,7 @@ const SellOfferDetail = () => {
         {/* Supply title */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -249,7 +275,7 @@ const SellOfferDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Supply
+              Supply Capacity
             </Text>
           </View>
           <View
@@ -266,7 +292,7 @@ const SellOfferDetail = () => {
         {/* Qty */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -277,7 +303,7 @@ const SellOfferDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Qty Required
+              Quantity Offered
             </Text>
           </View>
           <View
@@ -294,7 +320,7 @@ const SellOfferDetail = () => {
         {/* Base Price */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -322,7 +348,7 @@ const SellOfferDetail = () => {
         {/* Packaging */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -350,7 +376,7 @@ const SellOfferDetail = () => {
         {/* Payment terms */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -395,18 +421,23 @@ const SellOfferDetail = () => {
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Images</Text>
           </View>
-          <FlatList
-            data={images}
-            keyExtractor={item => `${item}`}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item, index}) => {
-              return <SOImage image={item} index={index} />;
-            }}
-            ListFooterComponent={
-              <View style={{marginBottom: images?.length - 100}} />
-            }
-          />
+
+          {image ? (
+            <SOImage image={image} containerStyle={{marginLeft: 0}} />
+          ) : (
+            <FlatList
+              data={images}
+              keyExtractor={item => `${item}`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return <SOImage image={item} index={index} />;
+              }}
+              ListFooterComponent={
+                <View style={{marginBottom: images?.length - 100}} />
+              }
+            />
+          )}
         </View>
 
         {/* Price */}
@@ -422,7 +453,9 @@ const SellOfferDetail = () => {
             padding: SIZES.semi_margin,
           }}>
           <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Budget</Text>
+            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+              FOB Price
+            </Text>
             <Text
               style={{
                 ...FONTS.h3,

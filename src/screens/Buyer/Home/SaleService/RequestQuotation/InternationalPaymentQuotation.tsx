@@ -77,6 +77,7 @@ const InternationalPaymentQuotation = () => {
     try {
       const input: UpdateRFQInput = {
         id: route?.params.rfqID,
+        SType: 'RFQ',
         expiryDate: date,
         paymentMethod: type,
         userID,

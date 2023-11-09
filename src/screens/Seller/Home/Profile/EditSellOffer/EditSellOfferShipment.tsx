@@ -14,11 +14,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 import {useMutation, useQuery} from '@apollo/client';
 
@@ -77,7 +73,7 @@ const EditSellOfferShipment = () => {
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
+  const [type, setType] = useState(sellOfferDetails?.packageType);
   const [jobType, setJobType] = useState<any>(constants.packageType);
 
   const showDatePicker = () => {
@@ -125,10 +121,6 @@ const EditSellOfferShipment = () => {
         placeOrigin: address1?.description?.formatted_address,
         landmark,
         deliveryDate: date,
-        storeImage: userInfo?.logo,
-        storeRating: userInfo?.rating,
-        storeName: userInfo?.title,
-        storeAddress: `${userInfo?.city}${', '} ${userInfo?.country}`,
       };
 
       await doCreateSellOffer({
@@ -137,7 +129,9 @@ const EditSellOfferShipment = () => {
         },
       });
       // console.log('job data', input);
-      navigation.navigate('EditSellOfferPricing', {sellOffer: sellOfferDetails});
+      navigation.navigate('EditSellOfferPricing', {
+        sellOffer: sellOfferDetails,
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -149,23 +143,31 @@ const EditSellOfferShipment = () => {
     }
   };
 
+  function isSubmit() {
+    return date !== '';
+  }
+
   useEffect(() => {
-    if (sellOfferDetails) {
+    let isCurrent = true;
+    if (sellOfferDetails && isCurrent) {
       setValue('detail', sellOfferDetails?.packageDesc);
       setValue('address1', sellOfferDetails?.placeOrigin);
       setValue('landmark', sellOfferDetails?.landmark);
-      setValue('packageType', sellOfferDetails?.requestCategory);
+      setValue('packageType', sellOfferDetails?.packageType);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [sellOfferDetails, setValue]);
 
   useEffect(() => {
-    let unmounted = false;
+    let unmounted = true;
     if (route.params?.userAddress) {
       setAddress1(route.params?.userAddress);
       setValue('address1', address1?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress,
@@ -233,7 +235,7 @@ const EditSellOfferShipment = () => {
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value1}
+                value={value1 || value}
                 items={jobType}
                 setOpen={setOpen}
                 setValue={setValue1}
@@ -459,7 +461,12 @@ const EditSellOfferShipment = () => {
             top: Platform.OS === 'android' ? 10 : 0,
           }}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding * 1.2,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}
           />

@@ -17,9 +17,13 @@ const VendorItem = ({containerStyle, item, store_image, onPress}: IItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    if (store_image) {
+    let isCurrent = true;
+    if (store_image && isCurrent) {
       Storage.get(store_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [store_image]);
 
   return (

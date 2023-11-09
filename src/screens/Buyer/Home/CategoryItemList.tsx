@@ -11,7 +11,11 @@ import {
 import {COLORS, SIZES} from '../../../constants';
 import {Header, NoItem, SearchBox2, SearchItem2} from '../../../components';
 import {productByDate} from '../../../queries/ProductQueries';
-import {ProductByDateQueryVariables, ProductByDateQuery} from '../../../API';
+import {
+  ProductByDateQueryVariables,
+  ProductByDateQuery,
+  ModelSortDirection,
+} from '../../../API';
 
 const CategoryItemList = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -27,23 +31,33 @@ const CategoryItemList = () => {
     ProductByDateQuery,
     ProductByDateQueryVariables
   >(productByDate, {
-    pollInterval: 300,
-    nextFetchPolicy: 'cache-first',
+    pollInterval: 500,
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
+    variables: {
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+    },
   });
   const allProducts: any =
     data?.productByDate?.items
+      .filter(st => st?.SType === 'JOB')
       .filter(cty => cty?.category === title)
       .filter((item: any) => !item?._deleted) || [];
 
-  // console.log(allProducts);
-
   useEffect(() => {
-    const filteredItems = allProducts.filter(
-      (item: {title: string; storeName: string}) =>
-        item?.title.toLowerCase().includes(search?.toLowerCase()) ||
-        item?.storeName.toLowerCase().includes(search?.toLowerCase()),
-    );
+    let isCurrent = true;
+    const filteredItems =
+      isCurrent &&
+      allProducts.filter(
+        (item: {title: string; storeName: string}) =>
+          item?.title.toLowerCase().includes(search?.toLowerCase()) ||
+          userInfo?.title.toLowerCase().includes(search?.toLowerCase()),
+      );
     setFilteredDataSource(filteredItems);
+    return () => {
+      isCurrent = false;
+    };
   }, [search]);
 
   if (loading) {
@@ -59,12 +73,10 @@ const CategoryItemList = () => {
       <Header title={title} tintColor={COLORS.Neutral1} />
 
       {/* Search box */}
-      <View style={{marginHorizontal: SIZES.radius}}>
-        <SearchBox2
-          searchFilterFunction={(text: any) => setSearch(text)}
-          search={search}
-        />
-      </View>
+      <SearchBox2
+        searchFilterFunction={(text: any) => setSearch(text)}
+        search={search}
+      />
 
       {/* Category Items */}
       {filteredDataSource?.length === 0 && <NoItem />}
@@ -77,8 +89,7 @@ const CategoryItemList = () => {
             <SearchItem2
               containerStyle={{marginTop: SIZES.radius}}
               key={index}
-              profile_image={item?.image}
-              profile_image2={item?.storeImage}
+              profile_image={item?.image || item?.images[0]}
               item={item}
               onPress={() =>
                 navigation.navigate('ProductDetail', {productItem: item})

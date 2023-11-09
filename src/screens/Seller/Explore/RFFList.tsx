@@ -6,7 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS, SIZES, constants} from '../../../constants';
 import QuotesRequest from './QuotesRequest';
 import AgentRequest from './AgentRequest';
-import {PromoSection} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 
 const scheduleTabs = constants.freightType.map(bottom_tab => ({
@@ -181,7 +180,7 @@ const RFFList = () => {
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           data={constants.freightType}
-          keyExtractor={item => `HomeTabs-${item.id}`}
+          keyExtractor={item => `HomeTabs-${item}`}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollX}}}],
             {
@@ -217,9 +216,6 @@ const RFFList = () => {
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View style={{marginTop: SIZES.radius}}>
-            {/* Promo */}
-            <PromoSection />
-
             <View
               style={{marginTop: SIZES.margin, marginHorizontal: SIZES.margin}}>
               <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
@@ -232,7 +228,7 @@ const RFFList = () => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: 200,
+              // marginBottom: 50,
             }}>
             {renderTopTabBar()}
 

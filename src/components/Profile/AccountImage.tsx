@@ -1,6 +1,8 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import {Storage} from 'aws-amplify';
+
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {
   DEFAULT_BANNER_IMAGE,
@@ -10,7 +12,7 @@ import TextIconButton from '../Button/TextIconButton';
 
 const AccountImage = ({
   profile_image,
-  profile_image2,
+  bg_image,
   onPress2,
   name,
   onEdit,
@@ -18,13 +20,36 @@ const AccountImage = ({
   contentStyle,
   containerStyle,
 }: any) => {
+  const [imageUri, setImageUri] = useState<string | null>(null);
+  const [imageUri2, setImageUri2] = useState<string | null>(null);
+
+  useEffect(() => {
+    let unmounted = true;
+    if (profile_image && unmounted) {
+      Storage.get(profile_image).then(setImageUri);
+    }
+    return () => {
+      unmounted = false;
+    };
+  }, [profile_image]);
+
+  useEffect(() => {
+    let unmounted = true;
+    if (bg_image && unmounted) {
+      Storage.get(bg_image).then(setImageUri2);
+    }
+    return () => {
+      unmounted = false;
+    };
+  }, [bg_image]);
+
   return (
     <View style={{marginTop: 0, ...containerStyle}}>
       {/* Banner Photo */}
       {showBanner && (
         <>
           <FastImage
-            source={{uri: profile_image2 || DEFAULT_BANNER_IMAGE}}
+            source={{uri: imageUri2 || DEFAULT_BANNER_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: '100%',
@@ -39,8 +64,8 @@ const AccountImage = ({
               alignItems: 'center',
               backgroundColor: COLORS.primary1,
               padding: SIZES.base,
-              right: 5,
-              bottom: 140,
+              right: 3,
+              bottom: -15,
             }}
             onPress={onPress2}>
             <FastImage
@@ -68,7 +93,7 @@ const AccountImage = ({
         {/* Profile Photo */}
         <FastImage
           source={{
-            uri: profile_image || DEFAULT_PROFILE_IMAGE,
+            uri: imageUri || DEFAULT_PROFILE_IMAGE,
           }}
           resizeMode={FastImage.resizeMode.cover}
           style={{
@@ -79,12 +104,6 @@ const AccountImage = ({
             borderColor: COLORS.primary1,
           }}
         />
-        <View
-          style={{
-            marginTop: SIZES.base,
-          }}>
-          <Text style={{...FONTS.h3, color: COLORS.Neutral1}}>{name}</Text>
-        </View>
 
         {/* change image */}
         <TextIconButton
@@ -94,7 +113,7 @@ const AccountImage = ({
           iconPosition={'LEFT'}
           containerStyle={{
             padding: SIZES.radius,
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             width: 134,
             height: 41,
           }}

@@ -4,9 +4,10 @@ import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, constants} from '../../../../constants';
 import {FreightTab, TextButton} from '../../../../components';
+import { HomeStackNavigatorParamList } from '../../../../components/navigation/SellerNav/type/navigation';
 
 const Freight = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<HomeStackNavigatorParamList>();
 
   const [selectedItem, setSelectedItem] = useState<any>('');
   const [freightItem, setFreightItem] = useState<any>(null);

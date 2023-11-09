@@ -67,8 +67,8 @@ const OceanFreight = () => {
     ListCommodityCategoriesQueryVariables
   >(listCommodityCategories, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+     nextFetchPolicy: 'network-only',
   });
 
   const [loading, setLoading] = useState(false);
@@ -110,7 +110,6 @@ const OceanFreight = () => {
     try {
       const input: CreateRFFInput = {
         id: uuidV4(),
-        SType: 'RFF',
         rffNo: referralCode(),
         requestCategory: type?.title,
         rffType: RFFTYPE.OCEAN,

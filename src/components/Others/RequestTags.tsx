@@ -30,7 +30,8 @@ const RequestTags = ({
           marginTop: 10,
           borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
-          borderRadius: SIZES.semi_margin,
+          borderRadius: SIZES.radius,
+          backgroundColor: COLORS.white
         }}>
         <Tags
           key={index}

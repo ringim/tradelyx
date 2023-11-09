@@ -1,11 +1,10 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FastImage from 'react-native-fast-image';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {Controller, useForm} from 'react-hook-form';
-import DocumentScanner from 'react-native-document-scanner-plugin';
 import {Asset} from 'react-native-image-picker';
 import {useMutation} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
@@ -16,6 +15,8 @@ import {
   Header,
   TextButton,
   UpdateProfilePhoto,
+  UploadID,
+  UploadedID,
 } from '../../../components';
 import {SetupNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {useAuthContext} from '../../../context/AuthContext';
@@ -27,7 +28,12 @@ import {
 } from '../../../API';
 import {updateUser} from '../../../queries/UserQueries';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
-import {onChangePhoto, uploadMedia} from '../../../utilities/service';
+import {
+  onChangePhoto,
+  selectFile,
+  uploadFile,
+  uploadMedia,
+} from '../../../utilities/service';
 import {CountryCodeList} from '../../../../types/types';
 
 type CompleteAccountData = {
@@ -41,6 +47,7 @@ type CompleteAccountData = {
   address: string;
   IdNumber: string;
   overview: string;
+  file: any;
 };
 
 const CompleteProfile = () => {
@@ -53,7 +60,8 @@ const CompleteProfile = () => {
   const [uploading, setUploading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhoto1, setSelectedPhoto1] = useState<any | Asset>('');
-  const [selectedPhoto2, setSelectedPhoto2] = useState<any>('');
+  const [singleFile, setSingleFile] = useState<any>([]);
+  const [url, setURL] = useState('');
 
   const [open4, setOpen4] = useState(false);
   const [value4, setValue4] = useState(null);
@@ -79,6 +87,7 @@ const CompleteProfile = () => {
     overview,
     title,
     IdNumber,
+    file
   }: CompleteAccountData) => {
     if (uploading) {
       return;
@@ -92,11 +101,12 @@ const CompleteProfile = () => {
         country: country,
         address: address?.description?.formatted_address,
         title,
+        website: url,
         identification: identity,
         lat: address?.location?.lat,
         lng: address?.location?.lng,
         identificationNumber: IdNumber,
-        identityImage: selectedPhoto2?.uri,
+        identityDocs: file,
         overview,
         city,
         zipCode,
@@ -107,9 +117,13 @@ const CompleteProfile = () => {
       if (selectedPhoto1?.uri) {
         input.backgroundImage = await uploadMedia(selectedPhoto1.uri);
       }
-      if (selectedPhoto2?.uri) {
-        input.identityImage = await uploadMedia(selectedPhoto2.uri);
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+        );
+        input.identityDocs = fileKeys;
       }
+
       await doUpdateUser({
         variables: {
           input,
@@ -128,36 +142,43 @@ const CompleteProfile = () => {
     }
   };
 
+  const handleURLChange = (text: any) => {
+    const cleanedText = text.replace(/\s/g, '');
+
+    // Check if the input starts with "http://" or "https://"
+    if (cleanedText.startsWith('http://')) {
+      setURL(cleanedText);
+    } else if (cleanedText.startsWith('https://')) {
+      setURL(cleanedText);
+    } else {
+      // If the input doesn't start with "http://" or "https://", add "https://"
+      setURL('https://' + cleanedText);
+    }
+  };
+
+  function isSubmit() {
+    return (
+      singleFile.length !== 0 &&
+      url !== '' &&
+      selectedPhoto !== '' &&
+      selectedPhoto1 !== ''
+    );
+  }
+
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     setValue,
     route.params?.userAddress,
     address?.description?.formatted_address,
   ]);
-
-  // SCAN RECEIPT FUNCTION
-  const onScanPress = async () => {
-    const {scannedImages}: any | [] = await DocumentScanner.scanDocument({
-      maxNumDocuments: 1,
-    });
-    if (scannedImages.length > 0) {
-      setSelectedPhoto2(scannedImages[0]);
-    } else {
-      Toast.show({
-        type: ALERT_TYPE.WARNING,
-        textBody: 'Unable to scan document',
-        autoClose: 1500,
-      });
-    }
-  };
 
   function renderFormSection() {
     return (
@@ -166,14 +187,14 @@ const CompleteProfile = () => {
           marginTop: 110,
           marginHorizontal: SIZES.semi_margin,
         }}>
-        {/* Business name */}
+        {/* Company name */}
         <FormInput
           control={control}
-          label="Business Name"
-          placeholder="Enter your Business name"
+          label="Company Name"
+          placeholder="Enter your Company name"
           name="title"
           rules={{
-            required: 'Business name is required',
+            required: 'Company name is required',
             minLength: {
               value: 3,
               message: 'names should be more than 5 characters',
@@ -183,15 +204,48 @@ const CompleteProfile = () => {
           containerStyle={{marginTop: SIZES.radius}}
         />
 
-        {/* business overview */}
+        {/* Company website */}
+        <View style={{marginTop: SIZES.radius}}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Company Website
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={handleURLChange}
+            value={url}
+            placeholder="https:/johndoe.org"
+            autoCapitalize="none"
+            keyboardType={'url'}
+            placeholderTextColor={COLORS.gray}
+            style={{
+              // flex: 1,
+              ...FONTS.body3,
+              color: COLORS.Blue5,
+              fontWeight: '500',
+              marginTop: SIZES.base,
+              height: 50,
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
+
+        {/* Company overview */}
         <FormInput
-          label="Business Overview"
+          label="Company Overview"
           name="overview"
           control={control}
           multiline={true}
-          placeholder="Provide a brief summary about your business"
+          placeholder="Provide a brief summary about your Company"
           rules={{
-            required: 'Business overview is required',
+            required: 'Company overview is required',
           }}
           containerStyle={{marginTop: SIZES.radius}}
           inputContainerStyle={{
@@ -201,15 +255,15 @@ const CompleteProfile = () => {
           }}
         />
 
-        {/* Business Address */}
+        {/* Company Address */}
         <FormInput
-          label="Business Address"
+          label="Company Address"
           name="address"
           control={control}
           editable={false}
-          placeholder="Add Business Address"
+          placeholder="Add Company Address"
           rules={{
-            required: 'Business Address is required',
+            required: 'Company Address is required',
           }}
           containerStyle={{marginTop: SIZES.radius}}
           inputContainerStyle={{marginTop: SIZES.base}}
@@ -421,60 +475,37 @@ const CompleteProfile = () => {
           )}
         />
 
-        {/* Upload Identity Doc */}
-        <View style={{marginTop: SIZES.padding * 1.5}}>
-          {!selectedPhoto2 ? (
-            <>
-              <Text
-                style={{
-                  color: COLORS.Neutral1,
-                  fontWeight: '500',
-                  ...FONTS.body2,
-                }}>
-                Upload Identity Document
-              </Text>
-              <Text style={{...FONTS.body3, color: COLORS.gray, paddingTop: 4}}>
-                Supported formats: .jpeg, .png, and .pdf files Maximum size of 5
-                Mb
-              </Text>
+        {/* ID Number */}
+        <FormInput
+          control={control}
+          label="Identification Number"
+          placeholder="Enter your ID Number"
+          rules={{
+            required: 'ID Number is required',
+          }}
+          name="IdNumber"
+          containerStyle={{marginTop: SIZES.padding}}
+        />
 
-              <TouchableOpacity
-                style={{
-                  marginTop: SIZES.radius,
-                  justifyContent: 'center',
-                  width: 50,
-                  height: 50,
-                  borderRadius: SIZES.base,
-                  backgroundColor: COLORS.primary2,
-                  alignItems: 'center',
-                }}
-                onPress={onScanPress}>
-                <FastImage
-                  source={icons.upload}
-                  style={{width: 25, height: 25}}
-                  resizeMode={FastImage.resizeMode.contain}
-                  tintColor={COLORS.white}
-                />
-              </TouchableOpacity>
-            </>
+        {/* Upload Identity Doc */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.semi_margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Identity Documents'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
           ) : (
-            <View
-              style={{
-                alignItems: 'center',
-                marginHorizontal: SIZES.radius,
-                marginBottom: 50,
-              }}>
-              <FastImage
-                source={{uri: selectedPhoto2}}
-                resizeMode={FastImage.resizeMode.cover}
-                style={{
-                  height: 300,
-                  width: 300,
-                  overflow: 'hidden',
-                  borderRadius: SIZES.radius,
-                }}
-              />
-            </View>
+            <UploadID
+            title='Upload Identity Document'
+              onScanPress={() => selectFile(setSingleFile, singleFile)}
+            />
           )}
         </View>
       </View>
@@ -506,7 +537,7 @@ const CompleteProfile = () => {
               marginHorizontal: SIZES.semi_margin,
             }}>
             <Text style={{...FONTS.h2, color: COLORS.NeutralBlue1}}>
-              Business Account
+              Company Account
             </Text>
             <Text
               style={{...FONTS.sh3, color: COLORS.gray, marginTop: SIZES.base}}>
@@ -526,11 +557,13 @@ const CompleteProfile = () => {
 
           {renderFormSection()}
           <TextButton
+            disabled={isSubmit() ? false : true}
             label={uploading ? 'Loading...' : 'Continue'}
             buttonContainerStyle={{
               alignSelf: 'center',
               marginTop: SIZES.padding * 2,
               marginBottom: 100,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             onPress={handleSubmit(onSubmit)}
           />

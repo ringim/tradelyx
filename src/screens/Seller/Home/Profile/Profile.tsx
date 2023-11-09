@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Linking, ActivityIndicator} from 'react-native';
+import {View, Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Auth} from 'aws-amplify';
@@ -41,25 +41,12 @@ const Profile = () => {
   };
 
   // GET USER DETAILS
-  const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {id: userID},
-      fetchPolicy: 'cache-first',
-      nextFetchPolicy: 'cache-and-network',
-    },
-  );
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {id: userID},
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
+  });
   const user: any = data?.getUser;
-
-  if (loading) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        size={'large'}
-        color={COLORS.primary6}
-      />
-    );
-  }
 
   return (
     <Root>
@@ -81,7 +68,7 @@ const Profile = () => {
           {/* Profile Pic */}
           <ProfilePhoto
             userImage={user?.logo}
-            name={user?.name}
+            name={user?.title}
             location={`${user?.city}${`, `} ${user?.country}`}
           />
 
@@ -99,7 +86,7 @@ const Profile = () => {
               onPress={() => navigation.navigate('Account')}
             />
 
-            {/* Contracts */}
+            {/* StoreProduct */}
             <ProfileItem
               label={'Products & Sell Offers'}
               tintColor={COLORS.primary1}

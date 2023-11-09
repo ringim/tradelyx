@@ -16,7 +16,7 @@ import {
   ProductByDateQuery,
   ProductByDateQueryVariables,
 } from '../../../../API';
-import MyStore from './MyStore';
+import MyProducts from './MyProducts';
 import MySellOffers from './MySellOffers';
 import {productByDate} from '../../../../queries/ProductQueries';
 
@@ -157,8 +157,8 @@ const StoreProduct = () => {
     ProductByDateQueryVariables
   >(productByDate, {
     pollInterval: 500,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'JOB',
       sortDirection: ModelSortDirection.DESC,
@@ -166,6 +166,7 @@ const StoreProduct = () => {
   });
   const userProducts =
     data?.productByDate?.items
+      .filter(st => st?.SType === 'JOB')
       ?.filter(usrID => usrID?.userID === userID)
       .filter((item: any) => !item?._deleted) || [];
 
@@ -232,7 +233,7 @@ const StoreProduct = () => {
                   width: SIZES.width,
                 }}>
                 {item?.id == 0 && (
-                  <MyStore
+                  <MyProducts
                     data={userProducts}
                     loading={loading}
                     refetch={refetch}
@@ -250,7 +251,7 @@ const StoreProduct = () => {
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral9}}>
       <Header
-        title={'Store and Products'}
+        title={'Products & Sell Offers'}
         contentStyle={{marginBottom: 0}}
         tintColor={COLORS.Neutral1}
       />

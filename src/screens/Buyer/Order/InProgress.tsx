@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
@@ -30,15 +30,21 @@ const InProgress = () => {
   // console.log(inProgress);
 
   useEffect(() => {
-    const filteredData = dummyData?.orders
-      .filter(
-        st =>
-          st?.status !== 'Completed' &&
-          st?.status !== 'Canceled' &&
-          st?.status !== 'Waiting for Payment',
-      )
-      .filter(ty => ty?.type === value);
+    let isCurrent = true;
+    const filteredData =
+      isCurrent &&
+      dummyData?.orders
+        .filter(
+          st =>
+            st?.status !== 'Completed' &&
+            st?.status !== 'Canceled' &&
+            st?.status !== 'Waiting for Payment',
+        )
+        .filter(ty => ty?.type === value);
     setFilteredItems(filteredData);
+    return () => {
+      isCurrent = false;
+    };
   }, [value]);
 
   return (
@@ -67,7 +73,7 @@ const InProgress = () => {
                 marginLeft: index != 0 ? SIZES.radius : 0,
               }}
               onPress={() => {
-                setSelectedOptions(item.id);
+                setSelectedOptions(item?.id);
                 setValue(item.label);
               }}
             />
@@ -81,11 +87,12 @@ const InProgress = () => {
           <FlatList
             data={inProgress}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
                 <OrderItem
+                  key={index}
                   item={item}
                   status={true}
                   arrow={true}
@@ -116,11 +123,12 @@ const InProgress = () => {
           <FlatList
             data={filteredItems}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
                 <OrderItem
+                key={index}
                   item={item}
                   status={true}
                   arrow={true}

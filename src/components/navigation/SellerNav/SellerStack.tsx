@@ -7,6 +7,7 @@ import {
   InviteFriends,
   Notifications,
   Profile,
+  EditProductDoc,
   Refer,
   Wallet,
   SellOffer,
@@ -14,31 +15,41 @@ import {
   PackingShipment,
   PackageShipmentAddress,
   MiniumOrderPayment,
-  Filter,
   RFQFilter,
   UserAddress,
   QuotesRequestDetails,
-  RFQDetail,
+  DomesticRFQDetail,
   OrderDetail,
   ProgressOrderDetail,
   AgentRequestDetails,
   AccountAddress,
   EditProductPrice,
+  StandardDomesticRFQDetail,
+  InternationalDomesticRFQDetail,
   AddProducts,
+  EditProductImages,
   EditProductShipmentAddress,
+  EditProductDocs2,
   EditProductShipment,
   ProductSpecification,
   ProductPricing,
   ProductShipmentAddress,
   EditProductItem,
   ProductShipment,
+  EditProductImage,
   EditProductSpec,
   StoreItem,
   SellOfferDetail,
   EditSellOfferItem,
+  EditSellOfferImages,
   EditSellOfferPricing,
+  SuccessService2,
   EditSellOfferShipment,
+  EditCompanyDocs,
   EditSellOfferShipmentAddress,
+  EditAccountImage,
+  EditAccountBGImage,
+  EditIdentityDoc,
 } from '../../../screens/Seller';
 import CBottomTabs from './SBottomTabs';
 
@@ -113,6 +124,16 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
+        name="InternationalDomesticRFQDetail"
+        component={InternationalDomesticRFQDetail}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="StandardDomesticRFQDetail"
+        component={StandardDomesticRFQDetail}
+        options={() => options}
+      />
+      <Stack.Screen
         name="Notifications"
         component={Notifications}
         options={() => options}
@@ -126,6 +147,21 @@ const SellerStack = () => {
         name="EditSellOfferShipment"
         component={EditSellOfferShipment}
         options={() => options}
+      />
+      <Stack.Screen
+        name="EditProductImage"
+        component={EditProductImage}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditProductImages"
+        component={EditProductImages}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditCompanyDocs"
+        component={EditCompanyDocs}
+        options={{presentation: 'modal'}}
       />
       <Stack.Screen
         name="EditSellOfferShipmentAddress"
@@ -168,6 +204,36 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
+        name="EditAccountImage"
+        component={EditAccountImage}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditAccountBGImage"
+        component={EditAccountBGImage}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditIdentityDoc"
+        component={EditIdentityDoc}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditProductDoc"
+        component={EditProductDoc}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditProductDocs2"
+        component={EditProductDocs2}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditSellOfferImages"
+        component={EditSellOfferImages}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
         name="PackageShipmentAddress"
         component={PackageShipmentAddress}
         options={() => options}
@@ -192,7 +258,6 @@ const SellerStack = () => {
         component={StoreItem}
         options={() => options}
       />
-      <Stack.Screen name="Filter" component={Filter} options={() => options} />
       <Stack.Screen
         name="RFQFilter"
         component={RFQFilter}
@@ -229,13 +294,18 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
+        name="SuccessService2"
+        component={SuccessService2}
+        options={() => options}
+      />
+      <Stack.Screen
         name="UserAddress"
         component={UserAddress}
         options={() => options}
       />
       <Stack.Screen
-        name="RFQDetail"
-        component={RFQDetail}
+        name="DomesticRFQDetail"
+        component={DomesticRFQDetail}
         options={() => options}
       />
       <Stack.Screen

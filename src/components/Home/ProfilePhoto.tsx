@@ -17,12 +17,12 @@ const ProfilePhoto = ({userImage, name, location}: IDriverImage) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    let unmounted = false;
-    if (userImage) {
+    let unmounted = true;
+    if (userImage && unmounted) {
       Storage.get(userImage).then(setImageUri);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [userImage]);
 
@@ -42,9 +42,12 @@ const ProfilePhoto = ({userImage, name, location}: IDriverImage) => {
           height: 150,
           borderRadius: 200,
           borderWidth: 1,
-          borderColor: COLORS.primary1
+          borderColor: COLORS.primary1,
         }}
       />
+
+      {/* business name */}
+      
 
       {/* name and location */}
       <View style={{margin: SIZES.semi_margin, alignItems: 'center'}}>
@@ -53,7 +56,7 @@ const ProfilePhoto = ({userImage, name, location}: IDriverImage) => {
         <View
           style={{
             alignItems: 'center',
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>

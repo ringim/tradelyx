@@ -30,24 +30,23 @@ export type HomeStackNavigatorParamList = {
   BusinessDetail: {businessItem: string};
   OfferDetail: {detail: string};
   Notifications: undefined;
-  Filter: undefined;
   Search: undefined;
   ChooseService: undefined;
   Home: undefined;
   Order: NavigatorScreenParams<OrderStackNavigatorParamList>;
   StandardQuotation: undefined;
-  FilteredProducts: {filterItem: string};
   DomesticRFQ: undefined;
   TypeQuotation: undefined;
   InternationalEngagementTerms: undefined;
   EngagementTerms: undefined;
   PaymentQuotation: undefined;
   SearchAddress: undefined;
-  SearchAddressFilter: undefined;
   AirPortOriginAddress: undefined;
   AirDestinationAddress: undefined;
   LandPickupAddress: undefined;
   LandPickupAddress2: undefined;
+  SearchFilter: undefined;
+  SearchFilter2: undefined;
   RequestQuotationAddress: undefined;
   InternationalTypeQuotation: undefined;
   OceanFreight: {freightType: string};
@@ -62,10 +61,9 @@ export type HomeStackNavigatorParamList = {
   InternationalPaymentQuotation: undefined;
   ExploreFilter: undefined;
   EngagementTermsAddress: undefined;
-  AllProducts: undefined;
+  AllProducts: {items: string; loading: boolean};
   Quotation: undefined;
   Freight: undefined;
-  AllSellers: undefined;
   SuccessService: {type: string};
 };
 
@@ -78,6 +76,7 @@ export type ProfileStackNavigatorParamList = {
   PrivacyPolicy: undefined;
   ContactUs: undefined;
   Disputes: undefined;
+  EditAccountImage: {imageID: string};
   Contracts: undefined;
   Wallet: undefined;
   Account: undefined;
@@ -124,6 +123,11 @@ export type ProductDetailNavigationProp = NativeStackNavigationProp<
   'ProductDetail'
 >;
 
+export type AllProductsNavigationProp = NativeStackNavigationProp<
+  HomeStackNavigatorParamList,
+  'AllProducts'
+>;
+
 export type OfferDetailNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
   'OfferDetail'
@@ -148,6 +152,12 @@ export type AirFreightNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
   'AirFreight'
 >;
+
+export type EditAccountImageNavigationProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditAccountImage'
+>;
+
 
 export type LandFreightNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
@@ -240,12 +250,17 @@ export type OfferDetailRouteProp = RouteProp<
   'OfferDetail'
 >;
 
+export type EditAccountImageRouteProp = RouteProp<
+  ProfileStackNavigatorParamList,
+  'EditAccountImage'
+>;
+
 export type SuccessServiceRouteProp = RouteProp<
   HomeStackNavigatorParamList,
   'SuccessService'
 >;
 
-export type FilteredProductsRouteProp = RouteProp<
+export type AllProductsRouteProp = RouteProp<
   HomeStackNavigatorParamList,
-  'FilteredProducts'
+  'AllProducts'
 >;

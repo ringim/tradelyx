@@ -288,6 +288,7 @@ export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -303,10 +304,6 @@ export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -357,6 +354,7 @@ export const listSellOffers = /* GraphQL */ `query ListSellOffers(
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -372,10 +370,6 @@ export const listSellOffers = /* GraphQL */ `query ListSellOffers(
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       Orders {
@@ -419,6 +413,7 @@ export const sellOffersByDate = /* GraphQL */ `query SellOffersByDate(
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -434,10 +429,6 @@ export const sellOffersByDate = /* GraphQL */ `query SellOffersByDate(
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       Orders {
@@ -479,6 +470,7 @@ export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -494,10 +486,6 @@ export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       Orders {
@@ -539,6 +527,7 @@ export const sellOffersByCommoditycategoryID = /* GraphQL */ `query SellOffersBy
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -554,10 +543,6 @@ export const sellOffersByCommoditycategoryID = /* GraphQL */ `query SellOffersBy
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       Orders {
@@ -1222,9 +1207,6 @@ export const getCategories = /* GraphQL */ `query GetCategories($id: ID!) {
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1303,9 +1285,6 @@ export const getCommodityCategory = /* GraphQL */ `query GetCommodityCategory($i
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1413,6 +1392,7 @@ export const getCommodityCategory = /* GraphQL */ `query GetCommodityCategory($i
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1428,10 +1408,6 @@ export const getCommodityCategory = /* GraphQL */ `query GetCommodityCategory($i
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1497,6 +1473,7 @@ export const getReview = /* GraphQL */ `query GetReview($id: ID!) {
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1516,6 +1493,7 @@ export const listReviews = /* GraphQL */ `query ListReviews(
       name
       rating
       comment
+      forUserID
       userID
       productID
       createdAt
@@ -1549,6 +1527,7 @@ export const reviewsByUserID = /* GraphQL */ `query ReviewsByUserID(
       name
       rating
       comment
+      forUserID
       userID
       productID
       createdAt
@@ -1582,6 +1561,7 @@ export const reviewsByProductID = /* GraphQL */ `query ReviewsByProductID(
       name
       rating
       comment
+      forUserID
       userID
       productID
       createdAt
@@ -1623,9 +1603,6 @@ export const getProduct = /* GraphQL */ `query GetProduct($id: ID!) {
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1637,6 +1614,7 @@ export const getProduct = /* GraphQL */ `query GetProduct($id: ID!) {
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1686,9 +1664,6 @@ export const listProducts = /* GraphQL */ `query ListProducts(
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -1751,9 +1726,6 @@ export const productByDate = /* GraphQL */ `query ProductByDate(
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -1814,9 +1786,6 @@ export const productsByCommoditycategoryID = /* GraphQL */ `query ProductsByComm
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -1877,9 +1846,6 @@ export const productsByCategoriesID = /* GraphQL */ `query ProductsByCategoriesI
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -1940,9 +1906,6 @@ export const productsByUserID = /* GraphQL */ `query ProductsByUserID(
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -1979,11 +1942,14 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -1994,6 +1960,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -2055,9 +2022,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -2075,6 +2039,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -2180,6 +2145,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -2195,12 +2161,26 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -2234,11 +2214,14 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       state
       zipCode
       lga
+      website
+      incorporateDate
+      rcNumber
       totalOrders
       level
       identification
       identificationNumber
-      identityImage
+      identityDocs
       keyProduct
       country
       inviteCode
@@ -2249,6 +2232,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       images
       businessType
       certifications
+      certsDoc
       mainMarkets
       memberShipType
       sellerLevel
@@ -2283,6 +2267,10 @@ export const listUsers = /* GraphQL */ `query ListUsers(
         nextToken
         __typename
       }
+      Wishlists {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -2292,3 +2280,125 @@ export const listUsers = /* GraphQL */ `query ListUsers(
   }
 }
 ` as GeneratedQuery<APITypes.ListUsersQueryVariables, APITypes.ListUsersQuery>;
+export const getWishlist = /* GraphQL */ `query GetWishlist($id: ID!) {
+  getWishlist(id: $id) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetWishlistQueryVariables,
+  APITypes.GetWishlistQuery
+>;
+export const listWishlists = /* GraphQL */ `query ListWishlists(
+  $filter: ModelWishlistFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listWishlists(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      SType
+      productImage
+      title
+      supplyCapacity
+      minOrderQty
+      fobPrice
+      productID
+      userID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListWishlistsQueryVariables,
+  APITypes.ListWishlistsQuery
+>;
+export const WishlistByDate = /* GraphQL */ `query WishlistByDate(
+  $SType: String!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelWishlistFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  WishlistByDate(
+    SType: $SType
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      SType
+      productImage
+      title
+      supplyCapacity
+      minOrderQty
+      fobPrice
+      productID
+      userID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.WishlistByDateQueryVariables,
+  APITypes.WishlistByDateQuery
+>;
+export const wishlistsByUserID = /* GraphQL */ `query WishlistsByUserID(
+  $userID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelWishlistFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  wishlistsByUserID(
+    userID: $userID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      createdAt
+      SType
+      productImage
+      title
+      supplyCapacity
+      minOrderQty
+      fobPrice
+      productID
+      userID
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.WishlistsByUserIDQueryVariables,
+  APITypes.WishlistsByUserIDQuery
+>;

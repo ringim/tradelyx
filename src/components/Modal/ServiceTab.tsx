@@ -14,7 +14,7 @@ const ServiceTab = ({item, selected, onPress}: any) => {
         justifyContent: 'space-between',
         borderRadius: SIZES.radius,
         borderWidth: 1,
-        padding: SIZES.radius,
+        padding: SIZES.base,
         borderColor: selected ? COLORS.primary2 : COLORS.Neutral8,
         backgroundColor: selected ? COLORS.primary10 : 'transparent',
       }}
@@ -37,9 +37,6 @@ const ServiceTab = ({item, selected, onPress}: any) => {
         style={{justifyContent: 'center', flex: 1, marginLeft: SIZES.radius}}>
         <Text
           style={{...FONTS.h5, fontWeight: '600', color: COLORS.Neutral1}}>
-          {item?.label}
-        </Text>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral5, paddingTop: 3}}>
           {item?.text}
         </Text>
       </View>

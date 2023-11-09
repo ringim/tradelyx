@@ -16,7 +16,7 @@ const OriginDestinationDetails = ({
         marginTop: SIZES.semi_margin,
         marginHorizontal: SIZES.base,
         borderRadius: SIZES.radius,
-        padding: SIZES.semi_margin,
+        padding: SIZES.radius,
         backgroundColor: COLORS.Neutral10,
       }}>
       <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>{type}</Text>
@@ -59,7 +59,7 @@ const OriginDestinationDetails = ({
       {/* Destination */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>

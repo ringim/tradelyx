@@ -39,28 +39,32 @@ const signUp = [
 
 const product_categories = [
   {
-    id: '1',
+    id: 1,
     type: 'Animal & Animal Products',
   },
   {
-    id: '2',
+    id: 2,
     type: 'Vegetable Products',
   },
   {
-    id: '3',
+    id: 3,
     type: 'Animal and Vegetable Fats and Oils',
   },
   {
-    id: '4',
+    id: 4,
     type: 'Foodstuff, Beverages and Tobacco',
   },
   {
-    id: '5',
+    id: 5,
     type: 'Mineral Products',
   },
   {
-    id: '6',
+    id: 6,
     type: 'Chemical & Allied Industries',
+  },
+  {
+    id: 7,
+    type: 'Freight of all kinds',
   },
 ];
 
@@ -396,14 +400,12 @@ const paymentMethod = [
 const sellerService = [
   {
     id: `0`,
-    label: 'Post Sell Offer',
-    text: 'Post offers to buyers',
+    text: 'Post Sell Offer',
     icon: require('../assets/images/Buy.png'),
   },
   {
     id: `1`,
-    label: 'Store and Products',
-    text: 'Add new products ',
+    text: 'Add Products to Store',
     icon: require('../assets/images/StoreProducts.png'),
   },
 ];
@@ -474,14 +476,16 @@ const contDetails = [
 ];
 
 const allCategories = [
-  {id: '1', type: 'Fresh Vegetables'},
-  {id: '2', type: 'Beans'},
-  {id: '3', type: 'Wood'},
-  {id: '4', type: 'Plants & Trees'},
-  {id: '5', type: 'Grains'},
-  {id: '6', type: 'Seeds'},
-  {id: '7', type: 'Oils'},
-  {id: '8', type: 'Buts'},
+  {id: 1, type: 'Veggies'},
+  {id: 2, type: 'Bean'},
+  {id: 3, type: 'Woods'},
+  {id: 4, type: 'Plants'},
+  {id: 5, type: 'Grains'},
+  {id: 6, type: 'Seeds'},
+  {id: 7, type: 'Oils'},
+  {id: 8, type: 'Nuts'},
+  {id: 9, type: 'Dairy'},
+  {id: 10, type: 'Fruits'},
 ];
 
 const contSize = [
@@ -663,27 +667,31 @@ const requestType = [
 const businessType = [
   {
     id: 0,
-    type: 'Cooperation',
+    type: 'Importer',
   },
   {
     id: 1,
-    type: 'Distribution',
-  },
-  {
-    id: 1,
-    type: 'Manufacturing',
-  },
-  {
-    id: 1,
-    type: 'Retail',
-  },
-  {
-    id: 1,
-    type: 'Supply Chain',
+    type: 'Exporter',
   },
   {
     id: 2,
-    type: 'Wholesale',
+    type: 'Trading',
+  },
+  {
+    id: 3,
+    type: 'Producer',
+  },
+  {
+    id: 4,
+    type: 'Association',
+  },
+  {
+    id: 5,
+    type: 'Agent',
+  },
+  {
+    id: 6,
+    type: 'Logistics',
   },
 ];
 
@@ -798,7 +806,7 @@ const RFFType = [
 const storeProducts = [
   {
     id: `0`,
-    label: 'My Store',
+    label: 'Products',
   },
   {
     id: `1`,

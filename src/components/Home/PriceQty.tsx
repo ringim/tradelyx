@@ -51,15 +51,13 @@ const PriceQty = ({price, moq, supply, paymentType}: any) => {
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Price in USD:
-          </Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Price:</Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
             numberOfLines={2}
             style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
-            ${price.toLocaleString('en-US', options)}
+            ₦{price.toLocaleString('en-US', options)}
           </Text>
         </View>
       </View>
@@ -116,7 +114,9 @@ const PriceQty = ({price, moq, supply, paymentType}: any) => {
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Sample Capacity</Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Sample Capacity
+          </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text

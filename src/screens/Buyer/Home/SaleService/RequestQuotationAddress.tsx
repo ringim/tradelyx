@@ -67,17 +67,19 @@ const RequestQuotationAddress = () => {
   };
 
   useEffect(() => {
-    animationRef.current?.play();
-
-    // Or set a specific startFrame and endFrame with:
+    let isCurrent = true;
+    isCurrent && animationRef.current?.play();
     animationRef.current?.play(30, 120);
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   useEffect(() => {
-    let unmounted = false;
-    requestUserLocation();
+    let unmounted = true;
+   unmounted && requestUserLocation();
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, []);
 

@@ -1,7 +1,6 @@
 import {View, TextInput, TouchableOpacity} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SIZES, icons} from '../../constants';
 
@@ -10,8 +9,8 @@ const SearchBox2 = ({
   showFiler,
   searchFilterFunction,
   containerStyle,
+  onPress,
 }: any) => {
-  const navigation = useNavigation<any>();
   return (
     <View style={{alignItems: 'center', marginHorizontal: SIZES.semi_margin}}>
       <View
@@ -57,14 +56,14 @@ const SearchBox2 = ({
               justifyContent: 'center',
               backgroundColor: COLORS.primary1,
               borderRadius: SIZES.semi_margin,
-              padding: SIZES.semi_margin,
+              padding: SIZES.radius,
             }}
-            onPress={() => navigation.navigate('Filter')}>
+            onPress={onPress}>
             <FastImage
               source={icons.filter}
               tintColor={COLORS.white}
               resizeMode={FastImage.resizeMode.contain}
-              style={{width: 24, height: 24, justifyContent: 'center'}}
+              style={{width: 24, height: 24}}
             />
           </TouchableOpacity>
         )}

@@ -202,7 +202,7 @@ const Order = () => {
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           data={constants.orderTabs}
-          keyExtractor={item => `HomeTabs-${item.id}`}
+          keyExtractor={item => `HomeTabs-${item?.id}`}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollX}}}],
             {

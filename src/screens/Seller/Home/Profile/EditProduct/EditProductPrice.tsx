@@ -1,10 +1,6 @@
 import {View, Text, Platform, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {Controller, useForm} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import {useMutation, useQuery} from '@apollo/client';
@@ -23,12 +19,15 @@ import {
   GetProductQuery,
   GetProductQueryVariables,
 } from '../../../../../API';
-import {EditProductPriceRouteProp, ProfileStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
+import {
+  EditProductPriceRouteProp,
+  ProfileStackNavigatorParamList,
+} from '../../../../../components/navigation/SellerNav/type/navigation';
 
 interface ProductData {
-  qty: number;
-  price: number;
-  unit: any;
+  qty: any;
+  price: any;
+  unit: string;
   paymentOption: any;
 }
 
@@ -40,17 +39,6 @@ const EditProductPrice = () => {
 
   const {control, handleSubmit, setValue} = useForm<ProductData>();
 
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.filterUnit);
-
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.priceOffer);
-
   // GET Product DETAIL
   const {loading: onLoad, data} = useQuery<
     GetProductQuery,
@@ -59,6 +47,17 @@ const EditProductPrice = () => {
     variables: {id: id},
   });
   const productDetails: any = data?.getProduct;
+
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [value1, setValue1] = useState(null);
+  const [type, setType] = useState(productDetails?.unit);
+  const [jobType, setJobType] = useState<any>(constants.filterUnit);
+
+  const [open2, setOpen2] = useState(false);
+  const [value2, setValue2] = useState(null);
+  const [type2, setType2] = useState(productDetails?.fobPrice);
+  const [jobType2, setJobType2] = useState<any>(constants.priceOffer);
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
@@ -98,12 +97,16 @@ const EditProductPrice = () => {
   };
 
   useEffect(() => {
-    if (productDetails) {
-      setValue('qty', productDetails?.quantity);
-      setValue('price', productDetails?.fobPrice);
-      setValue('paymentOption', productDetails?.paymentType)
-      setValue('unit', productDetails?.unit)
+    let isCurrent = true;
+    if (productDetails && isCurrent) {
+      setValue('qty', productDetails?.quantity.toString());
+      setValue('price', productDetails?.fobPrice.toString());
+      setValue('paymentOption', productDetails?.paymentType);
+      setValue('unit', productDetails?.unit);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [productDetails, setValue]);
 
   function requestForm() {
@@ -113,7 +116,7 @@ const EditProductPrice = () => {
           marginHorizontal: SIZES.semi_margin,
           marginBottom: 100,
         }}>
-        {/* Price Offer */}
+        {/* Payment Option */}
         <Controller
           control={control}
           name="paymentOption"
@@ -143,7 +146,7 @@ const EditProductPrice = () => {
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value2}
+                value={value2 || value}
                 items={jobType2}
                 setOpen={setOpen2}
                 setValue={setValue2}
@@ -205,8 +208,8 @@ const EditProductPrice = () => {
           }}>
           {/* Quantity */}
           <FormInput
-            name="qty"
             label="Quantity & Unit Measurement"
+            name="qty"
             control={control}
             keyboardType={'numeric'}
             placeholder="E.g. 100"
@@ -217,13 +220,13 @@ const EditProductPrice = () => {
               marginTop: SIZES.padding * 1.2,
               justifyContent: 'center',
             }}
-            labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 230,
+              width: 170,
             }}
           />
+
           {/* Quantity & Unit Measurement */}
           <Controller
             control={control}
@@ -245,7 +248,7 @@ const EditProductPrice = () => {
                   showTickIcon={true}
                   dropDownDirection="AUTO"
                   listMode="MODAL"
-                  value={value1}
+                  value={value1 || value}
                   items={jobType}
                   setOpen={setOpen}
                   setValue={setValue1}
@@ -256,7 +259,7 @@ const EditProductPrice = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 155,
+                    width: 160,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -311,7 +314,6 @@ const EditProductPrice = () => {
             required: 'price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
           appendComponent={
             <View

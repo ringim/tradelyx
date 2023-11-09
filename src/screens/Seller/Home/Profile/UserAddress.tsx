@@ -48,10 +48,10 @@ const UserAddress = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
+    let unmounted = true;
     checKNavigation();
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [address]);
 

@@ -1,29 +1,15 @@
-import {
-  View,
-  Text,
-  Platform,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Platform, ActivityIndicator} from 'react-native';
 import React, {useState, useCallback} from 'react';
 import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {v4 as uuidV4} from 'uuid';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Controller, useForm} from 'react-hook-form';
-import Tags from 'react-native-tags';
-import DocumentPicker from 'react-native-document-picker';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
-import {FlatList} from 'react-native-gesture-handler';
+import {useForm} from 'react-hook-form';
+import {Asset} from 'react-native-image-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
-import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {useAuthContext} from '../../../context/AuthContext';
@@ -33,10 +19,14 @@ import {
   ImageUpload,
   ProductImage,
   QuotationProgress1,
-  SingleImage,
   TextButton,
   UploadDocs,
   ViewProductImage,
+  Tags as RenderTags,
+  RequestTags,
+  FileSection,
+  MultipleImages,
+  OneImage,
 } from '../../../components';
 import {
   createProduct,
@@ -52,7 +42,13 @@ import {
   ListCommodityCategoriesQuery,
   ListCommodityCategoriesQueryVariables,
 } from '../../../API';
-import {onChangePhoto, uploadMedia} from '../../../utilities/service';
+import {
+  onChangePhoto,
+  openImageGallery,
+  selectFile,
+  uploadFile,
+  uploadMedia,
+} from '../../../utilities/service';
 
 interface IAddProduct {
   title: string;
@@ -120,22 +116,6 @@ const AddProducts = () => {
     }, [onLoad]),
   );
 
-  const openImageGallery = () => {
-    launchImageLibrary(
-      {mediaType: 'photo', selectionLimit: 7, quality: 0.5},
-      ({didCancel, errorCode, assets}) => {
-        if (!didCancel && !errorCode && assets && assets.length > 0) {
-          if (assets.length === 1) {
-            setSelectedPhoto(assets[0].uri);
-          } else if (assets.length > 1) {
-            assets.map(asset => asset.uri) as string[];
-            setSelectedPhotos(assets);
-          }
-        }
-      },
-    );
-  };
-
   // CREATE REQUEST QUOTATION
   const [doCreateProduct] = useMutation<
     CreateProductMutation,
@@ -150,7 +130,6 @@ const AddProducts = () => {
     try {
       const input: CreateProductInput = {
         id: uuidV4(),
-        SType: 'JOB',
         image: selectedPhoto,
         images: selectedPhotos,
         productImage: productImage,
@@ -167,10 +146,13 @@ const AddProducts = () => {
       };
 
       // upload file or multiple files
-      if (singleFile) {
+      if (productImage) {
         input.productImage = await uploadMedia(productImage.uri);
+      }
+
+      if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile2: any) => uploadFile(singleFile2?.uri)),
+          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
         );
         input.documents = fileKeys;
       }
@@ -204,13 +186,8 @@ const AddProducts = () => {
     }
   };
 
-  const onTagPress = (index: any, tagLabel: any, event: any, deleted: any) => {
-    return {
-      index,
-      tagLabel,
-      event,
-      deleted: deleted ? 'deleted' : 'not deleted',
-    };
+  const onTagPress = (deleted: any) => {
+    return deleted ? 'deleted' : 'not deleted';
   };
 
   const onChangeTags = (tags: any) => {
@@ -218,100 +195,7 @@ const AddProducts = () => {
   };
 
   const renderTag = ({tag, index, onPress}: any) => {
-    return (
-      <TouchableOpacity
-        key={`${tag}-${index}`}
-        onPress={onPress}
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.NeutralBlue6,
-          borderRadius: SIZES.semi_margin,
-          padding: SIZES.base,
-          paddingVertical: 5,
-          margin: SIZES.base,
-          marginRight: 2,
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
-            {tag}
-          </Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: 5,
-            backgroundColor: COLORS.white,
-            borderRadius: SIZES.padding,
-            marginLeft: 4,
-          }}>
-          <FastImage
-            source={icons.close}
-            resizeMode={FastImage.resizeMode.contain}
-            tintColor={COLORS.NeutralBlue5}
-            style={{width: 6, height: 6}}
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  // Delete a single image
-  const deleteItem = (itemId: any) => {
-    setSelectedPhotos((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
-  };
-
-  // Delete a single image
-  const deleteItem2 = (itemId: any) => {
-    setSingleFile((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
-  };
-
-  const selectFile = async (setSingleFile: any) => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
-        allowMultiSelection: true,
-      });
-      setSingleFile([...singleFile, ...res]);
-    } catch (err) {
-      setSingleFile(null);
-      if (DocumentPicker.isCancel(err)) {
-        return;
-      } else {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Unknown Error: ' + JSON.stringify(err),
-          autoClose: 1500,
-        });
-        throw err;
-      }
-    }
-  };
-
-  // UPLOAD FILE TO STORAGE
-  const uploadFile = async (uri: string) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response?.blob();
-
-      // file extension splitting
-      const uriParts = uri.split('.');
-      const extension = uriParts[uriParts.length - 1];
-
-      // upload file (blob) to s3
-      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
-      return s3Response.key;
-    } catch (err) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: (err as Error).message,
-        autoClose: 2000,
-      });
-    }
+    return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
   function requestForm() {
@@ -342,7 +226,7 @@ const AddProducts = () => {
               ...FONTS.body3,
               fontWeight: '500',
             }}>
-            Product Category
+            Product Type
           </Text>
           <DropDownPicker
             schema={{
@@ -405,7 +289,7 @@ const AddProducts = () => {
               ...FONTS.body3,
               fontWeight: '500',
             }}>
-            Category
+            Product Category
           </Text>
           <DropDownPicker
             schema={{
@@ -495,48 +379,13 @@ const AddProducts = () => {
         />
 
         {/* Tags or Keywords */}
-        <View style={{marginTop: SIZES.semi_margin}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-              fontWeight: '500',
-            }}>
-            Tags or Keywords
-          </Text>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 10,
-              borderWidth: 0.5,
-              borderColor: COLORS.Neutral7,
-              borderRadius: SIZES.semi_margin,
-            }}>
-            <Tags
-              containerStyle={{
-                margin: 4,
-                borderRadius: SIZES.base,
-                justifyContent: 'flex-start',
-              }}
-              initialText={''}
-              textInputProps={{
-                placeholderTextColor: COLORS.Neutral7,
-                placeholder:
-                  'Add any type of item e.g. vegetables, agriculture',
-              }}
-              inputStyle={{
-                backgroundColor: COLORS.white,
-                color: COLORS.black,
-                ...FONTS.body3,
-              }}
-              initialTags={initialTags}
-              onChangeTags={onChangeTags}
-              onTagPress={onTagPress}
-              renderTag={renderTag}
-            />
-          </View>
-        </View>
+        <RequestTags
+          initialTags={initialTags}
+          onChangeTags={onChangeTags}
+          onTagPress={onTagPress}
+          renderTag={renderTag}
+          title={'Tags or Keywords'}
+        />
 
         {/* Certification */}
         <FormInput
@@ -556,80 +405,19 @@ const AddProducts = () => {
           style={{
             flex: 1,
             justifyContent: 'center',
+            marginTop: SIZES.base,
           }}>
           {singleFile?.length >= 1 ? (
-            <View style={{marginTop: SIZES.radius}}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                  color: COLORS.Neutral1,
-                }}>
-                Product Brochure
-              </Text>
-
-              <FlatList
-                data={singleFile}
-                keyExtractor={item => item.uri}
-                renderItem={({item}) => (
-                  <View style={{marginTop: SIZES.semi_margin}}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        backgroundColor: COLORS.white,
-                      }}>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <FastImage
-                          tintColor={COLORS.secondary1}
-                          source={icons.summary}
-                          style={{width: 20, height: 20}}
-                        />
-                      </View>
-
-                      {/* file name and date of upload */}
-                      <View
-                        style={{
-                          flex: 1,
-                          marginLeft: SIZES.base,
-                          justifyContent: 'center',
-                        }}>
-                        <Text
-                          style={{...FONTS.h5, color: COLORS.primary1}}
-                          numberOfLines={2}>
-                          {item?.name}
-                        </Text>
-                      </View>
-
-                      {/* delete file */}
-                      <TouchableOpacity
-                        style={{
-                          justifyContent: 'center',
-                          marginRight: SIZES.base,
-                        }}
-                        onPress={() => deleteItem2(item?.uri)}>
-                        <FastImage
-                          tintColor={COLORS.Rose4}
-                          source={icons.remove}
-                          style={{width: 20, height: 20}}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              />
-            </View>
+            <FileSection
+              title="Product Brochures"
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
           ) : (
             <UploadDocs
-              title={'Product Brochure'}
-              selectFile={() => selectFile(setSingleFile)}
-              containerStyle={{
-                marginTop: SIZES.semi_margin,
-                marginHorizontal: 3,
-              }}
+              title="Attach Supporting Document"
+              selectFile={() => selectFile(setSingleFile, singleFile)}
+              containerStyle={{marginHorizontal: 10}}
             />
           )}
         </View>
@@ -646,70 +434,21 @@ const AddProducts = () => {
             Product Images
           </Text>
           {!selectedPhoto && selectedPhotos?.length === 0 ? (
-            <ImageUpload onPress={openImageGallery} />
+            <ImageUpload
+              onPress={() =>
+                openImageGallery(setSelectedPhoto, setSelectedPhotos)
+              }
+            />
           ) : selectedPhoto ? (
-            <SingleImage
+            <OneImage
               selectedPhoto={selectedPhoto}
               setSelectedPhoto={setSelectedPhoto}
             />
           ) : (
-            <View
-              style={{
-                marginTop: selectedPhotos ? SIZES.semi_margin : SIZES.radius,
-              }}>
-              <FlatList
-                data={selectedPhotos}
-                keyExtractor={(item: any) => `${item.uri}`}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item, index}) => {
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        marginLeft: index == 0 ? 2 : 15,
-                        marginRight:
-                          index == selectedPhotos.length - 1
-                            ? SIZES.padding
-                            : 0,
-                        marginTop: SIZES.radius,
-                      }}>
-                      <FastImage
-                        source={item}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: SIZES.base,
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                      />
-                      <TouchableOpacity
-                        onPress={() => deleteItem(item?.uri)}
-                        style={{
-                          padding: 6,
-                          top: -18,
-                          right: -10,
-                          borderRadius: SIZES.margin,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                        }}>
-                        <FastImage
-                          source={icons.remove}
-                          style={{width: 17, height: 17}}
-                          tintColor={COLORS.Rose5}
-                          resizeMode={FastImage.resizeMode.contain}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-                ListFooterComponent={
-                  <View style={{marginBottom: selectedPhotos?.length - 100}} />
-                }
-              />
-            </View>
+            <MultipleImages
+              selectedPhotos={selectedPhotos}
+              setSelectedPhotos={setSelectedPhotos}
+            />
           )}
         </View>
       </View>

@@ -1,5 +1,5 @@
 import {View, Text, Linking, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';

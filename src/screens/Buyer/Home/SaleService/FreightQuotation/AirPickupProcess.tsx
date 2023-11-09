@@ -67,23 +67,35 @@ const AirPickupProcess = () => {
   const [cName2, setCName2] = useState<any>('');
   const [cCity2, setCCity2] = useState<any>('');
 
+  const selectedProp = selectedCategories?.map(
+    (obj: {label: any}) => obj?.label,
+  );
+
   const {location} = address1;
 
   useEffect(() => {
-    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    return () => {
+      isCurrent = false;
+    };
   }, [address1]);
 
   useEffect(() => {
-    getCountryFlag(
-      address2?.location?.lat,
-      address2?.location?.lng,
-      setCode2,
-      setCName2,
-      setCCity2,
-    );
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(
+        address2?.location?.lat,
+        address2?.location?.lng,
+        setCode2,
+        setCName2,
+        setCCity2,
+      );
+    return () => {
+      isCurrent = false;
+    };
   }, [address2]);
-
-  // console.log(address2?.location);
 
   // CREATE UPDATE RFF
   const [doUpdateRFQ] = useMutation<
@@ -99,6 +111,7 @@ const AirPickupProcess = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
+        SType: 'RFF',
         city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
         placeOrigin: cName, //country
@@ -107,7 +120,7 @@ const AirPickupProcess = () => {
         placeDestinationName: address2?.description?.formatted_address, // address
         destinationCountry: cName2, //country
         placeDestinationFlag: `https://flagcdn.com/32x24/${code2}.png`,
-        relatedServices: selectedCategories,
+        relatedServices: selectedProp,
         invoiceAmount: amount,
         notes: notes,
         userID,
@@ -131,13 +144,13 @@ const AirPickupProcess = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setAddress1(route.params?.userAddress);
       setValue('address1', address1?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress,
@@ -146,13 +159,13 @@ const AirPickupProcess = () => {
   ]);
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress2) {
+    let unmounted = true;
+    if (route.params?.userAddress2 && unmounted) {
       setAddress2(route.params?.userAddress2);
       setValue('address2', address2?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress2,

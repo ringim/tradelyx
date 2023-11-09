@@ -109,6 +109,7 @@ const MiniumOrderPayment = () => {
     try {
       const input: UpdateSellOfferInput = {
         id: route?.params.sellOfferID,
+        SType: 'SELLOFFER',
         basePrice,
         fobPrice,
         paymentType: type3,

@@ -36,7 +36,7 @@ const QuoteRequestItem = ({to, fromImg, toImg, from}: any) => {
         }}>
         <Text style={{...FONTS.cap1, color: COLORS.Neutral6}}>From</Text>
         <Text
-          numberOfLines={2}
+          numberOfLines={1}
           style={{
             ...FONTS.h5,
             marginTop: 2,

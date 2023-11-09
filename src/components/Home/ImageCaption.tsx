@@ -12,12 +12,17 @@ const ImageCaption = ({
   commodityCategory,
   banner_image,
 }: any) => {
+  
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
   useEffect(() => {
-    if (banner_image) {
+    let isCurrent = true;
+    if (banner_image && isCurrent) {
       Storage.get(banner_image).then(setImageUri2);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [banner_image]);
 
   return (
@@ -31,7 +36,7 @@ const ImageCaption = ({
         marginHorizontal: SIZES.semi_margin,
         marginBottom: SIZES.margin,
         height: 450,
-        width: SIZES.width - (SIZES.padding * 1.3),
+        width: SIZES.width - SIZES.padding * 1.3,
       }}>
       <View
         style={{

@@ -5,16 +5,11 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
 import {useMutation} from '@apollo/client';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {
@@ -24,8 +19,8 @@ import {
 } from '../../API';
 import {deleteProduct} from '../../queries/ProductQueries';
 import {useNavigation} from '@react-navigation/native';
-import Options from './Options';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
+import OptionModal from '../Modal/OptionModal';
 
 interface IItem {
   item: Product | any;
@@ -37,26 +32,17 @@ interface IItem {
 const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
   const navigation = useNavigation<any>();
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['23%', '25%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handlePresentDismiss = () => bottomSheetModalRef?.current?.dismiss();
-  const handleSheetChanges = useCallback((index: number) => {
-    return index;
-  }, []);
-
   const [imageUri, setImageUri] = useState<any>(null);
+  const [visible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (product_image) {
+    let isCurrent = true;
+    if (product_image && isCurrent) {
       Storage.get(product_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [product_image]);
 
   const [doDeleteProduct, {loading}] = useMutation<
@@ -110,28 +96,9 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
 
   return (
     <Root>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={1}
-        snapPoints={snapPoints}
-        backgroundStyle={{backgroundColor: COLORS.Neutral10}}
-        onChange={handleSheetChanges}>
-        <View
-          style={{
-            padding: SIZES.padding,
-          }}>
-          <Options
-            onDelete={confirmDelete}
-            onEdit={() => {
-              navigation.navigate('EditProductItem', {product: item});
-              handlePresentDismiss();
-            }}
-          />
-        </View>
-      </BottomSheetModal>
       <TouchableOpacity
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           marginHorizontal: SIZES.semi_margin,
           borderRadius: SIZES.radius,
           backgroundColor: COLORS.white,
@@ -141,6 +108,19 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
           ...containerStyle,
         }}
         onPress={onPress}>
+        {/* option modal */}
+        {visible && (
+          <OptionModal
+            isVisible={visible}
+            onClose={() => setIsVisible(false)}
+            onEdit={() => {
+              navigation.navigate('EditProductItem', {product: item});
+              setIsVisible(false)
+            }}
+            onDelete={confirmDelete}
+          />
+        )}
+
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           {/* Product image */}
           <View style={{justifyContent: 'center'}}>
@@ -148,7 +128,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
               source={{uri: imageUri || DUMMY_IMAGE}}
               // resizeMode={FastImage.resizeMode.contain}
               style={{
-                width: 120,
+                width: 100,
                 height: 100,
                 borderRadius: SIZES.radius,
               }}
@@ -161,22 +141,21 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
               flex: 1,
               marginLeft: SIZES.radius,
               justifyContent: 'center',
-              padding: 3,
-              paddingStart: 0,
+              marginRight: 4,
             }}>
             <TouchableOpacity
               style={{
                 justifyContent: 'center',
                 alignItems: 'flex-end',
               }}
-              onPress={() => handlePresentModalPress()}>
+              onPress={() => setIsVisible(true)}>
               <FastImage
                 source={icons.option}
                 resizeMode={FastImage.resizeMode.contain}
                 tintColor={COLORS.primary1}
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 25,
+                  height: 25,
                 }}
               />
             </TouchableOpacity>
@@ -184,8 +163,8 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
             {/* Product title, */}
             <View style={{justifyContent: 'center'}}>
               <Text
-                numberOfLines={2}
-                style={{...FONTS.h5, color: COLORS.Neutral1, lineHeight: 24}}>
+                numberOfLines={1}
+                style={{...FONTS.h5, color: COLORS.Neutral1}}>
                 {item?.title}
               </Text>
             </View>
@@ -203,9 +182,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
                 </Text>
               </View>
               <View style={{flex: 1, marginLeft: 6, justifyContent: 'center'}}>
-                <Text
-                  numberOfLines={2}
-                  style={{...FONTS.cap1, color: COLORS.Neutral1}}>
+                <Text style={{...FONTS.cap1, color: COLORS.Neutral1}}>
                   {item?.minOrderQty}
                 </Text>
               </View>
@@ -224,9 +201,7 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
                 </Text>
               </View>
               <View style={{flex: 1, marginLeft: 6, justifyContent: 'center'}}>
-                <Text
-                  numberOfLines={2}
-                  style={{...FONTS.cap1, color: COLORS.Neutral1}}>
+                <Text style={{...FONTS.cap1, color: COLORS.Neutral1}}>
                   {item?.supplyCapacity}
                 </Text>
               </View>

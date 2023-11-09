@@ -8,7 +8,7 @@ const LanguageSpoken = ({containerStyle, languages}: any) => {
   return (
     <FlatList
       data={languages}
-      keyExtractor={item => `${item?.id}`}
+      keyExtractor={item => `${item}`}
       showsHorizontalScrollIndicator={false}
       scrollEnabled={false}
       renderItem={({item, index}) => (

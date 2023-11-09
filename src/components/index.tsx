@@ -1,6 +1,7 @@
 // Header
 import Header from './Header/Header';
 import TabHeader from './Header/TabHeader';
+import AltHeader from './Header/AltHeader';
 
 // BUTTON
 import IconButton from './Button/IconButton';
@@ -41,6 +42,7 @@ import VendorItem from './Home/VendorItem';
 import NotificationTab from './Home/NotificationTab';
 import ProductItem from './Home/ProductItem';
 import SearchItem from './Home/SearchItem';
+import ViewProductImageEdit from './Home/ViewProductImageEdit';
 import ImageCaption from './Home/ImageCaption';
 import StoreInfo from './Home/StoreInfo';
 import ProductDesc from './Home/ProductDesc';
@@ -56,6 +58,7 @@ import QuotationProgress1 from './Home/QuotationProgress1';
 import UploadDocs from './Home/UploadDocs';
 import AgentRequestItem from './Home/AgentRequestItem';
 import ReqQuote from './Home/ReqQuote';
+import EditFileSection from './Home/EditFileSection';
 import OrderTab from './Home/OrderTab';
 import QtySection from './Home/QtySection';
 import ExpiryDate from './Home/ExpiryDate';
@@ -74,27 +77,31 @@ import SearchBox3 from './Home/SearchBox3';
 import SourceLocationItem from './Home/SourceLocationItem';
 import SliderContainer from './Home/SliderContainer';
 import SellOfferSuccess from './Home/SellOfferSuccess';
-import Options from './Home/Options';
 import UpdateProfilePhoto from './Home/UpdateProfilePhoto';
 import ViewProductImage from './Home/ViewProductImage';
 import Packaging from './Home/Packaging';
 import ProductInfo from './Home/ProductInfo';
+import ShowFiles from './Home/ShowFiles';
 
 // OTHERS
 import FormInput from './Others/FormInput';
 import Paginator from './Others/Paginator';
 import CheckBox from './Others/CheckBox';
 import CategoryOption from './Others/CategoryOption';
+import UploadedID from './Others/UploadedID';
 import CountryDropDown from './Others/CountryDropDown';
 import AddressPickup from './Others/AddressPickup';
 import NoItem from './Others/NoItem';
 import ImageUpload from './Others/ImageUpload';
+import OneImage from './Others/OneImage';
 import MultipleImages from './Others/MultipleImages';
 import SingleImage from './Others/SingleImage';
 import RequestTags from './Others/RequestTags';
+import EditUploadedID from './Others/EditUploadedID';
 import AcceptPolicy from './Others/AcceptPolicy';
 import MultipleFiles from './Others/MultipleFiles';
 import Tags from './Others/Tags';
+import UploadID from './Others/UploadID';
 
 //ORDER
 import OrderItem from './Order/OrderItem';
@@ -104,6 +111,7 @@ import ReplyListItem from './Order/ReplyListItem';
 import SelectLanguage from './Order/SelectLanguage';
 import SellerOrderItem from './Order/SellerOrderItem';
 import SOImage from './Others/SOImage';
+import ViewMultipleImages from './Others/ViewMultipleImages';
 
 // PROFILE
 import AccountImage from './Profile/AccountImage';
@@ -124,33 +132,39 @@ import ProductSuccess from './Profile/ProductSuccess';
 
 // MODAL
 import SearchModal from './Modal/SearchModal';
-import SearchModal2 from './Modal/SearchModal2';
 import ServiceModal from './Modal/ServiceModal';
 import ServiceModal2 from './Modal/ServiceModal2';
 import ServiceTab from './Modal/ServiceTab';
 import FreightTab from './Modal/FreightTab';
 import QuoteTab from './Modal/QuoteTab';
-import QuotationAdvancedTypes from './Modal/QuotationAdvancedTypes';
+import OptionModal from './Modal/OptionModal';
+
+
 
 export {
   MultipleImages,
   Tags,
   Packaging,
+  ViewProductImageEdit,
   Handling,
+  OneImage,
   RequestTags,
   FileSection,
+  UploadedID,
   ViewProductImage,
   SOImage,
   ProductImage,
   ProductItem,
   ExpiryDate,
+  ShowFiles,
+  EditFileSection,
   SingleImage,
   AddressDetails,
-  SearchModal2,
   SellerOrderItem,
   ServiceModal2,
   QtySection,
   OrderDetailItem,
+  UploadID,
   QuotationProgress,
   ImageUpload,
   BusinessDesc,
@@ -158,6 +172,7 @@ export {
   SliderContainer,
   AcceptPolicy,
   ContainerType,
+  ViewMultipleImages,
   SellOfferSuccess,
   OrderTab,
   SelectLanguage,
@@ -168,9 +183,9 @@ export {
   ProductInfo,
   FinanceTabs,
   QuoteRequestItem2,
-  Options,
   PerformanceTab,
   ListItem,
+  EditUploadedID,
   Review,
   ReplyListItem,
   TransactDate,
@@ -189,6 +204,7 @@ export {
   SearchModal,
   AddressPickup,
   UploadDocs,
+  AltHeader,
   FreightType,
   QuotationProgress1,
   OrderTabItem,
@@ -196,7 +212,7 @@ export {
   ReqQuote,
   ProductSuccess,
   QuoteType,
-  QuotationAdvancedTypes,
+  OptionModal,
   RFQItem2,
   RFQItem3,
   SellerLocationMapHeader,

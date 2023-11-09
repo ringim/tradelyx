@@ -2,11 +2,7 @@ import {View, ActivityIndicator, RefreshControl} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../../constants';
 import {NoItem, SearchBox2, SellOfferItem} from '../../../../components';
@@ -33,7 +29,7 @@ const MySellOffers = () => {
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
     pollInterval: 500,
-    fetchPolicy: 'cache-first',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'cache-and-network',
     variables: {
       SType: 'SELLOFFER',
@@ -60,11 +56,15 @@ const MySellOffers = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
       const items =
-        data?.sellOffersByDate?.items
-          ?.filter(usrID => usrID?.userID === userID)
-          .filter((item: any) => !item?._deleted) || [];
+        (isCurrent &&
+          data?.sellOffersByDate?.items
+            .filter(st => st?.SType === 'SELLOFFER')
+            ?.filter(usrID => usrID?.userID === userID)
+            .filter((item: any) => !item?._deleted)) ||
+        [];
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -73,6 +73,9 @@ const MySellOffers = () => {
         textBody: `${(error as Error).message}`,
         autoClose: 1500,
       });
+      return () => {
+        isCurrent = false;
+      };
     }
   }, [loading]);
 
@@ -93,7 +96,7 @@ const MySellOffers = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
+          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
         {/* list of categories */}

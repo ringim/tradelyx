@@ -19,9 +19,9 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
   // Bottom Sheet
   const snapPoints = useMemo(() => {
     if (Platform.OS === 'ios') {
-      return ['47%'];
+      return ['44%'];
     } else {
-      return ['47%'];
+      return ['44%'];
     }
   }, []);
 
@@ -35,10 +35,12 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         appearsOnIndex={0}
         opacity={0.7}
         pressBehavior="collapse"
+        onPress={() => hideModal()}
       />
     ),
     [],
   );
+
 
   return (
     <BottomSheetModal
@@ -127,7 +129,7 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
               selected={item.id == selectedItem}
               onPress={() => {
                 setSelectedItem(item.id);
-                setValue(item?.label);
+                setValue(item?.text);
               }}
             />
           );

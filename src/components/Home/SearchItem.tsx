@@ -1,52 +1,76 @@
-import {View, Text, TouchableOpacity, Platform} from 'react-native';
+import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {useQuery} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
-import {DUMMY_IMAGE} from '../../utilities/Utils';
-import dayjs from 'dayjs';
+import {DEFAULT_PROFILE_IMAGE, DUMMY_IMAGE} from '../../utilities/Utils';
+import {GetUserQuery, GetUserQueryVariables, SellOffer} from '../../API';
+import {getUser} from '../../queries/UserQueries';
 
 interface IItem {
-  item: string | any;
+  item: SellOffer | any;
   onPress: any;
   onView?: any;
   containerStyle?: any;
-  logo: any;
   item_image: any;
   item_image2: any;
 }
 
 const SearchItem = ({
   containerStyle,
-  logo,
   onView,
   item_image,
   item,
   onPress,
   item_image2,
 }: IItem) => {
+
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: item?.userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
   const [imageUri2, setImageUri2] = useState<string | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri3, setImageUri3] = useState<string | null>(null);
 
   useEffect(() => {
-    if (logo) {
-      Storage.get(logo).then(setImageUri2);
+    let isCurrent = true;
+    if (userInfo?.logo && isCurrent) {
+      Storage.get(userInfo?.logo).then(setImageUri2);
     }
-  }, [logo]);
+    return () => {
+      isCurrent = false;
+    };
+  }, [userInfo?.logo]);
 
   useEffect(() => {
-    if (item_image) {
+    let isCurrent = true;
+    if (item_image && isCurrent) {
       Storage.get(item_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [item_image]);
 
   useEffect(() => {
-    if (item_image2) {
+    let isCurrent = true;
+    if (item_image2 && isCurrent) {
       Storage.get(item_image2).then(setImageUri3);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [item_image2]);
 
   const options = {
@@ -55,10 +79,13 @@ const SearchItem = ({
     maximumFractionDigits: 2,
   };
 
-  const expiryDateString = item?.deliveryDate;
-  const expiryDate = dayjs(expiryDateString);
-  const currentDate = dayjs();
-  const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="small" color={COLORS.primary6} />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -84,7 +111,7 @@ const SearchItem = ({
             justifyContent: 'center',
           }}>
           <FastImage
-            source={{uri: imageUri2 || DUMMY_IMAGE}}
+            source={{uri: imageUri2 || DEFAULT_PROFILE_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 32,
@@ -102,7 +129,7 @@ const SearchItem = ({
             justifyContent: 'center',
           }}>
           <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {item?.storeName}
+            {userInfo?.title}
           </Text>
 
           {/* Rating, */}
@@ -131,7 +158,7 @@ const SearchItem = ({
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                {item?.storeRating}
+                {userInfo?.rating}
               </Text>
             </View>
           </View>
@@ -211,7 +238,7 @@ const SearchItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {item?.storeAddress}
+              {userInfo?.city}{', '}{userInfo?.country}
             </Text>
           </View>
         </View>
@@ -301,7 +328,7 @@ const SearchItem = ({
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Delivery Duration
+              Expiry Date
             </Text>
           </View>
           <View
@@ -311,7 +338,7 @@ const SearchItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {daysUntilExpiry} days
+              {item?.offerValidity}
             </Text>
           </View>
         </View>

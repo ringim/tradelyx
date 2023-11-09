@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Linking, ActivityIndicator} from 'react-native';
+import {View, Linking} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Auth} from 'aws-amplify';
@@ -24,16 +24,14 @@ const Profile = () => {
   const aboutUs = 'https://www.google.com';
 
   // GET USER DETAILS
-  const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {id: userID},
-      fetchPolicy: 'cache-first',
-      nextFetchPolicy: 'cache-and-network',
-    },
-  );
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {id: userID},
+    pollInterval: 500,
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
+  });
   const user: any = data?.getUser;
-  
+
   // SIGN OUT
   const signOut = async () => {
     try {
@@ -49,16 +47,6 @@ const Profile = () => {
       setIsSubmitting(false);
     }
   };
-
-  if (loading) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        size={'large'}
-        color={COLORS.primary6}
-      />
-    );
-  }
 
   return (
     <Root>

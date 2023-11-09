@@ -1,18 +1,5 @@
-import {
-  View,
-  Text,
-  Alert,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Alert, TextInput, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Tags from 'react-native-tags';
-import DocumentScanner from 'react-native-document-scanner-plugin';
-import {
-  Asset,
-  launchCamera,
-  launchImageLibrary,
-} from 'react-native-image-picker';
 import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -20,11 +7,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Auth} from 'aws-amplify';
-import {
-  Root,
-  ALERT_TYPE,
-  Toast,
-} from 'react-native-alert-notification';
+import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -34,10 +17,12 @@ import {
   FormInput,
   Header,
   TextIconButton,
+  Tags as RenderTags,
+  RequestTags,
+  ShowFiles,
 } from '../../../../components';
 import {COLORS, SIZES, FONTS, icons, constants} from '../../../../constants';
 import {ProfileStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
-import UploadProfilePhotoOptionsModal from '../../../../components/Modal/UploadProfilePhotoOptionsModal';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {deleteUser, getUser, updateUser} from '../../../../queries/UserQueries';
 import {
@@ -50,7 +35,6 @@ import {
   UpdateUserInput,
 } from '../../../../API';
 import {IEditableUser} from '../../../../components/Others/CustomInput';
-import {uploadMedia} from '../../../../utilities/service';
 import {CountryCodeList} from '../../../../../types/types';
 
 const Account = () => {
@@ -58,15 +42,22 @@ const Account = () => {
   const route = useRoute<any>();
 
   const {control, handleSubmit, setValue} = useForm<any>();
-
   const {userID, authUser} = useAuthContext();
 
-  const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
-  const [selectedPhoto1, setSelectedPhoto1] = useState<any>('');
-  const [selectedPhoto2, setSelectedPhoto2] = useState<any>('');
-  const [showUploadPhotoModal, setShowUploadPhotoModal] = useState(false);
+  // GET USER DETAILS
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {id: userID},
+    pollInterval: 300,
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
+  });
+  const userAccount = data?.getUser;
+
   const [uploading, setUploading] = useState(false);
   const [displayAddress, setDisplayAddress] = useState('Add your address');
+  const [initialTags, setInitialTags] = useState(userAccount?.mainMarkets);
+  const [initialTags2, setInitialTags2] = useState(userAccount?.languages);
+  const [url, setURL] = useState('');
 
   const [open4, setOpen4] = useState(false);
   const [value4, setValue4] = useState(null);
@@ -80,24 +71,8 @@ const Account = () => {
 
   const [open1, setOpen1] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [busType, setBusType] = useState('');
+  const [busType, setBusType] = useState(userAccount?.businessType);
   const [businessType, setBusinessType] = useState<any>(constants.businessType);
-
-  // GET USER DETAILS
-  const {loading, data} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {id: userID},
-      pollInterval: 300,
-      fetchPolicy: 'cache-first',
-      nextFetchPolicy: 'cache-and-network',
-    },
-  );
-  const userAccount = data?.getUser;
-  // console.log(userAccount)
-
-  const [initialTags, setInitialTags] = useState(userAccount?.mainMarkets);
-  const [initialTags2, setInitialTags2] = useState(userAccount?.languages);
 
   // UPDATE USER DETAILS
   const [doUpdateUser, {loading: updateLoading}] = useMutation<
@@ -106,24 +81,28 @@ const Account = () => {
   >(updateUser);
 
   useEffect(() => {
-    let unmounted = false;
-    if (userAccount) {
+    let unmounted = true;
+    if (userAccount && unmounted) {
       setValue('name', userAccount.name);
       setValue('email', userAccount.email);
       setValue('phone_number', userAccount.phone_number);
       setValue('address', userAccount.address);
+      setValue('website', userAccount.website);
       setValue('title', userAccount.title);
       setValue('city', userAccount.city);
       setValue('identification', userAccount.identification);
+      setValue('IdNumber', userAccount.identificationNumber);
       setValue('zipCode', userAccount.zipCode);
       setValue('country', userAccount.country);
       setValue('certifications', userAccount.certifications);
       setValue('businessType', userAccount.businessType);
       setValue('totalStaff', userAccount.totalStaff);
       setValue('overview', userAccount?.overview);
+      setValue('incorporateDate', userAccount?.incorporateDate);
+      setValue('rcNumber', userAccount?.rcNumber);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [userAccount, setValue]);
 
@@ -136,7 +115,6 @@ const Account = () => {
       const input: UpdateUserInput = {
         id: userID,
         country,
-        identityImage: selectedPhoto1?.uri,
         identification: identity,
         address: displayAddress,
         businessType: busType,
@@ -144,13 +122,6 @@ const Account = () => {
         languages: initialTags2,
         ...formData,
       };
-      if (selectedPhoto?.uri) {
-        input.logo = await uploadMedia(selectedPhoto.uri);
-      }
-
-      if (selectedPhoto2?.uri) {
-        input.backgroundImage = await uploadMedia(selectedPhoto2.uri);
-      }
 
       // console.log('edut ', data);
       await doUpdateUser({
@@ -170,30 +141,6 @@ const Account = () => {
     } finally {
       setUploading(false);
     }
-  };
-
-  // UPLOAD VIA GALLERY
-  const onChangePhoto = () => {
-    launchImageLibrary(
-      {mediaType: 'photo', quality: 0.5, selectionLimit: 1},
-      ({didCancel, errorCode, assets}) => {
-        if (!didCancel && !errorCode && assets && assets.length > 0) {
-          setSelectedPhoto(assets[0]);
-        }
-      },
-    );
-  };
-
-  // UPLOAD VIA CAMERA
-  const onCameraPress = () => {
-    launchCamera(
-      {mediaType: 'photo', quality: 0.5},
-      ({didCancel, errorCode, assets}) => {
-        if (!didCancel && !errorCode && assets && assets.length > 0) {
-          setSelectedPhoto(assets[0]);
-        }
-      },
-    );
   };
 
   // DELETE USER
@@ -243,8 +190,8 @@ const Account = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setDisplayAddress(
         route.params?.userAddress.description?.formatted_address,
       );
@@ -252,7 +199,7 @@ const Account = () => {
     }
     getHomeAddress();
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [setValue, route.params?.userAddress]);
 
@@ -262,13 +209,8 @@ const Account = () => {
     });
   };
 
-  const onTagPress = (index: any, tagLabel: any, event: any, deleted: any) => {
-    return {
-      index,
-      tagLabel,
-      event,
-      deleted: deleted ? 'deleted' : 'not deleted',
-    };
+  const onTagPress = (deleted: any) => {
+    return deleted ? 'deleted' : 'not deleted';
   };
 
   const onChangeTags = (tags: any) => {
@@ -276,51 +218,11 @@ const Account = () => {
   };
 
   const renderTag = ({tag, index, onPress}: any) => {
-    return (
-      <TouchableOpacity
-        key={`${tag}-${index}`}
-        onPress={onPress}
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.NeutralBlue6,
-          borderRadius: SIZES.semi_margin,
-          padding: SIZES.base,
-          paddingVertical: 5,
-          margin: SIZES.base,
-          marginRight: 2,
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
-            {tag}
-          </Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: 5,
-            backgroundColor: COLORS.white,
-            borderRadius: SIZES.padding,
-            marginLeft: 4,
-          }}>
-          <FastImage
-            source={icons.close}
-            resizeMode={FastImage.resizeMode.contain}
-            tintColor={COLORS.NeutralBlue5}
-            style={{width: 6, height: 6}}
-          />
-        </View>
-      </TouchableOpacity>
-    );
+    return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
-  const onTagPress2 = (index: any, tagLabel: any, event: any, deleted: any) => {
-    return {
-      index,
-      tagLabel,
-      event,
-      deleted: deleted ? 'deleted' : 'not deleted',
-    };
+  const onTagPress2 = (deleted: any) => {
+    return deleted ? 'deleted' : 'not deleted';
   };
 
   const onChangeTags2 = (tags: any) => {
@@ -328,73 +230,26 @@ const Account = () => {
   };
 
   const renderTag2 = ({tag, index, onPress}: any) => {
-    return (
-      <TouchableOpacity
-        key={`${tag}-${index}`}
-        onPress={onPress}
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.NeutralBlue6,
-          borderRadius: SIZES.semi_margin,
-          padding: SIZES.base,
-          paddingVertical: 5,
-          margin: SIZES.base,
-          marginRight: 2,
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
-            {tag}
-          </Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: 5,
-            backgroundColor: COLORS.white,
-            borderRadius: SIZES.padding,
-            marginLeft: 4,
-          }}>
-          <FastImage
-            source={icons.close}
-            resizeMode={FastImage.resizeMode.contain}
-            tintColor={COLORS.NeutralBlue5}
-            style={{width: 6, height: 6}}
-          />
-        </View>
-      </TouchableOpacity>
-    );
+    return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
-  // SCAN RECEIPT FUNCTION
-  const onScanPress = async () => {
-    const {scannedImages}: any | [] = await DocumentScanner.scanDocument({
-      maxNumDocuments: 1,
-    });
-    if (scannedImages.length > 0) {
-      setSelectedPhoto2(scannedImages[0]);
+  const handleURLChange = (text: any) => {
+    const cleanedText = text.replace(/\s/g, '');
+
+    // Check if the input starts with "http://" or "https://"
+    if (cleanedText.startsWith('http://')) {
+      setURL(cleanedText);
+    } else if (cleanedText.startsWith('https://')) {
+      setURL(cleanedText);
     } else {
-      Toast.show({
-        type: ALERT_TYPE.WARNING,
-        textBody: 'Unable to scan document',
-        autoClose: 1500,
-      });
+      // If the input doesn't start with "http://" or "https://", add "https://"
+      setURL('https://' + cleanedText);
     }
   };
 
-  if (loading || deleteLoading || updateLoading) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        size={'large'}
-        color={COLORS.primary6}
-      />
-    );
-  }
-
   function renderForm() {
     return (
-      <View style={{marginHorizontal: SIZES.semi_margin, marginTop: 210}}>
+      <View style={{marginHorizontal: SIZES.semi_margin, marginTop: 180}}>
         {/* Full Name */}
         <FormInput
           control={control}
@@ -434,7 +289,7 @@ const Account = () => {
           containerStyle={{marginTop: SIZES.radius}}
         />
 
-        {/* Business name */}
+        {/* Company name */}
         <FormInput
           control={control}
           label="Business Name"
@@ -451,7 +306,40 @@ const Account = () => {
           containerStyle={{marginTop: SIZES.radius}}
         />
 
-        {/* business overview */}
+        {/* Company website */}
+        <View style={{marginTop: SIZES.radius}}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Company Website
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={handleURLChange}
+            value={url}
+            placeholder="https:/johndoe.org"
+            autoCapitalize="none"
+            keyboardType={'url'}
+            placeholderTextColor={COLORS.gray}
+            style={{
+              // flex: 1,
+              ...FONTS.body3,
+              color: COLORS.Blue5,
+              fontWeight: '500',
+              marginTop: SIZES.base,
+              height: 50,
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
+
+        {/* Company overview */}
         <FormInput
           label="Business Overview"
           name="overview"
@@ -469,20 +357,11 @@ const Account = () => {
           }}
         />
 
-        {/* Business Address */}
-        <View style={{marginTop: SIZES.radius}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-            }}>
-            Address
-          </Text>
-          <AddressDetails
-            address={userAccount?.address || displayAddress}
-            onPress={() => navigation.navigate('AccountAddress')}
-          />
-        </View>
+        {/* Company Address */}
+        <AddressDetails
+          address={userAccount?.address || displayAddress}
+          onPress={() => navigation.navigate('AccountAddress')}
+        />
 
         {/* Country */}
         <Controller
@@ -602,20 +481,27 @@ const Account = () => {
           containerStyle={{marginTop: SIZES.radius}}
         />
 
-        {/* Certification */}
+        {/* Date of Incorporation */}
         <FormInput
           control={control}
-          label="Certifications"
-          placeholder="E.g. NAFDAC, ISO900"
-          name="certifications"
+          label="Date of Incorporation"
+          placeholder="Date of Incorporation"
+          name="incorporateDate"
           rules={{
-            required: 'Business name is required',
-            minLength: {
-              value: 3,
-              message: 'names should be more than 5 characters',
-            },
+            required: 'Date of Incorporation is required',
           }}
-          keyboardType={'default'}
+          containerStyle={{marginTop: SIZES.radius}}
+        />
+
+        {/* RC Number */}
+        <FormInput
+          control={control}
+          label="RC Number"
+          placeholder="Enter your RC Number"
+          name="rcNumber"
+          rules={{
+            required: 'RC Number name is required',
+          }}
           containerStyle={{marginTop: SIZES.radius}}
         />
 
@@ -716,88 +602,41 @@ const Account = () => {
         />
 
         {/* Main Markets */}
-        <View style={{marginTop: SIZES.padding}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-            }}>
-            Main Markets
-          </Text>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 10,
-              borderWidth: 0.5,
-              borderColor: COLORS.Neutral7,
-              borderRadius: SIZES.radius,
-            }}>
-            <Tags
-              containerStyle={{
-                margin: 4,
-                borderRadius: SIZES.base,
-                justifyContent: 'flex-start',
-              }}
-              initialText={''}
-              textInputProps={{
-                placeholderTextColor: COLORS.Neutral7,
-                placeholder: 'Add any type of item e.g. Africa, Asia',
-              }}
-              inputStyle={{
-                backgroundColor: COLORS.white,
-                color: COLORS.black,
-                ...FONTS.body3,
-              }}
-              initialTags={initialTags}
-              onChangeTags={onChangeTags}
-              onTagPress={onTagPress}
-              renderTag={renderTag}
-            />
-          </View>
-        </View>
+        <RequestTags
+          initialTags={initialTags}
+          onChangeTags={onChangeTags}
+          onTagPress={onTagPress}
+          renderTag={renderTag}
+          title={'Main Markets'}
+          contentStyle={{marginTop: SIZES.padding}}
+        />
 
         {/* Languages */}
-        <View style={{marginTop: SIZES.radius}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-            }}>
-            Languages Spoken
-          </Text>
+        <RequestTags
+          initialTags={initialTags2}
+          onChangeTags={onChangeTags2}
+          onTagPress={onTagPress2}
+          renderTag={renderTag2}
+          title={'Languages Spoken'}
+          contentStyle={{marginTop: SIZES.radius}}
+        />
 
-          <View
-            style={{
-              flex: 1,
-              marginTop: 10,
-              borderWidth: 0.5,
-              borderColor: COLORS.Neutral7,
-              borderRadius: SIZES.radius,
-            }}>
-            <Tags
-              containerStyle={{
-                margin: 4,
-                borderRadius: SIZES.base,
-                justifyContent: 'flex-start',
-              }}
-              initialText={''}
-              textInputProps={{
-                placeholderTextColor: COLORS.Neutral7,
-                placeholder: 'Add any type of item e.g. English, French',
-              }}
-              inputStyle={{
-                backgroundColor: COLORS.white,
-                color: COLORS.black,
-                ...FONTS.body3,
-              }}
-              initialTags={initialTags2}
-              onChangeTags={onChangeTags2}
-              onTagPress={onTagPress2}
-              renderTag={renderTag2}
-            />
-          </View>
-        </View>
+        {/* Certification */}
+        <FormInput
+          control={control}
+          label="Certifications"
+          placeholder="E.g. NAFDAC, ISO900"
+          name="certifications"
+          rules={{
+            required: 'Business name is required',
+            minLength: {
+              value: 3,
+              message: 'names should be more than 5 characters',
+            },
+          }}
+          keyboardType={'default'}
+          containerStyle={{marginTop: SIZES.radius}}
+        />
 
         {/* IDentification */}
         <Controller
@@ -815,7 +654,7 @@ const Account = () => {
                   ...FONTS.body3,
                   fontWeight: '500',
                 }}>
-                Identification
+                Identification Document
               </Text>
               <DropDownPicker
                 schema={{
@@ -882,65 +721,72 @@ const Account = () => {
           )}
         />
 
-        {/* Upload Identity Doc */}
-        <View style={{marginTop: SIZES.padding}}>
-          {!userAccount?.identityImage || !selectedPhoto1 ? (
-            <>
-              <Text
-                style={{
-                  color: COLORS.Neutral1,
-                  fontWeight: '500',
-                  ...FONTS.body2,
-                }}>
-                Upload Identity Document
-              </Text>
-              <Text style={{...FONTS.body3, color: COLORS.gray, paddingTop: 4}}>
-                Supported formats: .jpeg, .png, and .pdf files Maximum size of 5
-                Mb
-              </Text>
+        {/* ID Number */}
+        <FormInput
+          control={control}
+          label="Identification Number"
+          placeholder="Enter your ID Number"
+          rules={{
+            required: 'ID Number is required',
+          }}
+          name="IdNumber"
+          containerStyle={{marginTop: SIZES.padding}}
+        />
 
-              <TouchableOpacity
-                style={{
-                  marginTop: SIZES.radius,
-                  justifyContent: 'center',
-                  width: 50,
-                  height: 50,
-                  borderRadius: SIZES.base,
-                  backgroundColor: COLORS.primary2,
-                  alignItems: 'center',
-                }}
-                onPress={onScanPress}>
-                <FastImage
-                  source={icons.upload}
-                  style={{width: 25, height: 25}}
-                  resizeMode={FastImage.resizeMode.contain}
-                  tintColor={COLORS.white}
-                />
-              </TouchableOpacity>
-            </>
-          ) : (
-            <View
-              style={{
-                alignItems: 'center',
-                marginHorizontal: SIZES.radius,
-                marginBottom: 50,
-              }}>
-              <FastImage
-                source={{
-                  uri: selectedPhoto2?.uri || userAccount?.identityImage,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-                style={{
-                  height: 300,
-                  width: 300,
-                  overflow: 'hidden',
-                  borderRadius: SIZES.radius,
-                }}
-              />
-            </View>
+        {/* upload docs */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop: SIZES.base,
+          }}>
+          {userAccount?.identityDocs && (
+            <ShowFiles
+              title="Identity Documents"
+              file={userAccount?.identityDocs}
+              contentStyle={{marginTop: SIZES.semi_margin}}
+              buttonStyle={{marginTop: SIZES.margin}}
+              onPress={() =>
+                navigation.navigate('EditIdentityDoc', {
+                  idDoc: userAccount?.id,
+                })
+              }
+            />
+          )}
+        </View>
+
+        {/* upload docs 2 */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop: SIZES.base,
+          }}>
+          {userAccount?.certsDoc && (
+            <ShowFiles
+              title="Company Documents"
+              file={userAccount?.certsDoc}
+              contentStyle={{marginTop: SIZES.semi_margin}}
+              buttonStyle={{marginTop: SIZES.margin}}
+              onPress={() =>
+                navigation.navigate('EditCompanyDocs', {
+                  idDoc: userAccount?.id,
+                })
+              }
+            />
           )}
         </View>
       </View>
+    );
+  }
+
+  if (deleteLoading || updateLoading) {
+    return (
+      <ActivityIndicator
+        style={{flex: 1, justifyContent: 'center'}}
+        size={'large'}
+        color={COLORS.primary6}
+      />
     );
   }
 
@@ -948,16 +794,6 @@ const Account = () => {
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header title={'My Profile'} tintColor={COLORS.Neutral1} />
-
-        {/* upload profile image */}
-        {showUploadPhotoModal && (
-          <UploadProfilePhotoOptionsModal
-            library={onChangePhoto}
-            camera={onCameraPress}
-            isVisible={showUploadPhotoModal}
-            onClose={() => setShowUploadPhotoModal(false)}
-          />
-        )}
 
         <Spinner
           visible={uploading}
@@ -975,10 +811,18 @@ const Account = () => {
           <AccountImage
             showBanner={true}
             name={userAccount?.name}
-            onEdit={() => setShowUploadPhotoModal(true)}
-            profile_image2={selectedPhoto2?.uri || userAccount?.backgroundImage}
-            profile_image={selectedPhoto?.uri || userAccount?.logo}
-            onPress2={() => setShowUploadPhotoModal(true)}
+            bg_image={userAccount?.backgroundImage}
+            profile_image={userAccount?.logo}
+            onPress2={() =>
+              navigation.navigate('EditAccountBGImage', {
+                imageID: userAccount?.id,
+              })
+            }
+            onEdit={() =>
+              navigation.navigate('EditAccountImage', {
+                imageID: userAccount?.id,
+              })
+            }
           />
 
           {renderForm()}

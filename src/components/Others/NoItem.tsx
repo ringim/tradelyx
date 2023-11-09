@@ -8,13 +8,13 @@ const NoItem = ({containerStyle, textCont, contentStyle}: any) => {
   const animation = useRef(null);
 
   return (
-    <View style={{flex: 1, margin: SIZES.margin, alignItems: 'center', ...contentStyle}}>
+    <View style={{margin: SIZES.margin, alignItems: 'center', ...contentStyle}}>
       <LottieView
         autoPlay
         ref={animation}
         style={{
-          width: 400,
-          height: 400,
+          width: 300,
+          height: 300,
           alignSelf: 'center',
           ...containerStyle,
         }}

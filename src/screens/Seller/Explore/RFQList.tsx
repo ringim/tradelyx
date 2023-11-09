@@ -4,7 +4,6 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, constants} from '../../../constants';
-import {PromoSection} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import RFQStandard from './RFQStandard';
 import RFQDomestic from './RFQDomestic';
@@ -184,7 +183,7 @@ const RFFList = () => {
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           data={constants.RFFType}
-          keyExtractor={item => `HomeTabs-${item.id}`}
+          keyExtractor={item => `HomeTabs-${item}`}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollX}}}],
             {
@@ -220,18 +219,14 @@ const RFFList = () => {
         data={[]}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <View style={{marginTop: SIZES.radius}}>
-            {/* Promo */}
-            <PromoSection />
-
+          <View style={{marginTop: SIZES.margin}}>
             <View
               style={{
-                marginTop: SIZES.margin,
                 marginHorizontal: SIZES.margin,
                 marginBottom: 5,
               }}>
               <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
-                Latest Freight Quotes Request
+                Latest RFQs
               </Text>
             </View>
           </View>

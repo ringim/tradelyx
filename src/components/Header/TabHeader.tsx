@@ -13,12 +13,12 @@ const TabHeader = ({userImage}: any) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    let unmounted = false;
-    if (userImage) {
+    let unmounted = true;
+    if (userImage && unmounted) {
       Storage.get(userImage).then(setImageUri);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [userImage]);
 

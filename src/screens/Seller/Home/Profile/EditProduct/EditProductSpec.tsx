@@ -1,28 +1,20 @@
-import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useMutation, useQuery} from '@apollo/client';
 import {Controller, useForm} from 'react-hook-form';
-import {Storage} from 'aws-amplify';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {v4 as uuidV4} from 'uuid';
 import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
-import DocumentPicker from 'react-native-document-picker';
-import {FlatList} from 'react-native-gesture-handler';
-import {
-  Root,
-  ALERT_TYPE,
-  Toast,
-} from 'react-native-alert-notification';
+import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES, FONTS, icons, constants} from '../../../../../constants';
 import {
   FormInput,
   Header,
+  ShowFiles,
   TextButton,
-  UploadDocs,
 } from '../../../../../components';
 import {
   EditProductPriceRouteProp,
@@ -37,13 +29,11 @@ import {
   UpdateProductInput,
 } from '../../../../../API';
 
-
 interface ProductData {
   supply: string;
   moq: string;
   packageType: string;
   spec: string;
-  file: any;
   unit: string;
 }
 
@@ -55,13 +45,6 @@ const EditProductSpec = () => {
 
   const {control, handleSubmit, setValue} = useForm<ProductData>();
 
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.filterUnit);
-  const [singleFile, setSingleFile] = useState<any>([]);
-
   // GET Product DETAIL
   const {loading: onLoad, data} = useQuery<
     GetProductQuery,
@@ -71,19 +54,19 @@ const EditProductSpec = () => {
   });
   const productDetails: any = data?.getProduct;
 
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [value1, setValue1] = useState(null);
+  const [type, setType] = useState(productDetails?.unit);
+  const [jobType, setJobType] = useState<any>(constants.filterUnit);
+
   // UPDATE USER DETAILS
   const [doUpdateProduct] = useMutation<
     UpdateProductMutation,
     UpdateProductMutationVariables
   >(updateProduct);
 
-  const onSubmit = async ({
-    moq,
-    supply,
-    file,
-    spec,
-    packageType,
-  }: ProductData) => {
+  const onSubmit = async ({moq, supply, spec, packageType}: ProductData) => {
     if (loading) {
       return;
     }
@@ -94,25 +77,16 @@ const EditProductSpec = () => {
         minOrderQty: moq,
         supplyCapacity: supply,
         productSpec: spec,
-        productDocs: file,
         packageType,
         unit: type,
       };
-
-      // upload file or multiple files
-      if (singleFile) {
-        const fileKeys = await Promise.all(
-          singleFile.map((singleFile2: any) => uploadFile(singleFile2?.uri)),
-        );
-        input.productDocs = fileKeys;
-      }
 
       await doUpdateProduct({
         variables: {
           input,
         },
       });
-      console.log('product updated 1', input);
+      // console.log('product updated 2', input);
       navigation.navigate('EditProductPrice', {product: productDetails});
     } catch (error) {
       Toast.show({
@@ -127,76 +101,18 @@ const EditProductSpec = () => {
   };
 
   useEffect(() => {
-    if (productDetails) {
+    let isCurrent = true;
+    if (productDetails && isCurrent) {
       setValue('supply', productDetails?.supplyCapacity);
       setValue('unit', productDetails?.unit);
       setValue('spec', productDetails?.productSpec);
       setValue('moq', productDetails?.minOrderQty);
       setValue('packageType', productDetails?.packageType);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [productDetails, setValue]);
-
-  // SELECT FILE
-  const selectFile = async (setSingleFile: any) => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
-        allowMultiSelection: true,
-      });
-      setSingleFile([...singleFile, ...res]);
-    } catch (err) {
-      setSingleFile(null);
-      if (DocumentPicker.isCancel(err)) {
-        return;
-      } else {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Unknown Error: ' + JSON.stringify(err),
-          autoClose: 1500,
-        });
-        throw err;
-      }
-    }
-  };
-
-  // UPLOAD FILE TO STORAGE
-  const uploadFile = async (uri: string) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response?.blob();
-
-      // file extension splitting
-      const uriParts = uri.split('.');
-      const extension = uriParts[uriParts.length - 1];
-
-      // upload file (blob) to s3
-      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
-      return s3Response.key;
-    } catch (err) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: (err as Error).message,
-        autoClose: 2000,
-      });
-    }
-  };
-
-  // Delete a single image
-  const deleteItem2 = (itemId: any) => {
-    setSingleFile((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
-  };
-
-  if (onLoad) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        size={'large'}
-        color={COLORS.primary4}
-      />
-    );
-  }
 
   function renderFormSection() {
     return (
@@ -279,7 +195,7 @@ const EditProductSpec = () => {
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value1}
+                value={value1 || value}
                 items={jobType}
                 setOpen={setOpen}
                 setValue={setValue1}
@@ -346,90 +262,36 @@ const EditProductSpec = () => {
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
 
-        {/* upload docs */}
         <View
           style={{
             flex: 1,
             justifyContent: 'center',
+            marginBottom: 40,
           }}>
-          {singleFile?.length >= 1 ? (
-            <View style={{marginTop: SIZES.radius, marginBottom: 100}}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                  color: COLORS.Neutral1,
-                }}>
-                Product Specification
-              </Text>
-
-              <FlatList
-                data={singleFile}
-                keyExtractor={item => item.uri}
-                renderItem={({item}) => (
-                  <View style={{marginTop: SIZES.semi_margin}}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        backgroundColor: COLORS.white,
-                      }}>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <FastImage
-                          tintColor={COLORS.secondary1}
-                          source={icons.summary}
-                          style={{width: 20, height: 20}}
-                        />
-                      </View>
-
-                      {/* file name and date of upload */}
-                      <View
-                        style={{
-                          flex: 1,
-                          marginLeft: SIZES.base,
-                          justifyContent: 'center',
-                        }}>
-                        <Text
-                          style={{...FONTS.h5, color: COLORS.primary1}}
-                          numberOfLines={2}>
-                          {item?.name}
-                        </Text>
-                      </View>
-
-                      {/* delete file */}
-                      <TouchableOpacity
-                        style={{
-                          justifyContent: 'center',
-                          marginRight: SIZES.base,
-                        }}
-                        onPress={() => deleteItem2(item?.uri)}>
-                        <FastImage
-                          tintColor={COLORS.Rose4}
-                          source={icons.remove}
-                          style={{width: 20, height: 20}}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              />
-            </View>
-          ) : (
-            <UploadDocs
-              title={'Product Brochure'}
-              selectFile={() => selectFile(setSingleFile)}
-              containerStyle={{
-                marginTop: SIZES.semi_margin,
-                marginHorizontal: 3,
-                marginBottom: 100,
-              }}
+          {productDetails?.productDocs && (
+            <ShowFiles
+              title="Product Brochures"
+              file={productDetails?.productDocs}
+              contentStyle={{marginTop: SIZES.semi_margin}}
+              onPress={() =>
+                navigation.navigate('EditProductDocs2', {
+                  productDoc: productDetails?.id,
+                })
+              }
             />
           )}
         </View>
       </View>
+    );
+  }
+
+  if (onLoad) {
+    return (
+      <ActivityIndicator
+        style={{flex: 1, justifyContent: 'center'}}
+        size={'large'}
+        color={COLORS.primary4}
+      />
     );
   }
 
@@ -455,7 +317,7 @@ const EditProductSpec = () => {
           enableOnAndroid={true}>
           <View
             style={{
-              marginHorizontal: SIZES.margin,
+              marginHorizontal: SIZES.semi_margin,
             }}>
             <Text style={{...FONTS.h4, color: COLORS.black}}>
               Update all fields
@@ -468,6 +330,7 @@ const EditProductSpec = () => {
             buttonContainerStyle={{
               alignSelf: 'center',
               marginTop: SIZES.padding,
+              marginBottom: 100,
             }}
             onPress={handleSubmit(onSubmit)}
           />

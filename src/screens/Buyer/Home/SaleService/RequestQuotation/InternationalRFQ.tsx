@@ -48,8 +48,8 @@ const InternationalRFQ = () => {
     ListCommodityCategoriesQueryVariables
   >(listCommodityCategories, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+     nextFetchPolicy: 'network-only',
   });
 
   const [loading, setLoading] = useState(false);
@@ -83,7 +83,6 @@ const InternationalRFQ = () => {
     try {
       const input: CreateRFQInput = {
         id: uuidV4(),
-        SType: 'RFQ',
         rfqNo: referralCode(),
         title,
         requestCategory: type?.title,

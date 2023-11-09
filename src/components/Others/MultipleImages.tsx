@@ -5,14 +5,7 @@ import {FlatList} from 'react-native-gesture-handler';
 
 import {COLORS, SIZES, icons} from '../../constants';
 
-const MultipleImages = ({selectedPhotos, setSelectedPhotos}: any) => {
-  // Delete a single image
-  const deleteItem = (itemId: any) => {
-    setSelectedPhotos((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
-  };
-
+const MultipleImages = ({selectedPhotos, onPress}: any) => {
   return (
     <View
       style={{
@@ -45,7 +38,7 @@ const MultipleImages = ({selectedPhotos, setSelectedPhotos}: any) => {
                 resizeMode={FastImage.resizeMode.cover}
               />
               <TouchableOpacity
-                onPress={() => deleteItem(item?.uri)}
+                onPress={() => onPress(item?.uri)}
                 style={{
                   padding: 6,
                   top: -18,

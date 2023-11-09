@@ -1,27 +1,18 @@
 import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {SwipeListView} from 'react-native-swipe-list-view';
+import { FlatList } from 'react-native-gesture-handler';
 
-import {Header, IconButton, NoItem, PopularItem} from '../../../../components';
-import {COLORS, SIZES, icons} from '../../../../constants';
-import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
+import {Header, NoItem, PopularItem} from '../../../../components';
+import {COLORS} from '../../../../constants';
 import {useProductContext} from '../../../../context/ProductContext';
 
 const Favorites = () => {
-  const navigation = useNavigation<HomeStackNavigatorParamList>();
-
-  const {savedProductItem, removeProductItem}: any = useProductContext();
+  const {savedProductItem, removeItem}: any = useProductContext();
 
   // console.log(savedProductItem);
 
   const [onLoading, setLoading] = useState(false);
   const [items, setItems] = useState<any>([]);
-
-  const deleteItem = (itemId: any) => {
-    removeProductItem(itemId);
-    // console.log(itemId);
-  };
 
   const fetchSavedProducts = async () => {
     if (onLoading) {
@@ -33,9 +24,13 @@ const Favorites = () => {
   };
 
   useEffect(() => {
-    if (savedProductItem.length > 0) {
+    let isCurrent = true;
+    if (savedProductItem.length > 0 && isCurrent) {
       fetchSavedProducts();
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [savedProductItem]);
 
   return (
@@ -44,45 +39,21 @@ const Favorites = () => {
 
       {items?.length === 0 && <NoItem />}
 
-      <SwipeListView
+      <FlatList
         data={items}
-        keyExtractor={item => `${item}`}
         showsVerticalScrollIndicator={false}
-        disableRightSwipe={true}
-        rightOpenValue={-75}
+        keyExtractor={item => `${item?.id}`}
         renderItem={({item, index}: any) => {
           return (
             <PopularItem
               key={index}
               item={item}
-              store_image={item?.image}
-              onPress={() =>
-                navigation.navigate('ProductDetail', {productItem: item})
-              }
+              store_image={item?.productImage}
+              onRemove={() => removeItem(item?.id)}
+              showDelete={true}
             />
           );
         }}
-        renderHiddenItem={(data: any, rowMap) => (
-          <IconButton
-            containerStyle={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: SIZES.radius,
-              paddingHorizontal: SIZES.radius,
-              borderRadius: SIZES.radius,
-            }}
-            icon={icons.remove}
-            iconStyle={{
-              marginRight: 12,
-              width: 24,
-              height: 24,
-            }}
-            tintColor={COLORS.Rose5}
-            onPress={() => deleteItem(data.item)}
-          />
-        )}
       />
     </View>
   );

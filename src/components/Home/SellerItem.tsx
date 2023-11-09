@@ -17,9 +17,13 @@ const SellerItem = ({containerStyle, profile_image, item, onPress}: IItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    if (profile_image) {
+    let isCurrent = true;
+    if (profile_image && isCurrent) {
       Storage.get(profile_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [profile_image]);
 
   return (

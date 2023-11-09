@@ -1,7 +1,8 @@
 import {ActivityIndicator, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
+import Share from 'react-native-share';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -9,7 +10,9 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import {useQuery} from '@apollo/client';
+import {connect} from 'react-redux';
+import {useMutation, useQuery} from '@apollo/client';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {
@@ -25,8 +28,6 @@ import {
   TextIconButton,
 } from '../../../components';
 import {toggleCameraModal} from '../../../redux/modal/modalActions';
-import {useProductContext} from '../../../context/ProductContext';
-import {connect} from 'react-redux';
 import {
   HomeStackNavigatorParamList,
   ProductDetailRouteProp,
@@ -38,30 +39,30 @@ import {
   ListReviewsQueryVariables,
 } from '../../../API';
 import {getUser, listReviews} from '../../../queries/UserQueries';
+import {shareOptions} from '../../../utilities/service';
+import {useProductContext} from '../../../context/ProductContext';
 
 const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const route = useRoute<ProductDetailRouteProp>();
+  const route: any = useRoute<ProductDetailRouteProp>();
+
+  const {storeProductId, savedProductItem, removeProductItem}: any =
+    useProductContext();
 
   const {
     category,
     storeName,
-    userID,
     image,
     images,
     title,
-    storeAddress,
     minOrderQty,
     supplyCapacity,
     commodityCategory,
     paymentType,
     fobPrice,
     description,
-    id
+    id,
   }: any = route?.params.productItem;
-
-  const {storeProductId, savedProductItem, removeProductItem}: any =
-    useProductContext();
 
   const bottomSheetModalRef = useRef<any>(null);
 
@@ -94,7 +95,9 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   });
 
   const checkSavedItem = () =>
-    savedProductItem.some((itemIdValue: any) => itemIdValue === productItem);
+    savedProductItem.some((itemIdValue: any) => itemIdValue?.title === title);
+
+  // console.log(savedProductItem);
 
   const onSelect = () => {
     if (checkSavedItem()) {
@@ -108,17 +111,16 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     getUser,
     {
       variables: {
-        id: userID,
+        id: route?.params.productItem?.userID,
       },
     },
   );
   const userInfo: any = data?.getUser;
 
   // LIST REVIEWS
-  const {data: newData, loading: newLoad} = useQuery<
-    ListReviewsQuery,
-    ListReviewsQueryVariables
-  >(listReviews);
+  const {data: newData} = useQuery<ListReviewsQuery, ListReviewsQueryVariables>(
+    listReviews,
+  );
   const allReview: any =
     newData?.listReviews?.items.filter((item: any) => !item?._deleted) || [];
 
@@ -195,7 +197,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
               showsHorizontalScrollIndicator={false}
               snapToAlignment="start"
               decelerationRate="fast"
-              snapToInterval={SIZES.width - SIZES.padding * 2}
+              snapToInterval={SIZES.width}
               scrollEventThrottle={16}
               onScroll={onScroll}
               data={images}
@@ -222,7 +224,16 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     );
   }
 
-  if (loading || newLoad) {
+  const shareDetails = async () => {
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      // console.log('shareOptions', shareResponse);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />
@@ -231,102 +242,107 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
-      <Header
-        title={'Product Details'}
-        other={true}
-        onOther={onSelect}
-        tintColor={COLORS.Neutral1}
-        icon={checkSavedItem() ? icons.bookmark : icons.save}
-        contentStyle={{marginBottom: 0}}
-      />
+    <Root>
+      <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
+        <Header
+          title={'Product Details'}
+          other={true}
+          tintColor={COLORS.Neutral1}
+          icon={checkSavedItem() ? icons.bookmark : icons.save}
+          contentStyle={{marginBottom: 0}}
+          onOther={onSelect}
+          onOther2={shareDetails}
+        />
 
-      <FlatList
-        data={allReview}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <>
-            {/* Product Image & Details */}
-            {renderDetail1()}
+        <FlatList
+          data={allReview}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <>
+              {/* Product Image & Details */}
+              {renderDetail1()}
 
-            {/* Store Detail */}
-            <StoreInfo
-              address={storeAddress}
-              image={userInfo?.logo}
-              supplier={storeName}
-              showDetail={true}
-              onPress={() =>
-                navigation.navigate('CompanyDetail', {sellerItem: productItem})
-              }
-            />
+              {/* Store Detail */}
+              <StoreInfo
+                address={`${userInfo?.city}${', '} ${userInfo?.country}`}
+                image={userInfo?.logo}
+                supplier={userInfo?.title}
+                showDetail={true}
+                onPress={() =>
+                  navigation.navigate('CompanyDetail', {
+                    ID: productItem?.userID,
+                  })
+                }
+              />
 
-            {/* Product Description */}
-            <BusinessDesc productItem={description} title={'Description'} />
+              {/* Product Description */}
+              <BusinessDesc productItem={description} title={'Description'} />
 
-            {/* Price Qty */}
-            <PriceQty
-              price={fobPrice}
-              moq={minOrderQty}
-              paymentType={paymentType}
-              supply={supplyCapacity}
-            />
+              {/* Price Qty */}
+              <PriceQty
+                price={fobPrice}
+                moq={minOrderQty}
+                paymentType={paymentType}
+                supply={supplyCapacity}
+              />
 
-            {/* Review header */}
-            {!allReview && (
-              <>
-                <Review />
-                <SeeAll />
-              </>
-            )}
-          </>
-        }
-        renderItem={({item, index}) => {
-          /* Reviews list */
-          return <ReviewItem key={index} item={item} />;
-        }}
-        ListFooterComponent={
-          <View
-            style={{
-              marginBottom: allReview?.length - 1 && 200,
-            }}>
-            <TextIconButton
-              label={'Offer'}
-              labelStyle={{
-                marginLeft: SIZES.radius,
-                ...FONTS.h4,
-              }}
-              containerStyle={{
-                width: 340,
-              }}
-              iconPosition={'LEFT'}
-              icon={icons.offer}
-              iconStyle={COLORS.white}
-              onPress={() => toggleCameraModal(!showCameraModal)}
-            />
+              {/* Review header */}
+              {!allReview && (
+                <>
+                  <Review />
+                  <SeeAll />
+                </>
+              )}
+            </>
+          }
+          renderItem={({item, index}) => {
+            /* Reviews list */
+            return <ReviewItem key={index} item={item} />;
+          }}
+          ListFooterComponent={
+            <View
+              style={{
+                marginBottom: allReview?.length - 1 && 200,
+              }}>
+              <TextIconButton
+                label={'Offer'}
+                labelStyle={{
+                  marginLeft: SIZES.radius,
+                  ...FONTS.h4,
+                }}
+                containerStyle={{
+                  width: 340,
+                }}
+                iconPosition={'LEFT'}
+                icon={icons.offer}
+                iconStyle={COLORS.white}
+                onPress={() => toggleCameraModal(!showCameraModal)}
+              />
 
-            <TextIconButton
-              label={'Contact Seller'}
-              labelStyle={{
-                marginLeft: SIZES.radius,
-                color: COLORS.primary1,
-                ...FONTS.h4,
-              }}
-              containerStyle={{
-                marginTop: SIZES.radius,
-                backgroundColor: COLORS.white,
-                width: 340,
-                borderWidth: 2,
-                borderColor: COLORS.primary1,
-              }}
-              iconPosition={'LEFT'}
-              icon={icons.chat}
-              iconStyle={COLORS.primary1}
-              // onPress={handleSubmit}
-            />
-          </View>
-        }
-      />
-    </View>
+              <TextIconButton
+                label={'Contact Seller'}
+                labelStyle={{
+                  marginLeft: SIZES.radius,
+                  color: COLORS.primary1,
+                  ...FONTS.h4,
+                }}
+                containerStyle={{
+                  marginTop: SIZES.radius,
+                  backgroundColor: COLORS.white,
+                  width: 340,
+                  borderWidth: 2,
+                  borderColor: COLORS.primary1,
+                }}
+                iconPosition={'LEFT'}
+                icon={icons.chat}
+                iconStyle={COLORS.primary1}
+                // onPress={handleSubmit}
+              />
+            </View>
+          }
+        />
+      </View>
+    </Root>
   );
 };
 

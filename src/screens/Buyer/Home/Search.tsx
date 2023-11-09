@@ -19,6 +19,7 @@ import {
   AccountCategoryType,
   ListUsersQuery,
   ListUsersQueryVariables,
+  ModelSortDirection,
   ProductByDateQuery,
   ProductByDateQueryVariables,
   SellOffersByDateQuery,
@@ -33,26 +34,32 @@ const Search = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
 
   // LIST ALL PRODUCT BY CATEGORY ID
-  const {data, loading} = useQuery<
-    ProductByDateQuery,
-    ProductByDateQueryVariables
-  >(productByDate, {
-    pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
-  });
+  const {data} = useQuery<ProductByDateQuery, ProductByDateQueryVariables>(
+    productByDate,
+    {
+      pollInterval: 300,
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'network-only',
+      variables: {
+        SType: 'JOB',
+        sortDirection: ModelSortDirection.DESC,
+      },
+    },
+  );
   const allProducts: any =
-    data?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
+    data?.productByDate?.items
+      .filter(st => st?.SType === 'JOB')
+      .filter((item: any) => !item?._deleted) || [];
 
   // LIST SUPPLIERS
-  const {data: onData, loading: onLoad} = useQuery<
-    ListUsersQuery,
-    ListUsersQueryVariables
-  >(listUsers, {
-    pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
-  });
+  const {data: onData} = useQuery<ListUsersQuery, ListUsersQueryVariables>(
+    listUsers,
+    {
+      pollInterval: 300,
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'network-only',
+    },
+  );
   const suppliers: any =
     onData?.listUsers?.items
       .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
@@ -64,18 +71,23 @@ const Search = () => {
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
+    variables: {
+      SType: 'SELLOFFER',
+      sortDirection: ModelSortDirection.DESC,
+    },
   });
   const allSellOffers =
-    newData?.sellOffersByDate?.items?.filter((item: any) => !item?._deleted) ||
-    [];
+    newData?.sellOffersByDate?.items
+      .filter(st => st?.SType === 'SELLOFFER')
+      ?.filter((item: any) => !item?._deleted) || [];
 
   const mergedSearchType = [...allSellOffers, ...allProducts, ...suppliers];
 
   // console.log('sell offer', allSellOffers);
-  // console.log('all products', allProducts);
-  console.log('suppliers', suppliers);
+  console.log('all products', allProducts);
+  // console.log('suppliers', suppliers);
 
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState<any>('');
@@ -86,43 +98,48 @@ const Search = () => {
   const [dataList, setDataList] = useState<any>(mergedSearchType);
 
   useEffect(() => {
+    let isCurrent = true;
     const onChangeSelectionItem = (item: any) => {
       if (itemSelected === 'All') {
-        setDataList([...mergedSearchType]);
+        isCurrent && setDataList([...mergedSearchType]);
       } else if (itemSelected === 'Product') {
-        setDataList([
-          ...mergedSearchType.filter(x => x?.__typename === itemSelected),
-        ]);
+        isCurrent &&
+          setDataList([
+            ...mergedSearchType.filter(x => x?.__typename === itemSelected),
+          ]);
       } else if (itemSelected === 'SellOffer') {
-        setDataList([
-          ...mergedSearchType.filter(x => x?.__typename === itemSelected),
-        ]);
+        isCurrent &&
+          setDataList([
+            ...mergedSearchType.filter(x => x?.__typename === itemSelected),
+          ]);
       } else if (itemSelected === 'User') {
-        setDataList([
-          ...mergedSearchType.filter(x => x?.__typename === itemSelected),
-        ]);
+        isCurrent &&
+          setDataList([
+            ...mergedSearchType.filter(x => x?.__typename === itemSelected),
+          ]);
       } else {
-        setItemSelect(item);
+        isCurrent && setItemSelect(item);
       }
     };
     onChangeSelectionItem(itemSelected);
-  }, [itemSelected, newLoad, loading, onLoad]);
+    return () => {
+      isCurrent = false;
+    };
+  }, [itemSelected, newLoad]);
 
   // SEARCH FILTER
   useEffect(() => {
-    const filteredItems = dataList?.filter((item: {title: any}) =>
-      item?.title.toLowerCase().includes(search?.toLowerCase()),
-    );
+    let isCurrent = true;
+    const filteredItems =
+      isCurrent &&
+      dataList?.filter((item: {title: any}) =>
+        item?.title.toLowerCase().includes(search?.toLowerCase()),
+      );
     setFilteredDataSource(filteredItems);
+    return () => {
+      isCurrent = false;
+    };
   }, [search, dataList]);
-
-  if (loading || onLoad || newLoad) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="small" color={COLORS.primary6} />
-      </View>
-    );
-  }
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
@@ -199,7 +216,6 @@ const Search = () => {
                 containerStyle={{marginTop: SIZES.radius}}
                 key={index}
                 item={item}
-                profile_image2={item?.storeImage}
                 profile_image={item?.productImage}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
@@ -237,32 +253,21 @@ const Search = () => {
           <View
             style={{
               marginBottom: filteredDataSource?.length - 1 && 300,
-            }}
-          />
+            }}>
+            {newLoad && (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 30,
+                }}>
+                <ActivityIndicator size="small" color={COLORS.primary6} />
+              </View>
+            )}
+          </View>
         }
       />
-
-      {/* No search items */}
-      {filteredDataSource.length === 0 && (
-        <View style={{alignItems: 'center', top: -200}}>
-          <FastImage
-            source={images.NoItems}
-            style={{width: 120, height: 120}}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <Text
-            style={{
-              ...FONTS.body2,
-              color: COLORS.Neutral6,
-              textAlign: 'center',
-              margin: SIZES.margin,
-              lineHeight: 24,
-            }}>
-            Type in keywords to find what you want. You can search for products,
-            companies or sell offers
-          </Text>
-        </View>
-      )}
     </View>
   );
 };

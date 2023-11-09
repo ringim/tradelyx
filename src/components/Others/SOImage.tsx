@@ -1,18 +1,24 @@
-import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import ImageModal, {ImageDetail} from 'react-native-image-modal';
 import {Storage} from 'aws-amplify';
-import FastImage from 'react-native-fast-image';
 
 import {DUMMY_IMAGE} from '../../utilities/Utils';
-import {SIZES} from '../../constants';
+import {COLORS, SIZES} from '../../constants';
 
-const SOImage = ({image, index}: any) => {
+const SOImage = ({image, index, containerStyle}: any) => {
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
+  const element = useRef<ImageDetail>(null);
+
   useEffect(() => {
-    if (image) {
+    let isCurrent = true;
+    if (image && isCurrent) {
       Storage.get(image).then(setImageUri2);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [image]);
 
   return (
@@ -23,15 +29,27 @@ const SOImage = ({image, index}: any) => {
         marginLeft: index == 0 ? 2 : 15,
         marginRight: index == image.length - 1 ? SIZES.padding : 0,
         marginTop: SIZES.radius,
+        ...containerStyle,
       }}>
-      <FastImage
-        source={{uri: imageUri2 || DUMMY_IMAGE}}
+      <ImageModal
+        resizeMode="cover"
+        imageBackgroundColor={COLORS.white}
+        isTranslucent={false}
+        swipeToDismiss={false}
+        modalRef={element}
         style={{
-          width: 100,
-          height: 100,
+          width: 120,
+          height: 120,
           borderRadius: SIZES.base,
         }}
-        resizeMode={FastImage.resizeMode.cover}
+        source={{
+          uri: imageUri2 || DUMMY_IMAGE,
+        }}
+        onOpen={() => {
+          setTimeout(() => {
+            element.current?.close();
+          }, 10000);
+        }}
       />
     </View>
   );

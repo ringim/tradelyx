@@ -21,6 +21,7 @@ const Complete = () => {
   );
 
   useEffect(() => {
+    let isCurrent = true;
     const filteredData = dummyData?.seller_orders
       .filter(
         st =>
@@ -28,6 +29,9 @@ const Complete = () => {
       )
       .filter(ty => ty?.type === value);
     setFilteredItems(filteredData);
+    return () => {
+      isCurrent = false;
+    };
   }, [value]);
 
   return (

@@ -71,7 +71,12 @@ const EngagementTerms = () => {
   const {location} = address;
 
   useEffect(() => {
-    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    return () => {
+      isCurrent = false;
+    };
   }, [address]);
 
   // console.log(address);
@@ -126,13 +131,13 @@ const EngagementTerms = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress,
@@ -315,7 +320,11 @@ const EngagementTerms = () => {
             marginTop: SIZES.base,
           }}>
           {singleFile?.length >= 1 ? (
-            <FileSection file={singleFile} setSingleFile={setSingleFile} />
+            <FileSection
+              title="Product Brochures"
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
           ) : (
             <UploadDocs
               title="Attach Supporting Document"

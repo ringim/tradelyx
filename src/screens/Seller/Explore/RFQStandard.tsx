@@ -30,8 +30,8 @@ const RFQDomestic = () => {
     RfqByDateQueryVariables
   >(rfqByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -57,11 +57,14 @@ const RFQDomestic = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
       const items =
-        data?.rfqByDate?.items
-          ?.filter(rfq => rfq?.rfqType === RFQTYPE?.STANDARD)
-          ?.filter((item: any) => !item?._deleted) || [];
+        (isCurrent &&
+          data?.rfqByDate?.items
+            ?.filter(rfq => rfq?.rfqType === RFQTYPE?.STANDARD)
+            ?.filter((item: any) => !item?._deleted)) ||
+        [];
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -70,6 +73,9 @@ const RFQDomestic = () => {
         textBody: `${(error as Error).message}`,
         autoClose: 1500,
       });
+      return () => {
+        isCurrent = false;
+      };
     }
   }, [loading]);
 
@@ -92,7 +98,7 @@ const RFQDomestic = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
+          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 
@@ -117,7 +123,9 @@ const RFQDomestic = () => {
                 item={item}
                 onCopy={copyToClipboard}
                 onPress={() =>
-                  navigation.navigate('RFQDetail', {sellerItem: item})
+                  navigation.navigate('StandardDomesticRFQDetail', {
+                    rfqItem: item,
+                  })
                 }
               />
             );

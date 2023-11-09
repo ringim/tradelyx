@@ -1,8 +1,7 @@
 import {View, Text} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {FlashList} from '@shopify/flash-list';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
 import {OrderItem, OrderTabItem} from '../../../components';
@@ -17,8 +16,13 @@ const Pending = () => {
   const [filteredItems, setFilteredItems] = useState<any>('');
 
   useEffect(() => {
-    const filteredData = dummyData?.orders?.filter(ty => ty?.type === value);
+    let isCurrent = true;
+    const filteredData =
+      isCurrent && dummyData?.orders?.filter(ty => ty?.type === value);
     setFilteredItems(filteredData);
+    return () => {
+      isCurrent = false;
+    };
   }, [value]);
 
   return (
@@ -61,18 +65,21 @@ const Pending = () => {
           <FlatList
             data={dummyData?.orders}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
                 <OrderItem
+                  key={index}
                   item={item}
                   showHR={true}
                   btn={true}
                   desc={true}
                   type={item?.type}
                   replies={replyList?.length}
-                  onPress={() => navigation.navigate('ReplyList', {sellerItem: item})}
+                  onPress={() =>
+                    navigation.navigate('ReplyList', {sellerItem: item})
+                  }
                 />
               );
             }}
@@ -88,18 +95,21 @@ const Pending = () => {
           <FlatList
             data={filteredItems}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
                 <OrderItem
+                  key={index}
                   item={item}
                   showHR={true}
                   btn={true}
                   desc={true}
                   type={item?.type}
                   replies={replyList?.length}
-                  onPress={() => navigation.navigate('ReplyList', {sellerItem: item})}
+                  onPress={() =>
+                    navigation.navigate('ReplyList', {sellerItem: item})
+                  }
                 />
               );
             }}

@@ -14,13 +14,9 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation} from '@apollo/client';
 
 import {
   COLORS,
@@ -40,16 +36,12 @@ import {
   SourceLocationItem,
   TextButton,
 } from '../../../components';
-import {crateTypes} from '../../../../types/types';
 import {
   UpdateSellOfferInput,
   UpdateSellOfferMutation,
   UpdateSellOfferMutationVariables,
-  GetUserQuery,
-  GetUserQueryVariables,
 } from '../../../API';
 import {updateSellOffer} from '../../../queries/RequestQueries';
-import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 
 interface ISellOffer {
@@ -92,17 +84,6 @@ const PackingShipment = () => {
     hideDatePicker();
   };
 
-  // GET USER
-  const {data, loading: newLoad} = useQuery<
-    GetUserQuery,
-    GetUserQueryVariables
-  >(getUser, {
-    variables: {
-      id: userID,
-    },
-  });
-  const userInfo: any = data?.getUser;
-
   // UPDATE REQUEST QUOTATION
   const [doCreateSellOffer] = useMutation<
     UpdateSellOfferMutation,
@@ -123,10 +104,6 @@ const PackingShipment = () => {
         placeOrigin: address1?.description?.formatted_address,
         landmark,
         deliveryDate: date,
-        storeImage: userInfo?.logo,
-        storeRating: userInfo?.rating,
-        storeName: userInfo?.title,
-        storeAddress: `${userInfo?.city}${', '} ${userInfo?.country}`,
       };
 
       await doCreateSellOffer({
@@ -148,13 +125,13 @@ const PackingShipment = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
+    let unmounted = true;
     if (route.params?.userAddress) {
       setAddress1(route.params?.userAddress);
       setValue('address1', address1?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     route.params?.userAddress,

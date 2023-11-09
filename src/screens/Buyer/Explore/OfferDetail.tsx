@@ -1,63 +1,97 @@
-import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {View, Text, ActivityIndicator} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import {useRoute} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import ImageModal, {ImageDetail} from 'react-native-image-modal';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Storage} from 'aws-amplify';
 import dayjs from 'dayjs';
+import {useQuery} from '@apollo/client';
 
 import {Header, TextIconButton} from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {OfferDetailRouteProp} from '../../../components/navigation/BuyerNav/type/navigation';
 import {DUMMY_IMAGE} from '../../../utilities/Utils';
+import {getUser} from '../../../queries/UserQueries';
+import {GetUserQuery, GetUserQueryVariables} from '../../../API';
 
 const OfferDetail = () => {
   // const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<OfferDetailRouteProp>();
+  const element = useRef<ImageDetail>(null);
 
   const {
-    storeName,
     title,
     basePrice,
+    deliveryDate,
     fobPrice,
     image,
     description,
     packageDesc,
     images,
-    storeAddress,
     qtyMeasure,
-    storeRating,
     offerValidity,
-    storeImage,
+    userID,
   }: any = route?.params?.detail;
 
   const expiryDateString = offerValidity;
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
-  // console.log('daysUntilExpiry', daysUntilExpiry)
+  // console.log('daysUntilExpiry', offerValidity)
+
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
   const [imageUri3, setImageUri3] = useState<string | null>(null);
 
   useEffect(() => {
-    if (storeImage) {
-      Storage.get(storeImage).then(setImageUri);
+    let isCurrent = true;
+    if (userInfo?.logo && isCurrent) {
+      Storage.get(userInfo?.logo).then(setImageUri);
     }
-  }, [storeImage]);
+    return () => {
+      isCurrent = false;
+    };
+  }, [userInfo?.logo]);
 
   useEffect(() => {
-    if (image) {
+    let isCurrent = true;
+    if (image && isCurrent) {
       Storage.get(image).then(setImageUri2);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [image]);
 
   useEffect(() => {
-    if (images[0]) {
+    let isCurrent = true;
+    if (images[0] && isCurrent) {
       Storage.get(images[0]).then(setImageUri3);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [images[0]]);
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="small" color={COLORS.primary6} />
+      </View>
+    );
+  }
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -96,7 +130,7 @@ const OfferDetail = () => {
             <Text
               numberOfLines={2}
               style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {storeName}
+              {userInfo?.title}
             </Text>
 
             {/* Rating, */}
@@ -125,7 +159,7 @@ const OfferDetail = () => {
                   justifyContent: 'center',
                 }}>
                 <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                  {parseFloat(storeRating).toFixed(0)}
+                  {parseFloat(userInfo?.rating).toFixed(0)}
                 </Text>
               </View>
             </View>
@@ -156,13 +190,24 @@ const OfferDetail = () => {
                 marginHorizontal: SIZES.margin,
                 alignSelf: 'center',
               }}>
-              <FastImage
-                resizeMode={FastImage.resizeMode.cover}
-                source={{uri: imageUri3 || DUMMY_IMAGE}}
+              <ImageModal
+                resizeMode="cover"
+                imageBackgroundColor={COLORS.white}
+                isTranslucent={false}
+                swipeToDismiss={false}
+                modalRef={element}
                 style={{
                   width: 360,
                   height: 150,
                   borderRadius: SIZES.radius,
+                }}
+                source={{
+                  uri: imageUri3 || DUMMY_IMAGE,
+                }}
+                onOpen={() => {
+                  setTimeout(() => {
+                    element.current?.close();
+                  }, 10000);
                 }}
               />
             </View>
@@ -209,7 +254,9 @@ const OfferDetail = () => {
               <Text
                 numberOfLines={2}
                 style={{...FONTS.body3, color: COLORS.Neutral5}}>
-                {storeAddress}
+                {userInfo?.city}
+                {', '}
+                {userInfo?.country}
               </Text>
             </View>
           </View>
@@ -311,7 +358,7 @@ const OfferDetail = () => {
             }}>
             <View style={{justifyContent: 'center'}}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-                Offer Validity
+                Delivery Date
               </Text>
             </View>
             <View
@@ -325,7 +372,7 @@ const OfferDetail = () => {
                   fontWeight: '600',
                   color: COLORS.Neutral1,
                 }}>
-                {daysUntilExpiry} days
+                {deliveryDate}
               </Text>
             </View>
           </View>
@@ -355,11 +402,12 @@ const OfferDetail = () => {
           </View>
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
             }}>
             <Text
               style={{
                 ...FONTS.body3,
+                fontWeight: '500',
                 color: COLORS.Neutral1,
               }}>
               {description}
@@ -370,21 +418,26 @@ const OfferDetail = () => {
         {/* package des */}
         <View
           style={{
-            marginTop: SIZES.semi_margin,
+            marginTop: SIZES.radius,
             marginHorizontal: SIZES.semi_margin,
           }}>
           <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral5,
+              }}>
               Packaging Description
             </Text>
           </View>
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
             }}>
             <Text
               style={{
                 ...FONTS.body3,
+                fontWeight: '500',
                 color: COLORS.Neutral1,
               }}>
               {packageDesc}
@@ -404,21 +457,9 @@ const OfferDetail = () => {
             padding: SIZES.radius,
             marginBottom: 100,
           }}>
-          <View style={{justifyContent: 'center'}}>
+          <View style={{flex: 1, justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              Exp in:
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              marginLeft: 4,
-              justifyContent: 'center',
-            }}>
-            <Text
-              numberOfLines={2}
-              style={{...FONTS.h5, fontWeight: '600', color: COLORS.Neutral1}}>
-              {daysUntilExpiry} days
+              Expiry Date:
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>

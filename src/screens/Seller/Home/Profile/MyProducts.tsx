@@ -2,16 +2,12 @@ import {ActivityIndicator, RefreshControl, View} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../../constants';
 import {SearchBox2, ProductItem, NoItem} from '../../../../components';
 
-const MyStore = ({data, refetch, loading}: any) => {
+const MyProducts = ({data, refetch, loading}: any) => {
   const navigation = useNavigation<any>();
 
   const [search, setSearch] = useState('');
@@ -39,8 +35,9 @@ const MyStore = ({data, refetch, loading}: any) => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
-      const items = data;
+      const items = isCurrent && data;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -50,6 +47,9 @@ const MyStore = ({data, refetch, loading}: any) => {
         autoClose: 1500,
       });
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [loading]);
 
   if (loading) {
@@ -69,7 +69,7 @@ const MyStore = ({data, refetch, loading}: any) => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
+          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
         {/* list of items */}
@@ -111,4 +111,4 @@ const MyStore = ({data, refetch, loading}: any) => {
   );
 };
 
-export default MyStore;
+export default MyProducts;

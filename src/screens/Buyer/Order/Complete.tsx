@@ -1,8 +1,7 @@
 import {View, Text, RefreshControl} from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {FlashList} from '@shopify/flash-list';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
 import {OrderItem, OrderTabItem} from '../../../components';
@@ -22,10 +21,16 @@ const Complete = () => {
   );
 
   useEffect(() => {
-    const filteredData = dummyData?.orders
-      .filter(st => st?.status === 'Completed' || st?.status === 'Canceled')
-      .filter(ty => ty?.type === value);
+    let isCurrent = true;
+    const filteredData =
+      isCurrent &&
+      dummyData?.orders
+        .filter(st => st?.status === 'Completed' || st?.status === 'Canceled')
+        .filter(ty => ty?.type === value);
     setFilteredItems(filteredData);
+    return () => {
+      isCurrent = false;
+    };
   }, [value]);
 
   return (
@@ -68,11 +73,12 @@ const Complete = () => {
           <FlatList
             data={completed}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
                 <OrderItem
+                  key={index}
                   item={item}
                   status={true}
                   arrow={true}
@@ -101,12 +107,13 @@ const Complete = () => {
           <FlatList
             data={filteredItems}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item.id}`}
+            keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
                 <OrderItem
                   item={item}
+                  key={index}
                   status={true}
                   arrow={true}
                   statusColor={

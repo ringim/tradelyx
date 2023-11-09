@@ -68,9 +68,6 @@ export const productByDate = gql`
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -116,9 +113,6 @@ export const getProduct = gql`
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -214,9 +208,6 @@ export const productsByCategoriesID = gql`
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -262,9 +253,6 @@ export const createProduct = gql`
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -307,9 +295,6 @@ export const updateProduct = gql`
       productDocs
       productCert
       documents
-      storeName
-      storeImage
-      storeAddress
       category
       commodityCategory
       commoditycategoryID
@@ -356,6 +341,104 @@ export const listCommodityCategories = gql`
         __typename
       }
       nextToken
+      __typename
+    }
+  }
+`;
+
+export const wishlistsByUserID = gql`
+  query WishlistsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelWishlistFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    wishlistsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+
+export const createWishlist = gql`
+  mutation CreateWishlist(
+    $input: CreateWishlistInput!
+    $condition: ModelWishlistConditionInput
+  ) {
+    createWishlist(input: $input, condition: $condition) {
+      id
+      createdAt
+      SType
+      productImage
+      title
+      supplyCapacity
+      minOrderQty
+      fobPrice
+      productID
+      userID
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+export const deleteWishlist = gql`
+  mutation DeleteWishlist(
+    $input: DeleteWishlistInput!
+    $condition: ModelWishlistConditionInput
+  ) {
+    deleteWishlist(input: $input, condition: $condition) {
+      id
+      createdAt
+      SType
+      productImage
+      title
+      supplyCapacity
+      minOrderQty
+      fobPrice
+      productID
+      userID
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+export const getWishlist = gql`
+  query GetWishlist($id: ID!) {
+    getWishlist(id: $id) {
+      id
+      createdAt
+      SType
+      productImage
+      title
+      supplyCapacity
+      minOrderQty
+      fobPrice
+      productID
+      userID
+      updatedAt
       __typename
     }
   }

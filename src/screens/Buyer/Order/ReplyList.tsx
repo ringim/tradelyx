@@ -38,13 +38,17 @@ const ReplyList = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
-      const items = dummyData?.replyList;
+      const items = isCurrent && dummyData?.replyList;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
       return;
     }
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   return (

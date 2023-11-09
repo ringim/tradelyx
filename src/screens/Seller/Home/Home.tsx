@@ -11,6 +11,7 @@ import {
   OrderTab,
   ServiceModal2,
   TabHeader,
+  PromoSection,
 } from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {toggleCameraModal} from '../../../redux/modal/modalActions';
@@ -45,8 +46,8 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     getUser,
     {
       variables: {id: userID},
-      fetchPolicy: 'cache-first',
-      nextFetchPolicy: 'cache-and-network',
+      fetchPolicy: 'cache-and-network',
+       nextFetchPolicy: 'network-only',
     },
   );
   const user: any = data?.getUser;
@@ -77,6 +78,9 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
       />
 
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Promo */}
+        <PromoSection />
+
         {/* Balance section */}
         <BalanceSection />
 

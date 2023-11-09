@@ -269,7 +269,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            Payment Terms
+            Payment Method
           </Text>
         </View>
         <View
@@ -282,7 +282,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.paymentType}
+            {item?.paymentMethod}
           </Text>
         </View>
       </View>

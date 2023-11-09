@@ -71,7 +71,7 @@ const Pending = () => {
                   service={true}
                   statusColor={COLORS.Yellow5}
                   onPress={() =>
-                    navigation.navigate('RFQDetail', {sellerItem: item})
+                    navigation.navigate('DomesticRFQDetail', {sellerItem: item})
                   }
                 />
               );
@@ -96,7 +96,7 @@ const Pending = () => {
                   desc={true}
                   statusColor={COLORS.Yellow5}
                   onPress={() =>
-                    navigation.navigate('RFQDetail', {sellerItem: item})
+                    navigation.navigate('DomesticRFQDetail', {sellerItem: item})
                   }
                 />
               );

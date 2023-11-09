@@ -1,21 +1,17 @@
 import {ActivityIndicator, Text, View} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import dayjs from 'dayjs';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 import {useMutation, useQuery} from '@apollo/client';
 import {v4 as uuidV4} from 'uuid';
@@ -59,11 +55,9 @@ interface IFreight {
 const AirFreight = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<AirFreightRouteProp>();
-
-  const {userID} = useAuthContext();
-
   const {label, text}: any = route.params?.freightType;
 
+  const {userID} = useAuthContext();
   const {control, handleSubmit}: any = useForm();
 
   // LIST COMMODITY CATEGORIES
@@ -72,7 +66,7 @@ const AirFreight = () => {
     ListCommodityCategoriesQueryVariables
   >(listCommodityCategories, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
+    fetchPolicy: 'cache-and-network',
   });
 
   const [selectedOption, setSelectedOptions] = useState(true);
@@ -111,7 +105,6 @@ const AirFreight = () => {
     try {
       const input: CreateRFFInput = {
         id: uuidV4(),
-        SType: 'RFF',
         rffNo: referralCode(),
         productName: name,
         requestCategory: type?.title,

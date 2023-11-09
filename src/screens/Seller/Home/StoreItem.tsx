@@ -5,9 +5,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useMutation} from '@apollo/client';
 import {
   ALERT_TYPE,
-  Root,
+  AlertNotificationRoot,
   Toast,
 } from 'react-native-alert-notification';
+import FastImage from 'react-native-fast-image';
 
 import {
   BusinessDesc,
@@ -17,7 +18,7 @@ import {
   Packaging,
   ProductInfo,
   TextButton,
-  MultipleFiles,
+  MultipleFiles, 
 } from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {
@@ -29,7 +30,6 @@ import {
   DeleteProductMutationVariables,
 } from '../../../API';
 import {deleteProduct} from '../../../queries/ProductQueries';
-import FastImage from 'react-native-fast-image';
 
 const StoreItem = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -109,7 +109,7 @@ const StoreItem = () => {
   }
 
   return (
-    <Root>
+    <AlertNotificationRoot>
       <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header
           title={'Product Details'}
@@ -257,7 +257,7 @@ const StoreItem = () => {
           />
         </KeyboardAwareScrollView>
       </View>
-    </Root>
+    </AlertNotificationRoot>
   );
 };
 

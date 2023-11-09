@@ -10,7 +10,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NetInfo from '@react-native-community/netinfo';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import {useMutation, useQuery} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 
 import AuthStack from './AuthStack';
 import {useEffect, useState} from 'react';
@@ -59,6 +59,8 @@ const AppNav = ({onBoarded}: any) => {
       variables: {
         id: userID,
       },
+      fetchPolicy: 'network-only',
+      nextFetchPolicy: 'network-only',
     },
   );
   const userInfo: any = data?.getUser;
@@ -91,9 +93,9 @@ const AppNav = ({onBoarded}: any) => {
   }, [connection]);
 
   // IF NO NETWORK CONNECTION
-  // if (!connection) {
-  //   return <NoInternet />;
-  // }
+  if (!connection) {
+    return <NoInternet />;
+  }
 
   let stackScreens = null;
 

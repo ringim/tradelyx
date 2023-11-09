@@ -6,15 +6,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useMemo, useRef} from 'react';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import React, {useState} from 'react';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {useMutation} from '@apollo/client';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
@@ -25,7 +20,7 @@ import {
 } from '../../API';
 import {deleteSellOffer} from '../../queries/RequestQueries';
 import TextButton from '../Button/TextButton';
-import Options from './Options';
+import OptionModal from '../Modal/OptionModal';
 
 interface IItem {
   item: SellOffer | any;
@@ -37,19 +32,7 @@ interface IItem {
 const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
   const navigation = useNavigation<any>();
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['23%', '25%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handlePresentDismiss = () => bottomSheetModalRef?.current?.dismiss();
-  const handleSheetChanges = useCallback((index: number) => {
-    return index;
-  }, []);
+  const [visible, setIsVisible] = useState(false);
 
   const options = {
     style: 'decimal',
@@ -113,26 +96,6 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
 
   return (
     <Root>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={1}
-        snapPoints={snapPoints}
-        backgroundStyle={{backgroundColor: COLORS.Neutral10}}
-        onChange={handleSheetChanges}>
-        <View
-          style={{
-            padding: SIZES.padding,
-          }}>
-          <Options
-            onDelete={confirmDelete}
-            onEdit={() => {
-              navigation.navigate('EditSellOfferItem', {sellOffer: item});
-              handlePresentDismiss();
-            }}
-          />
-        </View>
-      </BottomSheetModal>
-
       <View
         style={{
           marginTop: SIZES.radius,
@@ -143,13 +106,26 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
           borderColor: COLORS.Neutral8,
           ...containerStyle,
         }}>
+        {/* option modal */}
+        {visible && (
+          <OptionModal
+            isVisible={visible}
+            onClose={() => setIsVisible(false)}
+            onDelete={confirmDelete}
+            onEdit={() => {
+              navigation.navigate('EditSellOfferItem', {sellOffer: item});
+              setIsVisible(false);
+            }}
+          />
+        )}
+
         {/* delete icon */}
         <TouchableOpacity
           style={{
             alignItems: 'flex-end',
             padding: SIZES.base,
           }}
-          onPress={() => handlePresentModalPress()}>
+          onPress={() => setIsVisible(true)}>
           <FastImage
             source={icons.option}
             resizeMode={FastImage.resizeMode.contain}
@@ -161,8 +137,49 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
           />
         </TouchableOpacity>
 
+        {/* title */}
         <View
           style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: SIZES.semi_margin,
+          }}>
+          {/* Buyer Country Name */}
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.h4,
+                fontWeight: '500',
+                color: COLORS.Neutral6,
+              }}>
+              Title
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                fontWeight: '600',
+                color: COLORS.Neutral1,
+              }}>
+              {item?.title}
+            </Text>
+          </View>
+        </View>
+
+        {/* sell offer from  */}
+        <View
+          style={{
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: SIZES.semi_margin,
@@ -186,7 +203,6 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
             style={{
               flex: 1,
               justifyContent: 'center',
-              padding: SIZES.base,
               alignItems: 'flex-end',
             }}>
             <Text
@@ -195,7 +211,40 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
                 fontWeight: '600',
                 color: COLORS.Neutral1,
               }}>
-              {item?.placeOrigin}
+              {userInfo?.title}
+            </Text>
+          </View>
+        </View>
+
+        {/* Sell Offer Number */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: SIZES.semi_margin,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.cap1,
+                fontWeight: '500',
+                color: COLORS.Neutral6,
+              }}>
+              Sell Offer No
+            </Text>
+          </View>
+          <View style={{justifyContent: 'center'}}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral1,
+              }}>
+              {item?.sellOfferID}
             </Text>
           </View>
         </View>
@@ -322,7 +371,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
             }}>
             <Text
               style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-              Qty Required
+              Quantity Offered
             </Text>
           </View>
           <View
@@ -353,7 +402,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
             }}>
             <Text
               style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-              Qty Measure
+              Supply Capacity
             </Text>
           </View>
           <View

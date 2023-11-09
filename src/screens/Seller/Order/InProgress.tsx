@@ -26,6 +26,7 @@ const InProgress = () => {
   // console.log(inProgress);
 
   useEffect(() => {
+    let isCurrent = true;
     const filteredData = dummyData?.seller_orders
       .filter(
         st =>
@@ -33,6 +34,9 @@ const InProgress = () => {
       )
       .filter(ty => ty?.type === value);
     setFilteredItems(filteredData);
+    return () => {
+      isCurrent = false;
+    };
   }, [value]);
 
   return (

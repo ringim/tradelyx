@@ -8,7 +8,6 @@ import {
   ProductDetail,
   Notifications,
   Profile,
-  Filter,
   Search,
   CompanyDetail,
   BusinessDetail,
@@ -31,10 +30,11 @@ import {
   AirPickupProcess,
   EngagementTermsAddress,
   SuccessService,
-  FilteredProducts,
   AirPortOriginAddress,
   LandFreightPackage,
   AirDestinationAddress,
+  EditAccountImage,
+  SearchFilter2,
   LandPickupProcess,
   OfferDetail,
   ViewAgreement,
@@ -50,8 +50,6 @@ import {
   Account,
   Wallet,
   Favorites,
-  SearchAddressFilter,
-  AllSellers,
   Contact,
   Refer,
   InviteFriends,
@@ -62,6 +60,9 @@ import {
   InternationalDestinationAddress,
   OceanPortOriginAddress,
   OceanDestinationAddress,
+  Quotation,
+  Freight,
+  SearchFilter,
 } from '../../../screens/Buyer';
 
 const Stack = createSharedElementStackNavigator();
@@ -118,11 +119,6 @@ const BuyerStack = () => {
         initialParams={{id: 0}}
       />
       <Stack.Screen
-        name="FilteredProducts"
-        component={FilteredProducts}
-        options={() => options}
-      />
-      <Stack.Screen
         name="InternationalPaymentQuotation"
         component={InternationalPaymentQuotation}
         options={() => options}
@@ -142,11 +138,25 @@ const BuyerStack = () => {
         component={Notifications}
         options={() => options}
       />
-      <Stack.Screen name="Filter" component={Filter} options={() => options} />
       <Stack.Screen
         name="AllProducts"
         component={AllProducts}
         options={() => options}
+      />
+      <Stack.Screen
+        name="SearchFilter2"
+        component={SearchFilter2}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="EditAccountImage"
+        component={EditAccountImage}
+        options={{presentation: 'modal'}}
+      />
+      <Stack.Screen
+        name="SearchFilter"
+        component={SearchFilter}
+        options={{presentation: 'modal'}}
       />
       <Stack.Screen
         name="ExploreFilter"
@@ -158,11 +168,6 @@ const BuyerStack = () => {
         component={OfferDetail}
         options={() => options}
       />
-      <Stack.Screen
-        name="AllSellers"
-        component={AllSellers}
-        options={() => options}
-      />
       <Stack.Screen name="Search" component={Search} options={() => options} />
       <Stack.Screen
         name="CompanyDetail"
@@ -171,8 +176,13 @@ const BuyerStack = () => {
         initialParams={{id: 0}}
       />
       <Stack.Screen
-        name="SearchAddressFilter"
-        component={SearchAddressFilter}
+        name="Quotation"
+        component={Quotation}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="Freight"
+        component={Freight}
         options={() => options}
       />
       <Stack.Screen

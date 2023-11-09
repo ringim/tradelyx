@@ -14,6 +14,7 @@ import {
   RffByDateQueryVariables,
 } from '../../../API';
 import {rffByDate} from '../../../queries/RequestQueries';
+import {FlatList} from 'react-native-gesture-handler';
 const QuotesRequest = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
 
@@ -26,8 +27,8 @@ const QuotesRequest = () => {
     rffByDate,
     {
       pollInterval: 300,
-      fetchPolicy: 'cache-first',
-      nextFetchPolicy: 'cache-and-network',
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'network-only',
       variables: {
         SType: 'RFF',
         sortDirection: ModelSortDirection.DESC,
@@ -54,6 +55,7 @@ const QuotesRequest = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
       const items =
         data?.rffByDate?.items.filter((item: any) => !item?._deleted) || [];
@@ -66,6 +68,9 @@ const QuotesRequest = () => {
         autoClose: 1500,
       });
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [loading]);
 
   if (loading) {
@@ -75,6 +80,8 @@ const QuotesRequest = () => {
       </View>
     );
   }
+
+  // console.log(filteredDataSource);
 
   return (
     <Root>
@@ -88,19 +95,15 @@ const QuotesRequest = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
+          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 
-        <FlashList
+        <FlatList
           data={filteredDataSource}
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
-          keyExtractor={item => `${item.id}`}
-          estimatedItemSize={200}
-          getItemType={({item}: any) => {
-            return item;
-          }}
+          keyExtractor={item => `${item?.id}`}
           renderItem={({item, index}) => {
             /* RFF items */
             return (

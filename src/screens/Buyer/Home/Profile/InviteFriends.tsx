@@ -24,7 +24,7 @@ const InviteFriends = () => {
   const msg = `Invite Friends to join Tradely app`;
 
   useEffect(() => {
-    let unmounted = false;
+    let unmounted = true;
     if (Platform.OS === 'android') {
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
         title: 'Contacts',
@@ -38,7 +38,7 @@ const InviteFriends = () => {
       loadContacts();
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, []);
 
@@ -148,7 +148,7 @@ const InviteFriends = () => {
               [contact.item.phoneNumbers[0].number],
               `${msg}`,
             );
-            console.log(result)
+            // console.log(result)
           };
           return (
             <ListItem

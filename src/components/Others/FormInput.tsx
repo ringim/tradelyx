@@ -28,6 +28,8 @@ function FormInput({
   selectTextOnFocus,
   maxLength,
   labelStyle,
+  onChangeValue,
+  onEndEditing,
   errorStyle,
   onPress,
 }: any) {
@@ -86,7 +88,9 @@ function FormInput({
                 autoCapitalize={autoCapitalize}
                 maxLength={maxLength}
                 onChangeText={onChange}
+                onChange={onChangeValue}
                 onPressIn={onPress}
+                onEndEditing={onEndEditing}
               />
               {appendComponent}
             </View>

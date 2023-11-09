@@ -1,10 +1,6 @@
-import {View, Text, Platform, TouchableOpacity} from 'react-native';
+import {View, Text, Platform} from 'react-native';
 import React, {useState} from 'react';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {Controller, useForm} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import {useMutation} from '@apollo/client';
@@ -12,12 +8,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {v4 as uuidV4} from 'uuid';
-import DocumentPicker from 'react-native-document-picker';
-import {FlatList} from 'react-native-gesture-handler';
-import {Storage} from 'aws-amplify';
 
 import {
+  FileSection,
   FormInput,
   Header,
   QuotationProgress1,
@@ -31,6 +24,7 @@ import {
   UpdateProductMutation,
   UpdateProductMutationVariables,
 } from '../../../API';
+import { selectFile, uploadFile } from '../../../utilities/service';
 
 interface IAddProduct {
   supply: string;
@@ -108,51 +102,6 @@ const ProductSpecification = () => {
     }
   };
 
-  // SELECT FILE
-  const selectFile = async (setSingleFile: any) => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf, DocumentPicker.types.plainText],
-        allowMultiSelection: true,
-      });
-      setSingleFile([...singleFile, ...res]);
-    } catch (err) {
-      setSingleFile(null);
-      if (DocumentPicker.isCancel(err)) {
-        return;
-      } else {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Unknown Error: ' + JSON.stringify(err),
-          autoClose: 1500,
-        });
-        throw err;
-      }
-    }
-  };
-
-  // UPLOAD FILE TO STORAGE
-  const uploadFile = async (uri: string) => {
-    try {
-      const response = await fetch(uri);
-      const blob = await response?.blob();
-
-      // file extension splitting
-      const uriParts = uri.split('.');
-      const extension = uriParts[uriParts.length - 1];
-
-      // upload file (blob) to s3
-      const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
-      return s3Response.key;
-    } catch (err) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: (err as Error).message,
-        autoClose: 2000,
-      });
-    }
-  };
-
   // Delete a single image
   const deleteItem2 = (itemId: any) => {
     setSingleFile((prevData: any) =>
@@ -191,7 +140,7 @@ const ProductSpecification = () => {
           label="Supply Capacity"
           name="supply"
           control={control}
-          placeholder="Add supply capacity"
+          placeholder="Add supply capacity e.g. 10 Tonnes"
           rules={{
             required: 'Supply capacity is required',
           }}
@@ -316,81 +265,19 @@ const ProductSpecification = () => {
           style={{
             flex: 1,
             justifyContent: 'center',
+            marginTop: SIZES.base,
           }}>
           {singleFile?.length >= 1 ? (
-            <View style={{marginTop: SIZES.radius, marginBottom: 100}}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                  color: COLORS.Neutral1,
-                }}>
-                Product Specification
-              </Text>
-
-              <FlatList
-                data={singleFile}
-                keyExtractor={item => item.uri}
-                renderItem={({item}) => (
-                  <View style={{marginTop: SIZES.semi_margin}}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        backgroundColor: COLORS.white,
-                      }}>
-                      <View
-                        style={{
-                          justifyContent: 'center',
-                        }}>
-                        <FastImage
-                          tintColor={COLORS.secondary1}
-                          source={icons.summary}
-                          style={{width: 20, height: 20}}
-                        />
-                      </View>
-
-                      {/* file name and date of upload */}
-                      <View
-                        style={{
-                          flex: 1,
-                          marginLeft: SIZES.base,
-                          justifyContent: 'center',
-                        }}>
-                        <Text
-                          style={{...FONTS.h5, color: COLORS.primary1}}
-                          numberOfLines={2}>
-                          {item?.name}
-                        </Text>
-                      </View>
-
-                      {/* delete file */}
-                      <TouchableOpacity
-                        style={{
-                          justifyContent: 'center',
-                          marginRight: SIZES.base,
-                        }}
-                        onPress={() => deleteItem2(item?.uri)}>
-                        <FastImage
-                          tintColor={COLORS.Rose4}
-                          source={icons.remove}
-                          style={{width: 20, height: 20}}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              />
-            </View>
+            <FileSection
+              title="Product Specification"
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
           ) : (
             <UploadDocs
-              title={'Product Brochure'}
-              selectFile={() => selectFile(setSingleFile)}
-              containerStyle={{
-                marginTop: SIZES.semi_margin,
-                marginHorizontal: 3,
-                marginBottom: 100,
-              }}
+              title="Attach Specification Document"
+              selectFile={() => selectFile(setSingleFile, singleFile)}
+              containerStyle={{marginHorizontal: 1}}
             />
           )}
         </View>

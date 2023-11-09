@@ -7,13 +7,13 @@ import FastImage from 'react-native-fast-image';
 import {COLORS, SIZES, icons, FONTS, constants} from '../../constants';
 import ServiceTab from './ServiceTab';
 import {useNavigation} from '@react-navigation/native';
+import TextButton from '../Button/TextButton';
 
 const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
   const navigation = useNavigation<any>();
 
-  const [selectedItem, setSelectedItem] = useState<any>('');
-
-  // console.log(selectedItem);
+  const [selectedItem, setSelectedItem] = useState<any>(true);
+  const [value, setValue] = useState<any>(null);
 
   // Bottom Sheet
   const snapPoints = useMemo(() => {
@@ -34,10 +34,15 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
         appearsOnIndex={0}
         opacity={0.7}
         pressBehavior="collapse"
+        onPress={() => hideModal()}
       />
     ),
     [],
   );
+
+  const navigateToTab = (tabName: any) => {
+    navigation.navigate('ChooseService', {screen: tabName});
+  };
 
   return (
     <BottomSheetModal
@@ -51,13 +56,10 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
         return <View />;
       }}
       backdropComponent={renderBackdrop}
-      enablePanDownToClose={false}
-      //onChange={handleSheetChanges}
-    >
+      enablePanDownToClose={false}>
       <View
         style={{
           flex: 1,
-          marginTop: 50,
           backgroundColor: COLORS.white,
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
@@ -65,21 +67,21 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Header */}
         <View
           style={{
-            marginTop: SIZES.padding,
+            marginTop: SIZES.semi_margin,
             marginHorizontal: SIZES.padding,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
           {/* Header Back Button */}
-          <TouchableOpacity onPress={hideModal} style={{padding: 5}}>
+          <TouchableOpacity onPress={hideModal} style={{padding: 8}}>
             <FastImage
-              source={icons.backward}
+              source={icons.close}
               resizeMode={FastImage.resizeMode.contain}
               tintColor={COLORS.Neutral1}
               style={{
-                width: 24,
-                height: 24,
-                right: SIZES.radius,
+                width: 15,
+                height: 15,
+                right: SIZES.base,
               }}
             />
           </TouchableOpacity>
@@ -88,12 +90,12 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
           <View
             style={{
               flex: 1,
-              marginLeft: SIZES.padding,
+              marginLeft: SIZES.margin,
               justifyContent: 'center',
             }}>
             <Text
               style={{
-                ...FONTS.h3,
+                ...FONTS.h4,
                 color: COLORS.Neutral1,
               }}>
               Select service
@@ -106,11 +108,11 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
           style={{
             marginTop: SIZES.semi_margin,
             paddingHorizontal: SIZES.margin,
-            marginBottom: SIZES.base
+            marginBottom: 4,
           }}>
           <Text
             style={{
-              ...FONTS.h4,
+              ...FONTS.h5,
               color: COLORS.Neutral1,
             }}>
             We provide services for your business
@@ -126,12 +128,23 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
               selected={item.id == selectedItem}
               onPress={() => {
                 setSelectedItem(item.id);
-                hideModal()
-                navigation.navigate('ChooseService');
+                setValue(item?.label);
               }}
             />
           );
         })}
+
+        {/* Button */}
+        <TextButton
+          label="Continue"
+          buttonContainerStyle={{height: 50}}
+          onPress={() => {
+            value === 'Request for Quotation'
+              ? navigateToTab('Quotation')
+              : navigateToTab('Freight');
+            hideModal();
+          }}
+        />
       </View>
     </BottomSheetModal>
   );

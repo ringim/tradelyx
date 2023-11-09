@@ -1,5 +1,5 @@
 import {View, Text, ScrollView} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {MotiView} from 'moti';
 import FastImage from 'react-native-fast-image';

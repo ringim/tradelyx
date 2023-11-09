@@ -21,7 +21,7 @@ const AgentRequest = () => {
         data={dummyData?.rffAgentReq}
         showsVerticalScrollIndicator={false}
         scrollEnabled={false}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => `${item}`}
         estimatedItemSize={200}
         getItemType={({item}: any) => {
           return item;

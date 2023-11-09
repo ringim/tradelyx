@@ -69,8 +69,8 @@ const LandFreight = () => {
     ListCommodityCategoriesQueryVariables
   >(listCommodityCategories, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+     nextFetchPolicy: 'network-only',
   });
 
   const [loading, setLoading] = useState(false);
@@ -119,7 +119,6 @@ const LandFreight = () => {
       const input: CreateRFFInput = {
         id: uuidV4(),
         rffNo: referralCode(),
-        SType: 'RFF',
         productName: name,
         requestCategory: type?.title,
         rffType: RFFTYPE.LAND,

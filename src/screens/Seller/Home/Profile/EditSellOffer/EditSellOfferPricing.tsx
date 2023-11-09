@@ -9,11 +9,7 @@ import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 import {useMutation} from '@apollo/client';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
 import {
@@ -49,7 +45,6 @@ const EditSellOfferPricing = () => {
   const {control, setValue, handleSubmit}: any = useForm();
 
   const sellOfferDetails = route?.params?.sellOffer;
-  console.log(sellOfferDetails);
 
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -72,18 +67,22 @@ const EditSellOfferPricing = () => {
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
+  const [type, setType] = useState(sellOfferDetails?.unit);
   const [jobType, setJobType] = useState<any>(constants.filterUnit);
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
-  const [type2, setType2] = useState('');
+  const [type2, setType2] = useState(sellOfferDetails?.paymentMethod);
   const [jobType2, setJobType2] = useState<any>(constants.paymentMethod);
 
   const [open3, setOpen3] = useState(false);
   const [value3, setValue3] = useState(null);
-  const [type3, setType3] = useState('');
+  const [type3, setType3] = useState(sellOfferDetails?.paymentType);
   const [jobType3, setJobType3] = useState<any>(constants.paymentType);
+
+  function isSubmit() {
+    return date !== '';
+  }
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -141,14 +140,18 @@ const EditSellOfferPricing = () => {
   };
 
   useEffect(() => {
-    if (sellOfferDetails) {
-      setValue('qty', sellOfferDetails?.qtyMeasure);
+    let isCurrent = true;
+    if (sellOfferDetails && isCurrent) {
+      setValue('qty', sellOfferDetails?.qtyMeasure.toString());
       setValue('unit', sellOfferDetails?.unit);
-      setValue('basePrice', sellOfferDetails?.basePrice);
+      setValue('basePrice', sellOfferDetails?.basePrice.toString());
       setValue('paymentMethod', sellOfferDetails?.paymentMethod);
-      setValue('fobPrice', sellOfferDetails?.fobPrice);
+      setValue('fobPrice', sellOfferDetails?.fobPrice.toString());
       setValue('paymentType', sellOfferDetails?.paymentType);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [sellOfferDetails, setValue]);
 
   function requestForm() {
@@ -205,7 +208,7 @@ const EditSellOfferPricing = () => {
                   showTickIcon={true}
                   dropDownDirection="AUTO"
                   listMode="MODAL"
-                  value={value1}
+                  value={value1 || value}
                   items={jobType}
                   setOpen={setOpen}
                   setValue={setValue1}
@@ -357,7 +360,7 @@ const EditSellOfferPricing = () => {
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value3}
+                value={value3 || value}
                 items={jobType3}
                 setOpen={setOpen3}
                 setValue={setValue3}
@@ -440,7 +443,7 @@ const EditSellOfferPricing = () => {
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value2}
+                value={value2 || value}
                 items={jobType2}
                 setOpen={setOpen2}
                 setValue={setValue2}
@@ -575,7 +578,12 @@ const EditSellOfferPricing = () => {
             top: Platform.OS === 'android' ? 10 : 0,
           }}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding * 1.2,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+              marginTop: 0,
+            }}
             label="Post Sell Offer"
             labelStyle={{...FONTS.h4}}
             onPress={handleSubmit(onSubmit)}

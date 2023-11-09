@@ -109,6 +109,7 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -124,10 +125,6 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -176,6 +173,7 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -191,10 +189,6 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -243,6 +237,7 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -258,10 +253,6 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -760,9 +751,6 @@ export const createCategories = /* GraphQL */ `mutation CreateCategories(
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -818,9 +806,6 @@ export const updateCategories = /* GraphQL */ `mutation UpdateCategories(
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -876,9 +861,6 @@ export const deleteCategories = /* GraphQL */ `mutation DeleteCategories(
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -934,9 +916,6 @@ export const createCommodityCategory = /* GraphQL */ `mutation CreateCommodityCa
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1044,6 +1023,7 @@ export const createCommodityCategory = /* GraphQL */ `mutation CreateCommodityCa
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1059,10 +1039,6 @@ export const createCommodityCategory = /* GraphQL */ `mutation CreateCommodityCa
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1115,9 +1091,6 @@ export const updateCommodityCategory = /* GraphQL */ `mutation UpdateCommodityCa
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1225,6 +1198,7 @@ export const updateCommodityCategory = /* GraphQL */ `mutation UpdateCommodityCa
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1240,10 +1214,6 @@ export const updateCommodityCategory = /* GraphQL */ `mutation UpdateCommodityCa
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1296,9 +1266,6 @@ export const deleteCommodityCategory = /* GraphQL */ `mutation DeleteCommodityCa
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1406,6 +1373,7 @@ export const deleteCommodityCategory = /* GraphQL */ `mutation DeleteCommodityCa
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1421,10 +1389,6 @@ export const deleteCommodityCategory = /* GraphQL */ `mutation DeleteCommodityCa
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1451,6 +1415,7 @@ export const createReview = /* GraphQL */ `mutation CreateReview(
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1471,6 +1436,7 @@ export const updateReview = /* GraphQL */ `mutation UpdateReview(
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1491,6 +1457,7 @@ export const deleteReview = /* GraphQL */ `mutation DeleteReview(
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1532,9 +1499,6 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1546,6 +1510,7 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1593,9 +1558,6 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1607,6 +1569,7 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1654,9 +1617,6 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1668,6 +1628,7 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1704,11 +1665,14 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -1719,6 +1683,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -1780,9 +1745,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1800,6 +1762,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1905,6 +1868,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1920,12 +1884,26 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -1960,11 +1938,14 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -1975,6 +1956,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -2036,9 +2018,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -2056,6 +2035,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -2161,6 +2141,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -2176,12 +2157,26 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -2216,11 +2211,14 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -2231,6 +2229,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -2292,9 +2291,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -2312,6 +2308,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -2417,6 +2414,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -2432,12 +2430,26 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -2452,4 +2464,73 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ` as GeneratedMutation<
   APITypes.DeleteUserMutationVariables,
   APITypes.DeleteUserMutation
+>;
+export const createWishlist = /* GraphQL */ `mutation CreateWishlist(
+  $input: CreateWishlistInput!
+  $condition: ModelWishlistConditionInput
+) {
+  createWishlist(input: $input, condition: $condition) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateWishlistMutationVariables,
+  APITypes.CreateWishlistMutation
+>;
+export const updateWishlist = /* GraphQL */ `mutation UpdateWishlist(
+  $input: UpdateWishlistInput!
+  $condition: ModelWishlistConditionInput
+) {
+  updateWishlist(input: $input, condition: $condition) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateWishlistMutationVariables,
+  APITypes.UpdateWishlistMutation
+>;
+export const deleteWishlist = /* GraphQL */ `mutation DeleteWishlist(
+  $input: DeleteWishlistInput!
+  $condition: ModelWishlistConditionInput
+) {
+  deleteWishlist(input: $input, condition: $condition) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteWishlistMutationVariables,
+  APITypes.DeleteWishlistMutation
 >;

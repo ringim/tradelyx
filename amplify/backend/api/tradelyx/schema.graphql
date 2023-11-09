@@ -25,7 +25,7 @@ enum OrderType {
 type Order @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime!
-  SType: String!
+  SType: String
     @index(
       name: "ordersByDate"
       queryField: "ordersByDate"
@@ -61,8 +61,8 @@ enum RFQTYPE {
 
 type SellOffer @model @auth(rules: [{allow: public}]) {
   id: ID!
-  createdAt: AWSDateTime!
-  SType: String!
+  createdAt: AWSDateTime
+  SType: String
     @index(
       name: "sellOffersByDate"
       queryField: "sellOffersByDate"
@@ -74,6 +74,7 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
   tags: [String]
   productName: String
   description: String
+  rating: Float
   image: String
   images: [String]
   rfqType: String
@@ -89,10 +90,6 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
   paymentType: String
   paymentMethod: String
   offerValidity: String
-  storeName: String
-  storeImage: String
-  storeAddress: String
-  storeRating: Float
 
   userID: ID! @index(name: "byUser")
   commoditycategoryID: ID! @index(name: "byCommodityCategory")
@@ -102,7 +99,7 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
 type RFQ @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime!
-  SType: String!
+  SType: String
     @index(
       name: "rfqByDate"
       queryField: "rfqByDate"
@@ -150,7 +147,7 @@ enum RFF_REQUEST_TYPE {
 
 type RFF @model @auth(rules: [{allow: public}]) {
   id: ID!
-  SType: String!
+  SType: String
     @index(
       name: "rffByDate"
       queryField: "rffByDate"
@@ -217,6 +214,7 @@ type Review @model @auth(rules: [{allow: public}]) {
   name: String
   rating: Float
   comment: String
+  forUserID: String
   userID: ID! @index(name: "byUser")
   productID: ID! @index(name: "byProduct")
 }
@@ -224,7 +222,7 @@ type Review @model @auth(rules: [{allow: public}]) {
 type Product @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime!
-  SType: String!
+  SType: String
     @index(
       name: "productByDate"
       queryField: "productByDate"
@@ -252,9 +250,6 @@ type Product @model @auth(rules: [{allow: public}]) {
   productDocs: [String]
   productCert: String
   documents: [String]
-  storeName: String
-  storeImage: String
-  storeAddress: String
   category: String
   commodityCategory: String
 
@@ -296,11 +291,14 @@ type User @model @auth(rules: [{allow: public}]) {
   state: String
   zipCode: String
   lga: String
+  website: String
+  incorporateDate: String
+  rcNumber: String
   totalOrders: Int
   level: String
   identification: String
   identificationNumber: String
-  identityImage: String
+  identityDocs: [String]
   keyProduct: String
   country: String
   inviteCode: String
@@ -311,6 +309,7 @@ type User @model @auth(rules: [{allow: public}]) {
   images: [String]
   businessType: String
   certifications: String
+  certsDoc: [String]
   mainMarkets: [String]
   memberShipType: String
   sellerLevel: String
@@ -327,4 +326,24 @@ type User @model @auth(rules: [{allow: public}]) {
   RFQS: [RFQ] @hasMany(indexName: "byUser", fields: ["id"])
   RFFS: [RFF] @hasMany(indexName: "byUser", fields: ["id"])
   SellOffers: [SellOffer] @hasMany(indexName: "byUser", fields: ["id"])
+  Wishlists: [Wishlist] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type Wishlist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "WishlistByDate"
+      queryField: "WishlistByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  productImage: String
+  title: String
+  supplyCapacity: String
+  minOrderQty: String
+  fobPrice: Float
+  productID: String
+
+  userID: ID! @index(name: "byUser")
 }

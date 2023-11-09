@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator, RefreshControl} from 'react-native';
+import {View, ActivityIndicator, RefreshControl} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
@@ -30,8 +30,8 @@ const RFQDomestic = () => {
     RfqByDateQueryVariables
   >(rfqByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -57,11 +57,14 @@ const RFQDomestic = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
       const items =
-        data?.rfqByDate?.items
-          ?.filter(rfq => rfq?.rfqType === RFQTYPE?.DOMESTIC)
-          ?.filter((item: any) => !item?._deleted) || [];
+        (isCurrent &&
+          data?.rfqByDate?.items
+            ?.filter(rfq => rfq?.rfqType === RFQTYPE?.DOMESTIC)
+            ?.filter((item: any) => !item?._deleted)) ||
+        [];
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -71,6 +74,9 @@ const RFQDomestic = () => {
         autoClose: 1500,
       });
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [loading]);
 
   if (loading) {
@@ -98,7 +104,7 @@ const RFQDomestic = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
+          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 
@@ -123,7 +129,7 @@ const RFQDomestic = () => {
                 item={item}
                 onCopy={copyToClipboard}
                 onPress={() =>
-                  navigation.navigate('RFQDetail', {sellerItem: item})
+                  navigation.navigate('DomesticRFQDetail', {rfqItem: item})
                 }
               />
             );

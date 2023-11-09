@@ -41,11 +41,15 @@ const App = () => {
 
   // HIDE SPLASH SCREEN && LOCK ORIENTATION
   useEffect(() => {
+    let isCurrent = true;
     setTimeout(() => {
       RNBootSplash.hide();
       Orientation.lockToPortrait();
     }, 1500);
     enableLatestRenderer();
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   // ASYNC STORAGE FOR GET ITEM ONBOARDING
@@ -59,7 +63,11 @@ const App = () => {
   };
 
   useEffect(() => {
-    getStorage();
+    let isCurrent = true;
+    isCurrent && getStorage();
+    return () => {
+      isCurrent = false;
+    };
   }, []);
 
   return (

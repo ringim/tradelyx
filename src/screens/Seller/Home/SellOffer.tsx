@@ -1,19 +1,14 @@
-import {View, Text, TouchableOpacity, Platform} from 'react-native';
+import {View, Text, Platform} from 'react-native';
 import React, {useState, useCallback} from 'react';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {Controller, useForm} from 'react-hook-form';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
+import {useForm} from 'react-hook-form';
+import {Asset} from 'react-native-image-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Tags from 'react-native-tags';
 import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {v4 as uuidV4} from 'uuid';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
@@ -25,6 +20,9 @@ import {
   QuotationProgress2,
   SingleImage,
   TextButton,
+  Tags as RenderTags,
+  RequestTags,
+  MultipleImages,
 } from '../../../components';
 import {
   CreateSellOfferInput,
@@ -36,9 +34,8 @@ import {
 import {useAuthContext} from '../../../context/AuthContext';
 import {createSellOffer} from '../../../queries/RequestQueries';
 import {referralCode} from '../../../utilities/Utils';
-import {uploadMedia} from '../../../utilities/service';
+import {openImageGallery, uploadMedia} from '../../../utilities/service';
 import {listCommodityCategories} from '../../../queries/ProductQueries';
-import {FlatList} from 'react-native-gesture-handler';
 
 interface ISellOffer {
   sellOffer: string;
@@ -78,29 +75,8 @@ const SellOffer = () => {
     }, [onLoad]),
   );
 
-  const openImageGallery = () => {
-    launchImageLibrary(
-      {mediaType: 'photo', selectionLimit: 7, quality: 0.5},
-      ({didCancel, errorCode, assets}) => {
-        if (!didCancel && !errorCode && assets && assets.length > 0) {
-          if (assets.length === 1) {
-            setSelectedPhoto(assets[0].uri);
-          } else if (assets.length > 1) {
-            assets.map(asset => asset.uri) as string[];
-            setSelectedPhotos(assets);
-          }
-        }
-      },
-    );
-  };
-
-  const onTagPress = (index: any, tagLabel: any, event: any, deleted: any) => {
-    return {
-      index,
-      tagLabel,
-      event,
-      deleted: deleted ? 'deleted' : 'not deleted',
-    };
+  const onTagPress = (deleted: any) => {
+    return deleted ? 'deleted' : 'not deleted';
   };
 
   const onChangeTags = (tags: any) => {
@@ -108,42 +84,7 @@ const SellOffer = () => {
   };
 
   const renderTag = ({tag, index, onPress}: any) => {
-    return (
-      <TouchableOpacity
-        key={`${tag}-${index}`}
-        onPress={onPress}
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.NeutralBlue6,
-          borderRadius: SIZES.semi_margin,
-          padding: SIZES.base,
-          paddingVertical: 5,
-          margin: SIZES.base,
-          marginRight: 2,
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{color: COLORS.white, ...FONTS.cap1, fontWeight: '500'}}>
-            {tag}
-          </Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: 5,
-            backgroundColor: COLORS.white,
-            borderRadius: SIZES.padding,
-            marginLeft: 4,
-          }}>
-          <FastImage
-            source={icons.close}
-            resizeMode={FastImage.resizeMode.contain}
-            tintColor={COLORS.NeutralBlue5}
-            style={{width: 6, height: 6}}
-          />
-        </View>
-      </TouchableOpacity>
-    );
+    return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
   // CREATE REQUEST QUOTATION
@@ -160,7 +101,6 @@ const SellOffer = () => {
     try {
       const input: CreateSellOfferInput = {
         id: uuidV4(),
-        SType: 'SELLOFFER',
         sellOfferID: referralCode(),
         title: sellOffer,
         requestCategory: type?.title,
@@ -293,47 +233,13 @@ const SellOffer = () => {
         />
 
         {/* Tags or Keywords */}
-        <View style={{marginTop: SIZES.semi_margin}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-            }}>
-            Tags or Keywords
-          </Text>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 10,
-              borderWidth: 0.5,
-              borderColor: COLORS.Neutral7,
-              borderRadius: SIZES.semi_margin,
-            }}>
-            <Tags
-              containerStyle={{
-                margin: 4,
-                borderRadius: SIZES.base,
-                justifyContent: 'flex-start',
-              }}
-              initialText={''}
-              textInputProps={{
-                placeholderTextColor: COLORS.Neutral7,
-                placeholder:
-                  'Add any type of item e.g. vegetables, agriculture',
-              }}
-              inputStyle={{
-                backgroundColor: COLORS.white,
-                color: COLORS.black,
-                ...FONTS.body3,
-              }}
-              initialTags={initialTags}
-              onChangeTags={onChangeTags}
-              onTagPress={onTagPress}
-              renderTag={renderTag}
-            />
-          </View>
-        </View>
+        <RequestTags
+          initialTags={initialTags}
+          onChangeTags={onChangeTags}
+          onTagPress={onTagPress}
+          renderTag={renderTag}
+          title={'Tags or Keywords'}
+        />
 
         {/* Product name */}
         <FormInput
@@ -372,70 +278,18 @@ const SellOffer = () => {
           </Text>
 
           {!selectedPhoto && selectedPhotos?.length === 0 ? (
-            <ImageUpload onPress={openImageGallery} />
-          ) : selectedPhoto ? (
-            <SingleImage
-              selectedPhoto={selectedPhoto}
-              setSelectedPhoto={setSelectedPhoto}
+            <ImageUpload
+              onPress={() =>
+                openImageGallery(setSelectedPhoto, setSelectedPhotos)
+              }
             />
+          ) : selectedPhoto ? (
+            <SingleImage product={selectedPhoto} onPress={setSelectedPhoto} />
           ) : (
-            <View
-              style={{
-                marginTop: selectedPhotos ? SIZES.semi_margin : SIZES.radius,
-              }}>
-              <FlatList
-                data={selectedPhotos}
-                keyExtractor={(item: any) => `${item.uri}`}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({item, index}) => {
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        width: 100,
-                        height: 100,
-                        marginLeft: index == 0 ? 2 : 15,
-                        marginRight:
-                          index == selectedPhotos.length - 1
-                            ? SIZES.padding
-                            : 0,
-                        marginTop: SIZES.radius,
-                      }}>
-                      <FastImage
-                        source={item}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: SIZES.base,
-                        }}
-                        resizeMode={FastImage.resizeMode.cover}
-                      />
-                      <TouchableOpacity
-                        onPress={() => deleteItem(item?.uri)}
-                        style={{
-                          padding: 6,
-                          top: -18,
-                          right: -10,
-                          borderRadius: SIZES.margin,
-                          backgroundColor: COLORS.white,
-                          position: 'absolute',
-                        }}>
-                        <FastImage
-                          source={icons.remove}
-                          style={{width: 17, height: 17}}
-                          tintColor={COLORS.Rose5}
-                          resizeMode={FastImage.resizeMode.contain}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }}
-                ListFooterComponent={
-                  <View style={{marginBottom: selectedPhotos?.length - 100}} />
-                }
-              />
-            </View>
+            <MultipleImages
+              selectedPhotos={selectedPhotos}
+              setSelectedPhotos={setSelectedPhotos}
+            />
           )}
         </View>
       </View>

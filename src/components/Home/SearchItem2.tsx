@@ -5,36 +5,48 @@ import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
+import {useQuery} from '@apollo/client';
+import {GetUserQuery, GetUserQueryVariables, Product} from '../../API';
+import {getUser} from '../../queries/UserQueries';
 
 interface IItem {
-  item: string | any;
+  item: Product | any;
   onPress?: any;
   containerStyle?: any;
   profile_image: any;
-  profile_image2: any;
 }
 
-const SearchItem2 = ({
-  containerStyle,
-  profile_image,
-  profile_image2,
-  item,
-  onPress,
-}: IItem) => {
+const SearchItem2 = ({containerStyle, profile_image, item, onPress}: IItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
+  // GET USER
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {
+      id: item?.userID,
+    },
+  });
+  const userInfo: any = data?.getUser;
+
   useEffect(() => {
-    if (profile_image) {
+    let isCurrent = true;
+    if (profile_image && isCurrent) {
       Storage.get(profile_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [profile_image]);
 
   useEffect(() => {
-    if (profile_image2) {
-      Storage.get(profile_image).then(setImageUri2);
+    let isCurrent = true;
+    if (userInfo?.logo && isCurrent) {
+      Storage.get(userInfo?.logo).then(setImageUri2);
     }
-  }, [profile_image2]);
+    return () => {
+      isCurrent = false;
+    };
+  }, [userInfo?.logo]);
 
   return (
     <TouchableOpacity
@@ -101,7 +113,7 @@ const SearchItem2 = ({
               <Text
                 numberOfLines={2}
                 style={{...FONTS.body3, color: COLORS.Neutral1}}>
-                {item?.storeName}
+                {userInfo?.title}
               </Text>
             </View>
           </View>

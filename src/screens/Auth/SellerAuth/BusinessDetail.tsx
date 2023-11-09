@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FastImage from 'react-native-fast-image';
@@ -15,6 +15,8 @@ import {
   Tags as RenderTags,
   RequestTags,
   TextButton,
+  UploadID,
+  UploadedID,
 } from '../../../components';
 import {SetupNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
@@ -25,12 +27,16 @@ import {
 import {updateUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {IEditableUser} from '../../../components/Others/CustomInput';
+import {selectFile2, uploadFile} from '../../../utilities/service';
 
 type CompleteAccountData = {
   formData: IEditableUser;
   businessType: string;
   totalStaff: any;
   certifications: string;
+  incorporateDate: string;
+  rcNumber: string;
+  file: any;
 };
 
 const BusinessDetail = () => {
@@ -43,8 +49,9 @@ const BusinessDetail = () => {
   const [open4, setOpen4] = useState(false);
   const [value4, setValue4] = useState(null);
   const [busType, setBusType] = useState('');
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [businessType, setBusinessType] = useState<any>(constants.businessType);
-
+  const [date, setDate] = useState('');
   const [initialTags, setInitialTags] = useState(['Africa', 'Europe', 'Asia']);
   const [initialTags2, setInitialTags2] = useState([
     'English',
@@ -76,6 +83,26 @@ const BusinessDetail = () => {
     return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
+  const handleDateChange = (text: any) => {
+    const cleanedText = text.replace(/[^0-9]/g, '');
+    if (cleanedText.length <= 4) {
+      // Format for the year (e.g., "YYYY")
+      setDate(cleanedText);
+    } else if (cleanedText.length <= 6) {
+      // Format for the year and month (e.g., "YYYY/MM")
+      setDate(cleanedText.slice(0, 4) + '/' + cleanedText.slice(4));
+    } else {
+      // Format for the full date (e.g., "YYYY/MM/DD")
+      setDate(
+        cleanedText.slice(0, 4) +
+          '/' +
+          cleanedText.slice(4, 6) +
+          '/' +
+          cleanedText.slice(6),
+      );
+    }
+  };
+
   // UPDATE USER DETAILS
   const [doUpdateUser] = useMutation<
     UpdateUserMutation,
@@ -85,6 +112,9 @@ const BusinessDetail = () => {
   const onSubmit = async ({
     certifications,
     totalStaff,
+    incorporateDate,
+    file,
+    rcNumber,
   }: CompleteAccountData) => {
     if (uploading) {
       return;
@@ -96,10 +126,19 @@ const BusinessDetail = () => {
         totalStaff,
         businessType: busType,
         certifications,
+        incorporateDate,
+        rcNumber,
+        certsDoc: file,
         mainMarkets: initialTags,
         languages: initialTags2,
         accountType: 'SELLER',
       };
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+        );
+        input.certsDoc = fileKeys;
+      }
 
       await doUpdateUser({
         variables: {
@@ -122,6 +161,10 @@ const BusinessDetail = () => {
     }
   };
 
+  function isSubmit() {
+    return singleFile.length !== 0;
+  }
+
   function renderFormSection() {
     return (
       <View
@@ -129,6 +172,50 @@ const BusinessDetail = () => {
           marginTop: SIZES.padding,
           marginHorizontal: SIZES.semi_margin,
         }}>
+        {/* Date of Incorporation */}
+        <View>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Date of Incorporation
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={handleDateChange}
+            value={date}
+            placeholder="YYYY/MM/DD"
+            autoCapitalize="none"
+            placeholderTextColor={COLORS.gray}
+            style={{
+              // flex: 1,
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              marginTop: SIZES.base,
+              height: 50,
+              fontWeight: '500',
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
+
+        {/* RC Number */}
+        <FormInput
+          control={control}
+          label="RC Number"
+          placeholder="Enter your RC Number"
+          name="rcNumber"
+          rules={{
+            required: 'RC Number name is required',
+          }}
+          containerStyle={{marginTop: SIZES.radius}}
+        />
+
         {/* Certification */}
         <FormInput
           control={control}
@@ -248,7 +335,8 @@ const BusinessDetail = () => {
           onChangeTags={onChangeTags}
           onTagPress={onTagPress}
           renderTag={renderTag}
-          title={' Main Markets'}
+          title={'Main Markets'}
+          contentStyle={{marginTop: SIZES.padding}}
         />
 
         {/* Languages */}
@@ -259,6 +347,28 @@ const BusinessDetail = () => {
           renderTag={renderTag2}
           title={'Languages Spoken'}
         />
+
+        {/* Upload Identity Doc */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Company Documents'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Upload Company Documents"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }
@@ -292,11 +402,13 @@ const BusinessDetail = () => {
 
           {renderFormSection()}
           <TextButton
+            disabled={isSubmit() ? false : true}
             label={uploading ? 'Loading...' : 'Continue'}
             buttonContainerStyle={{
               alignSelf: 'center',
               marginTop: SIZES.padding * 2,
               marginBottom: 100,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             onPress={handleSubmit(onSubmit)}
           />

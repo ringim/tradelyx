@@ -22,21 +22,29 @@ const StoreBannerInfo = ({
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
   useEffect(() => {
-    if (banner_image) {
+    let isCurrent = true;
+    if (banner_image && isCurrent) {
       Storage.get(banner_image).then(setImageUri2);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [banner_image]);
 
   useEffect(() => {
-    if (logo) {
+    let isCurrent = true;
+    if (logo && isCurrent) {
       Storage.get(logo).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [logo]);
 
   return (
     <View>
       <ImageBackground
-        source={{uri: imageUri || DEFAULT_BANNER_IMAGE}}
+        source={{uri: imageUri2 || DEFAULT_BANNER_IMAGE}}
         resizeMode="cover"
         style={{width: '100%', height: 207}}>
         <View
@@ -52,7 +60,7 @@ const StoreBannerInfo = ({
             marginTop: 90,
           }}>
           <FastImage
-            source={{uri: imageUri2 || DEFAULT_PROFILE_IMAGE}}
+            source={{uri: imageUri || DEFAULT_PROFILE_IMAGE}}
             style={{width: 80, height: 80, borderRadius: 40}}
             resizeMode={FastImage.resizeMode.cover}
           />
@@ -86,7 +94,9 @@ const StoreBannerInfo = ({
           />
         </View>
         <View style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
-          <Text numberOfLines={2} style={{...FONTS.body3, color: COLORS.Neutral6}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.body3, color: COLORS.Neutral6}}>
             {address}
           </Text>
         </View>

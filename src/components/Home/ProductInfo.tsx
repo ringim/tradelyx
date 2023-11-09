@@ -1,7 +1,8 @@
 import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
+import ImageModal, {ImageDetail} from 'react-native-image-modal';
 import {FlatList} from 'react-native-gesture-handler';
 
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
@@ -10,10 +11,16 @@ import {DUMMY_IMAGE} from '../../utilities/Utils';
 const ProductInfo = ({image, tags, name}: any) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
+  const element = useRef<ImageDetail>(null);
+
   useEffect(() => {
-    if (image) {
+    let isCurrent = true;
+    if (image && isCurrent) {
       Storage.get(image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [image]);
 
   return (
@@ -44,12 +51,28 @@ const ProductInfo = ({image, tags, name}: any) => {
           <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>Information</Text>
         </View>
       </View>
+      
       {/* product image */}
       <View style={{marginTop: SIZES.semi_margin}}>
-        <FastImage
-          source={{uri: imageUri || DUMMY_IMAGE}}
-          resizeMode={FastImage.resizeMode.cover}
-          style={{width: 200, height: 200, borderRadius: SIZES.radius}}
+        <ImageModal
+          resizeMode="cover"
+          imageBackgroundColor={COLORS.white}
+          isTranslucent={false}
+          swipeToDismiss={false}
+          modalRef={element}
+          style={{
+            width: 200,
+            height: 200,
+            borderRadius: SIZES.base,
+          }}
+          source={{
+            uri: imageUri || DUMMY_IMAGE,
+          }}
+          onOpen={() => {
+            setTimeout(() => {
+              element.current?.close();
+            }, 10000);
+          }}
         />
       </View>
 
@@ -81,13 +104,14 @@ const ProductInfo = ({image, tags, name}: any) => {
         <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>Tags</Text>
         <FlatList
           data={tags}
-          keyExtractor={item => `${item?.id}`}
+          keyExtractor={item => `${item}`}
           showsVerticalScrollIndicator={false}
           style={{marginTop: 4}}
           renderItem={({item, index}) => {
             /* Tags list */
             return (
               <View
+                key={index}
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',

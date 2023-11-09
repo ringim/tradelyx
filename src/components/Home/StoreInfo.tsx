@@ -21,9 +21,13 @@ const StoreInfo = ({
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
   useEffect(() => {
-    if (image) {
+    let isCurrent = true;
+    if (image && isCurrent) {
       Storage.get(image).then(setImageUri2);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [image]);
 
   return (
@@ -44,7 +48,12 @@ const StoreInfo = ({
         <FastImage
           source={{uri: imageUri2 || DUMMY_IMAGE}}
           resizeMode={FastImage.resizeMode.cover}
-          style={{width: 40, height: 40, borderRadius: SIZES.base, ...logoStyle}}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: SIZES.base,
+            ...logoStyle,
+          }}
         />
       </View>
 

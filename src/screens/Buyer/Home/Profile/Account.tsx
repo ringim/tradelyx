@@ -9,12 +9,7 @@ import {Auth} from 'aws-amplify';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {
-  Root,
-  ALERT_TYPE,
-  Toast,
-} from 'react-native-alert-notification';
-import {Asset} from 'react-native-image-picker';
+import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 import {ProfileStackNavigatorParamList} from '../../../../components/navigation/BuyerNav/type/navigation';
 import {useAuthContext} from '../../../../context/AuthContext';
@@ -36,7 +31,6 @@ import {
   TextIconButton,
 } from '../../../../components';
 import {COLORS, SIZES, FONTS, icons} from '../../../../constants';
-import {onChangePhoto, uploadMedia} from '../../../../utilities/service';
 import {IEditableUser} from '../../../../components/Others/CustomInput';
 import {CountryCodeList} from '../../../../../types/types';
 
@@ -45,10 +39,8 @@ const Account = () => {
   const route = useRoute<any>();
 
   const {userID, authUser} = useAuthContext();
-
   const {control, handleSubmit, setValue} = useForm<any>();
 
-  const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [uploading, setUploading] = useState(false);
   const [displayAddress, setDisplayAddress] = useState('Add your address');
 
@@ -71,8 +63,8 @@ const Account = () => {
   >(updateUser);
 
   useEffect(() => {
-    let unmounted = false;
-    if (userAccount) {
+    let unmounted = true;
+    if (userAccount && unmounted) {
       setValue('name', userAccount.name);
       setValue('email', userAccount.email);
       setValue('phone_number', userAccount.phone_number);
@@ -82,7 +74,7 @@ const Account = () => {
       setValue('keyProduct', userAccount.keyProduct);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [userAccount, setValue]);
 
@@ -98,9 +90,6 @@ const Account = () => {
         address: displayAddress,
         ...formData,
       };
-      if (selectedPhoto?.uri) {
-        input.logo = await uploadMedia(selectedPhoto.uri);
-      }
 
       // console.log('edut ', data);
       await doUpdateUser({
@@ -170,8 +159,8 @@ const Account = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setDisplayAddress(
         route.params?.userAddress.description?.formatted_address,
       );
@@ -179,7 +168,7 @@ const Account = () => {
     }
     getHomeAddress();
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [setValue, route.params?.userAddress]);
 
@@ -244,19 +233,10 @@ const Account = () => {
         />
 
         {/* street Address */}
-        <View style={{marginTop: SIZES.radius}}>
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-            }}>
-            Address
-          </Text>
-          <AddressDetails
-            address={userAccount?.address || displayAddress}
-            onPress={() => navigation.navigate('AccountAddress')}
-          />
-        </View>
+        <AddressDetails
+          address={userAccount?.address || displayAddress}
+          onPress={() => navigation.navigate('AccountAddress')}
+        />
 
         {/* Country */}
         <Controller
@@ -400,8 +380,12 @@ const Account = () => {
           <AccountImage
             contentStyle={{top: 0}}
             name={userAccount?.name}
-            onEdit={() => onChangePhoto(setSelectedPhoto)}
-            profile_image={selectedPhoto?.uri}
+            profile_image={userAccount?.logo}
+            onEdit={() =>
+              navigation.navigate('EditAccountImage', {
+                imageID: userAccount?.id,
+              })
+            }
           />
 
           {renderForm()}

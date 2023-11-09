@@ -22,8 +22,8 @@ const CategorySection = () => {
       limit: 8,
     },
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
   });
   const allCategories: any =
     data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];

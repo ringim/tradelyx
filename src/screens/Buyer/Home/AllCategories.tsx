@@ -1,4 +1,4 @@
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -6,10 +6,11 @@ import {useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import {COLORS, SIZES} from '../../../constants';
+import {COLORS, FONTS, SIZES, images} from '../../../constants';
 import {Header, HorizontalItem, NoItem, SearchBox2} from '../../../components';
 import {ListCategoriesQuery, ListCategoriesQueryVariables} from '../../../API';
 import {listCategories} from '../../../queries/ProductQueries';
+import FastImage from 'react-native-fast-image';
 
 const AllCategories = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -24,8 +25,8 @@ const AllCategories = () => {
     ListCategoriesQueryVariables
   >(listCategories, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
   });
   const allCategories: any =
     data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];
@@ -49,8 +50,9 @@ const AllCategories = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
-      const items = allCategories;
+      const items = isCurrent && allCategories;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -60,15 +62,10 @@ const AllCategories = () => {
         autoClose: 1500,
       });
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [loading]);
-
-  if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
-  }
 
   return (
     <Root>
@@ -83,31 +80,44 @@ const AllCategories = () => {
         />
 
         {/* list of categories */}
-        {filteredDataSource?.length === 0 ? (
-          <NoItem />
-        ) : (
-          <FlashList
-            data={filteredDataSource}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item?.id}`}
-            estimatedItemSize={200}
-            getItemType={({item}: any) => {
-              return item;
-            }}
-            renderItem={({item, index}) => {
-              return (
-                <HorizontalItem
-                  key={index}
-                  item={item}
-                  onPress={() =>
-                    navigation.navigate('CategoryItemList', {cateItem: item})
-                  }
-                />
-              );
-            }}
-            ListFooterComponent={<View style={{height: 200}} />}
-          />
-        )}
+        <FlashList
+          data={filteredDataSource}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => `${item?.id}`}
+          estimatedItemSize={200}
+          getItemType={({item}: any) => {
+            return item;
+          }}
+          renderItem={({item, index}) => {
+            return (
+              <HorizontalItem
+                key={index}
+                item={item}
+                onPress={() =>
+                  navigation.navigate('CategoryItemList', {cateItem: item})
+                }
+              />
+            );
+          }}
+          ListFooterComponent={
+            <View
+              style={{
+                marginBottom: filteredDataSource?.length - 1 && 300,
+              }}>
+              {loading && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 30,
+                  }}>
+                  <ActivityIndicator size="small" color={COLORS.primary6} />
+                </View>
+              )}
+            </View>
+          }
+        />
       </View>
     </Root>
   );

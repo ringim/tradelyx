@@ -31,8 +31,8 @@ const RFQInternational = () => {
     RfqByDateQueryVariables
   >(rfqByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -58,11 +58,14 @@ const RFQInternational = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
       const items =
-        data?.rfqByDate?.items
-          ?.filter(rfq => rfq?.rfqType === RFQTYPE?.INTERNATIONAL)
-          ?.filter((item: any) => !item?._deleted) || [];
+        (isCurrent &&
+          data?.rfqByDate?.items
+            ?.filter(rfq => rfq?.rfqType === RFQTYPE?.INTERNATIONAL)
+            ?.filter((item: any) => !item?._deleted)) ||
+        [];
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -72,6 +75,9 @@ const RFQInternational = () => {
         autoClose: 1500,
       });
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [loading]);
 
   if (loading) {
@@ -93,7 +99,7 @@ const RFQInternational = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
+          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 
@@ -118,7 +124,9 @@ const RFQInternational = () => {
                 item={item}
                 onCopy={copyToClipboard}
                 onPress={() =>
-                  navigation.navigate('RFQDetail', {sellerItem: item})
+                  navigation.navigate('InternationalDomesticRFQDetail', {
+                    rfqItem: item,
+                  })
                 }
               />
             );

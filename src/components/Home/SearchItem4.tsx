@@ -3,14 +3,16 @@ import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
 import dayjs from 'dayjs';
+import {useQuery} from '@apollo/client';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
-import {FlatList} from 'react-native-gesture-handler';
+import {GetUserQuery, GetUserQueryVariables, SellOffer} from '../../API';
+import {getUser} from '../../queries/UserQueries';
 
 interface IItem {
-  item: string | any;
+  item: SellOffer | any;
   onPress: any;
   containerStyle?: any;
   profile_image: any;
@@ -30,19 +32,35 @@ const SearchItem4 = ({
     maximumFractionDigits: 2,
   };
 
+  // GET USER
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {
+      id: item?.userID,
+    },
+  });
+  const userInfo: any = data?.getUser;
+
   const [imageUri2, setImageUri2] = useState<string | null>(null);
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    if (profile_image) {
+    let isCurrent = true;
+    if (profile_image && isCurrent) {
       Storage.get(profile_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [profile_image]);
 
   useEffect(() => {
-    if (profile_image2) {
+    let isCurrent = true;
+    if (profile_image2 && isCurrent) {
       Storage.get(profile_image2).then(setImageUri2);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [profile_image2]);
 
   const expiryDateString = item?.offerValidity;
@@ -92,7 +110,7 @@ const SearchItem4 = ({
             justifyContent: 'center',
           }}>
           <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {item?.storeName}
+            {userInfo?.title}
           </Text>
 
           {/* Rating, */}
@@ -121,7 +139,7 @@ const SearchItem4 = ({
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                {parseFloat(item?.storeRating).toFixed(0)}
+                {parseFloat(userInfo?.rating).toFixed(0)}
               </Text>
             </View>
           </View>
@@ -187,7 +205,7 @@ const SearchItem4 = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {item?.storeAddress}
+              {userInfo?.city}{', '} {userInfo?.country}
             </Text>
           </View>
         </View>

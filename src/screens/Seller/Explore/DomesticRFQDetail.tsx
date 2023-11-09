@@ -1,25 +1,53 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
-import {ScrollView} from 'react-native-gesture-handler';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 
 import {COLORS, SIZES, icons, FONTS} from '../../../constants';
 import {Header, TextButton} from '../../../components';
 import {
   ExploreStackNavigatorParamList,
-  RFQDetailRouteProp,
+  DomesticRFQDetailRouteProp,
 } from '../../../components/navigation/SellerNav/type/navigation';
 
-const RFQDetail = () => {
+const DomesticRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
-  const route: any = useRoute<RFQDetailRouteProp>();
+  const route: any = useRoute<DomesticRFQDetailRouteProp>();
+
+  const {
+    placeOriginFlag,
+    incoterms,
+    rfqNo,
+    description,
+    tags,
+    documents,
+    landmark,
+    expiryDate,
+    unit,
+    title,
+    qty,
+    paymentMethod,
+    countryName,
+    requestCategory,
+    productName,
+    budget,
+    city,
+    paymentType,
+    buyFrequency,
+  }: any = route?.params?.rfqItem;
 
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   };
+
+  const expiryDateString = expiryDate;
+  const expiryPeriod = dayjs(expiryDateString);
+  const currentDate = dayjs();
+  const daysUntilExpiry = expiryPeriod.diff(currentDate, 'day');
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -28,6 +56,7 @@ const RFQDetail = () => {
       <ScrollView
         style={{marginHorizontal: 5}}
         showsVerticalScrollIndicator={false}>
+        {/* Buyer from */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -52,7 +81,7 @@ const RFQDetail = () => {
               justifyContent: 'center',
             }}>
             <FastImage
-              source={route?.params?.sellerItem?.toImg}
+              source={{uri: placeOriginFlag}}
               resizeMode={FastImage.resizeMode.contain}
               style={{
                 width: 23,
@@ -72,7 +101,9 @@ const RFQDetail = () => {
                 ...FONTS.h5,
                 color: COLORS.Neutral1,
               }}>
-              {route?.params?.sellerItem?.to}
+              {city}
+              {', '}
+              {countryName}
             </Text>
           </View>
         </View>
@@ -98,7 +129,7 @@ const RFQDetail = () => {
                 ...FONTS.h5,
                 color: COLORS.Neutral1,
               }}>
-              {route?.params?.sellerItem?.orderID}
+              {rfqNo}
             </Text>
           </View>
 
@@ -140,7 +171,7 @@ const RFQDetail = () => {
           <View
             style={{flex: 1, marginLeft: SIZES.base, justifyContent: 'center'}}>
             <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-              {route?.params?.sellerItem?.productInfo?.expiry}
+              {expiryDate}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -154,7 +185,7 @@ const RFQDetail = () => {
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
               {' '}
-              {route?.params?.sellerItem?.productInfo?.expiryDays} days
+              {daysUntilExpiry} days
             </Text>
           </View>
         </View>
@@ -170,22 +201,60 @@ const RFQDetail = () => {
           }}
         />
 
+        {/* Request */}
+        <View
+          style={{
+            marginTop: SIZES.semi_margin,
+            flexDirection: 'row',
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+              Request For
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
+              {title}
+            </Text>
+          </View>
+        </View>
+
         {/* Description */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.base,
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'center',
           }}>
-          <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {route?.params?.sellerItem?.desc}
+          <Text
+            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+            Detail Description
+          </Text>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+              marginTop: 4,
+            }}>
+            {description}
           </Text>
         </View>
 
         {/* Product Name */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -205,7 +274,7 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {route?.params?.sellerItem?.productInfo?.name}
+              {productName}
             </Text>
           </View>
         </View>
@@ -213,7 +282,7 @@ const RFQDetail = () => {
         {/* Qty */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -233,7 +302,7 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {route?.params?.sellerItem?.productInfo?.qtyOffered} bags
+              {qty} bags
             </Text>
           </View>
         </View>
@@ -241,7 +310,7 @@ const RFQDetail = () => {
         {/* Buying frequency */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -261,7 +330,7 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {route?.params?.sellerItem?.productInfo?.buyFrequency}
+              {buyFrequency}
             </Text>
           </View>
         </View>
@@ -269,7 +338,7 @@ const RFQDetail = () => {
         {/* Incoterms */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -289,7 +358,7 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {route?.params?.sellerItem?.incoterms}
+              {incoterms}
             </Text>
           </View>
         </View>
@@ -297,7 +366,7 @@ const RFQDetail = () => {
         {/* Payment terms */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -317,15 +386,15 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {route?.params?.sellerItem?.productInfo?.paymentType}
+              {paymentType}
             </Text>
           </View>
         </View>
 
-        {/* Delivery Location: */}
+        {/* Payment methods */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -336,7 +405,7 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Delivery Location:
+              Payment Method
             </Text>
           </View>
           <View
@@ -345,28 +414,143 @@ const RFQDetail = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {route?.params?.sellerItem?.productInfo?.address2}
+              {paymentMethod}
             </Text>
           </View>
         </View>
 
-        {/* detailed desc */}
+        {/* Unit */}
         <View
           style={{
-            marginTop: SIZES.semi_margin,
+            marginTop: SIZES.base,
+            flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
           }}>
-          <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-              Detailed Description
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+              Unit
             </Text>
           </View>
           <View
             style={{
-              marginTop: SIZES.base,
+              justifyContent: 'center',
             }}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {route?.params?.sellerItem?.productInfo?.description}
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
+              {unit}
+            </Text>
+          </View>
+        </View>
+
+        {/* Category */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+              Product Category
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
+              {requestCategory}
+            </Text>
+          </View>
+        </View>
+
+        {/* Tags */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            marginHorizontal: SIZES.semi_margin,
+          }}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Tags</Text>
+          <FlatList
+            data={tags}
+            keyExtractor={item => `${item?.id}`}
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
+            style={{marginTop: 4}}
+            renderItem={({item, index}) => {
+              /* Tags list */
+              return (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{justifyContent: 'center'}}>
+                    <Text
+                      numberOfLines={2}
+                      style={{
+                        ...FONTS.body3,
+                        fontWeight: 'bold',
+                        color: COLORS.Neutral1,
+                      }}>
+                      .
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      marginLeft: SIZES.base,
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      numberOfLines={2}
+                      style={{
+                        ...FONTS.body3,
+                        fontWeight: 'bold',
+                        color: COLORS.Neutral1,
+                      }}>
+                      {item}
+                    </Text>
+                  </View>
+                </View>
+              );
+            }}
+          />
+        </View>
+
+        {/* landmark */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            marginHorizontal: SIZES.semi_margin,
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
+              Landmark
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
+              {landmark}
             </Text>
           </View>
         </View>
@@ -382,33 +566,52 @@ const RFQDetail = () => {
               Supporting Document:
             </Text>
           </View>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <View style={{justifyContent: 'center'}}>
-              <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-                {route?.params?.sellerItem?.productInfo?.doc}
-              </Text>
-            </View>
-            <View style={{justifyContent: 'center'}}>
-              <TextButton
-                label={'View'}
-                // onPress={() => navigation.navigate('ViewAgreement')}
-                labelStyle={{color: COLORS.primary1, ...FONTS.h5}}
-                buttonContainerStyle={{
-                  marginTop: 0,
-                  backgroundColor: COLORS.white,
-                  borderRadius: SIZES.base,
-                  borderWidth: 1,
-                  borderColor: COLORS.primary1,
-                  width: 80,
-                  height: 40,
-                }}
-              />
-            </View>
-          </View>
+          <FlatList
+            data={documents}
+            keyExtractor={item => `${item?.id}`}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={false}
+            renderItem={({item, index}) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginTop: SIZES.base,
+                  }}>
+                  <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Text
+                      numberOfLines={2}
+                      style={{
+                        ...FONTS.cap1,
+                        color: COLORS.secondary1,
+                        fontWeight: '500',
+                      }}>
+                      {item}
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, justifyContent: 'center'}}>
+                    <TextButton
+                      label={'View'}
+                      // onPress={() => navigation.navigate('ViewAgreement')}
+                      labelStyle={{color: COLORS.primary1, ...FONTS.h5}}
+                      buttonContainerStyle={{
+                        marginTop: 0,
+                        alignSelf: 'flex-end',
+                        backgroundColor: COLORS.white,
+                        borderRadius: SIZES.base,
+                        borderWidth: 1,
+                        borderColor: COLORS.primary1,
+                        width: 70,
+                        height: 35,
+                      }}
+                    />
+                  </View>
+                </View>
+              );
+            }}
+          />
         </View>
 
         {/* Price */}
@@ -420,7 +623,7 @@ const RFQDetail = () => {
             justifyContent: 'space-between',
             backgroundColor: COLORS.Neutral10,
             borderRadius: SIZES.radius,
-            marginBottom: 100,
+            marginBottom: 150,
             padding: SIZES.semi_margin,
           }}>
           <View style={{flex: 1, justifyContent: 'center'}}>
@@ -432,11 +635,7 @@ const RFQDetail = () => {
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦
-              {route?.params?.sellerItem?.productInfo?.price.toLocaleString(
-                'en-US',
-                options,
-              )}
+              ₦{budget.toLocaleString('en-US', options)}
             </Text>
           </View>
 
@@ -456,4 +655,4 @@ const RFQDetail = () => {
   );
 };
 
-export default RFQDetail;
+export default DomesticRFQDetail;

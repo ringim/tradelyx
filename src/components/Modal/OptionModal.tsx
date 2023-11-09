@@ -1,17 +1,11 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  Animated,
-  TouchableWithoutFeedback,
-  Modal,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Animated, TouchableWithoutFeedback, Modal} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {COLORS, FONTS, SIZES} from '../../constants';
+import TextButton from '../Button/TextButton';
 
-const SearchModal2 = ({isVisible, onClose, children}: any) => {
+const OptionModal = ({isVisible, onClose, onDelete, onEdit}: any) => {
   const modalAnimatedValue = useRef(new Animated.Value(0)).current;
 
   const [showFilterModal, setShowFilterModal] = useState(isVisible);
@@ -36,7 +30,7 @@ const SearchModal2 = ({isVisible, onClose, children}: any) => {
     inputRange: [0, 1],
     outputRange: [
       SIZES.height,
-      SIZES.height > 700 ? SIZES.height - 280 : SIZES.height - 280,
+      SIZES.height > 700 ? SIZES.height - 180 : SIZES.height - 180,
     ],
   });
 
@@ -67,47 +61,40 @@ const SearchModal2 = ({isVisible, onClose, children}: any) => {
             borderTopLeftRadius: SIZES.padding,
             backgroundColor: COLORS.white,
           }}>
-          {/* Header */}
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              margin: SIZES.margin,
-              marginHorizontal: SIZES.radius,
-              borderTopRightRadius: SIZES.padding,
-              borderTopLeftRadius: SIZES.padding,
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-            <TouchableOpacity
-              style={{justifyContent: 'center'}}
-              onPress={() => setShowFilterModal(false)}>
-              <FastImage
-                source={icons.backward}
-                tintColor={COLORS.Neutral1}
-                style={{height: 24, width: 24}}
-              />
-            </TouchableOpacity>
-            <View
-              style={{
-                flex: 1,
-                marginLeft: SIZES.margin,
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.h4,
-                  color: COLORS.Neutral1,
-                }}>
-                Select search type
-              </Text>
-            </View>
-          </View>
+            <TextButton
+              buttonContainerStyle={{
+                height: 48,
+                width: 250,
+                marginTop: SIZES.padding * 1.2,
+              }}
+              label="Edit Item"
+              labelStyle={{...FONTS.h4}}
+              onPress={onEdit}
+            />
 
-          {/* Contents */}
-          {children}
+            <TextButton
+              buttonContainerStyle={{
+                backgroundColor: COLORS.white,
+                borderWidth: 1,
+                borderColor: COLORS.Rose4,
+                marginTop: SIZES.semi_margin,
+                height: 48,
+                width: 250,
+              }}
+              label="Delete Item"
+              labelStyle={{...FONTS.h4, color: COLORS.Rose4}}
+              onPress={onDelete}
+            />
+          </View>
         </Animated.View>
       </View>
     </Modal>
   );
 };
 
-export default SearchModal2;
+export default OptionModal;

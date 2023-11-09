@@ -13,7 +13,7 @@ const MultipleFiles = ({data, containerStyle}: any) => {
       }}>
       <FlatList
         data={data}
-        keyExtractor={(item: any) => `${item.uri}`}
+        keyExtractor={(item: any) => `${item}`}
         showsHorizontalScrollIndicator={false}
         scrollEnabled={false}
         renderItem={({item, index}) => {
@@ -32,7 +32,7 @@ const MultipleFiles = ({data, containerStyle}: any) => {
                 }}>
                 <FastImage
                   tintColor={COLORS.secondary1}
-                  source={icons.summary}
+                  source={icons.summary} 
                   style={{width: 20, height: 20}}
                 />
               </View>

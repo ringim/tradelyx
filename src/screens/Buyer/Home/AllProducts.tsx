@@ -1,44 +1,21 @@
 import {ActivityIndicator, View} from 'react-native';
-import {FlatList, RefreshControl} from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
-import {useQuery} from '@apollo/client';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {FlashList} from '@shopify/flash-list';
 
-import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import {COLORS, SIZES} from '../../../constants';
-import {Header, NoItem, SearchBox2, SearchItem2} from '../../../components';
-import {productByDate} from '../../../queries/ProductQueries';
 import {
-  ModelSortDirection,
-  ProductByDateQuery,
-  ProductByDateQueryVariables,
-} from '../../../API';
+  AllProductsRouteProp,
+  HomeStackNavigatorParamList,
+} from '../../../components/navigation/BuyerNav/type/navigation';
+import {COLORS, SIZES} from '../../../constants';
+import {AltHeader, NoItem, SearchBox2, SearchItem2} from '../../../components';
 
 const AllProducts = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
+  const route = useRoute<AllProductsRouteProp>();
 
-  // LIST PRODUCTS
-  const {
-    data: newData,
-    loading,
-    refetch,
-  } = useQuery<ProductByDateQuery, ProductByDateQueryVariables>(productByDate, {
-    pollInterval: 500,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
-    variables: {
-      limit: 4,
-      SType: 'JOB',
-      sortDirection: ModelSortDirection.DESC,
-    },
-  });
-  const allProducts: any =
-    newData?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
+  const {loading, items} = route?.params;
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
@@ -49,7 +26,7 @@ const AllProducts = () => {
     if (text) {
       const newData = masterDataSource.filter(function (item: any) {
         const itemData = item.title
-          ? item.title.toLowerCase()
+          ? item?.title.toLowerCase()
           : ''.toLowerCase();
         const textData = text.toLowerCase();
         return itemData.indexOf(textData) > -1;
@@ -63,10 +40,11 @@ const AllProducts = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
-      const items = allProducts;
+      const filteredItems = items;
       setFilteredDataSource(items);
-      setMasterDataSource(items);
+      setMasterDataSource(filteredItems);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
@@ -74,7 +52,10 @@ const AllProducts = () => {
         autoClose: 1500,
       });
     }
-  }, [search]);
+    return () => {
+      isCurrent = false;
+    };
+  }, [loading]);
 
   if (loading) {
     return (
@@ -87,12 +68,18 @@ const AllProducts = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'All Products'} tintColor={COLORS.Neutral1} />
+        <AltHeader
+          title={'All Products'}
+          tintColor={COLORS.Neutral1}
+          onPress={() => navigation.navigate('Home')}
+        />
 
         {/* Search Box */}
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
+          showFiler={true}
+          onPress={() => navigation.navigate('SearchFilter')}
           containerStyle={{marginHorizontal: SIZES.margin}}
         />
 
@@ -101,10 +88,14 @@ const AllProducts = () => {
         )}
 
         {/* list of categories */}
-        <FlatList
+        <FlashList
           data={filteredDataSource}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => `${item?.id}`}
+          estimatedItemSize={200}
+          getItemType={({item}: any) => {
+            return item;
+          }}
           renderItem={({item, index}) => {
             return (
               <SearchItem2
@@ -118,13 +109,6 @@ const AllProducts = () => {
               />
             );
           }}
-          refreshControl={
-            <RefreshControl
-              tintColor={COLORS.primary4}
-              refreshing={loading}
-              onRefresh={() => refetch()}
-            />
-          }
           ListFooterComponent={
             <View style={{height: filteredDataSource?.length - 1 && 200}} />
           }

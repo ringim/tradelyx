@@ -1,16 +1,11 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
 import {useQuery} from '@apollo/client';
 import {FlashList} from '@shopify/flash-list';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
-import {COLORS, FONTS, SIZES, images} from '../../../constants';
+import {COLORS, SIZES} from '../../../constants';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   GetUserQuery,
@@ -56,18 +51,19 @@ const Explore = () => {
     sellOffersByDate,
     {
       pollInterval: 500,
-      fetchPolicy: 'cache-first',
-      nextFetchPolicy: 'cache-and-network',
+      fetchPolicy: 'network-only',
+      nextFetchPolicy: 'network-only',
       variables: {
         SType: 'SELLOFFER',
         sortDirection: ModelSortDirection.DESC,
       },
     },
   );
-  const sellOfer: any =
-    newData?.sellOffersByDate?.items.filter((item: any) => !item?._deleted) ||
-    [];
-  console.log('sellOffers', sellOfer);
+  const sellOffer: any =
+    newData?.sellOffersByDate?.items
+      .filter(st => st?.SType === 'SELLOFFER')
+      .filter((item: any) => !item?._deleted) || [];
+  // console.log('sellOffers', sellOfer);
 
   // SEARCH FILTER
   const searchFilterFunction = (text: any) => {
@@ -88,8 +84,9 @@ const Explore = () => {
   };
 
   useEffect(() => {
+    let isCurrent = true;
     try {
-      const items = sellOfer;
+      const items = isCurrent && sellOffer;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -99,15 +96,10 @@ const Explore = () => {
         autoClose: 1500,
       });
     }
-  }, [newLoad, loading]);
-
-  if (loading || newLoad) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center', marginTop: 40}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
-  }
+    return () => {
+      isCurrent = false;
+    };
+  }, [newLoad]);
 
   return (
     <Root>
@@ -132,12 +124,13 @@ const Explore = () => {
               <SearchBox2
                 searchFilterFunction={(text: any) => searchFilterFunction(text)}
                 search={search}
-                showFiler={true}
+                // showFiler={true}
                 containerStyle={{margin: SIZES.semi_margin}}
+                onPress={() => navigation.navigate('SearchFilter2')}
               />
 
               <PopularProducts
-                title={'Latest Sale Offers'}
+                title={'Latest Sell Offers'}
                 containerStyle={{marginTop: SIZES.base}}
               />
             </>
@@ -147,7 +140,6 @@ const Explore = () => {
               <SearchItem
                 key={index}
                 item={item}
-                logo={item?.storeImage}
                 item_image={item?.image}
                 item_image2={item?.images[0]}
                 onPress={() =>
@@ -167,30 +159,24 @@ const Explore = () => {
             />
           }
           ListFooterComponent={
-            <View style={{height: filteredDataSource?.length - 1 && 200}} />
+            <View
+              style={{
+                marginBottom: filteredDataSource?.length - 1 && 300,
+              }}>
+              {newLoad && (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 30,
+                  }}>
+                  <ActivityIndicator size="small" color={COLORS.primary6} />
+                </View>
+              )}
+            </View>
           }
         />
-
-        {/* No search items */}
-        {!filteredDataSource && (
-          <View style={{alignItems: 'center', top: -250}}>
-            <FastImage
-              source={images.NoItems}
-              style={{width: 150, height: 150}}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-            <Text
-              style={{
-                ...FONTS.body2,
-                color: COLORS.Neutral6,
-                textAlign: 'center',
-                margin: SIZES.margin,
-                lineHeight: 24,
-              }}>
-              There are no sell offer at the moment
-            </Text>
-          </View>
-        )}
       </View>
     </Root>
   );

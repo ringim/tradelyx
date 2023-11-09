@@ -3498,3 +3498,116 @@ export const crateTypes = [
     ),
   },
 ];
+
+export const allCategories = [
+  {
+    id: '1',
+    type: 'Veggies',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/veggies.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '2',
+    type: 'Bean',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/bean.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '3',
+    type: 'Woods',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/woods.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '4',
+    type: 'Plants',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/plant.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '5',
+    type: 'Grains',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/icons/dna.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '6',
+    type: 'Seeds',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/seeds.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '7',
+    type: 'Oils',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/Oil.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '8',
+    type: 'Nuts',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/nuts.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '9',
+    type: 'Dairy',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/dairy.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+  {
+    id: '10',
+    type: 'Fruits',
+    icon: () => (
+      <FastImage
+        resizeMode={FastImage.resizeMode.contain}
+        source={require('../src/assets/images/fruits.png')}
+        style={{width: 15, height: 15}}
+      />
+    ),
+  },
+];

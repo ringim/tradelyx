@@ -1,29 +1,73 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
+import {getUser} from '../../queries/UserQueries';
+import {GetUserQuery, GetUserQueryVariables, Product} from '../../API';
+import {useQuery} from '@apollo/client';
+import {AnyIfEmpty} from 'react-redux';
 
 interface IItem {
-  item: string | any;
-  onPress: any;
+  item: Product | any;
+  onPress?: any;
   containerStyle?: any;
   store_image?: string;
+  onRemove?: any;
+  showDelete?: boolean;
 }
 
-const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
+const PopularItem = ({
+  containerStyle,
+  store_image,
+  item,
+  onPress,
+  onRemove,
+  showDelete,
+}: IItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    if (store_image) {
+    let isCurrent = true;
+    if (store_image && isCurrent) {
       Storage.get(store_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [store_image]);
 
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: item?.userID,
+      },
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'network-only',
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="small" color={COLORS.primary6} />
+      </View>
+    );
+  }
+
   return (
-    <TouchableOpacity
+    <Pressable
       style={{
         marginTop: SIZES.radius,
         marginHorizontal: SIZES.semi_margin,
@@ -54,6 +98,7 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
             flex: 1,
             marginLeft: SIZES.radius,
             marginTop: SIZES.base,
+            justifyContent: 'center',
           }}>
           <View
             style={{
@@ -66,8 +111,8 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
                 tintColor={COLORS.Neutral6}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
-                  width: 17,
-                  height: 17,
+                  width: 15,
+                  height: 15,
                 }}
               />
             </View>
@@ -79,9 +124,13 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
                 justifyContent: 'center',
               }}>
               <Text
-                numberOfLines={2}
-                style={{...FONTS.cap1, color: COLORS.Neutral6}}>
-                {item?.storeName}
+                numberOfLines={1}
+                style={{
+                  ...FONTS.cap1,
+                  fontWeight: '500',
+                  color: COLORS.Neutral1,
+                }}>
+                {userInfo?.title}
               </Text>
             </View>
           </View>
@@ -99,7 +148,7 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
             </Text>
           </View>
 
-          <View style={{justifyContent: 'center', marginTop: 4}}>
+          <View style={{justifyContent: 'center', marginTop: 3}}>
             <Text
               numberOfLines={1}
               style={{...FONTS.sh3, color: COLORS.Neutral6}}>
@@ -112,13 +161,13 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginTop:SIZES.base,
+              marginTop: 5,
             }}>
             <View style={{justifyContent: 'center'}}>
               <FastImage
                 source={icons.location}
                 resizeMode={FastImage.resizeMode.contain}
-                tintColor={COLORS.Neutral6}
+                tintColor={COLORS.primary1}
                 style={{width: 17, height: 17}}
               />
             </View>
@@ -130,7 +179,8 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
               <Text
                 numberOfLines={1}
                 style={{...FONTS.cap1, color: COLORS.Neutral6}}>
-                {item?.storeAddress}
+                {userInfo?.city}
+                {', '} {userInfo?.country}
               </Text>
             </View>
 
@@ -147,6 +197,7 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
               <FastImage
                 resizeMode={FastImage.resizeMode.contain}
                 source={icons.rate}
+                tintColor={COLORS.secondary1}
                 style={{
                   width: 17,
                   height: 17,
@@ -157,17 +208,43 @@ const PopularItem = ({containerStyle, store_image, item, onPress}: IItem) => {
             <View
               style={{
                 flex: 1,
-                marginLeft: SIZES.base,
+                marginLeft: 2,
                 justifyContent: 'center',
               }}>
-              <Text style={{...FONTS.cap1, color: COLORS.Neutral6}}>
-                {parseFloat(item?.rating).toFixed(1) || 0}
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                  color: COLORS.Neutral6,
+                }}>
+                {parseFloat(userInfo?.rating).toFixed(1)}
               </Text>
             </View>
           </View>
         </View>
+
+        {/* delete icon */}
+        {showDelete && (
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              marginRight: SIZES.base,
+              top: -30,
+            }}
+            onPress={onRemove}>
+            <FastImage
+              source={icons.remove}
+              resizeMode={FastImage.resizeMode.contain}
+              tintColor={COLORS.Rose4}
+              style={{
+                width: 23,
+                height: 23,
+              }}
+            />
+          </TouchableOpacity>
+        )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

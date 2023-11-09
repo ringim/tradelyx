@@ -22,7 +22,7 @@ const QuotesRequestDetails = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<QuotesRequestDetailsRouteProp>();
 
-  console.log(route?.params?.quoteItem);
+  // console.log(route?.params?.quoteItem);
   const {
     placeOrigin,
     loadDate,
@@ -30,14 +30,21 @@ const QuotesRequestDetails = () => {
     containerSize,
     placeDestination,
     productName,
+    container,
+    containerType,
     rffType,
     rffNo,
     placeOriginName,
     packageType,
     placeDestinationName,
     placeOriginFlag,
+    weight,
     placeDestinationFlag,
+    notes,
     relatedServices,
+    handling,
+    height,
+    length,
   } = route?.params?.quoteItem;
 
   const onCopy = () => {
@@ -64,8 +71,8 @@ const QuotesRequestDetails = () => {
             backgroundColor: COLORS.white,
           }}>
           <QuoteRequestItem
-            to={placeDestinationName}
-            from={placeOriginName}
+            to={placeDestination}
+            from={placeOrigin}
             fromImg={placeOriginFlag}
             toImg={placeDestinationFlag}
           />
@@ -79,15 +86,22 @@ const QuotesRequestDetails = () => {
             transportMode={rffType}
             containerSize={containerSize}
             languages={relatedServices}
+            container={container}
+            containerType={containerType}
+            rffType={rffType}
+            weight={weight}
+            notes={notes}
+            handling={handling}
+            length={length}
+            height={height}
           />
 
           {/* Origin Details*/}
           <OriginDestinationDetails
-            address={placeOrigin}
-            name={route?.params?.quoteItem?.name}
+            address={placeOriginName}
             type={'Origin'}
             departDate={loadDate}
-            typeName={'Departure Date'}
+            typeName={'Ready to load date'}
           />
 
           {/* Destination Details  */}
@@ -96,7 +110,7 @@ const QuotesRequestDetails = () => {
               marginTop: SIZES.semi_margin,
               marginHorizontal: SIZES.base,
               borderRadius: SIZES.radius,
-              padding: SIZES.semi_margin,
+              padding: SIZES.radius,
               backgroundColor: COLORS.Neutral10,
             }}>
             <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
@@ -104,7 +118,7 @@ const QuotesRequestDetails = () => {
             </Text>
             <View
               style={{
-                marginTop: SIZES.radius,
+                marginTop: SIZES.base,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
@@ -140,7 +154,7 @@ const QuotesRequestDetails = () => {
                     ...FONTS.body3,
                     color: COLORS.Neutral6,
                   }}>
-                  {placeDestination}
+                  {placeDestinationName}
                 </Text>
               </View>
             </View>

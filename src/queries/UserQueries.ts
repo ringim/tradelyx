@@ -17,11 +17,14 @@ export const getUser = gql`
       state
       zipCode
       lga
+      website
+      incorporateDate
+      rcNumber
       totalOrders
       level
       identification
       identificationNumber
-      identityImage
+      identityDocs
       keyProduct
       country
       inviteCode
@@ -32,6 +35,7 @@ export const getUser = gql`
       images
       businessType
       certifications
+      certsDoc
       mainMarkets
       memberShipType
       sellerLevel
@@ -71,11 +75,14 @@ export const listUsers = gql`
         state
         zipCode
         lga
+        website
+        incorporateDate
+        rcNumber
         totalOrders
         level
         identification
         identificationNumber
-        identityImage
+        identityDocs
         keyProduct
         country
         inviteCode
@@ -86,6 +93,7 @@ export const listUsers = gql`
         images
         businessType
         certifications
+        certsDoc
         mainMarkets
         memberShipType
         sellerLevel
@@ -126,11 +134,14 @@ export const updateUser = gql`
       state
       zipCode
       lga
+      website
+      incorporateDate
+      rcNumber
       totalOrders
       level
       identification
       identificationNumber
-      identityImage
+      identityDocs
       keyProduct
       country
       inviteCode
@@ -141,6 +152,7 @@ export const updateUser = gql`
       images
       businessType
       certifications
+      certsDoc
       mainMarkets
       memberShipType
       sellerLevel
@@ -184,6 +196,7 @@ export const listReviews = gql`
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -191,6 +204,23 @@ export const listReviews = gql`
         __typename
       }
       nextToken
+      __typename
+    }
+  }
+`;
+
+export const getReview = gql`
+  query GetReview($id: ID!) {
+    getReview(id: $id) {
+      id
+      name
+      rating
+      comment
+      forUserID
+      userID
+      productID
+      createdAt
+      updatedAt
       __typename
     }
   }

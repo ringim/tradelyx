@@ -357,6 +357,7 @@ export const getSellOffer = gql`
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -372,10 +373,6 @@ export const getSellOffer = gql`
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       Orders {
@@ -435,6 +432,7 @@ export const sellOffersByDate = gql`
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -450,10 +448,6 @@ export const sellOffersByDate = gql`
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         Orders {
@@ -483,6 +477,7 @@ export const createSellOffer = gql`
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -498,10 +493,6 @@ export const createSellOffer = gql`
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       createdAt
@@ -525,6 +516,7 @@ export const updateSellOffer = gql`
       tags
       productName
       description
+      rating
       image
       images
       rfqType
@@ -540,10 +532,6 @@ export const updateSellOffer = gql`
       paymentType
       paymentMethod
       offerValidity
-      storeName
-      storeImage
-      storeAddress
-      storeRating
       userID
       commoditycategoryID
       createdAt

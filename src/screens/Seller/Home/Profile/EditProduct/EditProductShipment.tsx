@@ -11,11 +11,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-  Root,
-  ALERT_TYPE,
-  Toast,
-} from 'react-native-alert-notification';
+import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
 import {
   COLORS,
@@ -69,6 +65,15 @@ const EditProductShipment = () => {
 
   const {control, handleSubmit, setValue}: any = useForm();
 
+  // GET Product DETAIL
+  const {loading: onLoad, data} = useQuery<
+    GetProductQuery,
+    GetProductQueryVariables
+  >(getProduct, {
+    variables: {id: id},
+  });
+  const productDetails: any = data?.getProduct;
+
   const [address, setAddress] = useState<any>('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -76,8 +81,12 @@ const EditProductShipment = () => {
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
-  const [tpMode, setTpMode] = useState('');
+  const [tpMode, setTpMode] = useState(productDetails?.transportMode);
   const [tpModeType, setTpModeType] = useState<any>(constants.freight);
+
+  function isSubmit() {
+    return date !== '';
+  }
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -92,15 +101,6 @@ const EditProductShipment = () => {
     setDate(selectedDate);
     hideDatePicker();
   };
-
-  // GET Product DETAIL
-  const {loading: onLoad, data} = useQuery<
-    GetProductQuery,
-    GetProductQueryVariables
-  >(getProduct, {
-    variables: {id: id},
-  });
-  const productDetails: any = data?.getProduct;
 
   // UPDATE USER DETAILS
   const [doUpdateProduct] = useMutation<
@@ -140,13 +140,24 @@ const EditProductShipment = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
+    let isCurrent = true;
+    if (productDetails && isCurrent) {
+      setValue('transportMode', productDetails?.transportMode);
+      setValue('address', productDetails?.placeOrigin);
+    }
+    return () => {
+      isCurrent = false;
+    };
+  }, [productDetails, setValue]);
+
+  useEffect(() => {
+    let unmounted = true;
     if (route.params?.userAddress) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     setValue,
@@ -264,7 +275,7 @@ const EditProductShipment = () => {
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value1}
+                value={value1 || value}
                 items={tpModeType}
                 setOpen={setOpen}
                 setValue={setValue1}
@@ -323,7 +334,7 @@ const EditProductShipment = () => {
           date={date}
           onPress={showDatePicker}
           title={'Date Available'}
-          containerStyle={{marginTop: SIZES.padding}}
+          containerStyle={{marginTop: SIZES.padding, marginBottom: 50}}
         />
       </View>
     );
@@ -360,7 +371,9 @@ const EditProductShipment = () => {
             style={{
               padding: SIZES.padding,
             }}>
-            <ProductSuccess onPress={() => navigation.navigate('StoreProduct')} />
+            <ProductSuccess
+              onPress={() => navigation.navigate('StoreProduct')}
+            />
           </View>
         </BottomSheetModal>
 
@@ -380,10 +393,12 @@ const EditProductShipment = () => {
 
           {renderFormSection()}
           <TextButton
+            disabled={isSubmit() ? false : true}
             label={loading ? 'Loading...' : 'Continue'}
             buttonContainerStyle={{
               alignSelf: 'center',
               marginTop: SIZES.padding,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             onPress={handleSubmit(onSubmit)}
           />

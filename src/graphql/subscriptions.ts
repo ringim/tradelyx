@@ -97,6 +97,7 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -112,10 +113,6 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -161,6 +158,7 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -176,10 +174,6 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -225,6 +219,7 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
     tags
     productName
     description
+    rating
     image
     images
     rfqType
@@ -240,10 +235,6 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
     paymentType
     paymentMethod
     offerValidity
-    storeName
-    storeImage
-    storeAddress
-    storeRating
     userID
     commoditycategoryID
     Orders {
@@ -723,9 +714,6 @@ export const onCreateCategories = /* GraphQL */ `subscription OnCreateCategories
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -780,9 +768,6 @@ export const onUpdateCategories = /* GraphQL */ `subscription OnUpdateCategories
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -837,9 +822,6 @@ export const onDeleteCategories = /* GraphQL */ `subscription OnDeleteCategories
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -894,9 +876,6 @@ export const onCreateCommodityCategory = /* GraphQL */ `subscription OnCreateCom
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1004,6 +983,7 @@ export const onCreateCommodityCategory = /* GraphQL */ `subscription OnCreateCom
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1019,10 +999,6 @@ export const onCreateCommodityCategory = /* GraphQL */ `subscription OnCreateCom
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1074,9 +1050,6 @@ export const onUpdateCommodityCategory = /* GraphQL */ `subscription OnUpdateCom
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1184,6 +1157,7 @@ export const onUpdateCommodityCategory = /* GraphQL */ `subscription OnUpdateCom
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1199,10 +1173,6 @@ export const onUpdateCommodityCategory = /* GraphQL */ `subscription OnUpdateCom
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1254,9 +1224,6 @@ export const onDeleteCommodityCategory = /* GraphQL */ `subscription OnDeleteCom
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1364,6 +1331,7 @@ export const onDeleteCommodityCategory = /* GraphQL */ `subscription OnDeleteCom
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1379,10 +1347,6 @@ export const onDeleteCommodityCategory = /* GraphQL */ `subscription OnDeleteCom
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
         updatedAt
@@ -1406,6 +1370,7 @@ export const onCreateReview = /* GraphQL */ `subscription OnCreateReview($filter
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1423,6 +1388,7 @@ export const onUpdateReview = /* GraphQL */ `subscription OnUpdateReview($filter
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1440,6 +1406,7 @@ export const onDeleteReview = /* GraphQL */ `subscription OnDeleteReview($filter
     name
     rating
     comment
+    forUserID
     userID
     productID
     createdAt
@@ -1478,9 +1445,6 @@ export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filt
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1492,6 +1456,7 @@ export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filt
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1536,9 +1501,6 @@ export const onUpdateProduct = /* GraphQL */ `subscription OnUpdateProduct($filt
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1550,6 +1512,7 @@ export const onUpdateProduct = /* GraphQL */ `subscription OnUpdateProduct($filt
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1594,9 +1557,6 @@ export const onDeleteProduct = /* GraphQL */ `subscription OnDeleteProduct($filt
     productDocs
     productCert
     documents
-    storeName
-    storeImage
-    storeAddress
     category
     commodityCategory
     commoditycategoryID
@@ -1608,6 +1568,7 @@ export const onDeleteProduct = /* GraphQL */ `subscription OnDeleteProduct($filt
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1641,11 +1602,14 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -1656,6 +1620,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -1717,9 +1682,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1737,6 +1699,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -1842,6 +1805,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -1857,12 +1821,26 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -1894,11 +1872,14 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -1909,6 +1890,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -1970,9 +1952,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -1990,6 +1969,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -2095,6 +2075,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -2110,12 +2091,26 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -2147,11 +2142,14 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     state
     zipCode
     lga
+    website
+    incorporateDate
+    rcNumber
     totalOrders
     level
     identification
     identificationNumber
-    identityImage
+    identityDocs
     keyProduct
     country
     inviteCode
@@ -2162,6 +2160,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     images
     businessType
     certifications
+    certsDoc
     mainMarkets
     memberShipType
     sellerLevel
@@ -2223,9 +2222,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         productDocs
         productCert
         documents
-        storeName
-        storeImage
-        storeAddress
         category
         commodityCategory
         commoditycategoryID
@@ -2243,6 +2239,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         name
         rating
         comment
+        forUserID
         userID
         productID
         createdAt
@@ -2348,6 +2345,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         tags
         productName
         description
+        rating
         image
         images
         rfqType
@@ -2363,12 +2361,26 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
-        storeName
-        storeImage
-        storeAddress
-        storeRating
         userID
         commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
         updatedAt
         __typename
       }
@@ -2383,4 +2395,64 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
 ` as GeneratedSubscription<
   APITypes.OnDeleteUserSubscriptionVariables,
   APITypes.OnDeleteUserSubscription
+>;
+export const onCreateWishlist = /* GraphQL */ `subscription OnCreateWishlist($filter: ModelSubscriptionWishlistFilterInput) {
+  onCreateWishlist(filter: $filter) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateWishlistSubscriptionVariables,
+  APITypes.OnCreateWishlistSubscription
+>;
+export const onUpdateWishlist = /* GraphQL */ `subscription OnUpdateWishlist($filter: ModelSubscriptionWishlistFilterInput) {
+  onUpdateWishlist(filter: $filter) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateWishlistSubscriptionVariables,
+  APITypes.OnUpdateWishlistSubscription
+>;
+export const onDeleteWishlist = /* GraphQL */ `subscription OnDeleteWishlist($filter: ModelSubscriptionWishlistFilterInput) {
+  onDeleteWishlist(filter: $filter) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteWishlistSubscriptionVariables,
+  APITypes.OnDeleteWishlistSubscription
 >;

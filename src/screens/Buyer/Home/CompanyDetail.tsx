@@ -6,13 +6,12 @@ import {useQuery} from '@apollo/client';
 import Share from 'react-native-share';
 
 import {
-  GalleryItem,
   Header,
   PopularProducts,
   StoreBannerInfo,
   PopularItem,
 } from '../../../components';
-import {COLORS, FONTS, SIZES} from '../../../constants';
+import {COLORS} from '../../../constants';
 import {
   HomeStackNavigatorParamList,
   ProductDetailRouteProp,
@@ -32,7 +31,7 @@ const CompanyDetail = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<ProductDetailRouteProp>();
 
-  const {id}: any = route?.params?.sellerItem;
+  const {ID}: any = route?.params;
 
   // GET USER
   const {data, loading, refetch} = useQuery<
@@ -40,7 +39,7 @@ const CompanyDetail = () => {
     GetUserQueryVariables
   >(getUser, {
     variables: {
-      id: id,
+      id: ID,
     },
   });
   const userInfo: any = data?.getUser;
@@ -51,16 +50,27 @@ const CompanyDetail = () => {
     ProductByDateQueryVariables
   >(productByDate, {
     pollInterval: 500,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
     variables: {
-      limit: 4,
       SType: 'JOB',
       sortDirection: ModelSortDirection.DESC,
     },
   });
   const allProducts: any =
-    newData?.productByDate?.items.filter((item: any) => !item?._deleted) || [];
+    newData?.productByDate?.items
+      .filter(st => st?.SType === 'JOB')
+      .filter(sp => sp?.userID === ID)
+      .filter((item: any) => !item?._deleted) || [];
+
+  const shareDetails = async () => {
+    try {
+      const shareResponse = await Share.open(shareOptions);
+      // console.log('shareOptions', shareResponse);
+    } catch (error) {
+      return error;
+    }
+  };
 
   if (loading || newLoad) {
     return (
@@ -69,15 +79,6 @@ const CompanyDetail = () => {
       </View>
     );
   }
-
-  const shareDetails = async () => {
-    try {
-      const shareResponse = await Share.open(shareOptions);
-      console.log('shareOptions', shareResponse);
-    } catch (error) {
-      return error;
-    }
-  };
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -92,7 +93,7 @@ const CompanyDetail = () => {
       <FlatList
         data={allProducts}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={item => `${item?.id}`}
         ListHeaderComponent={
           <>
             {/* Store Contact & Info */}
@@ -105,6 +106,8 @@ const CompanyDetail = () => {
               banner_image={userInfo?.backgroundImage}
               logo={userInfo?.logo}
             />
+            {/* popular products from store */}
+            <PopularProducts title={'Most Popular Products'} />
           </>
         }
         renderItem={({item, index}) => {
@@ -112,17 +115,6 @@ const CompanyDetail = () => {
           return (
             <>
               {/* Store images */}
-              <View
-                style={{
-                  margin: SIZES.margin,
-                  marginTop: SIZES.padding * 1.5,
-                }}>
-                <Text style={{color: COLORS.Neutral1, ...FONTS.h4}}>
-                  Gallery
-                </Text>
-              </View>
-              <GalleryItem sellerItem={route?.params?.sellerItem} />
-              <PopularProducts title={'Most Popular Products'} />
               <PopularItem
                 key={index}
                 item={item}

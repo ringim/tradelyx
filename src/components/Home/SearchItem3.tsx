@@ -17,9 +17,13 @@ const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
-    if (profile_image) {
+    let isCurrent = true;
+    if (profile_image && isCurrent) {
       Storage.get(profile_image).then(setImageUri);
     }
+    return () => {
+      isCurrent = false;
+    };
   }, [profile_image]);
 
   return (
@@ -38,18 +42,14 @@ const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
         <View
           style={{
             justifyContent: 'center',
-            backgroundColor: COLORS.lightYellow,
-            width: 100,
-            height: 100,
-            borderRadius: SIZES.radius,
           }}>
           <FastImage
             source={{uri: imageUri || DUMMY_IMAGE}}
-            resizeMode={FastImage.resizeMode.contain}
+            resizeMode={FastImage.resizeMode.cover}
             style={{
-              width: 66,
-              height: 52,
-              alignSelf: 'center',
+              width: 100,
+              height: 100,
+              borderRadius: SIZES.radius,
             }}
           />
         </View>
@@ -68,12 +68,11 @@ const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
             <View style={{justifyContent: 'center'}}>
               <FastImage
                 source={icons.location}
-                tintColor={COLORS.Neutral6}
+                tintColor={COLORS.primary1}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
-                  width: 16,
-                  height: 16,
-                  top: 1,
+                  width: 15,
+                  height: 15,
                 }}
               />
             </View>
@@ -86,9 +85,15 @@ const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
                 justifyContent: 'center',
               }}>
               <Text
-                numberOfLines={2}
-                style={{...FONTS.cap1, color: COLORS.Neutral6}}>
-                {item?.address2}
+                numberOfLines={1}
+                style={{
+                  ...FONTS.cap1,
+                  fontWeight: '500',
+                  color: COLORS.Neutral1,
+                }}>
+                {item?.city}
+                {', '}
+                {item?.country}
               </Text>
             </View>
           </View>
@@ -96,20 +101,50 @@ const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
           {/* Product title, */}
           <View style={{justifyContent: 'center', marginTop: SIZES.base}}>
             <Text
-              numberOfLines={2}
-              style={{...FONTS.h4, color: COLORS.Neutral1}}>
-              {item?.supplier}
+              numberOfLines={1}
+              style={{...FONTS.h5, color: COLORS.Neutral1}}>
+              {item?.title}
             </Text>
           </View>
 
+          {/* Product title, */}
+          <View style={{justifyContent: 'center', marginTop: SIZES.base}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <FastImage
+                  source={icons.category}
+                  tintColor={COLORS.secondary1}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    width: 15,
+                    height: 15,
+                  }}
+                />
+              </View>
+              <View style={{flex: 1, justifyContent: 'center'}}>
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    marginLeft: 5,
+                    color: COLORS.Neutral1,
+                  }}>
+                  {item?.businessType}
+                </Text>
+              </View>
+            </View>
+          </View>
+
           {/* description */}
-          <View style={{justifyContent: 'center', marginTop: 4}}>
+          <View style={{justifyContent: 'center', marginTop: SIZES.base}}>
             <Text
               numberOfLines={2}
               style={{
-                ...FONTS.body3,
+                ...FONTS.cap1,
                 color: COLORS.Neutral6,
-                lineHeight: 24,
               }}>
               {item?.overview}
             </Text>

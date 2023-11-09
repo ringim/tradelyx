@@ -1,4 +1,4 @@
-import {StyleSheet, Text, ActivityIndicator, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -10,12 +10,8 @@ import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import dayjs from 'dayjs';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
-import {useMutation, useQuery} from '@apollo/client';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {useMutation} from '@apollo/client';
 
 import {
   FormInput,
@@ -30,8 +26,6 @@ import {
   UpdateProductInput,
   UpdateProductMutation,
   UpdateProductMutationVariables,
-  GetUserQuery,
-  GetUserQueryVariables,
 } from '../../../API';
 import {updateProduct} from '../../../queries/ProductQueries';
 import {
@@ -42,14 +36,10 @@ import {
   SIZES,
   icons,
 } from '../../../constants';
-import {useAuthContext} from '../../../context/AuthContext';
-import {getUser} from '../../../queries/UserQueries';
 
 const InternationalEngagementTerms = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-
-  const {userID} = useAuthContext();
 
   const mapRef = useRef(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -93,17 +83,6 @@ const InternationalEngagementTerms = () => {
     hideDatePicker();
   };
 
-  // GET USER DETAILS
-  const {data, loading: newLoad} = useQuery<
-    GetUserQuery,
-    GetUserQueryVariables
-  >(getUser, {
-    variables: {
-      id: userID,
-    },
-  });
-  const userInfo: any = data?.getUser;
-
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
     UpdateProductMutation,
@@ -118,12 +97,10 @@ const InternationalEngagementTerms = () => {
     try {
       const input: UpdateProductInput = {
         id: route?.params.productID,
+        SType: 'JOB',
         placeOrigin: address?.description?.formatted_address,
         transportMode: tpMode,
         dateAvailable: date,
-        storeName: userInfo?.title,
-        storeImage: userInfo?.logo,
-        storeAddress: `${userInfo?.city}${', '} ${userInfo?.country}`,
       };
       await doUpdateProduct({
         variables: {
@@ -144,13 +121,13 @@ const InternationalEngagementTerms = () => {
   };
 
   useEffect(() => {
-    let unmounted = false;
+    let unmounted = true;
     if (route.params?.userAddress) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     setValue,
@@ -321,14 +298,6 @@ const InternationalEngagementTerms = () => {
         />
       </View>
     );
-  }
-
-  if (newLoad) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
   }
 
   return (

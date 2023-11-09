@@ -9,12 +9,11 @@ import AllProducts from './Home/AllProducts';
 import ProductDetail from './Home/ProductDetail';
 import Notifications from './Home/Notifications';
 import Profile from './Home/Profile/Profile';
-import Filter from './Home/Filter';
 import Search from './Home/Search';
 import CompanyDetail from './Home/CompanyDetail';
 import BusinessDetail from './Home/BusinessDetail';
 import CategoryItemList from './Home/CategoryItemList';
-import AllSellers from './Home/AllSellers';
+import SearchFilter from './Home/SearchFilter';
 
 // SERVICE
 import ChooseService from './Home/SaleService/ChooseService';
@@ -23,7 +22,6 @@ import DomesticRFQ from './Home/SaleService/RequestQuotation/DomesticRFQ';
 import InternationalRFQ from './Home/SaleService/RequestQuotation/InternationalRFQ';
 import EngagementTerms from './Home/SaleService/RequestQuotation/EngagementTerms';
 import TypeQuotation from './Home/SaleService/RequestQuotation/TypeQuotation';
-import SearchAddressFilter from './Home/SearchAddressFilter';
 import PaymentQuotation from './Home/SaleService/RequestQuotation/PaymentQuotation';
 import SearchAddress from './Home/SaleService/RequestQuotation/SearchAddress';
 import LandFreight from './Home/SaleService/FreightQuotation/LandFreight';
@@ -49,7 +47,6 @@ import OceanPortOriginAddress from './Home/SaleService/FreightQuotation/OceanPor
 import OceanDestinationAddress from './Home/SaleService/FreightQuotation/OceanDestinationAddress';
 import RequestQuotationAddress from './Home/SaleService/RequestQuotationAddress';
 import SuccessService from './Home/SaleService/SuccessService';
-import FilteredProducts from './Home/FilteredProducts';
 
 // Explore
 import Explore from './Explore/Explore';
@@ -75,21 +72,26 @@ import Favorites from './Home/Profile/Favorites';
 import Refer from './Home/Profile/Refer';
 import AccountAddress from './Home/Profile/AccountAddress';
 import Contact from './Home/Profile/Contact';
+import Freight from './Home/SaleService/Freight';
+import Quotation from './Home/SaleService/Quotation';
+import SearchFilter2 from './Home/SearchFilter2';
+import EditAccountImage from './Home/Profile/EditAccountImage';
 
 export {
   Home,
   Account,
+  Quotation,
+  Freight,
   EngagementTermsAddress,
   ViewAgreement,
-  AllSellers,
   OfferDetail,
   Favorites,
   UserAddress,
   CompleteProfile,
   ReplyDetail,
-  FilteredProducts,
   Contact,
   Wallet,
+  SearchFilter,
   Refer,
   LandPickupAddress,
   LandPickupAddress2,
@@ -97,7 +99,6 @@ export {
   InternationalPortAddress,
   InternationalDestinationAddress,
   InviteFriends,
-  SearchAddressFilter,
   OceanDestinationAddress,
   OceanPortOriginAddress,
   InternationalEngagementTerms,
@@ -137,8 +138,9 @@ export {
   Profile,
   AllCategories,
   ChooseService,
+  EditAccountImage,
   ProductDetail,
   DomesticRFQ,
   InternationalRFQ,
-  Filter,
+  SearchFilter2,
 };

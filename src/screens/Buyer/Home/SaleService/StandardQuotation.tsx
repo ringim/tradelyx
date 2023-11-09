@@ -59,8 +59,8 @@ const StandardQuotation = () => {
     ListCommodityCategoriesQueryVariables
   >(listCommodityCategories, {
     pollInterval: 300,
-    fetchPolicy: 'cache-first',
-    nextFetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
   });
 
   const [loading, setLoading] = useState(false);
@@ -84,17 +84,22 @@ const StandardQuotation = () => {
   const {location} = address;
 
   useEffect(() => {
-    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    let isCurrent = true;
+    isCurrent &&
+      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
+    return () => {
+      isCurrent = false;
+    };
   }, [address]);
 
   useEffect(() => {
-    let unmounted = false;
-    if (route.params?.userAddress) {
+    let unmounted = true;
+    if (route.params?.userAddress && unmounted) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
     return () => {
-      unmounted = true;
+      unmounted = false;
     };
   }, [
     setValue,
@@ -371,10 +376,14 @@ const StandardQuotation = () => {
             marginTop: SIZES.base,
           }}>
           {singleFile?.length >= 1 ? (
-            <FileSection file={singleFile} setSingleFile={setSingleFile} />
+            <FileSection
+              file={singleFile}
+              setSingleFile={setSingleFile}
+              title="Product Brochures"
+            />
           ) : (
             <UploadDocs
-              title={'Product Brochure'}
+              title={'Attach Product Brochure'}
               selectFile={() => selectFile(setSingleFile, singleFile)}
               containerStyle={{
                 marginTop: SIZES.semi_margin,
