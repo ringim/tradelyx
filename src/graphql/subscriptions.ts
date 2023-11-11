@@ -1,0 +1,2404 @@
+/* tslint:disable */
+/* eslint-disable */
+// this is an auto generated file. This will be overwritten
+
+import * as APITypes from "../API";
+type GeneratedSubscription<InputType, OutputType> = string & {
+  __generatedSubscriptionInput: InputType;
+  __generatedSubscriptionOutput: OutputType;
+};
+
+export const onCreateOrder =
+  /* GraphQL */ `subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
+  onCreateOrder(filter: $filter) {
+    id
+    createdAt
+    SType
+    orderType
+    orderStatus
+    agreement
+    toImage
+    toCountry
+    fromImage
+    fromCountry
+    orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateOrderSubscriptionVariables,
+    APITypes.OnCreateOrderSubscription
+  >;
+export const onUpdateOrder =
+  /* GraphQL */ `subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
+  onUpdateOrder(filter: $filter) {
+    id
+    createdAt
+    SType
+    orderType
+    orderStatus
+    agreement
+    toImage
+    toCountry
+    fromImage
+    fromCountry
+    orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateOrderSubscriptionVariables,
+    APITypes.OnUpdateOrderSubscription
+  >;
+export const onDeleteOrder =
+  /* GraphQL */ `subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
+  onDeleteOrder(filter: $filter) {
+    id
+    createdAt
+    SType
+    orderType
+    orderStatus
+    agreement
+    toImage
+    toCountry
+    fromImage
+    fromCountry
+    orderMessage
+    orderDate
+    userID
+    rfqID
+    rffID
+    sellOfferID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteOrderSubscriptionVariables,
+    APITypes.OnDeleteOrderSubscription
+  >;
+export const onCreateSellOffer =
+  /* GraphQL */ `subscription OnCreateSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
+  onCreateSellOffer(filter: $filter) {
+    id
+    createdAt
+    SType
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateSellOfferSubscriptionVariables,
+    APITypes.OnCreateSellOfferSubscription
+  >;
+export const onUpdateSellOffer =
+  /* GraphQL */ `subscription OnUpdateSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
+  onUpdateSellOffer(filter: $filter) {
+    id
+    createdAt
+    SType
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateSellOfferSubscriptionVariables,
+    APITypes.OnUpdateSellOfferSubscription
+  >;
+export const onDeleteSellOffer =
+  /* GraphQL */ `subscription OnDeleteSellOffer($filter: ModelSubscriptionSellOfferFilterInput) {
+  onDeleteSellOffer(filter: $filter) {
+    id
+    createdAt
+    SType
+    sellOfferID
+    requestCategory
+    title
+    tags
+    productName
+    description
+    image
+    images
+    rfqType
+    packageType
+    packageDesc
+    placeOrigin
+    landmark
+    unit
+    deliveryDate
+    qtyMeasure
+    basePrice
+    fobPrice
+    paymentType
+    paymentMethod
+    offerValidity
+    storeName
+    storeImage
+    storeAddress
+    storeRating
+    userID
+    commoditycategoryID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteSellOfferSubscriptionVariables,
+    APITypes.OnDeleteSellOfferSubscription
+  >;
+export const onCreateRFQ =
+  /* GraphQL */ `subscription OnCreateRFQ($filter: ModelSubscriptionRFQFilterInput) {
+  onCreateRFQ(filter: $filter) {
+    id
+    createdAt
+    SType
+    rfqNo
+    rfqType
+    title
+    countryName
+    city
+    requestCategory
+    description
+    documents
+    productName
+    tags
+    qty
+    buyFrequency
+    budget
+    placeOrigin
+    placeOriginFlag
+    placeOriginName
+    landmark
+    unit
+    incoterms
+    placeDestinationName
+    placeDestination
+    placeDestinationFlag
+    destinationCountry
+    deliveryPeriod
+    expiryDate
+    paymentType
+    paymentMethod
+    warranty
+    returnPolicy
+    commoditycategoryID
+    userID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateRFQSubscriptionVariables,
+    APITypes.OnCreateRFQSubscription
+  >;
+export const onUpdateRFQ =
+  /* GraphQL */ `subscription OnUpdateRFQ($filter: ModelSubscriptionRFQFilterInput) {
+  onUpdateRFQ(filter: $filter) {
+    id
+    createdAt
+    SType
+    rfqNo
+    rfqType
+    title
+    countryName
+    city
+    requestCategory
+    description
+    documents
+    productName
+    tags
+    qty
+    buyFrequency
+    budget
+    placeOrigin
+    placeOriginFlag
+    placeOriginName
+    landmark
+    unit
+    incoterms
+    placeDestinationName
+    placeDestination
+    placeDestinationFlag
+    destinationCountry
+    deliveryPeriod
+    expiryDate
+    paymentType
+    paymentMethod
+    warranty
+    returnPolicy
+    commoditycategoryID
+    userID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateRFQSubscriptionVariables,
+    APITypes.OnUpdateRFQSubscription
+  >;
+export const onDeleteRFQ =
+  /* GraphQL */ `subscription OnDeleteRFQ($filter: ModelSubscriptionRFQFilterInput) {
+  onDeleteRFQ(filter: $filter) {
+    id
+    createdAt
+    SType
+    rfqNo
+    rfqType
+    title
+    countryName
+    city
+    requestCategory
+    description
+    documents
+    productName
+    tags
+    qty
+    buyFrequency
+    budget
+    placeOrigin
+    placeOriginFlag
+    placeOriginName
+    landmark
+    unit
+    incoterms
+    placeDestinationName
+    placeDestination
+    placeDestinationFlag
+    destinationCountry
+    deliveryPeriod
+    expiryDate
+    paymentType
+    paymentMethod
+    warranty
+    returnPolicy
+    commoditycategoryID
+    userID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteRFQSubscriptionVariables,
+    APITypes.OnDeleteRFQSubscription
+  >;
+export const onCreateRFF =
+  /* GraphQL */ `subscription OnCreateRFF($filter: ModelSubscriptionRFFFilterInput) {
+  onCreateRFF(filter: $filter) {
+    id
+    SType
+    createdAt
+    rffNo
+    rffType
+    deliveryPeriod
+    requestCategory
+    rffRequestType
+    productName
+    handling
+    loadDate
+    weight
+    qty
+    packageType
+    length
+    width
+    height
+    placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
+    placeDestination
+    relatedServices
+    invoiceAmount
+    document
+    notes
+    container
+    containerSize
+    containerType
+    requestType
+    commoditycategoryID
+    userID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateRFFSubscriptionVariables,
+    APITypes.OnCreateRFFSubscription
+  >;
+export const onUpdateRFF =
+  /* GraphQL */ `subscription OnUpdateRFF($filter: ModelSubscriptionRFFFilterInput) {
+  onUpdateRFF(filter: $filter) {
+    id
+    SType
+    createdAt
+    rffNo
+    rffType
+    deliveryPeriod
+    requestCategory
+    rffRequestType
+    productName
+    handling
+    loadDate
+    weight
+    qty
+    packageType
+    length
+    width
+    height
+    placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
+    placeDestination
+    relatedServices
+    invoiceAmount
+    document
+    notes
+    container
+    containerSize
+    containerType
+    requestType
+    commoditycategoryID
+    userID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateRFFSubscriptionVariables,
+    APITypes.OnUpdateRFFSubscription
+  >;
+export const onDeleteRFF =
+  /* GraphQL */ `subscription OnDeleteRFF($filter: ModelSubscriptionRFFFilterInput) {
+  onDeleteRFF(filter: $filter) {
+    id
+    SType
+    createdAt
+    rffNo
+    rffType
+    deliveryPeriod
+    requestCategory
+    rffRequestType
+    productName
+    handling
+    loadDate
+    weight
+    qty
+    packageType
+    length
+    width
+    height
+    placeOrigin
+    placeOriginFlag
+    placeOriginName
+    placeDestinationName
+    placeDestinationFlag
+    destinationCountry
+    placeDestination
+    relatedServices
+    invoiceAmount
+    document
+    notes
+    container
+    containerSize
+    containerType
+    requestType
+    commoditycategoryID
+    userID
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteRFFSubscriptionVariables,
+    APITypes.OnDeleteRFFSubscription
+  >;
+export const onCreateCategories =
+  /* GraphQL */ `subscription OnCreateCategories(
+  $filter: ModelSubscriptionCategoriesFilterInput
+) {
+  onCreateCategories(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateCategoriesSubscriptionVariables,
+    APITypes.OnCreateCategoriesSubscription
+  >;
+export const onUpdateCategories =
+  /* GraphQL */ `subscription OnUpdateCategories(
+  $filter: ModelSubscriptionCategoriesFilterInput
+) {
+  onUpdateCategories(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateCategoriesSubscriptionVariables,
+    APITypes.OnUpdateCategoriesSubscription
+  >;
+export const onDeleteCategories =
+  /* GraphQL */ `subscription OnDeleteCategories(
+  $filter: ModelSubscriptionCategoriesFilterInput
+) {
+  onDeleteCategories(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteCategoriesSubscriptionVariables,
+    APITypes.OnDeleteCategoriesSubscription
+  >;
+export const onCreateCommodityCategory =
+  /* GraphQL */ `subscription OnCreateCommodityCategory(
+  $filter: ModelSubscriptionCommodityCategoryFilterInput
+) {
+  onCreateCommodityCategory(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        SType
+        createdAt
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        invoiceAmount
+        document
+        notes
+        container
+        containerSize
+        containerType
+        requestType
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
+        userID
+        commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateCommodityCategorySubscriptionVariables,
+    APITypes.OnCreateCommodityCategorySubscription
+  >;
+export const onUpdateCommodityCategory =
+  /* GraphQL */ `subscription OnUpdateCommodityCategory(
+  $filter: ModelSubscriptionCommodityCategoryFilterInput
+) {
+  onUpdateCommodityCategory(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        SType
+        createdAt
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        invoiceAmount
+        document
+        notes
+        container
+        containerSize
+        containerType
+        requestType
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
+        userID
+        commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateCommodityCategorySubscriptionVariables,
+    APITypes.OnUpdateCommodityCategorySubscription
+  >;
+export const onDeleteCommodityCategory =
+  /* GraphQL */ `subscription OnDeleteCommodityCategory(
+  $filter: ModelSubscriptionCommodityCategoryFilterInput
+) {
+  onDeleteCommodityCategory(filter: $filter) {
+    id
+    title
+    image
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        SType
+        createdAt
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        invoiceAmount
+        document
+        notes
+        container
+        containerSize
+        containerType
+        requestType
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
+        userID
+        commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteCommodityCategorySubscriptionVariables,
+    APITypes.OnDeleteCommodityCategorySubscription
+  >;
+export const onCreateReview =
+  /* GraphQL */ `subscription OnCreateReview($filter: ModelSubscriptionReviewFilterInput) {
+  onCreateReview(filter: $filter) {
+    id
+    name
+    rating
+    comment
+    userID
+    productID
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateReviewSubscriptionVariables,
+    APITypes.OnCreateReviewSubscription
+  >;
+export const onUpdateReview =
+  /* GraphQL */ `subscription OnUpdateReview($filter: ModelSubscriptionReviewFilterInput) {
+  onUpdateReview(filter: $filter) {
+    id
+    name
+    rating
+    comment
+    userID
+    productID
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateReviewSubscriptionVariables,
+    APITypes.OnUpdateReviewSubscription
+  >;
+export const onDeleteReview =
+  /* GraphQL */ `subscription OnDeleteReview($filter: ModelSubscriptionReviewFilterInput) {
+  onDeleteReview(filter: $filter) {
+    id
+    name
+    rating
+    comment
+    userID
+    productID
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteReviewSubscriptionVariables,
+    APITypes.OnDeleteReviewSubscription
+  >;
+export const onCreateProduct =
+  /* GraphQL */ `subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
+  onCreateProduct(filter: $filter) {
+    id
+    createdAt
+    SType
+    title
+    productImage
+    image
+    images
+    description
+    rating
+    tags
+    productCertification
+    supplyCapacity
+    minOrderQty
+    unit
+    packageType
+    quantity
+    fobPrice
+    paymentType
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDocs
+    productCert
+    documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
+    commoditycategoryID
+    categoriesID
+    userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateProductSubscriptionVariables,
+    APITypes.OnCreateProductSubscription
+  >;
+export const onUpdateProduct =
+  /* GraphQL */ `subscription OnUpdateProduct($filter: ModelSubscriptionProductFilterInput) {
+  onUpdateProduct(filter: $filter) {
+    id
+    createdAt
+    SType
+    title
+    productImage
+    image
+    images
+    description
+    rating
+    tags
+    productCertification
+    supplyCapacity
+    minOrderQty
+    unit
+    packageType
+    quantity
+    fobPrice
+    paymentType
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDocs
+    productCert
+    documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
+    commoditycategoryID
+    categoriesID
+    userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateProductSubscriptionVariables,
+    APITypes.OnUpdateProductSubscription
+  >;
+export const onDeleteProduct =
+  /* GraphQL */ `subscription OnDeleteProduct($filter: ModelSubscriptionProductFilterInput) {
+  onDeleteProduct(filter: $filter) {
+    id
+    createdAt
+    SType
+    title
+    productImage
+    image
+    images
+    description
+    rating
+    tags
+    productCertification
+    supplyCapacity
+    minOrderQty
+    unit
+    packageType
+    quantity
+    fobPrice
+    paymentType
+    transportMode
+    placeOrigin
+    dateAvailable
+    productSpec
+    productDocs
+    productCert
+    documents
+    storeName
+    storeImage
+    storeAddress
+    category
+    commodityCategory
+    commoditycategoryID
+    categoriesID
+    userID
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteProductSubscriptionVariables,
+    APITypes.OnDeleteProductSubscription
+  >;
+export const onCreateUser =
+  /* GraphQL */ `subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+  onCreateUser(filter: $filter) {
+    id
+    name
+    email
+    phone_number
+    rating
+    accountType
+    lat
+    lng
+    ledgerBalance
+    address
+    city
+    state
+    zipCode
+    lga
+    totalOrders
+    level
+    identification
+    identificationNumber
+    identityImage
+    keyProduct
+    country
+    inviteCode
+    accountCategory
+    businessName
+    logo
+    backgroundImage
+    images
+    businessType
+    certifications
+    mainMarkets
+    memberShipType
+    sellerLevel
+    estRevenue
+    totalStaff
+    responseTime
+    languages
+    legalRep
+    overview
+    activeOrder
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        SType
+        createdAt
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        invoiceAmount
+        document
+        notes
+        container
+        containerSize
+        containerType
+        requestType
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
+        userID
+        commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnCreateUserSubscriptionVariables,
+    APITypes.OnCreateUserSubscription
+  >;
+export const onUpdateUser =
+  /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+  onUpdateUser(filter: $filter) {
+    id
+    name
+    email
+    phone_number
+    rating
+    accountType
+    lat
+    lng
+    ledgerBalance
+    address
+    city
+    state
+    zipCode
+    lga
+    totalOrders
+    level
+    identification
+    identificationNumber
+    identityImage
+    keyProduct
+    country
+    inviteCode
+    accountCategory
+    businessName
+    logo
+    backgroundImage
+    images
+    businessType
+    certifications
+    mainMarkets
+    memberShipType
+    sellerLevel
+    estRevenue
+    totalStaff
+    responseTime
+    languages
+    legalRep
+    overview
+    activeOrder
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        SType
+        createdAt
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        invoiceAmount
+        document
+        notes
+        container
+        containerSize
+        containerType
+        requestType
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
+        userID
+        commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnUpdateUserSubscriptionVariables,
+    APITypes.OnUpdateUserSubscription
+  >;
+export const onDeleteUser =
+  /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+  onDeleteUser(filter: $filter) {
+    id
+    name
+    email
+    phone_number
+    rating
+    accountType
+    lat
+    lng
+    ledgerBalance
+    address
+    city
+    state
+    zipCode
+    lga
+    totalOrders
+    level
+    identification
+    identificationNumber
+    identityImage
+    keyProduct
+    country
+    inviteCode
+    accountCategory
+    businessName
+    logo
+    backgroundImage
+    images
+    businessType
+    certifications
+    mainMarkets
+    memberShipType
+    sellerLevel
+    estRevenue
+    totalStaff
+    responseTime
+    languages
+    legalRep
+    overview
+    activeOrder
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        orderMessage
+        orderDate
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        rating
+        tags
+        productCertification
+        supplyCapacity
+        minOrderQty
+        unit
+        packageType
+        quantity
+        fobPrice
+        paymentType
+        transportMode
+        placeOrigin
+        dateAvailable
+        productSpec
+        productDocs
+        productCert
+        documents
+        storeName
+        storeImage
+        storeAddress
+        category
+        commodityCategory
+        commoditycategoryID
+        categoriesID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Reviews {
+      items {
+        id
+        name
+        rating
+        comment
+        userID
+        productID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        countryName
+        city
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        warranty
+        returnPolicy
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        SType
+        createdAt
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        loadDate
+        weight
+        qty
+        packageType
+        length
+        width
+        height
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        invoiceAmount
+        document
+        notes
+        container
+        containerSize
+        containerType
+        requestType
+        commoditycategoryID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        image
+        images
+        rfqType
+        packageType
+        packageDesc
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        storeName
+        storeImage
+        storeAddress
+        storeRating
+        userID
+        commoditycategoryID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+    APITypes.OnDeleteUserSubscriptionVariables,
+    APITypes.OnDeleteUserSubscription
+  >;
