@@ -1,24 +1,20 @@
-import {View, Text, Alert, ActivityIndicator} from 'react-native';
+import {View, Alert, ActivityIndicator, Text} from 'react-native';
 import React from 'react';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useMutation} from '@apollo/client';
-import {
-  ALERT_TYPE,
-  AlertNotificationRoot,
-  Toast,
-} from 'react-native-alert-notification';
-import FastImage from 'react-native-fast-image';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {
   BusinessDesc,
   Shipment,
   Header,
-  PriceQty,
   Packaging,
   ProductInfo,
   TextButton,
-  MultipleFiles, 
+  ShowDocs,
+  SingleImage,
+  ViewMultipleImages,
 } from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {
@@ -30,31 +26,30 @@ import {
   DeleteProductMutationVariables,
 } from '../../../API';
 import {deleteProduct} from '../../../queries/ProductQueries';
+import {FlatList} from 'react-native-gesture-handler';
 
 const StoreItem = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<StoreItemRouteProp>();
 
-  // console.log(route.params);
   const {
     id,
     description,
-    paymentType,
-    quantity,
-    fobPrice,
     supplyCapacity,
     productImage,
+    commodityCategory,
+    category,
     productDocs,
     dateAvailable,
     transportMode,
-    unit,
-    productCertification,
+    images,
+    productCert,
     productSpec,
     packageType,
+    image,
     placeOrigin,
-    productDoc,
     title,
-    documents,
+    productCertDocs,
     tags,
     minOrderQty,
   }: any = route?.params?.storeItem;
@@ -109,7 +104,7 @@ const StoreItem = () => {
   }
 
   return (
-    <AlertNotificationRoot>
+    <Root>
       <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
         <Header
           title={'Product Details'}
@@ -120,10 +115,63 @@ const StoreItem = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {/* Product info */}
-          <ProductInfo name={title} image={productImage} tags={tags} />
+          <ProductInfo
+            name={title}
+            image={productImage}
+            tags={tags}
+            cate={category}
+            type={commodityCategory}
+          />
+
+          {/* Product Image */}
+          <View
+            style={{
+              padding: SIZES.semi_margin,
+              borderRadius: SIZES.radius,
+              backgroundColor: COLORS.white,
+              marginTop: SIZES.radius,
+              marginHorizontal: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h4,
+                color: COLORS.Neutral1,
+              }}>
+              Product Images
+            </Text>
+            {image ? (
+              <SingleImage
+                product={image}
+                showEdit={false}
+                contentStyle={{marginTop: SIZES.padding * 1.5}}
+              />
+            ) : (
+              <View
+                style={{
+                  marginTop: SIZES.base,
+                }}>
+                <FlatList
+                  data={images}
+                  keyExtractor={(item: any) => `${item}`}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return (
+                      <ViewMultipleImages
+                        key={index}
+                        index={index}
+                        images={item}
+                      />
+                    );
+                  }}
+                />
+              </View>
+            )}
+          </View>
 
           {/* Product Description */}
           <BusinessDesc productItem={description} title={'Description'} />
@@ -131,13 +179,12 @@ const StoreItem = () => {
           {/* Product Specification */}
           <BusinessDesc productItem={productSpec} title={'Specification'} />
 
-          {/* Price Qty */}
-          <PriceQty
-            price={fobPrice}
-            qty={quantity}
-            supply={supplyCapacity}
+          {/* Packaging */}
+          <Packaging
+            packageType={packageType}
+            productCert={productCert}
             moq={minOrderQty}
-            paymentType={paymentType}
+            supply={supplyCapacity}
           />
 
           {/* Shipment */}
@@ -147,86 +194,45 @@ const StoreItem = () => {
             transportMode={transportMode}
           />
 
-          {/* Packaging */}
-          <Packaging
-            file={productDoc}
-            unit={unit}
-            packageType={packageType}
-            productCert={productCertification}
-          />
-
-          {/*  Product Certification */}
-          <View
-            style={{
-              backgroundColor: COLORS.white,
-              margin: SIZES.semi_margin,
-              padding: SIZES.margin,
-              borderRadius: SIZES.radius,
-            }}>
+          {/* Product Certification */}
+          {productCertDocs.length > 0 && (
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                marginTop: SIZES.base,
+                padding: SIZES.semi_margin,
+                borderRadius: SIZES.radius,
+                backgroundColor: COLORS.white,
+                marginHorizontal: SIZES.semi_margin,
               }}>
-              <View style={{justifyContent: 'center'}}>
-                <FastImage
-                  source={icons.docs}
-                  tintColor={COLORS.secondary1}
-                  resizeMode={FastImage.resizeMode.cover}
-                  style={{width: 24, height: 24}}
-                />
-              </View>
-
-              <View
-                style={{
-                  flex: 1,
-                  marginLeft: SIZES.radius,
-                  justifyContent: 'center',
-                }}>
-                <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-                  Product Certification
-                </Text>
-              </View>
+              <ShowDocs
+                title="Product Certification"
+                icon={icons.info}
+                file={productCertDocs}
+                contentStyle={{marginTop: 0}}
+                buttonStyle={{marginTop: SIZES.margin}}
+              />
             </View>
-            <MultipleFiles data={productDocs} />
-          </View>
+          )}
 
-          {/* Specification*/}
-          <View
-            style={{
-              backgroundColor: COLORS.white,
-              margin: SIZES.semi_margin,
-              padding: SIZES.margin,
-              borderRadius: SIZES.radius,
-              top: -10
-            }}>
+          {/* Product Brochure*/}
+          {productDocs.length > 0 && (
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                marginTop: SIZES.base,
+                padding: SIZES.semi_margin,
+                borderRadius: SIZES.radius,
+                backgroundColor: COLORS.white,
+                marginHorizontal: SIZES.semi_margin,
               }}>
-              <View style={{justifyContent: 'center'}}>
-                <FastImage
-                  source={icons.docs}
-                  tintColor={COLORS.secondary1}
-                  resizeMode={FastImage.resizeMode.cover}
-                  style={{width: 24, height: 24}}
-                />
-              </View>
-
-              <View
-                style={{
-                  flex: 1,
-                  marginLeft: SIZES.radius,
-                  justifyContent: 'center',
-                }}>
-                <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-                  Product Specification
-                </Text>
-              </View>
+              <ShowDocs
+                title="Product Brochure"
+                icon={icons.content}
+                file={productDocs}
+                contentStyle={{marginTop: 4}}
+                buttonStyle={{marginTop: SIZES.margin}}
+              />
             </View>
-            <MultipleFiles data={documents} />
-          </View>
+          )}
 
           <TextButton
             buttonContainerStyle={{
@@ -257,7 +263,7 @@ const StoreItem = () => {
           />
         </KeyboardAwareScrollView>
       </View>
-    </AlertNotificationRoot>
+    </Root>
   );
 };
 

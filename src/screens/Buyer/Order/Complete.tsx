@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {OrderItem, OrderTabItem} from '../../../components';
+import {OrderTabItem, RFFOrderItem, RFQOrderItem} from '../../../components';
 
 const Complete = () => {
   const navigation = useNavigation<any>();
@@ -77,7 +77,7 @@ const Complete = () => {
             renderItem={({item, index}) => {
               /* Popular items */
               return (
-                <OrderItem
+                <RFFOrderItem
                   key={index}
                   item={item}
                   status={true}
@@ -111,7 +111,7 @@ const Complete = () => {
             renderItem={({item, index}) => {
               /* Popular items */
               return (
-                <OrderItem
+                <RFQOrderItem
                   item={item}
                   key={index}
                   status={true}

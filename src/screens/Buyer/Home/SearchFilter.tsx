@@ -1,8 +1,8 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Pressable, TextInput} from 'react-native';
 import {useQuery} from '@apollo/client';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Slider} from '@miblanchard/react-native-slider';
 import FastImage from 'react-native-fast-image';
@@ -15,26 +15,15 @@ import {
   TextIconButton,
 } from '../../../components';
 import {
-  ListCategoriesQuery,
-  ListCategoriesQueryVariables,
   ProductByDateQuery,
   ProductByDateQueryVariables,
   ModelSortDirection,
 } from '../../../API';
-import {listCategories, productByDate} from '../../../queries/ProductQueries';
+import {productByDate} from '../../../queries/ProductQueries';
+import {crateTypes} from '../../../../types/types';
 
 const SearchFilter = () => {
   const navigation = useNavigation<any>();
-
-  // LIST COMMODITY CATEGORIES
-  const {data: newData, loading: newLoad} = useQuery<
-    ListCategoriesQuery,
-    ListCategoriesQueryVariables
-  >(listCategories, {
-    pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'network-only',
-  });
 
   // LIST PRODUCTS
   const {data, loading: load} = useQuery<
@@ -42,7 +31,7 @@ const SearchFilter = () => {
     ProductByDateQueryVariables
   >(productByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
       SType: 'JOB',
@@ -65,7 +54,7 @@ const SearchFilter = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>();
+  const [jobType, setJobType] = useState<any>(crateTypes);
 
   // console.log('filtered products', dataList);
 
@@ -106,16 +95,6 @@ const SearchFilter = () => {
     handleFunc();
   }, [load, itemSelected]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const allCommodityCategories: any =
-        newData?.listCategories?.items?.filter(
-          (item: any) => !item?._deleted,
-        ) || [];
-      setJobType(allCommodityCategories);
-    }, [newLoad]),
-  );
-
   function renderForm() {
     return (
       <View
@@ -134,8 +113,9 @@ const SearchFilter = () => {
           </Text>
           <DropDownPicker
             schema={{
-              label: 'title',
+              label: 'type',
               value: 'id',
+              icon: 'icon',
             }}
             open={open}
             showArrowIcon={true}
@@ -143,7 +123,6 @@ const SearchFilter = () => {
             showTickIcon={true}
             dropDownDirection="AUTO"
             listMode="MODAL"
-            loading={newLoad}
             value={value1}
             items={jobType}
             setOpen={setOpen}
@@ -176,8 +155,8 @@ const SearchFilter = () => {
               fontWeight: '600',
             }}
             onSelectItem={(value: any) => {
-              setType(value?.title);
-              setItemSelect(value?.title);
+              setType(value?.type);
+              setItemSelect(value?.type);
             }}
           />
         </View>
@@ -377,6 +356,7 @@ const SearchFilter = () => {
         keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
         extraHeight={100}
+        bounces={false}
         extraScrollHeight={100}
         enableOnAndroid={true}>
         {/* Contents */}
@@ -385,7 +365,7 @@ const SearchFilter = () => {
         <TextButton
           buttonContainerStyle={{
             marginTop: 50,
-            marginBottom: 200
+            marginBottom: 200,
           }}
           label={`Show ${dataList?.length} results`}
           onPress={() =>

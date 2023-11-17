@@ -106,13 +106,13 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Content */}
         <View
           style={{
-            marginTop: SIZES.semi_margin,
+            marginTop: SIZES.radius,
             paddingHorizontal: SIZES.margin,
             marginBottom: 4,
           }}>
           <Text
             style={{
-              ...FONTS.h5,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             We provide services for your business
@@ -137,7 +137,6 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Button */}
         <TextButton
           label="Continue"
-          buttonContainerStyle={{height: 50}}
           onPress={() => {
             value === 'Request for Quotation'
               ? navigateToTab('Quotation')

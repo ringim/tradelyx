@@ -1,9 +1,11 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, Linking, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import {Storage} from 'aws-amplify';
 
 import {COLORS, SIZES, icons, FONTS} from '../../../constants';
 import {Header, TextButton} from '../../../components';
@@ -18,7 +20,6 @@ const DomesticRFQDetail = () => {
 
   const {
     placeOriginFlag,
-    incoterms,
     rfqNo,
     description,
     tags,
@@ -38,6 +39,24 @@ const DomesticRFQDetail = () => {
     buyFrequency,
   }: any = route?.params?.rfqItem;
 
+  // DOWNLOAD & OPEN PDF FILE
+  const downloadAndOpenPdf = async (item: any) => {
+    try {
+      const pdfKey = item; // Replace with your S3 PDF file key
+      const url = await Storage.get(pdfKey);
+      // console.log('file download', url);
+
+      // Open the PDF file using the device's default viewer
+      Linking.openURL(url);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        textBody: 'Error downloading or opening PDF!',
+        autoClose: 2000,
+      });
+    }
+  };
+
   const options = {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -50,608 +69,662 @@ const DomesticRFQDetail = () => {
   const daysUntilExpiry = expiryPeriod.diff(currentDate, 'day');
 
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <Header title={'RFQ Detail'} tintColor={COLORS.Neutral1} />
+    <Root>
+      <View style={{flex: 1, backgroundColor: COLORS.white}}>
+        <Header title={'RFQ Detail'} tintColor={COLORS.Neutral1} />
 
-      <ScrollView
-        style={{marginHorizontal: 5}}
-        showsVerticalScrollIndicator={false}>
-        {/* Buyer from */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: SIZES.semi_margin,
-          }}>
-          {/* Buyer Country Name */}
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-            }}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Buyer from
-            </Text>
-          </View>
-
+        <ScrollView
+          style={{marginHorizontal: 5}}
+          showsVerticalScrollIndicator={false}>
           {/* Buyer from */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: SIZES.semi_margin,
             }}>
-            <FastImage
-              source={{uri: placeOriginFlag}}
-              resizeMode={FastImage.resizeMode.contain}
+            {/* Buyer Country Name */}
+            <View
               style={{
-                width: 23,
-                height: 23,
-              }}
-            />
-          </View>
-
-          <View
-            style={{
-              justifyContent: 'center',
-              padding: SIZES.base,
-              borderRadius: SIZES.radius,
-            }}>
-            <Text
-              style={{
-                ...FONTS.h5,
-                color: COLORS.Neutral1,
+                flex: 1,
+                justifyContent: 'center',
               }}>
-              {city}
-              {', '}
-              {countryName}
-            </Text>
-          </View>
-        </View>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+                Buyer from
+              </Text>
+            </View>
 
-        {/* RFQ Number */}
-        <View
-          style={{
-            marginTop: SIZES.radius,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: SIZES.semi_margin,
-          }}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-            }}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>RFQ No</Text>
-          </View>
-          <View style={{justifyContent: 'center'}}>
-            <Text
+            {/* Buyer from */}
+            <View
               style={{
-                ...FONTS.h5,
-                color: COLORS.Neutral1,
+                justifyContent: 'center',
               }}>
-              {rfqNo}
-            </Text>
-          </View>
+              <FastImage
+                source={{uri: placeOriginFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 23,
+                  height: 23,
+                }}
+              />
+            </View>
 
-          {/* Copy icon */}
-          <TouchableOpacity
-            style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.contain}
-              source={icons.copy}
+            <View
               style={{
-                width: 20,
-                height: 20,
-              }}
-            />
-          </TouchableOpacity>
-        </View>
+                justifyContent: 'center',
+                padding: SIZES.base,
+                borderRadius: SIZES.radius,
+              }}>
+              <Text
+                style={{
+                  ...FONTS.h5,
+                  color: COLORS.Neutral1,
+                }}>
+                {city}
+                {', '}
+                {countryName}
+              </Text>
+            </View>
+          </View>
 
-        {/* expiry */}
-        <View
-          style={{
-            marginTop: SIZES.radius,
-            marginHorizontal: SIZES.radius,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            borderRadius: SIZES.base,
-            backgroundColor: COLORS.Neutral10,
-            padding: SIZES.radius,
-          }}>
-          <View style={{justifyContent: 'center'}}>
-            <FastImage
-              source={icons.calender}
-              resizeMode={FastImage.resizeMode.contain}
+          {/* RFQ Number */}
+          <View
+            style={{
+              marginTop: SIZES.radius,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: SIZES.semi_margin,
+            }}>
+            <View
               style={{
-                width: 25,
-                height: 25,
-              }}
-            />
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+                RFQ No
+              </Text>
+            </View>
+            <View style={{justifyContent: 'center'}}>
+              <Text
+                style={{
+                  ...FONTS.h5,
+                  color: COLORS.Neutral1,
+                }}>
+                {rfqNo}
+              </Text>
+            </View>
+
+            {/* Copy icon */}
+            <TouchableOpacity
+              style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
+              <FastImage
+                resizeMode={FastImage.resizeMode.contain}
+                source={icons.copy}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+              />
+            </TouchableOpacity>
           </View>
-          <View
-            style={{flex: 1, marginLeft: SIZES.base, justifyContent: 'center'}}>
-            <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-              {expiryDate}
-            </Text>
-          </View>
-          <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-              Exp in:
-            </Text>
-          </View>
+
+          {/* expiry */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.radius,
+              marginHorizontal: SIZES.radius,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              borderRadius: SIZES.base,
+              backgroundColor: COLORS.Neutral10,
+              padding: SIZES.radius,
             }}>
-            <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {' '}
-              {daysUntilExpiry} days
-            </Text>
+            <View style={{justifyContent: 'center'}}>
+              <FastImage
+                source={icons.calender}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 25,
+                  height: 25,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
+                marginLeft: SIZES.base,
+                justifyContent: 'center',
+              }}>
+              <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
+                {expiryDate}
+              </Text>
+            </View>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Exp in:
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+                {' '}
+                {daysUntilExpiry} days
+              </Text>
+            </View>
           </View>
-        </View>
 
-        {/* Horizontal Rule */}
-        <View
-          style={{
-            alignSelf: 'center',
-            width: '95%',
-            borderWidth: 0.4,
-            borderColor: COLORS.Neutral7,
-            marginTop: SIZES.semi_margin,
-          }}
-        />
-
-        {/* Request */}
-        <View
-          style={{
-            marginTop: SIZES.semi_margin,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Horizontal Rule */}
           <View
             style={{
+              alignSelf: 'center',
+              width: '95%',
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+              marginTop: SIZES.semi_margin,
+            }}
+          />
+
+          {/* Request */}
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Request For
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {title}
+              </Text>
+            </View>
+          </View>
+
+          {/* Description */}
+          <View
+            style={{
+              marginTop: SIZES.base,
+              marginHorizontal: SIZES.semi_margin,
               justifyContent: 'center',
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Request For
+              Detail Description
             </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
             <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {title}
+              style={{
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
+                marginTop: 4,
+              }}>
+              {description}
             </Text>
           </View>
-        </View>
 
-        {/* Description */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-            Detail Description
-          </Text>
-          <Text
+          {/* Product Name */}
+          <View
             style={{
-              ...FONTS.body3,
-              fontWeight: '500',
-              color: COLORS.Neutral1,
-              marginTop: 4,
+              marginTop: SIZES.semi_margin,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            {description}
-          </Text>
-        </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Product Name
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {productName}
+              </Text>
+            </View>
+          </View>
 
-        {/* Product Name */}
-        <View
-          style={{
-            marginTop: SIZES.semi_margin,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Qty */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Product Name
-            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Qty Required
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {qty} bags
+              </Text>
+            </View>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {productName}
-            </Text>
-          </View>
-        </View>
 
-        {/* Qty */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Buying frequency */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Qty Required
-            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Buying Frequency
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {buyFrequency}
+              </Text>
+            </View>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {qty} bags
-            </Text>
-          </View>
-        </View>
 
-        {/* Buying frequency */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Payment terms */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Buying Frequency
-            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Payment Terms
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {paymentType}
+              </Text>
+            </View>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {buyFrequency}
-            </Text>
-          </View>
-        </View>
 
-        {/* Incoterms */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Payment methods */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Incoterms
-            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Payment Method
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {paymentMethod}
+              </Text>
+            </View>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {incoterms}
-            </Text>
-          </View>
-        </View>
 
-        {/* Payment terms */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Unit */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Payment Terms
-            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Unit
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {unit}
+              </Text>
+            </View>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {paymentType}
-            </Text>
-          </View>
-        </View>
 
-        {/* Payment methods */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Category */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Payment Method
-            </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Product Category
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {requestCategory}
+              </Text>
+            </View>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {paymentMethod}
-            </Text>
-          </View>
-        </View>
 
-        {/* Unit */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
+          {/* Tags */}
           <View
             style={{
-              justifyContent: 'center',
+              marginTop: SIZES.base,
+              marginHorizontal: SIZES.semi_margin,
             }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Unit
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {unit}
-            </Text>
-          </View>
-        </View>
-
-        {/* Category */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Product Category
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {requestCategory}
-            </Text>
-          </View>
-        </View>
-
-        {/* Tags */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            marginHorizontal: SIZES.semi_margin,
-          }}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Tags</Text>
-          <FlatList
-            data={tags}
-            keyExtractor={item => `${item?.id}`}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-            style={{marginTop: 4}}
-            renderItem={({item, index}) => {
-              /* Tags list */
-              return (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View style={{justifyContent: 'center'}}>
-                    <Text
-                      numberOfLines={2}
-                      style={{
-                        ...FONTS.body3,
-                        fontWeight: 'bold',
-                        color: COLORS.Neutral1,
-                      }}>
-                      .
-                    </Text>
-                  </View>
+            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Tags</Text>
+            <FlatList
+              data={tags}
+              keyExtractor={item => `${item?.id}`}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+              style={{marginTop: 4}}
+              renderItem={({item, index}) => {
+                /* Tags list */
+                return (
                   <View
                     style={{
-                      flex: 1,
-                      marginLeft: SIZES.base,
-                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
                     }}>
-                    <Text
-                      numberOfLines={2}
+                    <View style={{justifyContent: 'center'}}>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          ...FONTS.body3,
+                          fontWeight: 'bold',
+                          color: COLORS.Neutral1,
+                        }}>
+                        .
+                      </Text>
+                    </View>
+                    <View
                       style={{
-                        ...FONTS.body3,
-                        fontWeight: 'bold',
-                        color: COLORS.Neutral1,
+                        flex: 1,
+                        marginLeft: SIZES.base,
+                        justifyContent: 'center',
                       }}>
-                      {item}
-                    </Text>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          ...FONTS.body3,
+                          fontWeight: 'bold',
+                          color: COLORS.Neutral1,
+                        }}>
+                        {item}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              );
-            }}
-          />
-        </View>
+                );
+              }}
+            />
+          </View>
 
-        {/* landmark */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            marginHorizontal: SIZES.semi_margin,
-          }}>
+          {/* landmark */}
           <View
             style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Landmark
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.body3, color: COLORS.Neutral1, lineHeight: 24}}>
-              {landmark}
-            </Text>
-          </View>
-        </View>
-
-        {/* support Doc */}
-        <View
-          style={{
-            marginTop: SIZES.semi_margin,
-            marginHorizontal: SIZES.semi_margin,
-          }}>
-          <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-              Supporting Document:
-            </Text>
-          </View>
-          <FlatList
-            data={documents}
-            keyExtractor={item => `${item?.id}`}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={false}
-            renderItem={({item, index}) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    marginTop: SIZES.base,
-                  }}>
-                  <View style={{flex: 1, justifyContent: 'center'}}>
-                    <Text
-                      numberOfLines={2}
-                      style={{
-                        ...FONTS.cap1,
-                        color: COLORS.secondary1,
-                        fontWeight: '500',
-                      }}>
-                      {item}
-                    </Text>
-                  </View>
-                  <View style={{flex: 1, justifyContent: 'center'}}>
-                    <TextButton
-                      label={'View'}
-                      // onPress={() => navigation.navigate('ViewAgreement')}
-                      labelStyle={{color: COLORS.primary1, ...FONTS.h5}}
-                      buttonContainerStyle={{
-                        marginTop: 0,
-                        alignSelf: 'flex-end',
-                        backgroundColor: COLORS.white,
-                        borderRadius: SIZES.base,
-                        borderWidth: 1,
-                        borderColor: COLORS.primary1,
-                        width: 70,
-                        height: 35,
-                      }}
-                    />
-                  </View>
-                </View>
-              );
-            }}
-          />
-        </View>
-
-        {/* Price */}
-        <View
-          style={{
-            marginTop: SIZES.padding,
-            marginHorizontal: SIZES.radius,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            backgroundColor: COLORS.Neutral10,
-            borderRadius: SIZES.radius,
-            marginBottom: 150,
-            padding: SIZES.semi_margin,
-          }}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Budget</Text>
-            <Text
-              style={{
-                ...FONTS.h3,
-                color: COLORS.primary1,
-                letterSpacing: -1,
-                paddingTop: SIZES.base,
-              }}>
-              ₦{budget.toLocaleString('en-US', options)}
-            </Text>
-          </View>
-
-          <TextButton
-            label={'Contact'}
-            // onPress={() => navigation.navigate('ViewAgreement')}
-            buttonContainerStyle={{
               marginTop: SIZES.base,
-              borderRadius: SIZES.base,
-              width: 130,
-              height: 45,
-            }}
-          />
-        </View>
-      </ScrollView>
-    </View>
+              marginHorizontal: SIZES.semi_margin,
+            }}>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Landmark
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {landmark}
+              </Text>
+            </View>
+          </View>
+
+          {/* support Doc */}
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.semi_margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Supporting Document:
+              </Text>
+            </View>
+            <FlatList
+              data={documents}
+              keyExtractor={item => `${item?.id}`}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={false}
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      marginTop: SIZES.base,
+                    }}>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          ...FONTS.cap1,
+                          color: COLORS.secondary1,
+                          fontWeight: '500',
+                        }}>
+                        {item}
+                      </Text>
+                    </View>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                      <TextButton
+                        label={'View'}
+                        onPress={() => downloadAndOpenPdf(item)}
+                        labelStyle={{color: COLORS.primary1, ...FONTS.h5}}
+                        buttonContainerStyle={{
+                          marginTop: 0,
+                          alignSelf: 'flex-end',
+                          backgroundColor: COLORS.white,
+                          borderRadius: SIZES.base,
+                          borderWidth: 1,
+                          borderColor: COLORS.primary1,
+                          width: 70,
+                          height: 35,
+                        }}
+                      />
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </View>
+
+          {/* Price */}
+          <View
+            style={{
+              marginTop: SIZES.padding,
+              marginHorizontal: SIZES.radius,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              backgroundColor: COLORS.Neutral10,
+              borderRadius: SIZES.radius,
+              marginBottom: 150,
+              padding: SIZES.semi_margin,
+            }}>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+                Budget
+              </Text>
+              <Text
+                style={{
+                  ...FONTS.h3,
+                  color: COLORS.primary1,
+                  letterSpacing: -1,
+                  paddingTop: SIZES.base,
+                }}>
+                ₦{budget.toLocaleString('en-US', options)}
+              </Text>
+            </View>
+
+            <TextButton
+              label={'Contact'}
+              // onPress={() => navigation.navigate('ViewAgreement')}
+              buttonContainerStyle={{
+                marginTop: SIZES.base,
+                borderRadius: SIZES.base,
+                width: 130,
+                height: 45,
+              }}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    </Root>
   );
 };
 

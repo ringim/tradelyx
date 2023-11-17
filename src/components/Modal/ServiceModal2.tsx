@@ -19,9 +19,9 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
   // Bottom Sheet
   const snapPoints = useMemo(() => {
     if (Platform.OS === 'ios') {
-      return ['44%'];
+      return ['37%'];
     } else {
-      return ['44%'];
+      return ['37%'];
     }
   }, []);
 
@@ -41,7 +41,6 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
     [],
   );
 
-
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
@@ -60,7 +59,6 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
       <View
         style={{
           flex: 1,
-          marginTop: 50,
           backgroundColor: COLORS.white,
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
@@ -68,21 +66,21 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Header */}
         <View
           style={{
-            marginTop: SIZES.margin,
+            marginTop: SIZES.semi_margin,
             marginHorizontal: SIZES.padding,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
           {/* Header Back Button */}
-          <TouchableOpacity onPress={hideModal} style={{padding: 5}}>
+          <TouchableOpacity onPress={hideModal} style={{padding: 8}}>
             <FastImage
-              source={icons.back}
+              source={icons.close}
               resizeMode={FastImage.resizeMode.contain}
               tintColor={COLORS.Neutral1}
               style={{
-                width: 20,
-                height: 20,
-                right: SIZES.radius,
+                width: 15,
+                height: 15,
+                right: SIZES.base,
               }}
             />
           </TouchableOpacity>
@@ -107,13 +105,13 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Content */}
         <View
           style={{
-            marginTop: SIZES.margin,
+            marginTop: SIZES.radius,
             paddingHorizontal: SIZES.padding,
             marginBottom: SIZES.base,
           }}>
           <Text
             style={{
-              ...FONTS.h5,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             Add sales offers or customize your products
@@ -138,7 +136,6 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Button */}
         <TextButton
           label="Continue"
-          buttonContainerStyle={{height: 50}}
           onPress={() => {
             value === 'Post Sell Offer'
               ? navigation.navigate('SellOffer')

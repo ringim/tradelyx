@@ -25,6 +25,7 @@ export type BottomTabNavigatorParamList = {
 };
 
 export type ProfileStackNavigatorParamList = {
+  reset(arg0: { index: number; routes: { name: string; }[]; }): unknown;
   canGoBack: any;
   goBack: any;
   navigate: any;
@@ -49,7 +50,6 @@ export type ProfileStackNavigatorParamList = {
   EditProductImage: {productImage: string};
   EditProductImages: {productImages: string};
   EditProductSpec: {product: string};
-  EditProductPrice: {product: string};
   EditProductDoc: {productDoc: string};
   EditProductDocs2: {productDoc: string};
   EditProductShipment: {product: string};
@@ -76,7 +76,8 @@ export type HomeStackNavigatorParamList = {
   PackageShipmentAddress: undefined;
   MiniumOrderPayment: undefined;
   StoreItem: {storeItem: string};
-  SuccessService2: {type: string};
+  SuccessService2: undefined;
+  SuccessService3: undefined;
 };
 
 export type ExploreStackNavigatorParamList = {
@@ -115,11 +116,6 @@ export type OrderStackNavigatorParamList = {
 export type DomesticRFQDetailNavigationProp = NativeStackNavigationProp<
   ExploreStackNavigatorParamList,
   'DomesticDomesticRFQDetail'
->;
-
-export type SuccessService2NavigationProp = NativeStackNavigationProp<
-  HomeStackNavigatorParamList,
-  'SuccessService2'
 >;
 
 export type StandardDomesticRFQDetailNavigationProp = NativeStackNavigationProp<
@@ -196,11 +192,6 @@ export type EditProductImagesNavigationProp = RouteProp<
 export type EditProductSpecNavigationProp = RouteProp<
   ProfileStackNavigatorParamList,
   'EditProductSpec'
->;
-
-export type EditProductPriceNavigationProp = RouteProp<
-  ProfileStackNavigatorParamList,
-  'EditProductPrice'
 >;
 
 export type EditProductDocNavigationProp = RouteProp<
@@ -284,11 +275,6 @@ export type EditProductSpecRouteProp = RouteProp<
   'EditProductSpec'
 >;
 
-export type EditProductPriceRouteProp = RouteProp<
-  ProfileStackNavigatorParamList,
-  'EditProductPrice'
->;
-
 export type EditProductShipmentRouteProp = RouteProp<
   ProfileStackNavigatorParamList,
   'EditProductShipment'
@@ -337,9 +323,4 @@ export type StandardDomesticRFQDetailRouteProp = RouteProp<
 export type InternationalDomesticRFQDetailRouteProp = RouteProp<
   ExploreStackNavigatorParamList,
   'InternationalDomesticRFQDetail'
->;
-
-export type SuccessService2RouteProp = RouteProp<
-  HomeStackNavigatorParamList,
-  'SuccessService2'
 >;

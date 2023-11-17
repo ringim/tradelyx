@@ -1,26 +1,20 @@
 import {Platform, Text, View} from 'react-native';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 import {useMutation} from '@apollo/client';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
 import {
   Header,
   TextButton,
   QuotationProgress2,
-  SellOfferSuccess,
   FormInput,
   ExpiryDate,
 } from '../../../components';
@@ -44,21 +38,6 @@ interface IFreight {
 const MiniumOrderPayment = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
-
-  // ref
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['48%', '48%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    return index;
-  }, []);
 
   const {control, handleSubmit}: any = useForm();
 
@@ -90,7 +69,7 @@ const MiniumOrderPayment = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -125,7 +104,10 @@ const MiniumOrderPayment = () => {
         },
       });
       // console.log('job data', input);
-      handlePresentModalPress();
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService3'}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -157,7 +139,7 @@ const MiniumOrderPayment = () => {
             keyboardType={'numeric'}
             placeholder="E.g. 100"
             rules={{
-              required: 'price is required',
+              required: 'Quantity is required',
             }}
             containerStyle={{
               marginTop: SIZES.padding * 1.2,
@@ -175,7 +157,7 @@ const MiniumOrderPayment = () => {
             control={control}
             name="unit"
             rules={{
-              required: 'Quantity type is required',
+              required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
               <View style={{justifyContent: 'center', marginTop: 30}}>
@@ -254,7 +236,7 @@ const MiniumOrderPayment = () => {
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"
           rules={{
-            required: 'price is required',
+            required: 'Base price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -287,7 +269,7 @@ const MiniumOrderPayment = () => {
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"
           rules={{
-            required: 'price is required',
+            required: 'FOB price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -507,19 +489,6 @@ const MiniumOrderPayment = () => {
           onCancel={hideDatePicker}
         />
 
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View
-            style={{
-              padding: SIZES.padding,
-            }}>
-            <SellOfferSuccess onPress={() => navigation.navigate('Home')} />
-          </View>
-        </BottomSheetModal>
-
         <Spinner
           visible={loading}
           animation={'fade'}
@@ -543,6 +512,7 @@ const MiniumOrderPayment = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}
           enableOnAndroid={true}>
           <View

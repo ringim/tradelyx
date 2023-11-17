@@ -87,8 +87,8 @@ const ReviewItem = ({item}: any) => {
           marginTop: SIZES.radius,
           alignSelf: 'center',
           width: '100%',
-          borderWidth: 0.3,
-          borderColor: COLORS.Neutral8,
+          borderWidth: 0.5,
+          borderColor: COLORS.Neutral7,
         }}
       />
     </View>

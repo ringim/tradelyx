@@ -102,7 +102,6 @@ const AllProducts = () => {
                 key={index}
                 item={item}
                 profile_image={item?.productImage}
-                profile_image2={item?.storeImage}
                 onPress={() =>
                   navigation.navigate('ProductDetail', {productItem: item})
                 }

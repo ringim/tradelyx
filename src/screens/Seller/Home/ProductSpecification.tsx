@@ -2,10 +2,8 @@ import {View, Text, Platform} from 'react-native';
 import React, {useState} from 'react';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {Controller, useForm} from 'react-hook-form';
-import FastImage from 'react-native-fast-image';
 import {useMutation} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
-import DropDownPicker from 'react-native-dropdown-picker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -17,14 +15,14 @@ import {
   TextButton,
   UploadDocs,
 } from '../../../components';
-import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
+import {COLORS, FONTS, SIZES} from '../../../constants';
 import {updateProduct} from '../../../queries/ProductQueries';
 import {
   UpdateProductInput,
   UpdateProductMutation,
   UpdateProductMutationVariables,
 } from '../../../API';
-import { selectFile, uploadFile } from '../../../utilities/service';
+import {selectFile2, uploadFile2} from '../../../utilities/service';
 
 interface IAddProduct {
   supply: string;
@@ -42,10 +40,6 @@ const ProductSpecification = () => {
   const {control, handleSubmit}: any = useForm();
 
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.filterUnit);
   const [singleFile, setSingleFile] = useState<any>([]);
 
   // UPDATE REQUEST QUOTATION
@@ -73,13 +67,12 @@ const ProductSpecification = () => {
         productSpec: desc,
         productDocs: file2,
         packageType,
-        unit: type,
       };
 
       // upload file or multiple files
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile2: any) => uploadFile(singleFile2?.uri)),
+          singleFile.map((singleFile2: any) => uploadFile2(singleFile2?.uri)),
         );
         input.productDocs = fileKeys;
       }
@@ -90,7 +83,7 @@ const ProductSpecification = () => {
         },
       });
       // console.log('job data', input);
-      navigation.navigate('ProductPricing', {productID: input.id});
+      navigation.navigate('ProductShipment', {productID: input.id});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -100,13 +93,6 @@ const ProductSpecification = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  // Delete a single image
-  const deleteItem2 = (itemId: any) => {
-    setSingleFile((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
   };
 
   function requestForm() {
@@ -125,7 +111,7 @@ const ProductSpecification = () => {
           placeholder="Add a specification"
           containerStyle={{marginTop: SIZES.radius}}
           rules={{
-            required: 'Specification is required',
+            required: 'Product Specification is required',
           }}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{
@@ -155,95 +141,12 @@ const ProductSpecification = () => {
           name="moq"
           control={control}
           rules={{
-            required: 'Product certification is required',
+            required: 'MOQ is required',
           }}
           placeholder="E.g. 1 Tonne"
           containerStyle={{marginTop: SIZES.margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-        />
-
-        {/* Unit Type */}
-        <Controller
-          control={control}
-          name="unit"
-          rules={{
-            required: 'Unit type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View>
-              <Text
-                style={{
-                  marginTop: SIZES.semi_margin,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                }}>
-                Unit
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Unit"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.radius,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select unit type"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginTop: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
         />
 
         {/* Packaging Type */}
@@ -252,7 +155,7 @@ const ProductSpecification = () => {
           name="packageType"
           control={control}
           rules={{
-            required: 'Packaging Type is required',
+            required: 'Packaging is required',
           }}
           placeholder="e.g Bags, Crate e.t.c."
           containerStyle={{marginTop: SIZES.padding}}
@@ -276,7 +179,7 @@ const ProductSpecification = () => {
           ) : (
             <UploadDocs
               title="Attach Specification Document"
-              selectFile={() => selectFile(setSingleFile, singleFile)}
+              selectFile={() => selectFile2(setSingleFile, singleFile)}
               containerStyle={{marginHorizontal: 1}}
             />
           )}
@@ -299,7 +202,6 @@ const ProductSpecification = () => {
         <QuotationProgress1
           bgColor1={COLORS.primary1}
           bgColor2={COLORS.primary1}
-          bgColor3={COLORS.white}
           bgColor4={COLORS.white}
           color1={COLORS.primary1}
           color2={COLORS.primary1}
@@ -311,6 +213,7 @@ const ProductSpecification = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}
           enableOnAndroid={true}>
           <View style={{margin: SIZES.semi_margin}}>

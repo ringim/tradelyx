@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {OrderItem, OrderTabItem, SellerOrderItem} from '../../../components';
+import {OrderTabItem, SellerOrderItem} from '../../../components';
 
 const InProgress = () => {
   const navigation = useNavigation<any>();

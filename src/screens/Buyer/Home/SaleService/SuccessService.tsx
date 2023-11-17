@@ -60,7 +60,7 @@ const SuccessService = () => {
           height: 50,
           width: 300,
         }}
-        label="Order Menu"
+        label="Go to Orders"
         labelStyle={{...FONTS.h4}}
         onPress={() => navigation.navigate('Order')}
       />

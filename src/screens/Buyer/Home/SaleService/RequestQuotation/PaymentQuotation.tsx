@@ -8,11 +8,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 import {useMutation} from '@apollo/client';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {
   ExpiryDate,
@@ -30,7 +26,6 @@ import {
   constants,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/BuyerNav/type/navigation';
-import {useAuthContext} from '../../../../../context/AuthContext';
 import {
   UpdateRFQInput,
   UpdateRFQMutation,
@@ -42,8 +37,6 @@ const PaymentQuotation = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
   const {control, handleSubmit}: any = useForm();
-
-  const {userID} = useAuthContext();
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -68,7 +61,7 @@ const PaymentQuotation = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -91,7 +84,6 @@ const PaymentQuotation = () => {
         expiryDate: date,
         paymentType: type,
         paymentMethod: type2,
-        userID,
       };
 
       await doUpdateRFQ({
@@ -100,7 +92,10 @@ const PaymentQuotation = () => {
         },
       });
       // console.log('job data', input);
-      navigation.replace('SuccessService', {type: 'Domestic Request'});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService', params: {type: 'Domestic Request'}}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -111,6 +106,10 @@ const PaymentQuotation = () => {
       setLoading(false);
     }
   };
+
+  function isSubmit() {
+    return date !== '';
+  }
 
   function requestForm() {
     return (
@@ -347,6 +346,7 @@ const PaymentQuotation = () => {
 
       <View style={{justifyContent: 'flex-end', backgroundColor: COLORS.white}}>
         <TextButton
+          disabled={isSubmit() ? false : true}
           buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
           label="Send"
           labelStyle={{...FONTS.h4}}

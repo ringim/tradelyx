@@ -1,16 +1,12 @@
-import {ActivityIndicator, Text, View} from 'react-native';
-import React, {useCallback, useState, useEffect} from 'react';
-import {
-  useNavigation,
-  useRoute,
-  useFocusEffect,
-} from '@react-navigation/native';
+import {Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {
@@ -21,25 +17,23 @@ import {
   TextButton,
   UploadDocs,
 } from '../../../../components';
-import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
+import {COLORS, FONTS, SIZES, icons} from '../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../components/navigation/BuyerNav/type/navigation';
 import {createRFQ} from '../../../../queries/RequestQueries';
 import {
   CreateRFQInput,
   CreateRFQMutation,
   CreateRFQMutationVariables,
-  ListCommodityCategoriesQuery,
-  ListCommodityCategoriesQueryVariables,
   RFQTYPE,
 } from '../../../../API';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {referralCode} from '../../../../utilities/Utils';
-import {listCommodityCategories} from '../../../../queries/ProductQueries';
 import {
   getCountryFlag,
-  selectFile,
-  uploadFile,
+  selectFile2,
+  uploadFile2,
 } from '../../../../utilities/service';
+import {crateTypes} from '../../../../../types/types';
 
 interface IRequestQuotation {
   title: string;
@@ -53,16 +47,6 @@ const StandardQuotation = () => {
   const {userID} = useAuthContext();
   const {control, setValue, handleSubmit}: any = useForm();
 
-  // LIST COMMODITY CATEGORIES
-  const {data: newData, loading: newLoad} = useQuery<
-    ListCommodityCategoriesQuery,
-    ListCommodityCategoriesQueryVariables
-  >(listCommodityCategories, {
-    pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'network-only',
-  });
-
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState<any>('');
   const [cName, setCName] = useState<any>('');
@@ -73,13 +57,7 @@ const StandardQuotation = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState<any>('');
-  const [jobType, setJobType] = useState<any>();
-  const [ccID, setCCIDs] = useState('');
-
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [incoterms, setIncoterms] = useState('');
-  const [incotermsType, setIncotermsType] = useState<any>(constants.incoterms2);
+  const [jobType, setJobType] = useState<any>(crateTypes);
 
   const {location} = address;
 
@@ -107,16 +85,6 @@ const StandardQuotation = () => {
     address?.description?.formatted_address,
   ]);
 
-  useFocusEffect(
-    useCallback(() => {
-      const allCommodityCategories: any =
-        newData?.listCommodityCategories?.items.filter(
-          (item: any) => !item?._deleted,
-        ) || [];
-      setJobType(allCommodityCategories);
-    }, [newLoad]),
-  );
-
   // CREATE REQUEST QUOTATION
   const [doCreateRFQ] = useMutation<
     CreateRFQMutation,
@@ -134,21 +102,17 @@ const StandardQuotation = () => {
         SType: 'RFQ',
         placeOrigin: address?.description?.formatted_address,
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, //flag
-        city: cCity, //city
-        countryName: cName, //country
         title,
-        requestCategory: type?.title,
+        requestCategory: type,
         rfqType: RFQTYPE.STANDARD,
         description: requirements,
-        commoditycategoryID: ccID,
         documents: file,
-        incoterms,
         userID,
       };
       // console.log('quotation res', input);
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
         input.documents = fileKeys;
       }
@@ -158,7 +122,10 @@ const StandardQuotation = () => {
           input,
         },
       });
-      navigation.replace('SuccessService', {type: 'Standard Request'});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService', params: {type: 'Standard Request'}}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -183,7 +150,7 @@ const StandardQuotation = () => {
           control={control}
           placeholder="Add quotation name"
           rules={{
-            required: 'Quotation is required',
+            required: 'This field is required',
           }}
           containerStyle={{marginTop: SIZES.margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -191,122 +158,43 @@ const StandardQuotation = () => {
         />
 
         {/* Category Type */}
-        <View>
-          <Text
-            style={{
-              marginTop: SIZES.semi_margin,
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-              fontWeight: '500',
-            }}>
-            Product Category
-          </Text>
-          <DropDownPicker
-            schema={{
-              label: 'title',
-              value: 'id',
-            }}
-            open={open}
-            showArrowIcon={true}
-            placeholder="Select Category"
-            showTickIcon={true}
-            dropDownDirection="AUTO"
-            listMode="MODAL"
-            value={value1}
-            items={jobType}
-            setOpen={setOpen}
-            setValue={setValue1}
-            setItems={setJobType}
-            style={{
-              borderRadius: SIZES.semi_margin,
-              marginTop: SIZES.radius,
-              borderColor: COLORS.Neutral7,
-              borderWidth: 0.5,
-            }}
-            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-            textStyle={{color: COLORS.Neutral1}}
-            closeIconStyle={{
-              width: 24,
-              height: 24,
-            }}
-            modalProps={{
-              animationType: 'fade',
-            }}
-            ArrowDownIconComponent={({style}) => (
-              <FastImage source={icons.down} style={{width: 15, height: 15}} />
-            )}
-            modalContentContainerStyle={{
-              paddingHorizontal: SIZES.padding * 3,
-            }}
-            modalTitle="Select your category"
-            modalTitleStyle={{
-              fontWeight: '600',
-            }}
-            onChangeValue={(value: any) => {
-              setCCIDs(value);
-            }}
-            onSelectItem={(value: any) => {
-              setType(value);
-            }}
-          />
-        </View>
-
-        {/* description */}
-        <FormInput
-          label="Fill in Requirements"
-          name="requirements"
-          control={control}
-          multiline={true}
-          placeholder="Add requirements"
-          rules={{
-            required: 'Requirements is required',
-          }}
-          containerStyle={{marginTop: SIZES.margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{
-            marginTop: SIZES.radius,
-            height: 120,
-            padding: SIZES.base,
-          }}
-        />
-
-        {/* Incoterms */}
         <Controller
           control={control}
-          name="incoterms"
+          name="category"
           rules={{
-            required: 'Incoterms is required',
+            required: 'Category type is required',
           }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: SIZES.semi_margin}}>
+          render={({field: {onChange}, fieldState: {error}}: any) => (
+            <View>
               <Text
                 style={{
+                  marginTop: SIZES.semi_margin,
                   color: COLORS.Neutral1,
                   ...FONTS.body3,
+                  fontWeight: '500',
                 }}>
-                Incoterms
+                Product Category
               </Text>
               <DropDownPicker
                 schema={{
                   label: 'type',
-                  value: 'type',
+                  value: 'id',
                 }}
-                onChangeValue={onChange}
-                open={open2}
+                open={open}
                 showArrowIcon={true}
-                placeholder="Select Incoterms"
+                placeholder="Select Category"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
-                value={value2}
-                items={incotermsType}
-                setOpen={setOpen2}
-                setValue={setValue2}
-                setItems={setIncotermsType}
+                onChangeValue={onChange}
+                value={value1}
+                items={jobType}
+                setOpen={setOpen}
+                setValue={setValue1}
+                setItems={setJobType}
                 style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
+                  borderRadius: SIZES.semi_margin,
+                  marginTop: SIZES.radius,
                   borderColor: COLORS.Neutral7,
                   borderWidth: 0.5,
                 }}
@@ -328,12 +216,12 @@ const StandardQuotation = () => {
                 modalContentContainerStyle={{
                   paddingHorizontal: SIZES.padding * 3,
                 }}
-                modalTitle="Choose Incoterms"
+                modalTitle="Select your category"
                 modalTitleStyle={{
                   fontWeight: '600',
                 }}
                 onSelectItem={(value: any) => {
-                  setIncoterms(value?.type);
+                  setType(value?.type);
                 }}
               />
               {error && (
@@ -350,6 +238,25 @@ const StandardQuotation = () => {
               )}
             </View>
           )}
+        />
+
+        {/* Requirements */}
+        <FormInput
+          label="Fill in Requirements"
+          name="requirements"
+          control={control}
+          multiline={true}
+          placeholder="Add requirements"
+          rules={{
+            required: 'This field is required',
+          }}
+          containerStyle={{marginTop: SIZES.margin}}
+          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
+          inputContainerStyle={{
+            marginTop: SIZES.radius,
+            height: 120,
+            padding: SIZES.base,
+          }}
         />
 
         {/* Address */}
@@ -384,7 +291,7 @@ const StandardQuotation = () => {
           ) : (
             <UploadDocs
               title={'Attach Product Brochure'}
-              selectFile={() => selectFile(setSingleFile, singleFile)}
+              selectFile={() => selectFile2(setSingleFile, singleFile)}
               containerStyle={{
                 marginTop: SIZES.semi_margin,
                 marginHorizontal: 3,
@@ -393,16 +300,6 @@ const StandardQuotation = () => {
           )}
         </View>
       </View>
-    );
-  }
-
-  if (newLoad) {
-    return (
-      <ActivityIndicator
-        size="small"
-        color={COLORS.primary6}
-        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-      />
     );
   }
 
@@ -425,6 +322,7 @@ const StandardQuotation = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {/* upload docs */}

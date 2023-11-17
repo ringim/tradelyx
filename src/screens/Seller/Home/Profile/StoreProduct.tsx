@@ -7,9 +7,10 @@ import {
 } from 'react-native';
 import React, {useState, useCallback, useRef} from 'react';
 import {useQuery} from '@apollo/client';
+import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SIZES, constants, FONTS} from '../../../../constants';
-import {Header} from '../../../../components';
+import {AltHeader} from '../../../../components';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {
   ModelSortDirection,
@@ -19,6 +20,7 @@ import {
 import MyProducts from './MyProducts';
 import MySellOffers from './MySellOffers';
 import {productByDate} from '../../../../queries/ProductQueries';
+import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 
 const scheduleTabs = constants.storeProducts.map(bottom_tab => ({
   ...bottom_tab,
@@ -147,6 +149,8 @@ const Tabs = ({scrollX, onTabPress}: any) => {
 };
 
 const StoreProduct = () => {
+  const navigation = useNavigation<HomeStackNavigatorParamList>();
+
   const flatListRef = useRef<any>();
   const scrollX = useRef<any>(new Animated.Value(0)).current;
 
@@ -250,10 +254,11 @@ const StoreProduct = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral9}}>
-      <Header
+      <AltHeader
         title={'Products & Sell Offers'}
         contentStyle={{marginBottom: 0}}
         tintColor={COLORS.Neutral1}
+        onPress={() => navigation.navigate('Profile')}
       />
 
       {renderTopTabBar()}

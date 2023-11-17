@@ -7,7 +7,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../constants';
-import {RFQItem, SearchBox2} from '../../../components';
+import {NoItem, RFQItem, SearchBox2} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   ModelSortDirection,
@@ -31,7 +31,7 @@ const RFQInternational = () => {
     RfqByDateQueryVariables
   >(rfqByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
@@ -102,6 +102,8 @@ const RFQInternational = () => {
           // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
+
+        {filteredDataSource?.length === 0 && <NoItem />}
 
         <FlashList
           data={filteredDataSource}

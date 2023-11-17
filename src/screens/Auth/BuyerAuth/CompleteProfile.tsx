@@ -93,7 +93,7 @@ const CompleteProfile = () => {
           input,
         },
       });
-      // console.log('Profile Updated', input);
+      console.log('Profile Updated', input);
       navigation.reset({
         index: 0,
         routes: [{name: 'Home'}],
@@ -292,6 +292,7 @@ const CompleteProfile = () => {
         <KeyboardAwareScrollView
           keyboardDismissMode="on-drag"
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}>
           {/* intro text */}
           <View

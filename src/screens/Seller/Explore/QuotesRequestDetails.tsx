@@ -1,4 +1,4 @@
-import {View, Platform, Text} from 'react-native';
+import {View, Platform,  Text} from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -42,6 +42,7 @@ const QuotesRequestDetails = () => {
     placeDestinationFlag,
     notes,
     relatedServices,
+    containerDetails,
     handling,
     height,
     length,
@@ -85,7 +86,8 @@ const QuotesRequestDetails = () => {
             containerCount={qty}
             transportMode={rffType}
             containerSize={containerSize}
-            languages={relatedServices}
+            containerDetails={containerDetails}
+            relatedServices={relatedServices}
             container={container}
             containerType={containerType}
             rffType={rffType}

@@ -20,15 +20,12 @@ const Profile = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const privacyPolicy = 'https://www.google.com';
-  const aboutUs = 'https://www.google.com';
+  const privacyPolicy = 'https://www.tradelyx.com/';
+  const aboutUs = 'https://www.tradelyx.com/';
 
   // GET USER DETAILS
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
     variables: {id: userID},
-    pollInterval: 500,
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'network-only',
   });
   const user: any = data?.getUser;
 
@@ -64,6 +61,7 @@ const Profile = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {/* Profile Pic */}

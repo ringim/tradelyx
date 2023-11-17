@@ -10,7 +10,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.moduleName = @"Tradely";
-  [GMSServices provideAPIKey:@"AIzaSyALS8aQiGBvny1Zg-pBqvPyptOzvDcPRyg"];
+  [GMSServices provideAPIKey:@"AIzaSyDPMHmRw3LbdXZCfrLu7DxmhDgv2u_9SKU"];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

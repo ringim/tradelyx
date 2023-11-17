@@ -36,6 +36,7 @@ const store = require('../assets/icons/store.png');
 const dot = require('../assets/icons/dot.png');
 const call = require('../assets/icons/call.png');
 const logOut = require('../assets/icons/logOut.png');
+const cert = require('../assets/icons/cert.png');
 const network = require('../assets/icons/network.png');
 const wallet = require('../assets/icons/wallet.png');
 const location = require('../assets/icons/location.png');
@@ -165,6 +166,7 @@ export default {
   docs,
   email,
   network,
+  cert,
   bell,
   pp,
   share,

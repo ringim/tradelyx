@@ -23,7 +23,6 @@ import {
   ProgressOrderDetail,
   AgentRequestDetails,
   AccountAddress,
-  EditProductPrice,
   StandardDomesticRFQDetail,
   InternationalDomesticRFQDetail,
   AddProducts,
@@ -32,7 +31,6 @@ import {
   EditProductDocs2,
   EditProductShipment,
   ProductSpecification,
-  ProductPricing,
   ProductShipmentAddress,
   EditProductItem,
   ProductShipment,
@@ -44,6 +42,7 @@ import {
   EditSellOfferImages,
   EditSellOfferPricing,
   SuccessService2,
+  SuccessService3,
   EditSellOfferShipment,
   EditCompanyDocs,
   EditSellOfferShipmentAddress,
@@ -199,11 +198,6 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
-        name="EditProductPrice"
-        component={EditProductPrice}
-        options={() => options}
-      />
-      <Stack.Screen
         name="EditAccountImage"
         component={EditAccountImage}
         options={{presentation: 'modal'}}
@@ -284,11 +278,6 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
-        name="ProductPricing"
-        component={ProductPricing}
-        options={() => options}
-      />
-      <Stack.Screen
         name="ProductShipment"
         component={ProductShipment}
         options={() => options}
@@ -296,6 +285,11 @@ const SellerStack = () => {
       <Stack.Screen
         name="SuccessService2"
         component={SuccessService2}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="SuccessService3"
+        component={SuccessService3}
         options={() => options}
       />
       <Stack.Screen

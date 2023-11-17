@@ -12,7 +12,6 @@ import PackingShipment from './Home/PackingShipment';
 import PackageShipmentAddress from './Home/PackageShipmentAddress';
 import MiniumOrderPayment from './Home/MiniumOrderPayment';
 import ProductSpecification from './Home/ProductSpecification';
-import ProductPricing from './Home/ProductPricing';
 import ProductShipment from './Home/ProductShipment';
 import StoreItem from './Home/StoreItem';
 import AddProducts from './Home/AddProducts';
@@ -20,11 +19,11 @@ import EditProductItem from './Home/Profile/EditProduct/EditProductItem';
 import EditProductImage from './Home/Profile/EditProduct/EditProductImage';
 import EditProductImages from './Home/Profile/EditProduct/EditProductImages';
 import EditProductSpec from './Home/Profile/EditProduct/EditProductSpec';
-import EditProductPrice from './Home/Profile/EditProduct/EditProductPrice';
 import EditProductDoc from './Home/Profile/EditProduct/EditProductDoc';
 import EditProductShipment from './Home/Profile/EditProduct/EditProductShipment';
 import EditProductShipmentAddress from './Home/Profile/EditProduct/EditProductShipmentAddress';
-import SuccessService2 from '../Buyer/Home/SaleService/SuccessService2';
+import SuccessService2 from './Home/SuccessService2';
+import SuccessService3 from './Home/SuccessService3';
 
 // Explore
 import Explore from './Explore/Explore';
@@ -81,17 +80,16 @@ export {
   EditAccountBGImage,
   EditSellOfferImages,
   SuccessService2,
+  SuccessService3,
   EditSellOfferShipment,
   AddProducts,
   EditProductSpec,
   BusinessAddress,
-  EditProductPrice,
   EditProductShipment,
   EditProductShipmentAddress,
   EditProductItem,
   Chat,
   AccountAddress,
-  ProductPricing,
   ProductShipmentAddress,
   ProductShipment,
   EditSellOfferPricing,

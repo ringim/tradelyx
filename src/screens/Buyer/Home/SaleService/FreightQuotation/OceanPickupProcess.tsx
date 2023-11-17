@@ -61,6 +61,9 @@ const OceanPickupProcess = () => {
   const [cName2, setCName2] = useState<any>('');
   const [cCity2, setCCity2] = useState<any>('');
 
+  const selectedProp = selectedCategories?.map(
+    (obj: {label: any}) => obj?.label,
+  );
   const {location} = address1;
 
   useEffect(() => {
@@ -103,7 +106,7 @@ const OceanPickupProcess = () => {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
         SType: 'RFF',
-        city: cCity, //city
+        // city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
         placeOrigin: cName, //country
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, // flag
@@ -112,7 +115,7 @@ const OceanPickupProcess = () => {
         destinationCountry: cName2, //country
         placeDestinationFlag: `https://flagcdn.com/32x24/${code2}.png`,
         relatedServices: selectedCategories?.label,
-        invoiceAmount: amount,
+        budget: amount,
         notes,
         userID,
       };
@@ -121,7 +124,10 @@ const OceanPickupProcess = () => {
           input,
         },
       });
-      navigation.replace('SuccessService', {type: 'Ocean Request'});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService', params: {type: 'Ocean Request'}}],
+      });
       // console.log('job data', input);
     } catch (error) {
       Toast.show({
@@ -163,6 +169,10 @@ const OceanPickupProcess = () => {
     setValue,
     address2?.description?.formatted_address,
   ]);
+
+  function isSubmit() {
+    return selectedProp?.length !== 0;
+  }
 
   function requestForm() {
     return (
@@ -453,6 +463,7 @@ const OceanPickupProcess = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           <FreightType
@@ -467,7 +478,12 @@ const OceanPickupProcess = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            // disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              // backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Send"
             labelStyle={{...FONTS.h4}}
             onPress={handleSubmit(onSubmit)}

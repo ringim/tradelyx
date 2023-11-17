@@ -2,14 +2,12 @@ import {View, Text, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useMutation, useQuery} from '@apollo/client';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import FastImage from 'react-native-fast-image';
-import DropDownPicker from 'react-native-dropdown-picker';
 import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 
-import {COLORS, SIZES, FONTS, icons, constants} from '../../../../../constants';
+import {COLORS, SIZES, FONTS, constants} from '../../../../../constants';
 import {
   FormInput,
   Header,
@@ -17,7 +15,7 @@ import {
   TextButton,
 } from '../../../../../components';
 import {
-  EditProductPriceRouteProp,
+  EditProductSpecRouteProp,
   ProfileStackNavigatorParamList,
 } from '../../../../../components/navigation/SellerNav/type/navigation';
 import {getProduct, updateProduct} from '../../../../../queries/ProductQueries';
@@ -34,12 +32,11 @@ interface ProductData {
   moq: string;
   packageType: string;
   spec: string;
-  unit: string;
 }
 
 const EditProductSpec = () => {
   const navigation = useNavigation<ProfileStackNavigatorParamList>();
-  const route = useRoute<EditProductPriceRouteProp>();
+  const route = useRoute<EditProductSpecRouteProp>();
 
   const {id}: any = route?.params?.product;
 
@@ -55,10 +52,6 @@ const EditProductSpec = () => {
   const productDetails: any = data?.getProduct;
 
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [type, setType] = useState(productDetails?.unit);
-  const [jobType, setJobType] = useState<any>(constants.filterUnit);
 
   // UPDATE USER DETAILS
   const [doUpdateProduct] = useMutation<
@@ -78,7 +71,6 @@ const EditProductSpec = () => {
         supplyCapacity: supply,
         productSpec: spec,
         packageType,
-        unit: type,
       };
 
       await doUpdateProduct({
@@ -87,7 +79,7 @@ const EditProductSpec = () => {
         },
       });
       // console.log('product updated 2', input);
-      navigation.navigate('EditProductPrice', {product: productDetails});
+      navigation.navigate('EditProductShipment', {product: productDetails});
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -104,7 +96,6 @@ const EditProductSpec = () => {
     let isCurrent = true;
     if (productDetails && isCurrent) {
       setValue('supply', productDetails?.supplyCapacity);
-      setValue('unit', productDetails?.unit);
       setValue('spec', productDetails?.productSpec);
       setValue('moq', productDetails?.minOrderQty);
       setValue('packageType', productDetails?.packageType);
@@ -130,7 +121,7 @@ const EditProductSpec = () => {
           placeholder="Add a specification"
           containerStyle={{marginTop: SIZES.radius}}
           rules={{
-            required: 'Specification is required',
+            required: 'Product Specification is required',
           }}
           inputContainerStyle={{
             marginTop: SIZES.base,
@@ -165,90 +156,6 @@ const EditProductSpec = () => {
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
 
-        {/* Unit Type */}
-        <Controller
-          control={control}
-          name="unit"
-          rules={{
-            required: 'Unit type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View>
-              <Text
-                style={{
-                  marginTop: SIZES.radius,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Unit
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Unit"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1 || value}
-                items={jobType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setJobType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select unit type"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginTop: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
-
         {/* Packaging Type */}
         <FormInput
           label="Packaging Type"
@@ -271,6 +178,7 @@ const EditProductSpec = () => {
           {productDetails?.productDocs && (
             <ShowFiles
               title="Product Brochures"
+              showEdit={true}
               file={productDetails?.productDocs}
               contentStyle={{marginTop: SIZES.semi_margin}}
               onPress={() =>
@@ -313,6 +221,7 @@ const EditProductSpec = () => {
         <KeyboardAwareScrollView
           keyboardDismissMode="on-drag"
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}
           enableOnAndroid={true}>
           <View

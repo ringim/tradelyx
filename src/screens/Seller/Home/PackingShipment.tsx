@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, StyleSheet, Platform} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -42,7 +36,6 @@ import {
   UpdateSellOfferMutationVariables,
 } from '../../../API';
 import {updateSellOffer} from '../../../queries/RequestQueries';
-import {useAuthContext} from '../../../context/AuthContext';
 
 interface ISellOffer {
   detail: string;
@@ -53,7 +46,6 @@ interface ISellOffer {
 const PackingShipment = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
-  const {userID} = useAuthContext();
   const {control, setValue, handleSubmit}: any = useForm();
 
   const mapRef = useRef(null);
@@ -79,7 +71,7 @@ const PackingShipment = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -146,7 +138,6 @@ const PackingShipment = () => {
           marginHorizontal: SIZES.semi_margin,
         }}>
         {/* source location */}
-
         <View
           style={{
             flexDirection: 'row',
@@ -362,14 +353,6 @@ const PackingShipment = () => {
     );
   }
 
-  if (newLoad) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="small" color={COLORS.primary4} />
-      </View>
-    );
-  }
-
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -408,6 +391,7 @@ const PackingShipment = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}
           enableOnAndroid={true}>
           <View style={{margin: SIZES.semi_margin}}>

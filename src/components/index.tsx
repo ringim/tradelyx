@@ -25,8 +25,10 @@ import SellOfferItem from './Home/SellOfferItem';
 import LanguageSpoken from './Home/LanguageSpoken';
 import ProfileItem from './Home/ProfileItem';
 import SearchItem4 from './Home/SearchItem4';
+import ShowDocs from './Home/ShowDocs';
 import PerformanceTab from './Home/PerformanceTab';
 import FinanceTabs from './Home/FinanceTabs';
+import ProductSpec from './Home/ProductSpec';
 import BalanceSection from './Home/BalanceSection';
 import ProfilePhoto from './Home/ProfilePhoto';
 import SearchBox from './Home/SearchBox';
@@ -76,7 +78,6 @@ import Shipment from './Home/Shipment';
 import SearchBox3 from './Home/SearchBox3';
 import SourceLocationItem from './Home/SourceLocationItem';
 import SliderContainer from './Home/SliderContainer';
-import SellOfferSuccess from './Home/SellOfferSuccess';
 import UpdateProfilePhoto from './Home/UpdateProfilePhoto';
 import ViewProductImage from './Home/ViewProductImage';
 import Packaging from './Home/Packaging';
@@ -104,7 +105,8 @@ import Tags from './Others/Tags';
 import UploadID from './Others/UploadID';
 
 //ORDER
-import OrderItem from './Order/OrderItem';
+import RFFOrderItem from './Order/RFFOrderItem';
+import RFQOrderItem from './Order/RFQOrderItem';
 import OrderTabItem from './Order/OrderTabItem';
 import OrderDetailItem from './Order/OrderDetailItem';
 import ReplyListItem from './Order/ReplyListItem';
@@ -121,7 +123,7 @@ import NoSection from './Others/NoSection';
 import TransactionItem from './Profile/TransactionItem';
 import TransactDate from './Profile/TransactDate';
 import AddressDetails from './Profile/AddressDetails';
-import ProductSuccess from './Profile/ProductSuccess';
+import OrderItem from './Order/OrderItem';
 
 //Chat
 // import ChatHeader from './message/ChatHeader';
@@ -139,8 +141,6 @@ import FreightTab from './Modal/FreightTab';
 import QuoteTab from './Modal/QuoteTab';
 import OptionModal from './Modal/OptionModal';
 
-
-
 export {
   MultipleImages,
   Tags,
@@ -151,10 +151,12 @@ export {
   RequestTags,
   FileSection,
   UploadedID,
+  ProductSpec,
   ViewProductImage,
   SOImage,
   ProductImage,
   ProductItem,
+  OrderItem,
   ExpiryDate,
   ShowFiles,
   EditFileSection,
@@ -167,17 +169,17 @@ export {
   UploadID,
   QuotationProgress,
   ImageUpload,
+  ShowDocs,
   BusinessDesc,
   SourceLocationItem,
   SliderContainer,
   AcceptPolicy,
   ContainerType,
   ViewMultipleImages,
-  SellOfferSuccess,
   OrderTab,
   SelectLanguage,
   TransactionItem,
-  OrderItem,
+  RFFOrderItem,
   SellerItem,
   BalanceSection,
   ProductInfo,
@@ -210,7 +212,6 @@ export {
   OrderTabItem,
   StoreBannerInfo,
   ReqQuote,
-  ProductSuccess,
   QuoteType,
   OptionModal,
   RFQItem2,
@@ -242,6 +243,7 @@ export {
   ServiceTab,
   ImageCaption,
   QuoteRequestItem,
+  RFQOrderItem,
   PopularProducts,
   LanguageSpoken,
   ServiceModal,

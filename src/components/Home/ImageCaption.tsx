@@ -7,12 +7,11 @@ import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {DEFAULT_BANNER_IMAGE} from '../../utilities/Utils';
 
 const ImageCaption = ({
-  productItem,
+  rating,
   name,
   commodityCategory,
   banner_image,
 }: any) => {
-  
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
   useEffect(() => {
@@ -57,7 +56,7 @@ const ImageCaption = ({
             <FastImage
               source={icons.category}
               resizeMode={FastImage.resizeMode.contain}
-              tintColor={COLORS.white}
+              tintColor={COLORS.primary5}
               style={{width: 20, height: 20}}
             />
           </View>
@@ -65,10 +64,10 @@ const ImageCaption = ({
           <View
             style={{
               justifyContent: 'center',
-              marginLeft: SIZES.base,
+              paddingLeft: 4,
             }}>
             <Text
-              style={{...FONTS.cap1, fontWeight: '600', color: COLORS.white}}>
+              style={{...FONTS.body3, fontWeight: '600', color: COLORS.white}}>
               {commodityCategory}
             </Text>
           </View>
@@ -78,7 +77,7 @@ const ImageCaption = ({
               source={icons.dot}
               resizeMode={FastImage.resizeMode.contain}
               tintColor={COLORS.white}
-              style={{width: 6, height: 6}}
+              style={{width: 6, height: 6, top: 1}}
             />
           </View>
 
@@ -86,26 +85,26 @@ const ImageCaption = ({
             <FastImage
               source={icons.rate}
               resizeMode={FastImage.resizeMode.contain}
-              tintColor={COLORS.white}
-              style={{width: 20, height: 20}}
+              tintColor={COLORS.secondary1}
+              style={{width: 20, height: 20,}}
             />
           </View>
 
           <View
             style={{
-              marginLeft: 4,
+              paddingLeft: 2,
               justifyContent: 'center',
             }}>
             <Text
-              style={{...FONTS.body2, fontWeight: '500', color: COLORS.white}}>
-              {productItem?.rating || 0}
+              style={{...FONTS.body2, fontWeight: 'bold', color: COLORS.white}}>
+              {rating}
             </Text>
           </View>
         </View>
 
         {/* Product Name */}
         <View style={{marginTop: 5}}>
-          <Text numberOfLines={2} style={{...FONTS.h3, color: COLORS.white}}>
+          <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.white}}>
             {name}
           </Text>
         </View>

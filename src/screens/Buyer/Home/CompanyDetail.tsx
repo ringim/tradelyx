@@ -50,7 +50,7 @@ const CompanyDetail = () => {
     ProductByDateQueryVariables
   >(productByDate, {
     pollInterval: 500,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
       SType: 'JOB',

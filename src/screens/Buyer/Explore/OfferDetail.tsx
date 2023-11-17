@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useRoute} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -7,6 +7,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {Storage} from 'aws-amplify';
 import dayjs from 'dayjs';
 import {useQuery} from '@apollo/client';
+import ViewMoreText from 'react-native-view-more-text';
 
 import {Header, TextIconButton} from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
@@ -20,6 +21,12 @@ const OfferDetail = () => {
   const route: any = useRoute<OfferDetailRouteProp>();
   const element = useRef<ImageDetail>(null);
 
+  const options = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+
   const {
     title,
     basePrice,
@@ -30,6 +37,7 @@ const OfferDetail = () => {
     packageDesc,
     images,
     qtyMeasure,
+    unit,
     offerValidity,
     userID,
   }: any = route?.params?.detail;
@@ -39,6 +47,28 @@ const OfferDetail = () => {
   const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
   // console.log('daysUntilExpiry', offerValidity)
+
+  function renderViewMore(onPress: any) {
+    return (
+      <TouchableOpacity style={{marginTop: SIZES.radius}} onPress={onPress}>
+        <Text
+          style={{color: COLORS.primary4, ...FONTS.body3, fontWeight: '500'}}>
+          View more
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+
+  function renderViewLess(onPress: any) {
+    return (
+      <TouchableOpacity style={{marginTop: SIZES.radius}} onPress={onPress}>
+        <Text
+          style={{color: COLORS.primary4, ...FONTS.body3, fontWeight: '500'}}>
+          View less
+        </Text>
+      </TouchableOpacity>
+    );
+  }
 
   // GET USER
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -285,7 +315,7 @@ const OfferDetail = () => {
                   fontWeight: '600',
                   color: COLORS.Neutral1,
                 }}>
-                {qtyMeasure} bags
+                {qtyMeasure} {unit}
               </Text>
             </View>
           </View>
@@ -293,14 +323,14 @@ const OfferDetail = () => {
           {/* base price */}
           <View
             style={{
-              marginTop: SIZES.semi_margin,
+              marginTop: SIZES.radius,
               marginHorizontal: SIZES.semi_margin,
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
             <View style={{justifyContent: 'center'}}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-                Base Price (FOB)
+                FOB Price
               </Text>
             </View>
             <View
@@ -314,7 +344,7 @@ const OfferDetail = () => {
                   fontWeight: '600',
                   color: COLORS.Neutral1,
                 }}>
-                ₦{parseFloat(basePrice.toFixed(2))}
+                ₦{fobPrice.toLocaleString('en-US', options)}
               </Text>
             </View>
           </View>
@@ -322,7 +352,7 @@ const OfferDetail = () => {
           {/* payment type */}
           <View
             style={{
-              marginTop: SIZES.semi_margin,
+              marginTop: SIZES.radius,
               marginHorizontal: SIZES.semi_margin,
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -351,7 +381,7 @@ const OfferDetail = () => {
           {/* delivery duration */}
           <View
             style={{
-              marginTop: SIZES.semi_margin,
+              marginTop: SIZES.radius,
               marginHorizontal: SIZES.semi_margin,
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -383,7 +413,7 @@ const OfferDetail = () => {
           style={{
             alignSelf: 'center',
             width: '90%',
-            borderWidth: 0.4,
+            borderWidth: 0.5,
             borderColor: COLORS.Neutral7,
             marginTop: SIZES.margin,
           }}
@@ -395,24 +425,19 @@ const OfferDetail = () => {
             marginTop: SIZES.margin,
             marginHorizontal: SIZES.semi_margin,
           }}>
-          <View style={{justifyContent: 'center'}}>
+          <View style={{justifyContent: 'center', marginBottom: SIZES.base}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
               Detailed Description
             </Text>
           </View>
-          <View
-            style={{
-              marginTop: 4,
-            }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                fontWeight: '500',
-                color: COLORS.Neutral1,
-              }}>
-              {description}
-            </Text>
-          </View>
+          <ViewMoreText
+            numberOfLines={5}
+            renderViewMore={renderViewMore}
+            renderViewLess={renderViewLess}
+            style={{justifyContent: 'center', marginTop: SIZES.radius}}
+            textStyle={{...FONTS.h5, color: COLORS.Neutral1}}>
+            <Text>{description}</Text>
+          </ViewMoreText>
         </View>
 
         {/* package des */}
@@ -421,7 +446,7 @@ const OfferDetail = () => {
             marginTop: SIZES.radius,
             marginHorizontal: SIZES.semi_margin,
           }}>
-          <View style={{justifyContent: 'center'}}>
+          <View style={{justifyContent: 'center', marginBottom: SIZES.base}}>
             <Text
               style={{
                 ...FONTS.body3,
@@ -430,19 +455,14 @@ const OfferDetail = () => {
               Packaging Description
             </Text>
           </View>
-          <View
-            style={{
-              marginTop: 4,
-            }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                fontWeight: '500',
-                color: COLORS.Neutral1,
-              }}>
-              {packageDesc}
-            </Text>
-          </View>
+          <ViewMoreText
+            numberOfLines={5}
+            renderViewMore={renderViewMore}
+            renderViewLess={renderViewLess}
+            style={{justifyContent: 'center', marginTop: SIZES.radius}}
+            textStyle={{...FONTS.h5, color: COLORS.Neutral1}}>
+            <Text>{packageDesc}</Text>
+          </ViewMoreText>
         </View>
 
         {/* expiry */}
@@ -459,7 +479,10 @@ const OfferDetail = () => {
           }}>
           <View style={{flex: 1, justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              Expiry Date:
+              Expiry Date:{' '}
+              <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+                {offerValidity}
+              </Text>
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -474,7 +497,7 @@ const OfferDetail = () => {
           </View>
           <View style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
             <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-              {offerValidity}
+              {daysUntilExpiry} days
             </Text>
           </View>
         </View>
@@ -495,7 +518,9 @@ const OfferDetail = () => {
             paddingHorizontal: SIZES.padding,
           }}>
           <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text style={{...FONTS.h3, color: COLORS.Neutral5}}>Price</Text>
+            <Text style={{...FONTS.h3, color: COLORS.Neutral5}}>
+              Base Price
+            </Text>
           </View>
 
           <View style={{justifyContent: 'center'}}>
@@ -505,7 +530,7 @@ const OfferDetail = () => {
                 color: COLORS.primary1,
                 letterSpacing: -1,
               }}>
-              ₦{parseFloat(fobPrice.toFixed(2))}
+              ₦{basePrice.toLocaleString('en-US', options)}
             </Text>
           </View>
         </View>

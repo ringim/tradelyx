@@ -13,6 +13,7 @@ import {v4 as uuidV4} from 'uuid';
 import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import Share from 'react-native-share';
+import path from 'path';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 
 import appConfig from '../../app.json';
@@ -245,6 +246,11 @@ export const uploadFile = async (uri: string) => {
   }
 };
 
+const extractFileName = (filePath: any) => {
+  const fileNameWithExtension = path.basename(filePath);
+  return fileNameWithExtension;
+};
+
 export const uploadFile2 = async (singleFile: any) => {
   try {
     // get the Blob of the file from uri
@@ -252,11 +258,12 @@ export const uploadFile2 = async (singleFile: any) => {
     const blob = await response?.blob();
 
     // file extension splitting
-    const uriParts = singleFile.split('.');
-    const extension = uriParts[uriParts.length - 1];
+    // const uriParts = singleFile.split('.');
+    // const extension = uriParts[uriParts.length - 1];
+    const fileName = extractFileName(singleFile);
 
     // upload file (blob) to s3
-    const s3Response = await Storage.put(`${uuidV4()}.${extension}`, blob);
+    const s3Response = await Storage.put(fileName, blob);
     return s3Response.key;
   } catch (err) {
     Toast.show({

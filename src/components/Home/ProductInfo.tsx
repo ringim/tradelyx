@@ -8,7 +8,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
 
-const ProductInfo = ({image, tags, name}: any) => {
+const ProductInfo = ({image, tags, cate, type, name}: any) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   const element = useRef<ImageDetail>(null);
@@ -51,7 +51,6 @@ const ProductInfo = ({image, tags, name}: any) => {
           <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>Information</Text>
         </View>
       </View>
-      
       {/* product image */}
       <View style={{marginTop: SIZES.semi_margin}}>
         <ImageModal
@@ -75,7 +74,6 @@ const ProductInfo = ({image, tags, name}: any) => {
           }}
         />
       </View>
-
       {/* Product name */}
       <View
         style={{
@@ -99,9 +97,53 @@ const ProductInfo = ({image, tags, name}: any) => {
         </View>
       </View>
 
+      {/* Category */}
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Category:
+          </Text>
+        </View>
+        <View
+          style={{flex: 1, marginLeft: SIZES.base, justifyContent: 'center'}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
+            {cate}
+          </Text>
+        </View>
+      </View>
+
+      {/* Type */}
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Type:</Text>
+        </View>
+        <View
+          style={{flex: 1, marginLeft: SIZES.base, justifyContent: 'center'}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
+            {type}
+          </Text>
+        </View>
+      </View>
+
       {/* tags */}
-      <View style={{marginTop: SIZES.radius}}>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>Tags</Text>
+      <View style={{marginTop: SIZES.base}}>
+        <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Tags</Text>
         <FlatList
           data={tags}
           keyExtractor={item => `${item}`}
@@ -124,7 +166,7 @@ const ProductInfo = ({image, tags, name}: any) => {
                       fontWeight: 'bold',
                       color: COLORS.Neutral1,
                     }}>
-                    .
+                    -
                   </Text>
                 </View>
                 <View

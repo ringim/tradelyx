@@ -7,15 +7,12 @@ import {SIZES, COLORS, FONTS, icons} from '../../constants';
 const QuotationProgress = ({
   item2,
   item1,
-  item3,
   item4,
   color1,
   color2,
-  color3,
   color4,
   bgColor1,
   bgColor2,
-  bgColor3,
   bgColor4,
 }: any) => {
   return (
@@ -83,38 +80,6 @@ const QuotationProgress = ({
         </View>
         <View style={{marginLeft: SIZES.radius, justifyContent: 'center'}}>
           <Text style={{...FONTS.h5, color: color2}}>Specification</Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: SIZES.base,
-          }}>
-          <FastImage
-            source={icons.forward}
-            tintColor={COLORS.Neutral7}
-            resizeMode={FastImage.resizeMode.contain}
-            style={{width: 16, height: 16}}
-          />
-        </View>
-
-        {/* Pricing */}
-        <View
-          style={{
-            justifyContent: 'center',
-            backgroundColor: bgColor3,
-            width: 30,
-            height: 30,
-            borderRadius: SIZES.margin,
-          }}>
-          <FastImage
-            source={icons.pricing}
-            tintColor={item3}
-            resizeMode={FastImage.resizeMode.contain}
-            style={{width: 14, height: 14, alignSelf: 'center'}}
-          />
-        </View>
-        <View style={{marginLeft: SIZES.radius, justifyContent: 'center'}}>
-          <Text style={{...FONTS.h5, color: color3}}>Pricing</Text>
         </View>
         <View
           style={{

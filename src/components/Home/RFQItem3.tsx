@@ -176,7 +176,7 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         style={{
           alignSelf: 'center',
           width: '95%',
-          borderWidth: 0.4,
+          borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
           marginTop: SIZES.semi_margin,
         }}
@@ -252,7 +252,7 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.qty} bags
+            {item?.qty} {item?.unit}
           </Text>
         </View>
       </View>

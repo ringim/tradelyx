@@ -61,7 +61,7 @@ const RFQFilter = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -367,6 +367,7 @@ const RFQFilter = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {renderFilterForm()}

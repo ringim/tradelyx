@@ -13,6 +13,7 @@ export const onCreateOrder = /* GraphQL */ `subscription OnCreateOrder($filter: 
     id
     createdAt
     SType
+    requestID
     orderType
     orderStatus
     agreement
@@ -20,12 +21,13 @@ export const onCreateOrder = /* GraphQL */ `subscription OnCreateOrder($filter: 
     toCountry
     fromImage
     fromCountry
-    orderMessage
-    orderDate
+    replyMessage
+    replies
     userID
     rfqID
     rffID
     sellOfferID
+    productID
     updatedAt
     __typename
   }
@@ -39,6 +41,7 @@ export const onUpdateOrder = /* GraphQL */ `subscription OnUpdateOrder($filter: 
     id
     createdAt
     SType
+    requestID
     orderType
     orderStatus
     agreement
@@ -46,12 +49,13 @@ export const onUpdateOrder = /* GraphQL */ `subscription OnUpdateOrder($filter: 
     toCountry
     fromImage
     fromCountry
-    orderMessage
-    orderDate
+    replyMessage
+    replies
     userID
     rfqID
     rffID
     sellOfferID
+    productID
     updatedAt
     __typename
   }
@@ -65,6 +69,7 @@ export const onDeleteOrder = /* GraphQL */ `subscription OnDeleteOrder($filter: 
     id
     createdAt
     SType
+    requestID
     orderType
     orderStatus
     agreement
@@ -72,12 +77,13 @@ export const onDeleteOrder = /* GraphQL */ `subscription OnDeleteOrder($filter: 
     toCountry
     fromImage
     fromCountry
-    orderMessage
-    orderDate
+    replyMessage
+    replies
     userID
     rfqID
     rffID
     sellOfferID
+    productID
     updatedAt
     __typename
   }
@@ -97,12 +103,12 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
     tags
     productName
     description
-    rating
+    packageDesc
     image
     images
     rfqType
     packageType
-    packageDesc
+    supplyCapacity
     placeOrigin
     landmark
     unit
@@ -114,12 +120,12 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
     paymentMethod
     offerValidity
     userID
-    commoditycategoryID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -127,12 +133,13 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -158,12 +165,12 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
     tags
     productName
     description
-    rating
+    packageDesc
     image
     images
     rfqType
     packageType
-    packageDesc
+    supplyCapacity
     placeOrigin
     landmark
     unit
@@ -175,12 +182,12 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
     paymentMethod
     offerValidity
     userID
-    commoditycategoryID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -188,12 +195,13 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -219,12 +227,12 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
     tags
     productName
     description
-    rating
+    packageDesc
     image
     images
     rfqType
     packageType
-    packageDesc
+    supplyCapacity
     placeOrigin
     landmark
     unit
@@ -236,12 +244,12 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
     paymentMethod
     offerValidity
     userID
-    commoditycategoryID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -249,12 +257,13 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -277,8 +286,6 @@ export const onCreateRFQ = /* GraphQL */ `subscription OnCreateRFQ($filter: Mode
     rfqNo
     rfqType
     title
-    countryName
-    city
     requestCategory
     description
     documents
@@ -301,15 +308,13 @@ export const onCreateRFQ = /* GraphQL */ `subscription OnCreateRFQ($filter: Mode
     expiryDate
     paymentType
     paymentMethod
-    warranty
-    returnPolicy
-    commoditycategoryID
     userID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -317,12 +322,13 @@ export const onCreateRFQ = /* GraphQL */ `subscription OnCreateRFQ($filter: Mode
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -345,8 +351,6 @@ export const onUpdateRFQ = /* GraphQL */ `subscription OnUpdateRFQ($filter: Mode
     rfqNo
     rfqType
     title
-    countryName
-    city
     requestCategory
     description
     documents
@@ -369,15 +373,13 @@ export const onUpdateRFQ = /* GraphQL */ `subscription OnUpdateRFQ($filter: Mode
     expiryDate
     paymentType
     paymentMethod
-    warranty
-    returnPolicy
-    commoditycategoryID
     userID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -385,12 +387,13 @@ export const onUpdateRFQ = /* GraphQL */ `subscription OnUpdateRFQ($filter: Mode
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -413,8 +416,6 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
     rfqNo
     rfqType
     title
-    countryName
-    city
     requestCategory
     description
     documents
@@ -437,15 +438,13 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
     expiryDate
     paymentType
     paymentMethod
-    warranty
-    returnPolicy
-    commoditycategoryID
     userID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -453,12 +452,13 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -476,8 +476,8 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
 export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: ModelSubscriptionRFFFilterInput) {
   onCreateRFF(filter: $filter) {
     id
-    SType
     createdAt
+    SType
     rffNo
     rffType
     deliveryPeriod
@@ -485,14 +485,14 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
     rffRequestType
     productName
     handling
+    budget
     loadDate
     weight
     qty
-    packageType
     length
     width
     height
-    city
+    packageType
     placeOrigin
     placeOriginFlag
     placeOriginName
@@ -501,20 +501,19 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
     destinationCountry
     placeDestination
     relatedServices
-    invoiceAmount
     document
     notes
-    container
+    containerDetails
     containerSize
     containerType
     requestType
-    commoditycategoryID
     userID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -522,12 +521,13 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -545,8 +545,8 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
 export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: ModelSubscriptionRFFFilterInput) {
   onUpdateRFF(filter: $filter) {
     id
-    SType
     createdAt
+    SType
     rffNo
     rffType
     deliveryPeriod
@@ -554,14 +554,14 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
     rffRequestType
     productName
     handling
+    budget
     loadDate
     weight
     qty
-    packageType
     length
     width
     height
-    city
+    packageType
     placeOrigin
     placeOriginFlag
     placeOriginName
@@ -570,20 +570,19 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
     destinationCountry
     placeDestination
     relatedServices
-    invoiceAmount
     document
     notes
-    container
+    containerDetails
     containerSize
     containerType
     requestType
-    commoditycategoryID
     userID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -591,12 +590,13 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -614,8 +614,8 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
 export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: ModelSubscriptionRFFFilterInput) {
   onDeleteRFF(filter: $filter) {
     id
-    SType
     createdAt
+    SType
     rffNo
     rffType
     deliveryPeriod
@@ -623,14 +623,14 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
     rffRequestType
     productName
     handling
+    budget
     loadDate
     weight
     qty
-    packageType
     length
     width
     height
-    city
+    packageType
     placeOrigin
     placeOriginFlag
     placeOriginName
@@ -639,20 +639,19 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
     destinationCountry
     placeDestination
     relatedServices
-    invoiceAmount
     document
     notes
-    container
+    containerDetails
     containerSize
     containerType
     requestType
-    commoditycategoryID
     userID
     Orders {
       items {
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -660,12 +659,13 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -679,690 +679,6 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
 ` as GeneratedSubscription<
   APITypes.OnDeleteRFFSubscriptionVariables,
   APITypes.OnDeleteRFFSubscription
->;
-export const onCreateCategories = /* GraphQL */ `subscription OnCreateCategories(
-  $filter: ModelSubscriptionCategoriesFilterInput
-) {
-  onCreateCategories(filter: $filter) {
-    id
-    title
-    image
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreateCategoriesSubscriptionVariables,
-  APITypes.OnCreateCategoriesSubscription
->;
-export const onUpdateCategories = /* GraphQL */ `subscription OnUpdateCategories(
-  $filter: ModelSubscriptionCategoriesFilterInput
-) {
-  onUpdateCategories(filter: $filter) {
-    id
-    title
-    image
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateCategoriesSubscriptionVariables,
-  APITypes.OnUpdateCategoriesSubscription
->;
-export const onDeleteCategories = /* GraphQL */ `subscription OnDeleteCategories(
-  $filter: ModelSubscriptionCategoriesFilterInput
-) {
-  onDeleteCategories(filter: $filter) {
-    id
-    title
-    image
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeleteCategoriesSubscriptionVariables,
-  APITypes.OnDeleteCategoriesSubscription
->;
-export const onCreateCommodityCategory = /* GraphQL */ `subscription OnCreateCommodityCategory(
-  $filter: ModelSubscriptionCommodityCategoryFilterInput
-) {
-  onCreateCommodityCategory(filter: $filter) {
-    id
-    title
-    image
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFQS {
-      items {
-        id
-        createdAt
-        SType
-        rfqNo
-        rfqType
-        title
-        countryName
-        city
-        requestCategory
-        description
-        documents
-        productName
-        tags
-        qty
-        buyFrequency
-        budget
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        landmark
-        unit
-        incoterms
-        placeDestinationName
-        placeDestination
-        placeDestinationFlag
-        destinationCountry
-        deliveryPeriod
-        expiryDate
-        paymentType
-        paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFFS {
-      items {
-        id
-        SType
-        createdAt
-        rffNo
-        rffType
-        deliveryPeriod
-        requestCategory
-        rffRequestType
-        productName
-        handling
-        loadDate
-        weight
-        qty
-        packageType
-        length
-        width
-        height
-        city
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeDestinationName
-        placeDestinationFlag
-        destinationCountry
-        placeDestination
-        relatedServices
-        invoiceAmount
-        document
-        notes
-        container
-        containerSize
-        containerType
-        requestType
-        commoditycategoryID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    SellOffers {
-      items {
-        id
-        createdAt
-        SType
-        sellOfferID
-        requestCategory
-        title
-        tags
-        productName
-        description
-        rating
-        image
-        images
-        rfqType
-        packageType
-        packageDesc
-        placeOrigin
-        landmark
-        unit
-        deliveryDate
-        qtyMeasure
-        basePrice
-        fobPrice
-        paymentType
-        paymentMethod
-        offerValidity
-        userID
-        commoditycategoryID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreateCommodityCategorySubscriptionVariables,
-  APITypes.OnCreateCommodityCategorySubscription
->;
-export const onUpdateCommodityCategory = /* GraphQL */ `subscription OnUpdateCommodityCategory(
-  $filter: ModelSubscriptionCommodityCategoryFilterInput
-) {
-  onUpdateCommodityCategory(filter: $filter) {
-    id
-    title
-    image
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFQS {
-      items {
-        id
-        createdAt
-        SType
-        rfqNo
-        rfqType
-        title
-        countryName
-        city
-        requestCategory
-        description
-        documents
-        productName
-        tags
-        qty
-        buyFrequency
-        budget
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        landmark
-        unit
-        incoterms
-        placeDestinationName
-        placeDestination
-        placeDestinationFlag
-        destinationCountry
-        deliveryPeriod
-        expiryDate
-        paymentType
-        paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFFS {
-      items {
-        id
-        SType
-        createdAt
-        rffNo
-        rffType
-        deliveryPeriod
-        requestCategory
-        rffRequestType
-        productName
-        handling
-        loadDate
-        weight
-        qty
-        packageType
-        length
-        width
-        height
-        city
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeDestinationName
-        placeDestinationFlag
-        destinationCountry
-        placeDestination
-        relatedServices
-        invoiceAmount
-        document
-        notes
-        container
-        containerSize
-        containerType
-        requestType
-        commoditycategoryID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    SellOffers {
-      items {
-        id
-        createdAt
-        SType
-        sellOfferID
-        requestCategory
-        title
-        tags
-        productName
-        description
-        rating
-        image
-        images
-        rfqType
-        packageType
-        packageDesc
-        placeOrigin
-        landmark
-        unit
-        deliveryDate
-        qtyMeasure
-        basePrice
-        fobPrice
-        paymentType
-        paymentMethod
-        offerValidity
-        userID
-        commoditycategoryID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateCommodityCategorySubscriptionVariables,
-  APITypes.OnUpdateCommodityCategorySubscription
->;
-export const onDeleteCommodityCategory = /* GraphQL */ `subscription OnDeleteCommodityCategory(
-  $filter: ModelSubscriptionCommodityCategoryFilterInput
-) {
-  onDeleteCommodityCategory(filter: $filter) {
-    id
-    title
-    image
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFQS {
-      items {
-        id
-        createdAt
-        SType
-        rfqNo
-        rfqType
-        title
-        countryName
-        city
-        requestCategory
-        description
-        documents
-        productName
-        tags
-        qty
-        buyFrequency
-        budget
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        landmark
-        unit
-        incoterms
-        placeDestinationName
-        placeDestination
-        placeDestinationFlag
-        destinationCountry
-        deliveryPeriod
-        expiryDate
-        paymentType
-        paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFFS {
-      items {
-        id
-        SType
-        createdAt
-        rffNo
-        rffType
-        deliveryPeriod
-        requestCategory
-        rffRequestType
-        productName
-        handling
-        loadDate
-        weight
-        qty
-        packageType
-        length
-        width
-        height
-        city
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeDestinationName
-        placeDestinationFlag
-        destinationCountry
-        placeDestination
-        relatedServices
-        invoiceAmount
-        document
-        notes
-        container
-        containerSize
-        containerType
-        requestType
-        commoditycategoryID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    SellOffers {
-      items {
-        id
-        createdAt
-        SType
-        sellOfferID
-        requestCategory
-        title
-        tags
-        productName
-        description
-        rating
-        image
-        images
-        rfqType
-        packageType
-        packageDesc
-        placeOrigin
-        landmark
-        unit
-        deliveryDate
-        qtyMeasure
-        basePrice
-        fobPrice
-        paymentType
-        paymentMethod
-        offerValidity
-        userID
-        commoditycategoryID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeleteCommodityCategorySubscriptionVariables,
-  APITypes.OnDeleteCommodityCategorySubscription
 >;
 export const onCreateReview = /* GraphQL */ `subscription OnCreateReview($filter: ModelSubscriptionReviewFilterInput) {
   onCreateReview(filter: $filter) {
@@ -1428,27 +744,21 @@ export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filt
     image
     images
     description
+    productSpec
     rating
     tags
-    productCertification
+    productCert
     supplyCapacity
     minOrderQty
-    unit
     packageType
     quantity
-    fobPrice
-    paymentType
     transportMode
     placeOrigin
     dateAvailable
-    productSpec
     productDocs
-    productCert
-    documents
+    productCertDocs
     category
     commodityCategory
-    commoditycategoryID
-    categoriesID
     userID
     Reviews {
       items {
@@ -1460,6 +770,32 @@ export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filt
         userID
         productID
         createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        requestID
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        replyMessage
+        replies
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -1484,27 +820,21 @@ export const onUpdateProduct = /* GraphQL */ `subscription OnUpdateProduct($filt
     image
     images
     description
+    productSpec
     rating
     tags
-    productCertification
+    productCert
     supplyCapacity
     minOrderQty
-    unit
     packageType
     quantity
-    fobPrice
-    paymentType
     transportMode
     placeOrigin
     dateAvailable
-    productSpec
     productDocs
-    productCert
-    documents
+    productCertDocs
     category
     commodityCategory
-    commoditycategoryID
-    categoriesID
     userID
     Reviews {
       items {
@@ -1516,6 +846,32 @@ export const onUpdateProduct = /* GraphQL */ `subscription OnUpdateProduct($filt
         userID
         productID
         createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        requestID
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        replyMessage
+        replies
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -1540,27 +896,21 @@ export const onDeleteProduct = /* GraphQL */ `subscription OnDeleteProduct($filt
     image
     images
     description
+    productSpec
     rating
     tags
-    productCertification
+    productCert
     supplyCapacity
     minOrderQty
-    unit
     packageType
     quantity
-    fobPrice
-    paymentType
     transportMode
     placeOrigin
     dateAvailable
-    productSpec
     productDocs
-    productCert
-    documents
+    productCertDocs
     category
     commodityCategory
-    commoditycategoryID
-    categoriesID
     userID
     Reviews {
       items {
@@ -1572,6 +922,32 @@ export const onDeleteProduct = /* GraphQL */ `subscription OnDeleteProduct($filt
         userID
         productID
         createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        requestID
+        orderType
+        orderStatus
+        agreement
+        toImage
+        toCountry
+        fromImage
+        fromCountry
+        replyMessage
+        replies
+        userID
+        rfqID
+        rffID
+        sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -1636,6 +1012,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -1643,12 +1020,13 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -1665,27 +1043,21 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         image
         images
         description
+        productSpec
         rating
         tags
-        productCertification
+        productCert
         supplyCapacity
         minOrderQty
-        unit
         packageType
         quantity
-        fobPrice
-        paymentType
         transportMode
         placeOrigin
         dateAvailable
-        productSpec
         productDocs
-        productCert
-        documents
+        productCertDocs
         category
         commodityCategory
-        commoditycategoryID
-        categoriesID
         userID
         updatedAt
         __typename
@@ -1717,8 +1089,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         rfqNo
         rfqType
         title
-        countryName
-        city
         requestCategory
         description
         documents
@@ -1741,9 +1111,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         expiryDate
         paymentType
         paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
         userID
         updatedAt
         __typename
@@ -1754,8 +1121,8 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     RFFS {
       items {
         id
-        SType
         createdAt
+        SType
         rffNo
         rffType
         deliveryPeriod
@@ -1763,14 +1130,14 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         rffRequestType
         productName
         handling
+        budget
         loadDate
         weight
         qty
-        packageType
         length
         width
         height
-        city
+        packageType
         placeOrigin
         placeOriginFlag
         placeOriginName
@@ -1779,14 +1146,12 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         destinationCountry
         placeDestination
         relatedServices
-        invoiceAmount
         document
         notes
-        container
+        containerDetails
         containerSize
         containerType
         requestType
-        commoditycategoryID
         userID
         updatedAt
         __typename
@@ -1805,12 +1170,12 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         tags
         productName
         description
-        rating
+        packageDesc
         image
         images
         rfqType
         packageType
-        packageDesc
+        supplyCapacity
         placeOrigin
         landmark
         unit
@@ -1822,7 +1187,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         paymentMethod
         offerValidity
         userID
-        commoditycategoryID
         updatedAt
         __typename
       }
@@ -1836,6 +1200,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         SType
         productImage
         title
+        serviceType
         supplyCapacity
         minOrderQty
         fobPrice
@@ -1906,6 +1271,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -1913,12 +1279,13 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -1935,27 +1302,21 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         image
         images
         description
+        productSpec
         rating
         tags
-        productCertification
+        productCert
         supplyCapacity
         minOrderQty
-        unit
         packageType
         quantity
-        fobPrice
-        paymentType
         transportMode
         placeOrigin
         dateAvailable
-        productSpec
         productDocs
-        productCert
-        documents
+        productCertDocs
         category
         commodityCategory
-        commoditycategoryID
-        categoriesID
         userID
         updatedAt
         __typename
@@ -1987,8 +1348,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         rfqNo
         rfqType
         title
-        countryName
-        city
         requestCategory
         description
         documents
@@ -2011,9 +1370,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         expiryDate
         paymentType
         paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
         userID
         updatedAt
         __typename
@@ -2024,8 +1380,8 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     RFFS {
       items {
         id
-        SType
         createdAt
+        SType
         rffNo
         rffType
         deliveryPeriod
@@ -2033,14 +1389,14 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         rffRequestType
         productName
         handling
+        budget
         loadDate
         weight
         qty
-        packageType
         length
         width
         height
-        city
+        packageType
         placeOrigin
         placeOriginFlag
         placeOriginName
@@ -2049,14 +1405,12 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         destinationCountry
         placeDestination
         relatedServices
-        invoiceAmount
         document
         notes
-        container
+        containerDetails
         containerSize
         containerType
         requestType
-        commoditycategoryID
         userID
         updatedAt
         __typename
@@ -2075,12 +1429,12 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         tags
         productName
         description
-        rating
+        packageDesc
         image
         images
         rfqType
         packageType
-        packageDesc
+        supplyCapacity
         placeOrigin
         landmark
         unit
@@ -2092,7 +1446,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         paymentMethod
         offerValidity
         userID
-        commoditycategoryID
         updatedAt
         __typename
       }
@@ -2106,6 +1459,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         SType
         productImage
         title
+        serviceType
         supplyCapacity
         minOrderQty
         fobPrice
@@ -2176,6 +1530,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         id
         createdAt
         SType
+        requestID
         orderType
         orderStatus
         agreement
@@ -2183,12 +1538,13 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         toCountry
         fromImage
         fromCountry
-        orderMessage
-        orderDate
+        replyMessage
+        replies
         userID
         rfqID
         rffID
         sellOfferID
+        productID
         updatedAt
         __typename
       }
@@ -2205,27 +1561,21 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         image
         images
         description
+        productSpec
         rating
         tags
-        productCertification
+        productCert
         supplyCapacity
         minOrderQty
-        unit
         packageType
         quantity
-        fobPrice
-        paymentType
         transportMode
         placeOrigin
         dateAvailable
-        productSpec
         productDocs
-        productCert
-        documents
+        productCertDocs
         category
         commodityCategory
-        commoditycategoryID
-        categoriesID
         userID
         updatedAt
         __typename
@@ -2257,8 +1607,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         rfqNo
         rfqType
         title
-        countryName
-        city
         requestCategory
         description
         documents
@@ -2281,9 +1629,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         expiryDate
         paymentType
         paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
         userID
         updatedAt
         __typename
@@ -2294,8 +1639,8 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     RFFS {
       items {
         id
-        SType
         createdAt
+        SType
         rffNo
         rffType
         deliveryPeriod
@@ -2303,14 +1648,14 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         rffRequestType
         productName
         handling
+        budget
         loadDate
         weight
         qty
-        packageType
         length
         width
         height
-        city
+        packageType
         placeOrigin
         placeOriginFlag
         placeOriginName
@@ -2319,14 +1664,12 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         destinationCountry
         placeDestination
         relatedServices
-        invoiceAmount
         document
         notes
-        container
+        containerDetails
         containerSize
         containerType
         requestType
-        commoditycategoryID
         userID
         updatedAt
         __typename
@@ -2345,12 +1688,12 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         tags
         productName
         description
-        rating
+        packageDesc
         image
         images
         rfqType
         packageType
-        packageDesc
+        supplyCapacity
         placeOrigin
         landmark
         unit
@@ -2362,7 +1705,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         paymentMethod
         offerValidity
         userID
-        commoditycategoryID
         updatedAt
         __typename
       }
@@ -2376,6 +1718,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         SType
         productImage
         title
+        serviceType
         supplyCapacity
         minOrderQty
         fobPrice
@@ -2403,6 +1746,7 @@ export const onCreateWishlist = /* GraphQL */ `subscription OnCreateWishlist($fi
     SType
     productImage
     title
+    serviceType
     supplyCapacity
     minOrderQty
     fobPrice
@@ -2423,6 +1767,7 @@ export const onUpdateWishlist = /* GraphQL */ `subscription OnUpdateWishlist($fi
     SType
     productImage
     title
+    serviceType
     supplyCapacity
     minOrderQty
     fobPrice
@@ -2443,6 +1788,7 @@ export const onDeleteWishlist = /* GraphQL */ `subscription OnDeleteWishlist($fi
     SType
     productImage
     title
+    serviceType
     supplyCapacity
     minOrderQty
     fobPrice

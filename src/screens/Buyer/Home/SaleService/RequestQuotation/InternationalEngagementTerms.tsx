@@ -36,8 +36,8 @@ import {
 import {updateRFQ} from '../../../../../queries/RequestQueries';
 import {
   getCountryFlag,
-  selectFile,
-  uploadFile,
+  selectFile2,
+  uploadFile2,
 } from '../../../../../utilities/service';
 
 interface IProductQuotation {
@@ -111,9 +111,9 @@ const InternationalEngagementTerms = () => {
         id: route?.params.rfqID,
         placeOrigin: address?.description?.formatted_address,
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, //flag
-        city: cCity, //city,
+        // city: cCity, //city,
         placeOriginName: cName, //country
-        countryName: cName, //country
+        // countryName: cName, //country
         placeDestination: address2?.description?.formatted_address,
         placeDestinationName: cCity2, //city destination
         destinationCountry: cName2, //country
@@ -124,7 +124,7 @@ const InternationalEngagementTerms = () => {
 
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
         input.documents = fileKeys;
       }
@@ -146,6 +146,10 @@ const InternationalEngagementTerms = () => {
       setLoading(false);
     }
   };
+
+  function isSubmit() {
+    return singleFile !== null;
+  }
 
   useEffect(() => {
     let unmounted = true;
@@ -182,6 +186,7 @@ const InternationalEngagementTerms = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
+          marginBottom: 200,
         }}>
         {/* Incoterms */}
         <Controller
@@ -190,7 +195,7 @@ const InternationalEngagementTerms = () => {
           rules={{
             required: 'Incoterms is required',
           }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+          render={({field: {onChange}, fieldState: {error}}: any) => (
             <View style={{marginTop: SIZES.padding}}>
               <Text
                 style={{
@@ -339,7 +344,7 @@ const InternationalEngagementTerms = () => {
           editable={false}
           placeholder="Add Destination "
           rules={{
-            required: 'Address is required',
+            required: 'Destination is required',
           }}
           containerStyle={{
             marginTop: address ? SIZES.radius : SIZES.padding * 1.3,
@@ -405,7 +410,6 @@ const InternationalEngagementTerms = () => {
             flex: 1,
             marginTop: address2 ? 0 : SIZES.margin,
             justifyContent: 'center',
-            marginBottom: 100,
           }}>
           {singleFile?.length >= 1 ? (
             <FileSection
@@ -417,7 +421,7 @@ const InternationalEngagementTerms = () => {
           ) : (
             <UploadDocs
               title={'Attach Product Brochure'}
-              selectFile={() => selectFile(setSingleFile, singleFile)}
+              selectFile={() => selectFile2(setSingleFile, singleFile)}
               containerStyle={{
                 marginTop: SIZES.semi_margin,
                 marginHorizontal: 3,
@@ -458,15 +462,18 @@ const InternationalEngagementTerms = () => {
           showsVerticalScrollIndicator={false}
           extraHeight={100}
           extraScrollHeight={100}
+          bounces={false}
           enableOnAndroid={true}>
           {requestForm()}
         </KeyboardAwareScrollView>
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
+            disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

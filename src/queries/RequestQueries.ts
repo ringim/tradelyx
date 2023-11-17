@@ -11,19 +11,19 @@ export const createRFF = gql`
       createdAt
       rffNo
       rffType
-      city
       deliveryPeriod
       requestCategory
       rffRequestType
       productName
+      budget
       handling
       loadDate
       weight
       qty
-      packageType
       length
       width
       height
+      packageType
       placeOrigin
       placeOriginFlag
       placeOriginName
@@ -32,14 +32,12 @@ export const createRFF = gql`
       destinationCountry
       placeDestination
       relatedServices
-      invoiceAmount
       document
       notes
-      container
+      containerDetails
       containerSize
       containerType
       requestType
-      commoditycategoryID
       userID
       updatedAt
       __typename
@@ -70,7 +68,7 @@ export const rffByDate = gql`
         createdAt
         rffNo
         rffType
-        city
+        budget
         deliveryPeriod
         requestCategory
         rffRequestType
@@ -79,10 +77,10 @@ export const rffByDate = gql`
         loadDate
         weight
         qty
-        packageType
         length
         width
         height
+        packageType
         placeOrigin
         placeOriginFlag
         placeOriginName
@@ -91,14 +89,12 @@ export const rffByDate = gql`
         destinationCountry
         placeDestination
         relatedServices
-        invoiceAmount
         document
         notes
-        container
+        containerDetails
         containerSize
         containerType
         requestType
-        commoditycategoryID
         userID
         Orders {
           nextToken
@@ -124,19 +120,19 @@ export const updateRFF = gql`
       createdAt
       rffNo
       rffType
-      city
       deliveryPeriod
       requestCategory
       rffRequestType
       productName
+      budget
       handling
       loadDate
       weight
       qty
-      packageType
       length
       width
       height
+      packageType
       placeOrigin
       placeOriginFlag
       placeOriginName
@@ -145,14 +141,12 @@ export const updateRFF = gql`
       destinationCountry
       placeDestination
       relatedServices
-      invoiceAmount
       document
       notes
-      container
+      containerDetails
       containerSize
       containerType
       requestType
-      commoditycategoryID
       userID
       updatedAt
       __typename
@@ -198,8 +192,6 @@ export const rfqByDate = gql`
         rfqNo
         rfqType
         title
-        countryName
-        city
         requestCategory
         description
         documents
@@ -222,9 +214,6 @@ export const rfqByDate = gql`
         expiryDate
         paymentType
         paymentMethod
-        warranty
-        returnPolicy
-        commoditycategoryID
         userID
         Orders {
           nextToken
@@ -246,12 +235,11 @@ export const createRFQ = gql`
   ) {
     createRFQ(input: $input, condition: $condition) {
       id
+      createdAt
       SType
       rfqNo
       rfqType
       title
-      countryName
-      city
       requestCategory
       description
       documents
@@ -274,9 +262,6 @@ export const createRFQ = gql`
       expiryDate
       paymentType
       paymentMethod
-      warranty
-      returnPolicy
-      commoditycategoryID
       userID
       createdAt
       updatedAt
@@ -306,12 +291,11 @@ export const updateRFQ = gql`
   ) {
     updateRFQ(input: $input, condition: $condition) {
       id
+      createdAt
       SType
       rfqNo
       rfqType
       title
-      countryName
-      city
       requestCategory
       description
       documents
@@ -334,11 +318,7 @@ export const updateRFQ = gql`
       expiryDate
       paymentType
       paymentMethod
-      warranty
-      returnPolicy
-      commoditycategoryID
       userID
-      createdAt
       updatedAt
       __typename
     }
@@ -357,12 +337,12 @@ export const getSellOffer = gql`
       tags
       productName
       description
-      rating
+      packageDesc
       image
       images
       rfqType
       packageType
-      packageDesc
+      supplyCapacity
       placeOrigin
       landmark
       unit
@@ -374,31 +354,6 @@ export const getSellOffer = gql`
       paymentMethod
       offerValidity
       userID
-      commoditycategoryID
-      Orders {
-        items {
-          id
-          createdAt
-          SType
-          orderType
-          orderStatus
-          agreement
-          toImage
-          toCountry
-          fromImage
-          fromCountry
-          orderMessage
-          orderDate
-          userID
-          rfqID
-          rffID
-          sellOfferID
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
       updatedAt
       __typename
     }
@@ -432,12 +387,12 @@ export const sellOffersByDate = gql`
         tags
         productName
         description
-        rating
+        packageDesc
         image
         images
         rfqType
         packageType
-        packageDesc
+        supplyCapacity
         placeOrigin
         landmark
         unit
@@ -449,7 +404,6 @@ export const sellOffersByDate = gql`
         paymentMethod
         offerValidity
         userID
-        commoditycategoryID
         Orders {
           nextToken
           __typename
@@ -470,6 +424,7 @@ export const createSellOffer = gql`
   ) {
     createSellOffer(input: $input, condition: $condition) {
       id
+      createdAt
       SType
       sellOfferID
       requestCategory
@@ -477,12 +432,12 @@ export const createSellOffer = gql`
       tags
       productName
       description
-      rating
+      packageDesc
       image
       images
       rfqType
       packageType
-      packageDesc
+      supplyCapacity
       placeOrigin
       landmark
       unit
@@ -494,7 +449,6 @@ export const createSellOffer = gql`
       paymentMethod
       offerValidity
       userID
-      commoditycategoryID
       createdAt
       updatedAt
       __typename
@@ -509,6 +463,7 @@ export const updateSellOffer = gql`
   ) {
     updateSellOffer(input: $input, condition: $condition) {
       id
+      createdAt
       SType
       sellOfferID
       requestCategory
@@ -516,12 +471,12 @@ export const updateSellOffer = gql`
       tags
       productName
       description
-      rating
+      packageDesc
       image
       images
       rfqType
       packageType
-      packageDesc
+      supplyCapacity
       placeOrigin
       landmark
       unit
@@ -533,7 +488,6 @@ export const updateSellOffer = gql`
       paymentMethod
       offerValidity
       userID
-      commoditycategoryID
       createdAt
       updatedAt
       __typename

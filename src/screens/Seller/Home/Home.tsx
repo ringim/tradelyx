@@ -46,8 +46,8 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     getUser,
     {
       variables: {id: userID},
-      fetchPolicy: 'cache-and-network',
-       nextFetchPolicy: 'network-only',
+      fetchPolicy: 'network-only',
+      nextFetchPolicy: 'network-only',
     },
   );
   const user: any = data?.getUser;

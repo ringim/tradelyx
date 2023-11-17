@@ -117,6 +117,7 @@ const InternationalTypeQuotation = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
+          marginBottom: 150,
         }}>
         <FormInput
           label="Product Name"
@@ -160,7 +161,7 @@ const InternationalTypeQuotation = () => {
           control={control}
           name="unit"
           rules={{
-            required: 'Unit type is required',
+            required: 'Unit is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View>
@@ -243,7 +244,7 @@ const InternationalTypeQuotation = () => {
           control={control}
           name="frequency"
           rules={{
-            required: 'frequency type is required',
+            required: 'Buy frequency is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View style={{marginTop: SIZES.radius}}>
@@ -331,7 +332,7 @@ const InternationalTypeQuotation = () => {
           rules={{
             required: 'Budget is required',
           }}
-          containerStyle={{marginTop: SIZES.padding, marginBottom: 150}}
+          containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.radius}}
         />
@@ -365,6 +366,7 @@ const InternationalTypeQuotation = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           <QuoteType

@@ -131,7 +131,7 @@ const SellerOrderItem = ({
           alignSelf: 'center',
           width: '100%',
           borderWidth: 0.5,
-          borderColor: COLORS.Neutral9,
+          borderColor: COLORS.Neutral7,
         }}
       />
 

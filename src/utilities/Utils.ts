@@ -10,7 +10,7 @@ export const DUMMY_IMAGE =
 
   export const DEFAULT_BANNER_IMAGE = 'https://res.cloudinary.com/dy6v7jqqk/image/upload/v1698061050/defaultBanner_v1nyp5.jpg'
 
-export const GOOGLE_MAPS_APIKEY = 'AIzaSyALS8aQiGBvny1Zg-pBqvPyptOzvDcPRyg';
+export const GOOGLE_MAPS_APIKEY = 'AIzaSyDPMHmRw3LbdXZCfrLu7DxmhDgv2u_9SKU';
 
 export const optionalConfigObject = {
   title: 'Please Authenticate',

@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
-import {Header, OrderItem, ReplyListItem} from '../../../components';
+import {Header, RFFOrderItem, ReplyListItem} from '../../../components';
 import {COLORS, SIZES, dummyData} from '../../../constants';
 import {
   OrderStackNavigatorParamList,
@@ -55,7 +55,7 @@ const ReplyList = () => {
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
       <Header title={'All RFQ Reply'} tintColor={COLORS.Neutral1} />
 
-      <OrderItem
+      <RFFOrderItem
         desc={true}
         item={route?.params?.sellerItem}
         contentStyle={{backgroundColor: COLORS.Neutral10}}

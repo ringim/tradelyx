@@ -7,6 +7,8 @@ import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {COLORS, SIZES} from '../../../../constants';
 import {NoItem, SearchBox2, SellOfferItem} from '../../../../components';
 import {
+  GetUserQuery,
+  GetUserQueryVariables,
   ModelSortDirection,
   SellOffersByDateQuery,
   SellOffersByDateQueryVariables,
@@ -15,6 +17,7 @@ import {sellOffersByDate} from '../../../../queries/RequestQueries';
 
 import {useAuthContext} from '../../../../context/AuthContext';
 import {FlatList} from 'react-native-gesture-handler';
+import {getUser} from '../../../../queries/UserQueries';
 
 const MySellOffers = () => {
   const navigation = useNavigation<any>();
@@ -24,13 +27,26 @@ const MySellOffers = () => {
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
   const [masterDataSource, setMasterDataSource] = useState<any>([]);
 
+  // GET USER
+  const {data: newData} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
+      fetchPolicy: 'network-only',
+      nextFetchPolicy: 'network-only',
+    },
+  );
+  const userInfo: any = newData?.getUser;
+
   const {data, loading, refetch} = useQuery<
     SellOffersByDateQuery,
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'SELLOFFER',
       sortDirection: ModelSortDirection.DESC,
@@ -99,6 +115,11 @@ const MySellOffers = () => {
           // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
+
+        {filteredDataSource?.length === 0 && (
+          <NoItem textCont={{marginTop: SIZES.margin}} />
+        )}
+
         {/* list of categories */}
         <FlatList
           data={filteredDataSource}
@@ -109,6 +130,7 @@ const MySellOffers = () => {
               <SellOfferItem
                 key={index}
                 item={item}
+                title={userInfo?.title}
                 onPress={() =>
                   navigation.navigate('SellOfferDetail', {sellOffer: item})
                 }
@@ -126,8 +148,6 @@ const MySellOffers = () => {
             <View style={{height: filteredDataSource?.length - 1 && 200}} />
           }
         />
-
-        {!filteredDataSource && <NoItem />}
       </View>
     </Root>
   );

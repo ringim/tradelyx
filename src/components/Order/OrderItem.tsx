@@ -14,9 +14,11 @@ const OrderItem = ({
   btn,
   statusColor,
   contentStyle,
+  serviceImage,
   desc,
   type,
 }: any) => {
+
   return (
     <Pressable
       style={{
@@ -45,7 +47,7 @@ const OrderItem = ({
             borderRadius: SIZES.radius,
           }}>
           <FastImage
-            source={item?.image}
+            source={serviceImage}
             style={{width: 24, height: 24}}
             resizeMode={FastImage.resizeMode.contain}
           />
@@ -63,8 +65,9 @@ const OrderItem = ({
               ...FONTS.h5,
               fontWeight: '700',
               color: COLORS.Neutral1,
+              textTransform: 'capitalize',
             }}>
-            {item?.serviceType}
+            {item?.rffType || item?.rfqType}
           </Text>
           {/* to and from destination */}
           <View
@@ -73,22 +76,23 @@ const OrderItem = ({
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
+            {/* from location */}
             <View style={{justifyContent: 'center'}}>
               <FastImage
-                source={item?.toImg}
+                source={{uri: item?.placeOriginFlag}}
                 style={{width: 15, height: 15}}
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
             <View style={{marginLeft: 3, justifyContent: 'center'}}>
               <Text
-                numberOfLines={2}
+               numberOfLines={1}
                 style={{
                   ...FONTS.cap1,
                   fontWeight: '700',
                   color: COLORS.Neutral6,
                 }}>
-                {item?.to}
+                {item?.placeOrigin}
               </Text>
             </View>
             <View
@@ -103,26 +107,28 @@ const OrderItem = ({
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
+
+            {/* to destination */}
             <View
               style={{
                 marginLeft: SIZES.base,
                 justifyContent: 'center',
               }}>
               <FastImage
-                source={item?.fromImg}
+                source={{uri: item?.placeDestinationFlag}}
                 style={{width: 16, height: 16}}
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
             <View style={{marginLeft: 6, justifyContent: 'center'}}>
               <Text
-                numberOfLines={2}
+               numberOfLines={1}
                 style={{
                   ...FONTS.cap1,
                   fontWeight: '700',
                   color: COLORS.Neutral6,
                 }}>
-                {item?.from}
+                {item?.placeDestination}
               </Text>
             </View>
           </View>
@@ -139,7 +145,7 @@ const OrderItem = ({
               fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
-            {item?.orderID}
+            {item?.rffNo || item?.rfqNo}
           </Text>
         </View>
       </View>
@@ -148,15 +154,16 @@ const OrderItem = ({
       {desc && (
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.padding,
           }}>
           <Text
+            numberOfLines={2}
             style={{
-              ...FONTS.sh2,
+              ...FONTS.sh3,
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.desc}
+            {item?.description || item?.notes}
           </Text>
         </View>
       )}
@@ -165,11 +172,11 @@ const OrderItem = ({
       {showHR && (
         <View
           style={{
-            marginTop: SIZES.semi_margin,
+            marginTop: SIZES.radius,
             alignSelf: 'center',
             width: '100%',
             borderWidth: 0.5,
-            borderColor: COLORS.Neutral9,
+            borderColor: COLORS.Neutral7,
           }}
         />
       )}

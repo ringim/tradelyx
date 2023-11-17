@@ -78,7 +78,7 @@ const TransactionItem = ({transaction}: any) => {
           alignSelf: 'center',
           width: '100%',
           borderWidth: 0.5,
-          borderColor: COLORS.Neutral8,
+          borderColor: COLORS.Neutral7,
         }}
       />
     </>

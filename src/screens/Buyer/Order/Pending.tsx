@@ -1,29 +1,81 @@
-import {View, Text} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useQuery} from '@apollo/client';
 
-import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {OrderItem, OrderTabItem} from '../../../components';
-
-const replyList = dummyData?.replyList;
+import {COLORS, FONTS, SIZES, constants} from '../../../constants';
+import {OrderTabItem, RFFOrderItem, RFQOrderItem} from '../../../components';
+import {
+  ModelSortDirection,
+  RfqByDateQuery,
+  RfqByDateQueryVariables,
+  RffByDateQuery,
+  RffByDateQueryVariables,
+} from '../../../API';
+import {rffByDate, rfqByDate} from '../../../queries/RequestQueries';
 
 const Pending = () => {
   const navigation = useNavigation<any>();
 
-  const [selectedOption, setSelectedOptions] = useState(true);
-  const [value, setValue] = useState('All Orders');
-  const [filteredItems, setFilteredItems] = useState<any>('');
+  // LIST RFQs
+  const {data, loading} = useQuery<RfqByDateQuery, RfqByDateQueryVariables>(
+    rfqByDate,
+    {
+      pollInterval: 500,
+      variables: {
+        SType: 'RFQ',
+        sortDirection: ModelSortDirection.DESC,
+      },
+    },
+  );
 
-  useEffect(() => {
-    let isCurrent = true;
-    const filteredData =
-      isCurrent && dummyData?.orders?.filter(ty => ty?.type === value);
-    setFilteredItems(filteredData);
-    return () => {
-      isCurrent = false;
-    };
-  }, [value]);
+  // LIST RFFs
+  const {data: newData, loading: newLoad} = useQuery<
+    RffByDateQuery,
+    RffByDateQueryVariables
+  >(rffByDate, {
+    pollInterval: 500,
+    variables: {
+      SType: 'RFF',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
+  const allRFQs =
+    data?.rfqByDate?.items.filter((item: any) => !item?._deleted) || [];
+  const allRFFs =
+    newData?.rffByDate?.items.filter((item: any) => !item?._deleted) || [];
+  const allOrders = [...allRFFs, ...allRFQs];
+
+  const [selectedOption, setSelectedOptions] = useState(true);
+  const [itemSelected, setItemSelect] = useState<any>('RFF');
+  const [dataList, setDataList] = useState<any>(allOrders);
+
+  useFocusEffect(
+    useCallback(() => {
+      let isCurrent = true;
+      const onChangeSelectionItem = (item: any) => {
+        if (itemSelected === 'RFF') {
+          isCurrent &&
+            setDataList([
+              ...allOrders.filter(x => x?.__typename === itemSelected),
+            ]);
+        } else if (itemSelected === 'RFQ') {
+          isCurrent &&
+            setDataList([
+              ...allOrders.filter(x => x?.__typename === itemSelected),
+            ]);
+        } else {
+          isCurrent && setItemSelect(item);
+        }
+      };
+      onChangeSelectionItem(itemSelected);
+      return () => {
+        isCurrent = false;
+      };
+    }, [itemSelected, loading, newLoad]),
+  );
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
@@ -52,7 +104,7 @@ const Pending = () => {
               }}
               onPress={() => {
                 setSelectedOptions(item.id);
-                setValue(item.label);
+                setItemSelect(item.label);
               }}
             />
           );
@@ -61,22 +113,29 @@ const Pending = () => {
 
       {/* Order List */}
       <View>
-        {value === 'All Orders' ? (
+        {itemSelected === 'RFF' ? (
           <FlatList
-            data={dummyData?.orders}
+            data={dataList}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
-                <OrderItem
+                <RFFOrderItem
                   key={index}
                   item={item}
                   showHR={true}
                   btn={true}
                   desc={true}
-                  type={item?.type}
-                  replies={replyList?.length}
+                  serviceImage={
+                    item?.rffType === 'Air'
+                      ? require('../../../assets/images/air.png')
+                      : item?.rffType === 'Land'
+                      ? require('../../../assets/images/land.png')
+                      : require('../../../assets/images/water.png')
+                  }
+                  type={item?.__typename}
+                  // replies={replyList?.length}
                   onPress={() =>
                     navigation.navigate('ReplyList', {sellerItem: item})
                   }
@@ -86,27 +145,44 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: filteredItems?.length - 1 && 250,
-                }}
-              />
+                  marginBottom: dataList?.length - 1 && 250,
+                }}>
+                {loading && (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: 30,
+                    }}>
+                    <ActivityIndicator size="small" color={COLORS.primary6} />
+                  </View>
+                )}
+              </View>
             }
           />
         ) : (
           <FlatList
-            data={filteredItems}
+            data={dataList}
             showsVerticalScrollIndicator={false}
-            keyExtractor={item => `${item}`}
+            keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
               /* Popular items */
               return (
-                <OrderItem
+                <RFQOrderItem
                   key={index}
                   item={item}
                   showHR={true}
                   btn={true}
                   desc={true}
-                  type={item?.type}
-                  replies={replyList?.length}
+                  type={item?.__typename}
+                  serviceImage={
+                    item?.rfqType === 'STANDARD'
+                      ? require('../../../assets/images/standard.png')
+                      : item?.rfqType === 'DOMESTIC'
+                      ? require('../../../assets/images/domestic.png')
+                      : require('../../../assets/images/international.png')
+                  }
                   onPress={() =>
                     navigation.navigate('ReplyList', {sellerItem: item})
                   }
@@ -116,9 +192,20 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: filteredItems?.length - 1 && 250,
-                }}
-              />
+                  marginBottom: dataList?.length - 1 && 250,
+                }}>
+                {newLoad && (
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: 30,
+                    }}>
+                    <ActivityIndicator size="small" color={COLORS.primary6} />
+                  </View>
+                )}
+              </View>
             }
           />
         )}

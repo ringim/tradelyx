@@ -19,7 +19,7 @@ import {
   UpdateUserMutationVariables,
 } from '../../../../API';
 import {updateUser} from '../../../../queries/UserQueries';
-import {uploadFile} from '../../../../utilities/service';
+import {uploadFile2} from '../../../../utilities/service';
 import {Header, TextButton} from '../../../../components';
 
 interface UserData {
@@ -53,7 +53,7 @@ const EditCompanyDocs = () => {
 
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
         input.certsDoc = fileKeys;
       }

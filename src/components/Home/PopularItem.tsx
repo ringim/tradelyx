@@ -52,7 +52,7 @@ const PopularItem = ({
       variables: {
         id: item?.userID,
       },
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'network-only',
       nextFetchPolicy: 'network-only',
     },
   );
@@ -97,7 +97,7 @@ const PopularItem = ({
           style={{
             flex: 1,
             marginLeft: SIZES.radius,
-            marginTop: SIZES.base,
+            marginTop: 2,
             justifyContent: 'center',
           }}>
           <View
@@ -136,19 +136,19 @@ const PopularItem = ({
           </View>
 
           {/* Product title, */}
-          <View style={{justifyContent: 'center', marginTop: 5}}>
+          <View style={{justifyContent: 'center', marginTop: 6}}>
             <Text
               numberOfLines={2}
               style={{
                 ...FONTS.h5,
                 color: COLORS.Neutral1,
-                lineHeight: 24,
+                lineHeight: 18,
               }}>
               {item?.title}
             </Text>
           </View>
 
-          <View style={{justifyContent: 'center', marginTop: 3}}>
+          <View style={{justifyContent: 'center', marginTop: 6}}>
             <Text
               numberOfLines={1}
               style={{...FONTS.sh3, color: COLORS.Neutral6}}>
@@ -217,7 +217,7 @@ const PopularItem = ({
                   fontWeight: '500',
                   color: COLORS.Neutral6,
                 }}>
-                {parseFloat(userInfo?.rating).toFixed(1)}
+                {item?.rating}
               </Text>
             </View>
           </View>

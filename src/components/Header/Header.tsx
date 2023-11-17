@@ -69,7 +69,7 @@ const Header = ({
           <>
             <TouchableOpacity
               onPress={onOther}
-              style={{justifyContent: 'center'}}>
+              style={{justifyContent: 'center',}}>
               <FastImage
                 source={icon}
                 resizeMode={FastImage.resizeMode.contain}
@@ -83,7 +83,7 @@ const Header = ({
 
             <TouchableOpacity
               onPress={onOther2}
-              style={{marginLeft: SIZES.radius, justifyContent: 'center'}}>
+              style={{marginLeft: SIZES.base, justifyContent: 'center', left: 10}}>
               <FastImage
                 source={icons.share}
                 resizeMode={FastImage.resizeMode.contain}

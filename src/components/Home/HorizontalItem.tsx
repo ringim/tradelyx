@@ -30,7 +30,7 @@ const HorizontalRecentJobs = ({containerStyle, item, onPress}: ICategory) => {
         {/*  image */}
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={{uri: item.image}}
+            source={item.image}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 40,

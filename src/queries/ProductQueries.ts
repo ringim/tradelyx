@@ -1,30 +1,5 @@
 import {gql} from '@apollo/client';
 
-export const listCategories = gql`
-  query ListCategories(
-    $filter: ModelCategoriesFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        image
-        Products {
-          nextToken
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-
 export const productByDate = gql`
   query ProductByDate(
     $SType: String!
@@ -51,27 +26,21 @@ export const productByDate = gql`
         image
         images
         description
+        productSpec
         rating
         tags
-        productCertification
+        productCert
         supplyCapacity
         minOrderQty
-        unit
         packageType
         quantity
-        fobPrice
-        paymentType
         transportMode
         placeOrigin
         dateAvailable
-        productSpec
         productDocs
-        productCert
-        documents
+        productCertDocs
         category
         commodityCategory
-        commoditycategoryID
-        categoriesID
         userID
         Reviews {
           nextToken
@@ -90,134 +59,31 @@ export const getProduct = gql`
   query GetProduct($id: ID!) {
     getProduct(id: $id) {
       id
+      createdAt
       SType
       title
       productImage
       image
       images
       description
+      productSpec
       rating
       tags
-      productCertification
+      productCert
       supplyCapacity
       minOrderQty
-      unit
       packageType
       quantity
-      fobPrice
-      paymentType
       transportMode
       placeOrigin
       dateAvailable
-      productSpec
       productDocs
-      productCert
-      documents
+      productCertDocs
       category
       commodityCategory
-      commoditycategoryID
-      categoriesID
       userID
       createdAt
       updatedAt
-      __typename
-    }
-  }
-`;
-
-export const getCategories = gql`
-  query GetCategories($id: ID!) {
-    getCategories(id: $id) {
-      id
-      title
-      image
-      Products {
-        items {
-          id
-          title
-          images
-          description
-          rating
-          tags
-          productCertification
-          supplyCapacity
-          minOrderQty
-          unit
-          packageType
-          quantity
-          fobPrice
-          basePrice
-          deliveryTime
-          paymentType
-          expiry
-          packageDescription
-          documents
-          categoriesID
-          userID
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-
-export const productsByCategoriesID = gql`
-  query ProductsByCategoriesID(
-    $categoriesID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelProductFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    productsByCategoriesID(
-      categoriesID: $categoriesID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        rating
-        tags
-        productCertification
-        supplyCapacity
-        minOrderQty
-        unit
-        packageType
-        quantity
-        fobPrice
-        paymentType
-        transportMode
-        placeOrigin
-        dateAvailable
-        productSpec
-        productDocs
-        productCert
-        documents
-        category
-        commodityCategory
-        commoditycategoryID
-        categoriesID
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
       __typename
     }
   }
@@ -230,33 +96,28 @@ export const createProduct = gql`
   ) {
     createProduct(input: $input, condition: $condition) {
       id
+      createdAt
       SType
       title
       productImage
       image
       images
       description
+      productSpec
       rating
       tags
-      productCertification
+      productCert
       supplyCapacity
       minOrderQty
-      unit
       packageType
       quantity
-      fobPrice
-      paymentType
       transportMode
       placeOrigin
       dateAvailable
-      productSpec
       productDocs
-      productCert
-      documents
+      productCertDocs
       category
       commodityCategory
-      commoditycategoryID
-      categoriesID
       userID
       createdAt
       updatedAt
@@ -272,33 +133,28 @@ export const updateProduct = gql`
   ) {
     updateProduct(input: $input, condition: $condition) {
       id
+      createdAt
       SType
       title
       productImage
       image
       images
       description
+      productSpec
       rating
       tags
-      productCertification
+      productCert
       supplyCapacity
       minOrderQty
-      unit
       packageType
       quantity
-      fobPrice
-      paymentType
       transportMode
       placeOrigin
       dateAvailable
-      productSpec
       productDocs
-      productCert
-      documents
+      productCertDocs
       category
       commodityCategory
-      commoditycategoryID
-      categoriesID
       userID
       createdAt
       updatedAt
@@ -316,31 +172,6 @@ export const deleteProduct = gql`
       id
       createdAt
       updatedAt
-      __typename
-    }
-  }
-`;
-
-export const listCommodityCategories = gql`
-  query ListCommodityCategories(
-    $filter: ModelCommodityCategoryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCommodityCategories(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        title
-        image
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
       __typename
     }
   }
@@ -367,6 +198,7 @@ export const wishlistsByUserID = gql`
         SType
         productImage
         title
+        serviceType
         supplyCapacity
         minOrderQty
         fobPrice
@@ -392,6 +224,7 @@ export const createWishlist = gql`
       SType
       productImage
       title
+      serviceType
       supplyCapacity
       minOrderQty
       fobPrice
@@ -410,15 +243,6 @@ export const deleteWishlist = gql`
   ) {
     deleteWishlist(input: $input, condition: $condition) {
       id
-      createdAt
-      SType
-      productImage
-      title
-      supplyCapacity
-      minOrderQty
-      fobPrice
-      productID
-      userID
       updatedAt
       __typename
     }
@@ -433,6 +257,7 @@ export const getWishlist = gql`
       SType
       productImage
       title
+      serviceType
       supplyCapacity
       minOrderQty
       fobPrice

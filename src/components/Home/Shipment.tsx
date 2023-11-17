@@ -78,7 +78,7 @@ const Shipment = ({transportMode, date, address}: any) => {
         </View>
       </View>
 
-      {/* Sample */}
+      {/* Shipping */}
       <View
         style={{
           alignItems: 'center',

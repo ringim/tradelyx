@@ -31,10 +31,10 @@ const RequestTags = ({
           borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
           borderRadius: SIZES.radius,
-          backgroundColor: COLORS.white
+          backgroundColor: COLORS.white,
         }}>
         <Tags
-          key={index}
+          key={`${initialTags}-${index}`}
           containerStyle={{
             margin: 4,
             borderRadius: SIZES.base,

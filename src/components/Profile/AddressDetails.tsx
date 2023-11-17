@@ -5,9 +5,7 @@ import {COLORS, FONTS, SIZES} from '../../constants';
 
 const AddressDetails = ({address, onPress, containerStyle}: any) => {
   return (
-    <Pressable
-      style={{marginTop: SIZES.radius, backgroundColor: COLORS.white}}
-      onPress={onPress}>
+    <Pressable style={{marginTop: SIZES.radius}} onPress={onPress}>
       <Text
         style={{
           color: COLORS.Neutral1,

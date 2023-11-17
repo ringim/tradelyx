@@ -58,7 +58,7 @@ const InternationalPaymentQuotation = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -89,7 +89,12 @@ const InternationalPaymentQuotation = () => {
         },
       });
       // console.log('job data', input);
-      navigation.replace('SuccessService', {type: 'International Request'});
+      navigation.reset({
+        index: 0,
+        routes: [
+          {name: 'SuccessService', params: {type: 'International Request'}},
+        ],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

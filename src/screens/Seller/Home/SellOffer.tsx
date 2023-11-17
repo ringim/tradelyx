@@ -1,10 +1,10 @@
 import {View, Text, Platform} from 'react-native';
-import React, {useState, useCallback} from 'react';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {useForm} from 'react-hook-form';
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {Controller, useForm} from 'react-hook-form';
 import {Asset} from 'react-native-image-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useMutation, useQuery} from '@apollo/client';
+import {useMutation} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {v4 as uuidV4} from 'uuid';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -28,14 +28,12 @@ import {
   CreateSellOfferInput,
   CreateSellOfferMutation,
   CreateSellOfferMutationVariables,
-  ListCommodityCategoriesQuery,
-  ListCommodityCategoriesQueryVariables,
 } from '../../../API';
 import {useAuthContext} from '../../../context/AuthContext';
 import {createSellOffer} from '../../../queries/RequestQueries';
 import {referralCode} from '../../../utilities/Utils';
 import {openImageGallery, uploadMedia} from '../../../utilities/service';
-import {listCommodityCategories} from '../../../queries/ProductQueries';
+import {crateTypes} from '../../../../types/types';
 
 interface ISellOffer {
   sellOffer: string;
@@ -48,32 +46,15 @@ const SellOffer = () => {
   const {userID} = useAuthContext();
   const {control, handleSubmit}: any = useForm();
 
-  // LIST COMMODITY CATEGORIES
-  const {data, loading: onLoad} = useQuery<
-    ListCommodityCategoriesQuery,
-    ListCommodityCategoriesQueryVariables
-  >(listCommodityCategories);
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState<any>('');
-  const [jobType, setJobType] = useState<any>();
-  const [ccID, setCCID] = useState<any>('');
+  const [jobType, setJobType] = useState<any>(crateTypes);
 
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>([]);
   const [loading, setLoading] = useState(false);
   const [initialTags, setInitialTags] = useState([]);
-
-  useFocusEffect(
-    useCallback(() => {
-      const allCommodityCategories: any =
-        data?.listCommodityCategories?.items.filter(
-          (item: any) => !item?._deleted,
-        ) || [];
-      setJobType(allCommodityCategories);
-    }, [onLoad]),
-  );
 
   const onTagPress = (deleted: any) => {
     return deleted ? 'deleted' : 'not deleted';
@@ -103,13 +84,12 @@ const SellOffer = () => {
         id: uuidV4(),
         sellOfferID: referralCode(),
         title: sellOffer,
-        requestCategory: type?.title,
+        requestCategory: type,
         tags: initialTags,
         productName,
         image: selectedPhoto,
         images: selectedPhotos,
         description: desc,
-        commoditycategoryID: ccID,
         userID,
       };
 
@@ -141,13 +121,6 @@ const SellOffer = () => {
     }
   };
 
-  // Delete a image
-  const deleteItem = (itemId: any) => {
-    setSelectedPhotos((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
-  };
-
   function requestForm() {
     return (
       <View
@@ -156,67 +129,88 @@ const SellOffer = () => {
           marginBottom: 100,
         }}>
         {/* Commodity Category Type */}
-        <View>
-          <Text
-            style={{
-              marginTop: SIZES.semi_margin,
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-              fontWeight: '500',
-            }}>
-            Product Category
-          </Text>
-          <DropDownPicker
-            schema={{
-              label: 'title',
-              value: 'id',
-            }}
-            open={open}
-            showArrowIcon={true}
-            placeholder="Select Category"
-            showTickIcon={true}
-            dropDownDirection="AUTO"
-            listMode="MODAL"
-            value={value1}
-            items={jobType}
-            loading={onLoad}
-            setOpen={setOpen}
-            setValue={setValue1}
-            setItems={setJobType}
-            style={{
-              borderRadius: SIZES.base,
-              height: 40,
-              marginTop: SIZES.radius,
-              borderColor: COLORS.Neutral7,
-              borderWidth: 0.5,
-            }}
-            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-            textStyle={{color: COLORS.Neutral1}}
-            closeIconStyle={{
-              width: 24,
-              height: 24,
-            }}
-            modalProps={{
-              animationType: 'fade',
-            }}
-            ArrowDownIconComponent={({style}) => (
-              <FastImage source={icons.down} style={{width: 15, height: 15}} />
-            )}
-            modalContentContainerStyle={{
-              paddingHorizontal: SIZES.padding * 3,
-            }}
-            modalTitle="Select your category"
-            modalTitleStyle={{
-              fontWeight: '600',
-            }}
-            onChangeValue={(value: any) => {
-              setCCID(value);
-            }}
-            onSelectItem={(value: any) => {
-              setType(value);
-            }}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="category"
+          rules={{
+            required: 'Category type is required',
+          }}
+          render={({field: {onChange}, fieldState: {error}}: any) => (
+            <View>
+              <Text
+                style={{
+                  marginTop: SIZES.semi_margin,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                }}>
+                Product Category
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'id',
+                }}
+                open={open}
+                showArrowIcon={true}
+                placeholder="Select Category"
+                onChangeValue={onChange}
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value1}
+                items={jobType}
+                setOpen={setOpen}
+                setValue={setValue1}
+                setItems={setJobType}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.radius,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select your category"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
+        />
 
         {/* Sell offer title */}
         <FormInput
@@ -225,7 +219,7 @@ const SellOffer = () => {
           control={control}
           placeholder="50 bags of Fresh Tomatoes"
           rules={{
-            required: 'Sell Offer is required',
+            required: 'Sell Offer title is required',
           }}
           containerStyle={{marginTop: SIZES.margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -261,6 +255,9 @@ const SellOffer = () => {
           name="desc"
           control={control}
           multiline={true}
+          rules={{
+            required: 'Description is required',
+          }}
           placeholder="Add a description"
           containerStyle={{marginTop: SIZES.radius}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -284,7 +281,11 @@ const SellOffer = () => {
               }
             />
           ) : selectedPhoto ? (
-            <SingleImage product={selectedPhoto} onPress={setSelectedPhoto} />
+            <SingleImage
+              showEdit={true}
+              product={selectedPhoto}
+              onPress={setSelectedPhoto}
+            />
           ) : (
             <MultipleImages
               selectedPhotos={selectedPhotos}
@@ -327,6 +328,7 @@ const SellOffer = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}
           enableOnAndroid={true}>
           <View style={{margin: SIZES.semi_margin}}>

@@ -4,7 +4,13 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const Packaging = ({packageType, unit, productCert, contentStyle}: any) => {
+const Packaging = ({
+  packageType,
+  moq,
+  supply,
+  productCert,
+  contentStyle,
+}: any) => {
   return (
     <View
       style={{
@@ -57,27 +63,51 @@ const Packaging = ({packageType, unit, productCert, contentStyle}: any) => {
         </View>
       </View>
 
-      {/* Qty */}
+      {/* Supply capacity */}
       <View
         style={{
           alignItems: 'center',
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Unit:</Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Supply Capacity
+          </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
             numberOfLines={2}
             style={{...FONTS.body3, color: COLORS.Neutral1}}>
-            {unit}
+            {supply}
           </Text>
         </View>
       </View>
 
-      {/* Sample */}
+      {/*Min Order Qty */}
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Minimum Order Quantity
+          </Text>
+        </View>
+        <View style={{justifyContent: 'center'}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.body3, color: COLORS.Neutral1}}>
+            {moq}
+          </Text>
+        </View>
+      </View>
+
+      {/* Samp Product certification:le */}
       <View
         style={{
           alignItems: 'center',

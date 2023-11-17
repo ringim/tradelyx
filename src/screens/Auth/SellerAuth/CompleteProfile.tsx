@@ -397,7 +397,7 @@ const CompleteProfile = () => {
           control={control}
           name="IdType"
           rules={{
-            required: 'Identification is required',
+            required: 'Identification type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View>
@@ -530,6 +530,7 @@ const CompleteProfile = () => {
         <KeyboardAwareScrollView
           keyboardDismissMode="on-drag"
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}>
           {/* intro text */}
           <View

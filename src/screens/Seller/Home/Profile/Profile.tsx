@@ -8,7 +8,12 @@ import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {useQuery} from '@apollo/client';
 
 import {COLORS, SIZES, icons} from '../../../../constants';
-import {Header, ProfileItem, ProfilePhoto} from '../../../../components';
+import {
+  AltHeader,
+  Header,
+  ProfileItem,
+  ProfilePhoto,
+} from '../../../../components';
 import {GetUserQuery, GetUserQueryVariables} from '../../../../API';
 import {ProfileStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 import {getUser} from '../../../../queries/UserQueries';
@@ -21,8 +26,8 @@ const Profile = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const privacyPolicy = 'https://www.google.com';
-  const aboutUs = 'https://www.google.com';
+  const privacyPolicy = 'https://www.tradelyx.com/';
+  const aboutUs = 'https://www.tradelyx.com/';
 
   // SIGN OUT
   const signOut = async () => {
@@ -43,8 +48,6 @@ const Profile = () => {
   // GET USER DETAILS
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
     variables: {id: userID},
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'network-only',
   });
   const user: any = data?.getUser;
 
@@ -57,13 +60,18 @@ const Profile = () => {
         overlayColor={'rgba(0,0,0,0.5)'}
       />
       <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
-        <Header title={'Profile'} tintColor={COLORS.Neutral1} />
+        <AltHeader
+          title={'Profile'}
+          tintColor={COLORS.Neutral1}
+          onPress={() => navigation.navigate('Home')}
+        />
 
         <KeyboardAwareScrollView
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={150}
           extraScrollHeight={150}
+          bounces={false}
           enableOnAndroid={true}>
           {/* Profile Pic */}
           <ProfilePhoto

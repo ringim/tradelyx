@@ -59,8 +59,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     ProductByDateQuery,
     ProductByDateQueryVariables
   >(productByDate, {
-    pollInterval: 500,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
       limit: 4,
@@ -79,8 +78,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     ListUsersQueryVariables
   >(listUsers, {
     variables: {limit: 4},
-    pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
   });
   const suppliers: any =

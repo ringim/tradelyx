@@ -19,7 +19,7 @@ import {
   UpdateProductMutationVariables,
 } from '../../../../../API';
 import {updateProduct} from '../../../../../queries/ProductQueries';
-import {uploadFile} from '../../../../../utilities/service';
+import {uploadFile2} from '../../../../../utilities/service';
 import {Header, TextButton} from '../../../../../components';
 
 
@@ -54,7 +54,7 @@ const EditProductDoc2 = () => {
 
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
         input.productDocs = fileKeys;
       }

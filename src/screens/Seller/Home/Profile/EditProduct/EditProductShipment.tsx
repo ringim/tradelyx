@@ -1,10 +1,9 @@
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useMutation, useQuery} from '@apollo/client';
 import {Controller, useForm} from 'react-hook-form';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -25,12 +24,11 @@ import {
   ExpiryDate,
   FormInput,
   Header,
-  ProductSuccess,
   SellerLocationMapHeader,
   TextButton,
 } from '../../../../../components';
 import {
-  EditProductPriceRouteProp,
+  EditProductShipmentRouteProp,
   ProfileStackNavigatorParamList,
 } from '../../../../../components/navigation/SellerNav/type/navigation';
 import {getProduct, updateProduct} from '../../../../../queries/ProductQueries';
@@ -44,25 +42,12 @@ import {
 
 const EditProductShipment = () => {
   const navigation = useNavigation<ProfileStackNavigatorParamList>();
-  const routePrice = useRoute<EditProductPriceRouteProp>();
-  const route = useRoute<any>();
+  const routePrice = useRoute<EditProductShipmentRouteProp>();
 
+  const route = useRoute<any>();
   const {id}: any = routePrice?.params?.product;
 
   const mapRef = useRef(null);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['45%', '45%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    return index;
-  }, []);
-
   const {control, handleSubmit, setValue}: any = useForm();
 
   // GET Product DETAIL
@@ -97,7 +82,7 @@ const EditProductShipment = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -126,7 +111,10 @@ const EditProductShipment = () => {
         },
       });
       // console.log('product updated 10', input);
-      handlePresentModalPress();
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService2'}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -362,25 +350,11 @@ const EditProductShipment = () => {
           overlayColor={'rgba(0,0,0,0.5)'}
         />
 
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View
-            style={{
-              padding: SIZES.padding,
-            }}>
-            <ProductSuccess
-              onPress={() => navigation.navigate('StoreProduct')}
-            />
-          </View>
-        </BottomSheetModal>
-
         <KeyboardAwareScrollView
           keyboardDismissMode="on-drag"
           extraHeight={150}
           extraScrollHeight={150}
+          bounces={false}
           enableOnAndroid={true}>
           <View
             style={{

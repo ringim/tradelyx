@@ -33,7 +33,6 @@ import {
   UpdateRFQMutationVariables,
 } from '../../../../../API';
 import {updateRFQ} from '../../../../../queries/RequestQueries';
-import {useAuthContext} from '../../../../../context/AuthContext';
 
 interface IProductQuotation {
   name: string;
@@ -44,8 +43,6 @@ interface IProductQuotation {
 const TypeQuotation = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
-
-  const {userID} = useAuthContext();
 
   const {control, handleSubmit}: any = useForm();
 
@@ -93,7 +90,6 @@ const TypeQuotation = () => {
         budget: budget,
         unit: type,
         buyFrequency: type2,
-        userID,
       };
       await doUpdateRFQ({
         variables: {
@@ -119,6 +115,7 @@ const TypeQuotation = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
+          marginBottom: 150
         }}>
         {/* product info */}
         <FormInput
@@ -156,14 +153,14 @@ const TypeQuotation = () => {
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.radius}}
-        />  
+        />
 
         {/* Unit Type */}
         <Controller
           control={control}
           name="unit"
           rules={{
-            required: 'Unit type is required',
+            required: 'Unit is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View>
@@ -246,7 +243,7 @@ const TypeQuotation = () => {
           control={control}
           name="frequency"
           rules={{
-            required: 'Frequency type is required',
+            required: 'Buy frequency is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View style={{marginTop: SIZES.radius}}>
@@ -334,7 +331,7 @@ const TypeQuotation = () => {
           rules={{
             required: 'Budget is required',
           }}
-          containerStyle={{marginTop: SIZES.padding, marginBottom: 150}}
+          containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.radius}}
         />
@@ -368,6 +365,7 @@ const TypeQuotation = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           <QuoteType

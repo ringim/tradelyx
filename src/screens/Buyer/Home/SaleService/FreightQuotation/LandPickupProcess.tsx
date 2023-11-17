@@ -107,7 +107,7 @@ const LandPickupProcess = () => {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
         SType: 'RFF',
-        city: cCity, //city
+        // city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
         placeOrigin: cName, //country
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, // flag
@@ -116,7 +116,7 @@ const LandPickupProcess = () => {
         destinationCountry: cName2, //country
         placeDestinationFlag: `https://flagcdn.com/32x24/${code2}.png`,
         relatedServices: selectedProp,
-        invoiceAmount: amount,
+        budget: amount,
         notes,
         userID,
       };
@@ -125,7 +125,10 @@ const LandPickupProcess = () => {
           input,
         },
       });
-      navigation.replace('SuccessService', {type: 'Land Request'});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService', params: {type: 'Land Request'}}],
+      });
       // console.log('job data', input);
     } catch (error) {
       Toast.show({
@@ -167,6 +170,10 @@ const LandPickupProcess = () => {
     setValue,
     address2?.description?.formatted_address,
   ]);
+
+  function isSubmit() {
+    return selectedProp?.length !== 0;
+  }
 
   function requestForm() {
     return (
@@ -457,6 +464,7 @@ const LandPickupProcess = () => {
           showsVerticalScrollIndicator={false}
           extraHeight={100}
           extraScrollHeight={100}
+          bounces={false}
           enableOnAndroid={true}>
           <FreightType
             freightType={'Land Freight'}
@@ -470,7 +478,12 @@ const LandPickupProcess = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Send"
             labelStyle={{...FONTS.h4}}
             onPress={handleSubmit(onSubmit)}

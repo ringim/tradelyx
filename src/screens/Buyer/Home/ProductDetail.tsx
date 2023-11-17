@@ -11,8 +11,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {connect} from 'react-redux';
-import {useMutation, useQuery} from '@apollo/client';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {useQuery} from '@apollo/client';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {
@@ -20,10 +19,12 @@ import {
   Header,
   ImageCaption,
   PriceQty,
+  ProductSpec,
   Review,
   ReviewItem,
   SeeAll,
   ServiceModal,
+  ShowDocs,
   StoreInfo,
   TextIconButton,
 } from '../../../components';
@@ -59,7 +60,13 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     supplyCapacity,
     commodityCategory,
     paymentType,
-    fobPrice,
+    transportMode,
+    productSpec,
+    productCert,
+    productCertDocs,
+    productDocs,
+    rating,
+    packageType,
     description,
     id,
   }: any = route?.params.productItem;
@@ -184,6 +191,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           <ImageCaption
             productItem={productItem}
             item={image}
+            rating={rating}
             name={title}
             supplierName={storeName}
             commodityCategory={commodityCategory}
@@ -209,6 +217,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
                     productItem={productItem}
                     item={item}
                     name={title}
+                    rating={rating}
                     supplierName={storeName}
                     commodityCategory={commodityCategory}
                     category={category}
@@ -242,107 +251,151 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   }
 
   return (
-    <Root>
-      <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
-        <Header
-          title={'Product Details'}
-          other={true}
-          tintColor={COLORS.Neutral1}
-          icon={checkSavedItem() ? icons.bookmark : icons.save}
-          contentStyle={{marginBottom: 0}}
-          onOther={onSelect}
-          onOther2={shareDetails}
-        />
+    <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
+      <Header
+        title={'Product Details'}
+        other={true}
+        tintColor={COLORS.Neutral1}
+        icon={checkSavedItem() ? icons.bookmark : icons.save}
+        contentStyle={{marginBottom: 0}}
+        onOther={onSelect}
+        onOther2={shareDetails}
+      />
 
-        <FlatList
-          data={allReview}
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={
-            <>
-              {/* Product Image & Details */}
-              {renderDetail1()}
+      <FlatList
+        data={allReview}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <>
+            {/* Product Image & Details */}
+            {renderDetail1()}
+            {/* Store Detail */}
+            <StoreInfo
+              address={`${userInfo?.city}${', '} ${userInfo?.country}`}
+              image={userInfo?.logo}
+              supplier={userInfo?.title}
+              showDetail={true}
+              onPress={() =>
+                navigation.navigate('CompanyDetail', {
+                  ID: productItem?.userID,
+                })
+              }
+            />
+            {/* Product Description */}
+            <BusinessDesc productItem={description} title={'Description'} />
 
-              {/* Store Detail */}
-              <StoreInfo
-                address={`${userInfo?.city}${', '} ${userInfo?.country}`}
-                image={userInfo?.logo}
-                supplier={userInfo?.title}
-                showDetail={true}
-                onPress={() =>
-                  navigation.navigate('CompanyDetail', {
-                    ID: productItem?.userID,
-                  })
-                }
-              />
+            {/* Product Specification */}
+            <ProductSpec
+              spec={productSpec}
+              title="Product Specification"
+              icon={icons.info}
+            />
 
-              {/* Product Description */}
-              <BusinessDesc productItem={description} title={'Description'} />
+            {/* Product Packaging */}
+            <PriceQty
+              title={'Product Packaging'}
+              packageType={packageType}
+              icon={icons.packages}
+              moq={minOrderQty}
+              paymentType={paymentType}
+              supply={supplyCapacity}
+              cert={productCert}
+              transMode={transportMode}
+            />
 
-              {/* Price Qty */}
-              <PriceQty
-                price={fobPrice}
-                moq={minOrderQty}
-                paymentType={paymentType}
-                supply={supplyCapacity}
-              />
-
-              {/* Review header */}
-              {!allReview && (
-                <>
-                  <Review />
-                  <SeeAll />
-                </>
-              )}
-            </>
-          }
-          renderItem={({item, index}) => {
-            /* Reviews list */
-            return <ReviewItem key={index} item={item} />;
-          }}
-          ListFooterComponent={
-            <View
-              style={{
-                marginBottom: allReview?.length - 1 && 200,
-              }}>
-              <TextIconButton
-                label={'Offer'}
-                labelStyle={{
-                  marginLeft: SIZES.radius,
-                  ...FONTS.h4,
-                }}
-                containerStyle={{
-                  width: 340,
-                }}
-                iconPosition={'LEFT'}
-                icon={icons.offer}
-                iconStyle={COLORS.white}
-                onPress={() => toggleCameraModal(!showCameraModal)}
-              />
-
-              <TextIconButton
-                label={'Contact Seller'}
-                labelStyle={{
-                  marginLeft: SIZES.radius,
-                  color: COLORS.primary1,
-                  ...FONTS.h4,
-                }}
-                containerStyle={{
-                  marginTop: SIZES.radius,
+            {/* product brochure */}
+            {productDocs.length > 0 && (
+              <View
+                style={{
+                  marginTop: SIZES.base,
+                  padding: SIZES.semi_margin,
+                  borderRadius: SIZES.radius,
                   backgroundColor: COLORS.white,
-                  width: 340,
-                  borderWidth: 2,
-                  borderColor: COLORS.primary1,
-                }}
-                iconPosition={'LEFT'}
-                icon={icons.chat}
-                iconStyle={COLORS.primary1}
-                // onPress={handleSubmit}
-              />
-            </View>
-          }
-        />
-      </View>
-    </Root>
+                  marginHorizontal: SIZES.semi_margin,
+                }}>
+                <ShowDocs
+                  title="Product Documentation"
+                  file={productDocs}
+                  icon={icons.summary}
+                  contentStyle={{marginTop: 0}}
+                />
+              </View>
+            )}
+            {/* Product Certifications */}
+            {productCertDocs.length > 0 && (
+              <View
+                style={{
+                  marginTop: SIZES.base,
+                  padding: SIZES.semi_margin,
+                  borderRadius: SIZES.radius,
+                  backgroundColor: COLORS.white,
+                  marginHorizontal: SIZES.semi_margin,
+                }}>
+                <ShowDocs
+                  title="Product Certifications"
+                  icon={icons.cert}
+                  file={productCertDocs}
+                  contentStyle={{marginTop: 0}}
+                />
+              </View>
+            )}
+
+            {/* Review header */}
+            {!allReview && (
+              <>
+                <Review />
+                <SeeAll />
+              </>
+            )}
+          </>
+        }
+        renderItem={({item, index}) => {
+          /* Reviews list */
+          return <ReviewItem key={index} item={item} />;
+        }}
+        ListFooterComponent={
+          <View
+            style={{
+              marginBottom: allReview?.length - 1 && 200,
+            }}>
+            <TextIconButton
+              label={'Offer'}
+              labelStyle={{
+                marginLeft: SIZES.radius,
+                ...FONTS.h4,
+              }}
+              containerStyle={{
+                width: 340,
+              }}
+              iconPosition={'LEFT'}
+              icon={icons.offer}
+              iconStyle={COLORS.white}
+              onPress={() => toggleCameraModal(!showCameraModal)}
+            />
+
+            <TextIconButton
+              label={'Contact Seller'}
+              labelStyle={{
+                marginLeft: SIZES.radius,
+                color: COLORS.primary1,
+                ...FONTS.h4,
+              }}
+              containerStyle={{
+                marginTop: SIZES.radius,
+                backgroundColor: COLORS.white,
+                width: 340,
+                borderWidth: 2,
+                borderColor: COLORS.primary1,
+              }}
+              iconPosition={'LEFT'}
+              icon={icons.chat}
+              iconStyle={COLORS.primary1}
+              // onPress={handleSubmit}
+            />
+          </View>
+        }
+      />
+    </View>
   );
 };
 

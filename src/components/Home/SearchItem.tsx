@@ -344,7 +344,7 @@ const SearchItem = ({
         </View>
       </View>
 
-      {/* Price */}
+      {/*Base Price */}
       <View
         style={{
           marginTop: SIZES.semi_margin,
@@ -357,7 +357,7 @@ const SearchItem = ({
           padding: SIZES.radius,
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Price</Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Base Price</Text>
           <Text
             style={{
               ...FONTS.h3,
@@ -365,7 +365,7 @@ const SearchItem = ({
               letterSpacing: -1,
               paddingTop: SIZES.base,
             }}>
-            ₦{item?.fobPrice.toLocaleString('en-US', options)}
+            ₦{item?.basePrice.toLocaleString('en-US', options)}
           </Text>
         </View>
 

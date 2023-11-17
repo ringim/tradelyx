@@ -72,8 +72,8 @@ const MyProducts = ({data, refetch, loading}: any) => {
           // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
-        {/* list of items */}
-        {!filteredDataSource && <NoItem />}
+
+        {filteredDataSource?.length === 0 && <NoItem />}
 
         <FlashList
           data={filteredDataSource}

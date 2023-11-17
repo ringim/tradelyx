@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {OrderItem, OrderTabItem, SellerOrderItem} from '../../../components';
+import {OrderTabItem, SellerOrderItem} from '../../../components';
 
 const replyList = dummyData?.replyList;
 

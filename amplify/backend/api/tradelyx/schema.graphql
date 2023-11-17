@@ -31,6 +31,7 @@ type Order @model @auth(rules: [{allow: public}]) {
       queryField: "ordersByDate"
       sortKeyFields: ["createdAt"]
     )
+  requestID: String
   orderType: OrderType
   orderStatus: OrderStatus
   agreement: String
@@ -38,13 +39,14 @@ type Order @model @auth(rules: [{allow: public}]) {
   toCountry: String
   fromImage: String
   fromCountry: String
-  orderMessage: String
-  orderDate: String
+  replyMessage: String
+  replies: Int
 
   userID: ID! @index(name: "byUser")
   rfqID: ID! @index(name: "byRFQ")
   rffID: ID! @index(name: "byRFF")
   sellOfferID: ID! @index(name: "bySellOffer")
+  productID: ID! @index(name: "byProduct")
 }
 
 enum RFFTYPE {
@@ -61,7 +63,7 @@ enum RFQTYPE {
 
 type SellOffer @model @auth(rules: [{allow: public}]) {
   id: ID!
-  createdAt: AWSDateTime
+  createdAt: AWSDateTime!
   SType: String
     @index(
       name: "sellOffersByDate"
@@ -74,26 +76,25 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
   tags: [String]
   productName: String
   description: String
-  rating: Float
+  packageDesc: String
   image: String
   images: [String]
   rfqType: String
   packageType: String
-  packageDesc: String
+  supplyCapacity: Int
   placeOrigin: String
   landmark: String
   unit: String
-  deliveryDate: String
+  deliveryDate: AWSDate
   qtyMeasure: Int
   basePrice: Float
   fobPrice: Float
   paymentType: String
   paymentMethod: String
-  offerValidity: String
+  offerValidity: AWSDate
 
   userID: ID! @index(name: "byUser")
-  commoditycategoryID: ID! @index(name: "byCommodityCategory")
-  Orders: [Order] @hasMany(indexName: "byRFQ", fields: ["id"])
+  Orders: [Order] @hasMany(indexName: "bySellOffer", fields: ["id"])
 }
 
 type RFQ @model @auth(rules: [{allow: public}]) {
@@ -108,8 +109,6 @@ type RFQ @model @auth(rules: [{allow: public}]) {
   rfqNo: String
   rfqType: RFQTYPE
   title: String
-  countryName: String
-  city: String
   requestCategory: String
   description: String
   documents: [String]
@@ -128,14 +127,11 @@ type RFQ @model @auth(rules: [{allow: public}]) {
   placeDestination: String
   placeDestinationFlag: String
   destinationCountry: String
-  deliveryPeriod: String
-  expiryDate: String
+  deliveryPeriod: AWSDate
+  expiryDate: AWSDate
   paymentType: String
   paymentMethod: String
-  warranty: String
-  returnPolicy: String
 
-  commoditycategoryID: ID! @index(name: "byCommodityCategory")
   userID: ID! @index(name: "byUser")
   Orders: [Order] @hasMany(indexName: "byRFQ", fields: ["id"])
 }
@@ -147,13 +143,13 @@ enum RFF_REQUEST_TYPE {
 
 type RFF @model @auth(rules: [{allow: public}]) {
   id: ID!
+  createdAt: AWSDateTime!
   SType: String
     @index(
       name: "rffByDate"
       queryField: "rffByDate"
       sortKeyFields: ["createdAt"]
     )
-  createdAt: AWSDateTime!
   rffNo: String
   rffType: RFFTYPE
   deliveryPeriod: String
@@ -161,14 +157,14 @@ type RFF @model @auth(rules: [{allow: public}]) {
   rffRequestType: String
   productName: String
   handling: String
-  loadDate: String
+  budget: Float
+  loadDate: AWSDate
   weight: Float
   qty: Int
-  packageType: String
   length: Float
   width: Float
   height: Float
-  city: String
+  packageType: String
   placeOrigin: String
   placeOriginFlag: String
   placeOriginName: String
@@ -177,36 +173,15 @@ type RFF @model @auth(rules: [{allow: public}]) {
   destinationCountry: String
   placeDestination: String
   relatedServices: [String]
-  invoiceAmount: Float
   document: [String]
   notes: String
-  container: String
+  containerDetails: String
   containerSize: String
   containerType: String
   requestType: String
 
-  commoditycategoryID: ID! @index(name: "byCommodityCategory")
   userID: ID! @index(name: "byUser")
   Orders: [Order] @hasMany(indexName: "byRFF", fields: ["id"])
-}
-
-type Categories @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  title: String
-  image: String
-  Products: [Product] @hasMany(indexName: "byCategories", fields: ["id"])
-}
-
-type CommodityCategory @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  title: String
-  image: String
-
-  Products: [Product] @hasMany(indexName: "byCommodityCategory", fields: ["id"])
-  RFQS: [RFQ] @hasMany(indexName: "byCommodityCategory", fields: ["id"])
-  RFFS: [RFF] @hasMany(indexName: "byCommodityCategory", fields: ["id"])
-  SellOffers: [SellOffer]
-    @hasMany(indexName: "byCommodityCategory", fields: ["id"])
 }
 
 type Review @model @auth(rules: [{allow: public}]) {
@@ -233,30 +208,25 @@ type Product @model @auth(rules: [{allow: public}]) {
   image: String
   images: [String]
   description: String
+  productSpec: String
   rating: Float
   tags: [String]
-  productCertification: String
+  productCert: String
   supplyCapacity: String
   minOrderQty: String
-  unit: String
   packageType: String
   quantity: Int
-  fobPrice: Float
-  paymentType: String
   transportMode: String
   placeOrigin: String
-  dateAvailable: String
-  productSpec: String
+  dateAvailable: AWSDate
   productDocs: [String]
-  productCert: String
-  documents: [String]
+  productCertDocs: [String]
   category: String
   commodityCategory: String
 
-  commoditycategoryID: ID! @index(name: "byCommodityCategory")
-  categoriesID: ID! @index(name: "byCategories")
   userID: ID! @index(name: "byUser")
   Reviews: [Review] @hasMany(indexName: "byProduct", fields: ["id"])
+  Orders: [Order] @hasMany(indexName: "byProduct", fields: ["id"])
 }
 
 enum AccountCategoryType {
@@ -329,6 +299,13 @@ type User @model @auth(rules: [{allow: public}]) {
   Wishlists: [Wishlist] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
+enum serviceType {
+  RFF
+  RFQ
+  PRODUCTS
+  SELLOFFERS
+}
+
 type Wishlist @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime!
@@ -340,6 +317,7 @@ type Wishlist @model @auth(rules: [{allow: public}]) {
     )
   productImage: String
   title: String
+  serviceType: serviceType
   supplyCapacity: String
   minOrderQty: String
   fobPrice: Float

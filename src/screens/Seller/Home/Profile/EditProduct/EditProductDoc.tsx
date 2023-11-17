@@ -19,7 +19,7 @@ import {
   UpdateProductMutationVariables,
 } from '../../../../../API';
 import {updateProduct} from '../../../../../queries/ProductQueries';
-import {uploadFile} from '../../../../../utilities/service';
+import {uploadFile2} from '../../../../../utilities/service';
 import {Header, TextButton} from '../../../../../components';
 
 
@@ -49,14 +49,14 @@ const EditProductDoc = () => {
     try {
       const input: UpdateProductInput = {
         id: productDoc,
-        documents: file,
+        productDocs: file,
       };
 
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
-        input.documents = fileKeys;
+        input.productDocs = fileKeys;
       }
 
       await doUpdateProduct({
@@ -117,7 +117,7 @@ const EditProductDoc = () => {
           backgroundColor: COLORS.white,
         }}>
         <Header
-          title={'Update Product Brochure'}
+          title={'Update Product Certifications'}
           nav={true}
           onPress={() => navigation.goBack()}
           contentStyle={{
@@ -144,7 +144,7 @@ const EditProductDoc = () => {
                 fontWeight: '600',
                 color: COLORS.Neutral1,
               }}>
-              Product Brochures
+              Product Certifications
             </Text>
 
             <FlatList
@@ -216,7 +216,7 @@ const EditProductDoc = () => {
                   fontWeight: '500',
                   color: COLORS.Neutral1,
                 }}>
-                Upload Product Brochure
+                Upload Product Certifications
               </Text>
             </View>
             <TouchableOpacity

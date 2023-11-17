@@ -65,7 +65,7 @@ const AddressPickup = ({
         renderRow={data => <PlaceRow data={data} />}
         onPress={onPressAddress}
         query={{
-          key: 'AIzaSyALS8aQiGBvny1Zg-pBqvPyptOzvDcPRyg',
+          key: 'AIzaSyDPMHmRw3LbdXZCfrLu7DxmhDgv2u_9SKU',
           language: 'en',
           // components: 'country:nga',
           type: ['establishment', 'address', 'all'],

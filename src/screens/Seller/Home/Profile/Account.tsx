@@ -48,7 +48,7 @@ const Account = () => {
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
     variables: {id: userID},
     pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
   });
   const userAccount = data?.getUser;
@@ -500,7 +500,7 @@ const Account = () => {
           placeholder="Enter your RC Number"
           name="rcNumber"
           rules={{
-            required: 'RC Number name is required',
+            required: 'RC Number is required',
           }}
           containerStyle={{marginTop: SIZES.radius}}
         />
@@ -643,7 +643,7 @@ const Account = () => {
           control={control}
           name="identification"
           rules={{
-            required: 'Identification is required',
+            required: 'Identification Type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View>
@@ -733,7 +733,7 @@ const Account = () => {
           containerStyle={{marginTop: SIZES.padding}}
         />
 
-        {/* upload docs */}
+        {/* show docs */}
         <View
           style={{
             flex: 1,
@@ -746,6 +746,7 @@ const Account = () => {
               file={userAccount?.identityDocs}
               contentStyle={{marginTop: SIZES.semi_margin}}
               buttonStyle={{marginTop: SIZES.margin}}
+              showEdit={true}
               onPress={() =>
                 navigation.navigate('EditIdentityDoc', {
                   idDoc: userAccount?.id,
@@ -755,7 +756,7 @@ const Account = () => {
           )}
         </View>
 
-        {/* upload docs 2 */}
+        {/* show docs 2 */}
         <View
           style={{
             flex: 1,
@@ -806,6 +807,7 @@ const Account = () => {
           showsVerticalScrollIndicator={false}
           extraHeight={100}
           extraScrollHeight={100}
+          bounces={false}
           enableOnAndroid={true}>
           {/* Profile Pic */}
           <AccountImage

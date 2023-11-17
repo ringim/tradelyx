@@ -36,7 +36,6 @@ const FileSection = ({file, setSingleFile, title, contentStyle}: any) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 backgroundColor: COLORS.white,
-                paddingHorizontal: SIZES.base,
                 paddingVertical: SIZES.base,
                 borderRadius: SIZES.base,
               }}>
@@ -64,7 +63,7 @@ const FileSection = ({file, setSingleFile, title, contentStyle}: any) => {
                     fontWeight: '500',
                     color: COLORS.primary1,
                   }}
-                  numberOfLines={2}>
+                  numberOfLines={1}>
                   {item?.name}
                 </Text>
               </View>

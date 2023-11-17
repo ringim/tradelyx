@@ -1,16 +1,13 @@
-import {ActivityIndicator, Text, View} from 'react-native';
+import {View} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {useQuery} from '@apollo/client';
+
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import {COLORS, FONTS, SIZES, images} from '../../../constants';
-import {Header, HorizontalItem, NoItem, SearchBox2} from '../../../components';
-import {ListCategoriesQuery, ListCategoriesQueryVariables} from '../../../API';
-import {listCategories} from '../../../queries/ProductQueries';
-import FastImage from 'react-native-fast-image';
+import {COLORS, SIZES, constants} from '../../../constants';
+import {Header, HorizontalItem, SearchBox2} from '../../../components';
 
 const AllCategories = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -18,18 +15,6 @@ const AllCategories = () => {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
   const [masterDataSource, setMasterDataSource] = useState<any>([]);
-
-  // LIST PRODUCT CATEGORIES
-  const {data, loading} = useQuery<
-    ListCategoriesQuery,
-    ListCategoriesQueryVariables
-  >(listCategories, {
-    pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'network-only',
-  });
-  const allCategories: any =
-    data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];
 
   // SEARCH FILTER
   const searchFilterFunction = (text: any) => {
@@ -52,7 +37,7 @@ const AllCategories = () => {
   useEffect(() => {
     let isCurrent = true;
     try {
-      const items = isCurrent && allCategories;
+      const items = isCurrent && constants.allCategories;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -65,7 +50,7 @@ const AllCategories = () => {
     return () => {
       isCurrent = false;
     };
-  }, [loading]);
+  }, []);
 
   return (
     <Root>
@@ -103,19 +88,8 @@ const AllCategories = () => {
             <View
               style={{
                 marginBottom: filteredDataSource?.length - 1 && 300,
-              }}>
-              {loading && (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 30,
-                  }}>
-                  <ActivityIndicator size="small" color={COLORS.primary6} />
-                </View>
-              )}
-            </View>
+              }}
+            />
           }
         />
       </View>

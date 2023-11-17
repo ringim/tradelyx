@@ -55,6 +55,7 @@ const Account = () => {
     {variables: {id: userID}},
   );
   const userAccount = data?.getUser;
+  console.log(userAccount?.address)
 
   // UPDATE USER DETAILS
   const [doUpdateUser, {loading: updateLoading}] = useMutation<
@@ -374,6 +375,7 @@ const Account = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {/* Profile Pic */}

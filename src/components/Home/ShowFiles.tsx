@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, Linking} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {FlatList} from 'react-native-gesture-handler';
@@ -6,7 +6,14 @@ import {FlatList} from 'react-native-gesture-handler';
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
 
-const ShowFiles = ({file, title, onPress, buttonStyle, contentStyle}: any) => {
+const ShowFiles = ({
+  file,
+  title,
+  showEdit,
+  onPress,
+  buttonStyle,
+  contentStyle,
+}: any) => {
   return (
     <View style={{marginTop: SIZES.radius, ...contentStyle}}>
       <Text
@@ -30,7 +37,6 @@ const ShowFiles = ({file, title, onPress, buttonStyle, contentStyle}: any) => {
                 justifyContent: 'space-between',
                 backgroundColor: COLORS.white,
                 paddingHorizontal: SIZES.base,
-                paddingVertical: SIZES.radius,
                 borderRadius: SIZES.base,
               }}>
               <View
@@ -79,26 +85,28 @@ const ShowFiles = ({file, title, onPress, buttonStyle, contentStyle}: any) => {
         )}
       />
 
-      <TextButton
-        label={'Edit Docs'}
-        labelStyle={{
-          ...FONTS.body3,
-          fontWeight: 'bold',
-          color: COLORS.primary1,
-        }}
-        buttonContainerStyle={{
-          alignSelf: 'flex-start',
-          width: 120,
-          height: 35,
-          borderRadius: SIZES.base,
-          borderWidth: 1,
-          borderColor: COLORS.primary1,
-          marginTop: SIZES.base,
-          backgroundColor: COLORS.white,
-          ...buttonStyle,
-        }}
-        onPress={onPress}
-      />
+      {showEdit && (
+        <TextButton
+          label={'Edit Docs'}
+          labelStyle={{
+            ...FONTS.body3,
+            fontWeight: 'bold',
+            color: COLORS.primary1,
+          }}
+          buttonContainerStyle={{
+            alignSelf: 'flex-start',
+            width: 120,
+            height: 35,
+            borderRadius: SIZES.base,
+            borderWidth: 1,
+            borderColor: COLORS.primary1,
+            marginTop: SIZES.semi_margin,
+            backgroundColor: COLORS.white,
+            ...buttonStyle,
+          }}
+          onPress={onPress}
+        />
+      )}
     </View>
   );
 };

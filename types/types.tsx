@@ -3550,7 +3550,7 @@ export const allCategories = [
     icon: () => (
       <FastImage
         resizeMode={FastImage.resizeMode.contain}
-        source={require('../src/assets/icons/dna.png')}
+        source={require('../src/assets/images/grains.png')}
         style={{width: 15, height: 15}}
       />
     ),

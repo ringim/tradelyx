@@ -1,18 +1,25 @@
 import {View, TouchableOpacity} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
 
 import {COLORS, SIZES, icons} from '../../constants';
-import { DUMMY_IMAGE } from '../../utilities/Utils';
-import { Product } from '../../API';
+import {DUMMY_IMAGE} from '../../utilities/Utils';
+import {Product} from '../../API';
 
 interface ProductImage {
-  product: Product;
+  product: Product | any;
   onPress?: any;
+  contentStyle?: any;
+  showEdit: boolean;
 }
 
-const SingleImage = ({product, onPress}: ProductImage) => {
+const SingleImage = ({
+  product,
+  showEdit,
+  contentStyle,
+  onPress,
+}: ProductImage) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,6 +36,7 @@ const SingleImage = ({product, onPress}: ProductImage) => {
     <View
       style={{
         marginTop: imageUri ? SIZES.padding * 1.4 : SIZES.radius,
+        ...contentStyle,
       }}>
       <View
         style={{
@@ -45,23 +53,25 @@ const SingleImage = ({product, onPress}: ProductImage) => {
           }}
           resizeMode={FastImage.resizeMode.cover}
         />
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            padding: 8,
-            top: -18,
-            right: -10,
-            borderRadius: SIZES.margin,
-            backgroundColor: COLORS.primary1,
-            position: 'absolute',
-          }}>
-          <FastImage
-            source={icons.edit}
-            style={{width: 17, height: 17}}
-            tintColor={COLORS.white}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        </TouchableOpacity>
+        {showEdit && (
+          <TouchableOpacity
+            onPress={onPress}
+            style={{
+              padding: 8,
+              top: -18,
+              right: -10,
+              borderRadius: SIZES.margin,
+              backgroundColor: COLORS.primary1,
+              position: 'absolute',
+            }}>
+            <FastImage
+              source={icons.edit}
+              style={{width: 17, height: 17}}
+              tintColor={COLORS.white}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

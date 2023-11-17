@@ -2,10 +2,9 @@ import {View, Text, ActivityIndicator} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
 import {useQuery} from '@apollo/client';
 
-import {COLORS, FONTS, SIZES, constants, images} from '../../../constants';
+import {COLORS, FONTS, SIZES, constants} from '../../../constants';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   Header,
@@ -38,7 +37,7 @@ const Search = () => {
     productByDate,
     {
       pollInterval: 300,
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'network-only',
       nextFetchPolicy: 'network-only',
       variables: {
         SType: 'JOB',
@@ -56,7 +55,7 @@ const Search = () => {
     listUsers,
     {
       pollInterval: 300,
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'network-only',
       nextFetchPolicy: 'network-only',
     },
   );
@@ -71,7 +70,7 @@ const Search = () => {
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
     pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
       SType: 'SELLOFFER',
@@ -84,10 +83,7 @@ const Search = () => {
       ?.filter((item: any) => !item?._deleted) || [];
 
   const mergedSearchType = [...allSellOffers, ...allProducts, ...suppliers];
-
-  // console.log('sell offer', allSellOffers);
-  console.log('all products', allProducts);
-  // console.log('suppliers', suppliers);
+  // console.log('all products', allProducts);
 
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState<any>('');

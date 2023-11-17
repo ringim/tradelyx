@@ -1,11 +1,10 @@
 import {Platform, Text, View} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
 import {useMutation} from '@apollo/client';
@@ -16,7 +15,6 @@ import {
   Header,
   TextButton,
   QuotationProgress2,
-  SellOfferSuccess,
   FormInput,
   ExpiryDate,
 } from '../../../../../components';
@@ -45,21 +43,6 @@ const EditSellOfferPricing = () => {
   const {control, setValue, handleSubmit}: any = useForm();
 
   const sellOfferDetails = route?.params?.sellOffer;
-
-  // ref
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['48%', '48%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    return index;
-  }, []);
 
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -93,7 +76,7 @@ const EditSellOfferPricing = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -127,7 +110,10 @@ const EditSellOfferPricing = () => {
         },
       });
       // console.log('job data', input);
-      handlePresentModalPress();
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService2'}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -174,7 +160,7 @@ const EditSellOfferPricing = () => {
             keyboardType={'numeric'}
             placeholder="E.g. 100"
             rules={{
-              required: 'price is required',
+              required: 'Quantity is required',
             }}
             containerStyle={{
               marginTop: SIZES.padding * 1.2,
@@ -192,7 +178,7 @@ const EditSellOfferPricing = () => {
             control={control}
             name="unit"
             rules={{
-              required: 'Quantity type is required',
+              required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
               <View style={{justifyContent: 'center', marginTop: 30}}>
@@ -271,7 +257,7 @@ const EditSellOfferPricing = () => {
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"
           rules={{
-            required: 'price is required',
+            required: 'Base price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -304,7 +290,7 @@ const EditSellOfferPricing = () => {
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"
           rules={{
-            required: 'price is required',
+            required: 'FOB price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -524,19 +510,6 @@ const EditSellOfferPricing = () => {
           onCancel={hideDatePicker}
         />
 
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View
-            style={{
-              padding: SIZES.padding,
-            }}>
-            <SellOfferSuccess onPress={() => navigation.navigate('Home')} />
-          </View>
-        </BottomSheetModal>
-
         <Spinner
           visible={loading}
           animation={'fade'}
@@ -560,6 +533,7 @@ const EditSellOfferPricing = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={150}
+          bounces={false}
           extraScrollHeight={150}
           enableOnAndroid={true}>
           <View

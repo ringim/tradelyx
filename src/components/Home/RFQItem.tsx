@@ -176,7 +176,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
         style={{
           alignSelf: 'center',
           width: '95%',
-          borderWidth: 0.4,
+          borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
           marginTop: SIZES.semi_margin,
         }}

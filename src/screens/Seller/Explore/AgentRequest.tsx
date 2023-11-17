@@ -4,7 +4,7 @@ import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SIZES, dummyData} from '../../../constants';
-import {AgentRequestItem} from '../../../components';
+import {AgentRequestItem, NoItem} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 
 const AgentRequest = () => {
@@ -17,6 +17,8 @@ const AgentRequest = () => {
         marginTop: SIZES.radius,
         backgroundColor: COLORS.white,
       }}>
+      {dummyData?.rffAgentReq?.length === 0 && <NoItem />}
+
       <FlashList
         data={dummyData?.rffAgentReq}
         showsVerticalScrollIndicator={false}

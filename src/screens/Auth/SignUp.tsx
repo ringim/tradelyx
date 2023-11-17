@@ -310,6 +310,7 @@ const SignUp = () => {
         keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
         extraHeight={100}
+        bounces={false}
         extraScrollHeight={100}
         enableOnAndroid={true}>
         {/* intro text */}

@@ -24,9 +24,7 @@ const SOImage = ({image, index, containerStyle}: any) => {
   return (
     <View
       style={{
-        width: 100,
-        height: 100,
-        marginLeft: index == 0 ? 2 : 15,
+        marginLeft: index == 0 ? 2 : 8,
         marginRight: index == image.length - 1 ? SIZES.padding : 0,
         marginTop: SIZES.radius,
         ...containerStyle,
@@ -38,8 +36,8 @@ const SOImage = ({image, index, containerStyle}: any) => {
         swipeToDismiss={false}
         modalRef={element}
         style={{
-          width: 120,
-          height: 120,
+          width: 150,
+          height: 150,
           borderRadius: SIZES.base,
         }}
         source={{

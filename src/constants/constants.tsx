@@ -37,37 +37,6 @@ const signUp = [
   },
 ];
 
-const product_categories = [
-  {
-    id: 1,
-    type: 'Animal & Animal Products',
-  },
-  {
-    id: 2,
-    type: 'Vegetable Products',
-  },
-  {
-    id: 3,
-    type: 'Animal and Vegetable Fats and Oils',
-  },
-  {
-    id: 4,
-    type: 'Foodstuff, Beverages and Tobacco',
-  },
-  {
-    id: 5,
-    type: 'Mineral Products',
-  },
-  {
-    id: 6,
-    type: 'Chemical & Allied Industries',
-  },
-  {
-    id: 7,
-    type: 'Freight of all kinds',
-  },
-];
-
 const sourceLocation = [
   {
     id: 0,
@@ -366,11 +335,19 @@ const incoterms2 = [
 const paymentType = [
   {
     id: 1,
-    type: 'Full Payment',
+    type: 'Letter of Credit',
   },
   {
     id: 2,
     type: 'Advance Payment',
+  },
+  {
+    id: 3,
+    type: 'Consignment',
+  },
+  {
+    id: 4,
+    type: 'Documentary Collections',
   },
 ];
 
@@ -405,7 +382,7 @@ const sellerService = [
   },
   {
     id: `1`,
-    text: 'Add Products to Store',
+    text: 'Add Products',
     icon: require('../assets/images/StoreProducts.png'),
   },
 ];
@@ -476,16 +453,48 @@ const contDetails = [
 ];
 
 const allCategories = [
-  {id: 1, type: 'Veggies'},
-  {id: 2, type: 'Bean'},
-  {id: 3, type: 'Woods'},
-  {id: 4, type: 'Plants'},
-  {id: 5, type: 'Grains'},
-  {id: 6, type: 'Seeds'},
-  {id: 7, type: 'Oils'},
-  {id: 8, type: 'Nuts'},
-  {id: 9, type: 'Dairy'},
-  {id: 10, type: 'Fruits'},
+  {
+    id: '1',
+    title: 'Veggies',
+    image: require('../assets/images/veggies.png'),
+  },
+  {id: '2', title: 'Bean', image: require('../assets/images/bean.png')},
+  {id: '3', title: 'Woods', image: require('../assets/images/woods.png')},
+  {
+    id: '4',
+    title: 'Plants',
+    image: require('../assets/images/plant.png'),
+  },
+  {
+    id: '5',
+    title: 'Grains',
+    image: require('../assets/images/grains.png'),
+  },
+  {
+    id: '6',
+    title: 'Seeds',
+    image: require('../assets/images/seeds.png'),
+  },
+  {
+    id: '7',
+    title: 'Oils',
+    image: require('../assets/images/Oil.png'),
+  },
+  {
+    id: '8',
+    title: 'Nuts',
+    image: require('../assets/images/nuts.png'),
+  },
+  {
+    id: '9',
+    title: 'Dairy',
+    image: require('../assets/images/dairy.png'),
+  },
+  {
+    id: '10',
+    title: 'Fruits',
+    image: require('../assets/images/fruits.png'),
+  },
 ];
 
 const contSize = [
@@ -622,14 +631,10 @@ const orderTabs = [
 const OrderTabItem = [
   {
     id: 1,
-    label: 'All Orders',
-  },
-  {
-    id: 2,
     label: 'RFF',
   },
   {
-    id: 3,
+    id: 2,
     label: 'RFQ',
   },
 ];
@@ -886,7 +891,6 @@ export default {
   handling,
   paymentType,
   incoterms,
-  product_categories,
   filterUnit,
   allCategories,
   paymentMethod,

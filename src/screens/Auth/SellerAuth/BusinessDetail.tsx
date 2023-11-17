@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {useMutation} from '@apollo/client';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -27,7 +28,7 @@ import {
 import {updateUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {IEditableUser} from '../../../components/Others/CustomInput';
-import {selectFile2, uploadFile} from '../../../utilities/service';
+import {selectFile2, uploadFile2} from '../../../utilities/service';
 
 type CompleteAccountData = {
   formData: IEditableUser;
@@ -135,7 +136,7 @@ const BusinessDetail = () => {
       };
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
         input.certsDoc = fileKeys;
       }
@@ -211,7 +212,7 @@ const BusinessDetail = () => {
           placeholder="Enter your RC Number"
           name="rcNumber"
           rules={{
-            required: 'RC Number name is required',
+            required: 'RC Number is required',
           }}
           containerStyle={{marginTop: SIZES.radius}}
         />
@@ -223,7 +224,7 @@ const BusinessDetail = () => {
           placeholder="E.g. NAFDAC, ISO900"
           name="certifications"
           rules={{
-            required: 'Business name is required',
+            required: 'Certification is required',
             minLength: {
               value: 3,
               message: 'names should be more than 5 characters',
@@ -381,10 +382,18 @@ const BusinessDetail = () => {
           title={'Complete Account'}
           onPress={() => navigation.goBack()}
         />
+{/* 
+        <Spinner
+          visible={uploading}
+          animation={'fade'}
+          overlayColor={'rgba(0,0,0,0.5)'}
+        /> */}
 
         <KeyboardAwareScrollView
           keyboardDismissMode="on-drag"
           extraHeight={150}
+          showsVerticalScrollIndicator={false}
+          enableOnAndroid={true}
           extraScrollHeight={150}>
           {/* intro text */}
           <View

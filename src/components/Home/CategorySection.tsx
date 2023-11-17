@@ -1,40 +1,16 @@
-import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
-import {useQuery} from '@apollo/client';
 import {FlatList} from 'react-native-gesture-handler';
 
-import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {COLORS, FONTS, SIZES, constants, icons} from '../../constants';
 import TextIconButton from '../Button/TextIconButton';
-import {listCategories} from '../../queries/ProductQueries';
-import {ListCategoriesQuery, ListCategoriesQueryVariables} from '../../API';
 
 const CategorySection = () => {
   const navigation = useNavigation<any>();
 
-  // LIST PRODUCT CATEGORIES
-  const {data, loading} = useQuery<
-    ListCategoriesQuery,
-    ListCategoriesQueryVariables
-  >(listCategories, {
-    variables: {
-      limit: 8,
-    },
-    pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'network-only',
-  });
-  const allCategories: any =
-    data?.listCategories?.items.filter((item: any) => !item?._deleted) || [];
-
-  if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
-  }
+  const first8Cate = constants.allCategories.slice(0, 8)
 
   return (
     <View
@@ -46,7 +22,7 @@ const CategorySection = () => {
       }}>
       <View>
         <FlatList
-          data={allCategories}
+          data={first8Cate}
           keyExtractor={item => `${item?.id}`}
           showsVerticalScrollIndicator={false}
           numColumns={4}
@@ -62,7 +38,7 @@ const CategorySection = () => {
                   })
                 }>
                 <FastImage
-                  source={{uri: item?.image}}
+                  source={item?.image}
                   resizeMode={FastImage.resizeMode.contain}
                   style={{
                     height: 60,

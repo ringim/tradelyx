@@ -150,7 +150,7 @@ const OrderDetailItem = ({item, onPress, statusColor}: any) => {
           marginTop: SIZES.semi_margin,
           alignSelf: 'center',
           width: '100%',
-          borderWidth: 0.4,
+          borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
         }}
       />

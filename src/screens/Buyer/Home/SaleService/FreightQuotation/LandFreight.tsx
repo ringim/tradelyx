@@ -1,22 +1,14 @@
-import {ActivityIndicator, Text, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import {Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
 import dayjs from 'dayjs';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {
-  ALERT_TYPE,
-  Root,
-  Toast,
-} from 'react-native-alert-notification';
-import {useMutation, useQuery} from '@apollo/client';
+import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {useMutation} from '@apollo/client';
 import FastImage from 'react-native-fast-image';
 import {v4 as uuidV4} from 'uuid';
 
@@ -39,15 +31,11 @@ import {
   CreateRFFMutation,
   CreateRFFMutationVariables,
   RFFTYPE,
-  GetUserQuery,
-  GetUserQueryVariables,
-  ListCommodityCategoriesQuery,
-  ListCommodityCategoriesQueryVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
-import {getUser} from '../../../../../queries/UserQueries';
-import {listCommodityCategories} from '../../../../../queries/ProductQueries';
-import { referralCode } from '../../../../../utilities/Utils';
+import {referralCode} from '../../../../../utilities/Utils';
+import {crateTypes} from '../../../../../../types/types';
+
 interface IFreight {
   name: string;
 }
@@ -63,16 +51,6 @@ const LandFreight = () => {
 
   const {control, handleSubmit}: any = useForm();
 
-  // LIST COMMODITY CATEGORIES
-  const {data: newData, loading: newLoad} = useQuery<
-    ListCommodityCategoriesQuery,
-    ListCommodityCategoriesQueryVariables
-  >(listCommodityCategories, {
-    pollInterval: 300,
-    fetchPolicy: 'cache-and-network',
-     nextFetchPolicy: 'network-only',
-  });
-
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -80,29 +58,7 @@ const LandFreight = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState<any>('');
-  const [jobType, setJobType] = useState<any>();
-  const [ccID, setCCID] = useState<any>('');
-
-  useFocusEffect(
-    useCallback(() => {
-      const allCommodityCategories: any =
-        newData?.listCommodityCategories?.items.filter(
-          (item: any) => !item?._deleted,
-        ) || [];
-      setJobType(allCommodityCategories);
-    }, [newLoad]),
-  );
-
-  // GET USER
-  const {data, loading: onLoad} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {
-        id: userID,
-      },
-    },
-  );
-  const userInfo: any = data?.getUser;
+  const [jobType, setJobType] = useState<any>(crateTypes);
 
   // CREATE RFF
   const [doCreateRFQ] = useMutation<
@@ -120,10 +76,9 @@ const LandFreight = () => {
         id: uuidV4(),
         rffNo: referralCode(),
         productName: name,
-        requestCategory: type?.title,
+        requestCategory: type,
         rffType: RFFTYPE.LAND,
         loadDate: date,
-        commoditycategoryID: ccID,
         userID,
       };
       await doCreateRFQ({
@@ -153,10 +108,14 @@ const LandFreight = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
     setDate(selectedDate);
     hideDatePicker();
   };
+
+  function isSubmit() {
+    return date !== '';
+  }
 
   function requestForm() {
     return (
@@ -166,67 +125,88 @@ const LandFreight = () => {
           marginHorizontal: SIZES.semi_margin,
         }}>
         {/* Category Type */}
-        <View>
-          <Text
-            style={{
-              marginTop: SIZES.radius,
-              color: COLORS.Neutral1,
-              ...FONTS.body3,
-              fontWeight: '500',
-            }}>
-            Product Category
-          </Text>
-          <DropDownPicker
-            schema={{
-              label: 'title',
-              value: 'id',
-            }}
-            loading={newLoad}
-            open={open}
-            showArrowIcon={true}
-            placeholder="Select Category"
-            showTickIcon={true}
-            dropDownDirection="AUTO"
-            listMode="MODAL"
-            value={value1}
-            items={jobType}
-            setOpen={setOpen}
-            setValue={setValue1}
-            setItems={setJobType}
-            style={{
-              borderRadius: SIZES.base,
-              height: 40,
-              marginTop: SIZES.radius,
-              borderColor: COLORS.Neutral7,
-              borderWidth: 0.5,
-            }}
-            placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-            textStyle={{color: COLORS.Neutral1}}
-            closeIconStyle={{
-              width: 24,
-              height: 24,
-            }}
-            modalProps={{
-              animationType: 'fade',
-            }}
-            ArrowDownIconComponent={({style}) => (
-              <FastImage source={icons.down} style={{width: 15, height: 15}} />
-            )}
-            modalContentContainerStyle={{
-              paddingHorizontal: SIZES.padding * 3,
-            }}
-            modalTitle="Select your category"
-            modalTitleStyle={{
-              fontWeight: '600',
-            }}
-            onChangeValue={(value: any) => {
-              setCCID(value);
-            }}
-            onSelectItem={(value: any) => {
-              setType(value);
-            }}
-          />
-        </View>
+        <Controller
+          control={control}
+          name="category"
+          rules={{
+            required: 'Category type is required',
+          }}
+          render={({field: {onChange}, fieldState: {error}}: any) => (
+            <View>
+              <Text
+                style={{
+                  marginTop: SIZES.radius,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                }}>
+                Product Category
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'id',
+                }}
+                open={open}
+                showArrowIcon={true}
+                placeholder="Select Category"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                onChangeValue={onChange}
+                listMode="MODAL"
+                value={value1}
+                items={jobType}
+                setOpen={setOpen}
+                setValue={setValue1}
+                setItems={setJobType}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.radius,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select your category"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
+        />
 
         {/* product name */}
         <FormInput
@@ -249,14 +229,6 @@ const LandFreight = () => {
           title={'Ready to Load'}
           containerStyle={{marginTop: SIZES.margin}}
         />
-      </View>
-    );
-  }
-
-  if (onLoad) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="small" color={COLORS.primary6} />
       </View>
     );
   }
@@ -297,6 +269,7 @@ const LandFreight = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           <FreightType
@@ -311,7 +284,12 @@ const LandFreight = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}
           />

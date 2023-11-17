@@ -1,11 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useForm, Controller} from 'react-hook-form';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -20,7 +19,6 @@ import {
   TextButton,
   SellerLocationMapHeader,
   ExpiryDate,
-  ProductSuccess,
 } from '../../../components';
 import {
   UpdateProductInput,
@@ -42,18 +40,6 @@ const InternationalEngagementTerms = () => {
   const route = useRoute<any>();
 
   const mapRef = useRef(null);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['45%', '45%'], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    return index;
-  }, []);
 
   const {control, handleSubmit, setValue}: any = useForm();
 
@@ -67,7 +53,7 @@ const InternationalEngagementTerms = () => {
   const [tpMode, setTpMode] = useState('');
   const [tpModeType, setTpModeType] = useState<any>(constants.freight);
 
-  // console.log(address?.description?.formatted_address)
+  console.log(date)
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -78,7 +64,7 @@ const InternationalEngagementTerms = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -108,7 +94,10 @@ const InternationalEngagementTerms = () => {
         },
       });
       // console.log('product shipment', input);
-      handlePresentModalPress();
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService2'}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -202,7 +191,7 @@ const InternationalEngagementTerms = () => {
             <FastImage
               resizeMode={FastImage.resizeMode.cover}
               source={images.dummyMap}
-              style={{width: 350, height: 120, alignSelf: 'center'}}
+              style={{width: 350, height: 150, alignSelf: 'center'}}
             />
           )}
         </SellerLocationMapHeader>
@@ -215,7 +204,7 @@ const InternationalEngagementTerms = () => {
             required: 'Transport Mode is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: SIZES.padding}}>
+            <View style={{marginTop: address ? SIZES.padding : 60}}>
               <Text
                 style={{
                   color: COLORS.Neutral1,
@@ -294,7 +283,7 @@ const InternationalEngagementTerms = () => {
           date={date}
           onPress={showDatePicker}
           title={'Date Available'}
-          containerStyle={{marginTop: SIZES.padding}}
+          containerStyle={{marginTop: SIZES.padding * 1.2}}
         />
       </View>
     );
@@ -318,31 +307,15 @@ const InternationalEngagementTerms = () => {
           overlayColor={'rgba(0,0,0,0.5)'}
         />
 
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View
-            style={{
-              padding: SIZES.padding,
-            }}>
-            <ProductSuccess onPress={() => navigation.navigate('Home')} />
-          </View>
-        </BottomSheetModal>
-
         <QuotationProgress1
           bgColor1={COLORS.primary1}
           bgColor2={COLORS.primary1}
-          bgColor3={COLORS.primary1}
           bgColor4={COLORS.primary1}
           color1={COLORS.primary1}
           color2={COLORS.primary1}
-          color3={COLORS.primary1}
           color4={COLORS.primary1}
           item1={COLORS.white}
           item2={COLORS.white}
-          item3={COLORS.white}
           item4={COLORS.white}
         />
 
@@ -350,6 +323,7 @@ const InternationalEngagementTerms = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           {requestForm()}

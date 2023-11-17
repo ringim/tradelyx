@@ -1,25 +1,18 @@
-import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {View, Text, ActivityIndicator} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useMutation, useQuery} from '@apollo/client';
 import {Controller, useForm} from 'react-hook-form';
-import Tags from 'react-native-tags';
-import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {FlatList} from 'react-native-gesture-handler';
 import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import Spinner from 'react-native-loading-spinner-overlay';
-import {
-  useNavigation,
-  useFocusEffect,
-  useRoute,
-} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {
   FormInput,
   Header,
-  ImageUpload,
   SingleImage,
   TextButton,
   Tags as RenderTags,
@@ -41,22 +34,19 @@ import {
   UpdateSellOfferInput,
   UpdateSellOfferMutation,
   UpdateSellOfferMutationVariables,
-  ListCommodityCategoriesQuery,
-  ListCommodityCategoriesQueryVariables,
 } from '../../../../../API';
-import {listCommodityCategories} from '../../../../../queries/ProductQueries';
-import {uploadMedia} from '../../../../../utilities/service';
+import {crateTypes} from '../../../../../../types/types';
 
 interface SellOffData {
   sellOffer: string;
   productName: string;
   desc: string;
-  category: string;
+  type: string;
 }
 
 const EditSellOfferItem = () => {
   const navigation = useNavigation<ProfileStackNavigatorParamList>();
-  const route = useRoute<EditSellOfferItemRouteProp>();
+  const route: any = useRoute<EditSellOfferItemRouteProp>();
 
   const {id}: any = route?.params?.sellOffer;
 
@@ -71,38 +61,18 @@ const EditSellOfferItem = () => {
   });
   const sellOfferDetails: any = data?.getSellOffer;
 
-  // LIST COMMODITY CATEGORIES
-  const {data: onData, loading: onLoad} = useQuery<
-    ListCommodityCategoriesQuery,
-    ListCommodityCategoriesQueryVariables
-  >(listCommodityCategories);
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState<any>('');
-  const [jobType, setJobType] = useState<any>();
-  const [ccID, setCCID] = useState<any>('');
-
+  const [jobType, setJobType] = useState<any>(crateTypes);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
-  const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>([]);
   const [initialTags, setInitialTags] = useState(sellOfferDetails?.tags);
- 
+
   // UPDATE USER DETAILS
   const [doUpdateSellOffer] = useMutation<
     UpdateSellOfferMutation,
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
-
-  useFocusEffect(
-    useCallback(() => {
-      const allCommodityCategories: any =
-        onData?.listCommodityCategories?.items.filter(
-          (item: any) => !item?._deleted,
-        ) || [];
-      setJobType(allCommodityCategories);
-    }, [onLoad]),
-  );
 
   const onSubmit = async ({sellOffer, desc, productName}: SellOffData) => {
     if (isSubmitting) {
@@ -113,24 +83,11 @@ const EditSellOfferItem = () => {
       const input: UpdateSellOfferInput = {
         id: sellOfferDetails?.id,
         title: sellOffer,
-        requestCategory: type?.title,
+        requestCategory: type,
         tags: initialTags,
         productName,
-        image: selectedPhoto,
-        images: selectedPhotos,
         description: desc,
-        commoditycategoryID: ccID,
       };
-
-      if (selectedPhoto) {
-        const imageKey = await uploadMedia(selectedPhoto);
-        input.image = imageKey;
-      } else if (selectedPhotos) {
-        const imageKeys = await Promise.all(
-          selectedPhotos.map((img: any) => uploadMedia(img?.uri)),
-        );
-        input.images = imageKeys;
-      }
 
       await doUpdateSellOffer({
         variables: {
@@ -160,7 +117,7 @@ const EditSellOfferItem = () => {
       setValue('sellOffer', sellOfferDetails?.title);
       setValue('productName', sellOfferDetails?.productName);
       setValue('desc', sellOfferDetails?.description);
-      setValue('category', sellOfferDetails?.commoditycategoryID);
+      setValue('type', sellOfferDetails?.requestCategory);
     }
     return () => {
       isCurrent = false;
@@ -179,29 +136,6 @@ const EditSellOfferItem = () => {
     return <RenderTags index={index} tag={tag} onPress={onPress} />;
   };
 
-  const openImageGallery = () => {
-    launchImageLibrary(
-      {mediaType: 'photo', selectionLimit: 7, quality: 0.4},
-      ({didCancel, errorCode, assets}) => {
-        if (!didCancel && !errorCode && assets && assets.length > 0) {
-          if (assets.length === 1) {
-            setSelectedPhoto(assets[0].uri);
-          } else if (assets.length > 1) {
-            assets.map(asset => asset.uri) as string[];
-            setSelectedPhotos(assets);
-          }
-        }
-      },
-    );
-  };
-
-  // Delete a single image
-  const deleteItem = (itemId: any) => {
-    setSelectedPhotos((prevData: any) =>
-      prevData.filter((item: any) => item.uri !== itemId),
-    );
-  };
-
   function renderFormSection() {
     return (
       <View
@@ -209,18 +143,18 @@ const EditSellOfferItem = () => {
           marginTop: SIZES.semi_margin,
           marginHorizontal: SIZES.semi_margin,
         }}>
-        {/* Commodity Category Type */}
+        {/* Product Type */}
         <Controller
           control={control}
-          name="category"
+          name="type"
           rules={{
-            required: 'Category type is required',
+            required: 'Product type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
             <View>
               <Text
                 style={{
-                  marginTop: SIZES.semi_margin,
+                  marginTop: SIZES.margin,
                   color: COLORS.Neutral1,
                   ...FONTS.body3,
                   fontWeight: '500',
@@ -229,33 +163,36 @@ const EditSellOfferItem = () => {
               </Text>
               <DropDownPicker
                 schema={{
-                  label: 'title',
-                  value: 'id',
+                  label: 'type',
+                  value: 'type',
+                  icon: 'icon',
                 }}
+                onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select Category"
+                placeholder="Select Product Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
                 value={value1 || value}
                 items={jobType}
-                loading={onLoad}
                 setOpen={setOpen}
                 setValue={setValue1}
                 setItems={setJobType}
                 style={{
                   borderRadius: SIZES.base,
                   height: 40,
-                  marginTop: SIZES.radius,
+                  marginTop: SIZES.base,
                   borderColor: COLORS.Neutral7,
                   borderWidth: 0.5,
                 }}
+                activityIndicatorSize={50}
+                activityIndicatorColor={COLORS.primary4}
                 placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                 textStyle={{color: COLORS.Neutral1}}
                 closeIconStyle={{
-                  width: 24,
-                  height: 24,
+                  width: 25,
+                  height: 25,
                 }}
                 modalProps={{
                   animationType: 'fade',
@@ -269,15 +206,12 @@ const EditSellOfferItem = () => {
                 modalContentContainerStyle={{
                   paddingHorizontal: SIZES.padding * 3,
                 }}
-                modalTitle="Select your category"
+                modalTitle="Select your type"
                 modalTitleStyle={{
                   fontWeight: '600',
                 }}
-                onChangeValue={(value: any) => {
-                  setCCID(value);
-                }}
                 onSelectItem={(value: any) => {
-                  setType(value);
+                  setType(value?.type);
                 }}
               />
               {error && (
@@ -361,6 +295,7 @@ const EditSellOfferItem = () => {
           </Text>
           {sellOfferDetails?.image ? (
             <SingleImage
+              showEdit={true}
               product={sellOfferDetails}
               onPress={() =>
                 navigation.navigate('EditSellOfferImages', {
@@ -446,6 +381,7 @@ const EditSellOfferItem = () => {
           keyboardDismissMode="on-drag"
           extraHeight={150}
           extraScrollHeight={150}
+          bounces={false}
           enableOnAndroid={true}>
           <View
             style={{

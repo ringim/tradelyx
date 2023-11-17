@@ -70,8 +70,9 @@ const AirPickupProcess = () => {
   const selectedProp = selectedCategories?.map(
     (obj: {label: any}) => obj?.label,
   );
-
   const {location} = address1;
+
+  // console.log(selectedCategories)
 
   useEffect(() => {
     let isCurrent = true;
@@ -112,7 +113,7 @@ const AirPickupProcess = () => {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
         SType: 'RFF',
-        city: cCity, //city
+        // city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
         placeOrigin: cName, //country
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, // flag
@@ -121,7 +122,7 @@ const AirPickupProcess = () => {
         destinationCountry: cName2, //country
         placeDestinationFlag: `https://flagcdn.com/32x24/${code2}.png`,
         relatedServices: selectedProp,
-        invoiceAmount: amount,
+        budget: amount,
         notes: notes,
         userID,
       };
@@ -131,7 +132,10 @@ const AirPickupProcess = () => {
         },
       });
       // console.log('job data', input);
-      navigation.replace('SuccessService', {type: 'Air Request'});
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SuccessService', params: {type: 'Air Request'}}],
+      });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -172,6 +176,10 @@ const AirPickupProcess = () => {
     setValue,
     address2?.description?.formatted_address,
   ]);
+
+  function isSubmit() {
+    return selectedProp?.length !== 0;
+  }
 
   function requestForm() {
     return (
@@ -464,6 +472,7 @@ const AirPickupProcess = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           <FreightType
@@ -478,7 +487,12 @@ const AirPickupProcess = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Send"
             labelStyle={{...FONTS.h4}}
             onPress={handleSubmit(onSubmit)}

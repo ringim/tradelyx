@@ -71,7 +71,7 @@ const OceanContainerDetails = () => {
     try {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
-        container: contType,
+        containerDetails: contType,
         qty,
         containerSize: contSize,
         containerType: type,
@@ -102,6 +102,7 @@ const OceanContainerDetails = () => {
         style={{
           marginTop: SIZES.semi_margin,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 200
         }}>
         {/* container detail */}
         <View style={{marginTop: SIZES.semi_margin}}>
@@ -337,6 +338,7 @@ const OceanContainerDetails = () => {
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           extraHeight={100}
+          bounces={false}
           extraScrollHeight={100}
           enableOnAndroid={true}>
           <FreightType

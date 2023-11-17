@@ -90,10 +90,10 @@ const EditProductItem = () => {
       const input: UpdateProductInput = {
         id: productDetails?.id,
         title: title,
-        productCertification: cert,
+        productCert: cert,
         description: desc,
-        categoriesID: type,
-        commoditycategoryID: type2,
+        category: type,
+        commodityCategory: type2,
       };
 
       await doUpdateProduct({
@@ -120,7 +120,7 @@ const EditProductItem = () => {
     let isCurrent = true;
     if (productDetails && isCurrent) {
       setValue('title', productDetails?.title);
-      setValue('cert', productDetails?.productCertification);
+      setValue('cert', productDetails?.productCert);
       setValue('desc', productDetails?.description);
       setValue('image', productDetails?.image);
       setValue('category', productDetails?.category);
@@ -392,10 +392,11 @@ const EditProductItem = () => {
             flex: 1,
             justifyContent: 'center',
           }}>
-          {productDetails?.documents && (
+          {productDetails?.productCertDocs && (
             <ShowFiles
-              title="Product Brochures"
-              file={productDetails?.documents}
+              title="Product Certifications"
+              file={productDetails?.productCertDocs}
+              showEdit={true}
               contentStyle={{marginTop: SIZES.semi_margin}}
               onPress={() =>
                 navigation.navigate('EditProductDoc', {
@@ -406,10 +407,11 @@ const EditProductItem = () => {
           )}
         </View>
 
+
         {/* product images */}
         <View
           style={{
-            marginTop: SIZES.margin,
+            marginTop: SIZES.padding,
             marginHorizontal: 4,
             marginBottom: 50,
           }}>
@@ -419,6 +421,7 @@ const EditProductItem = () => {
           </Text>
           {productDetails?.image ? (
             <SingleImage
+              showEdit={true}
               product={productDetails}
               onPress={() =>
                 navigation.navigate('EditProductImages', {
@@ -504,6 +507,7 @@ const EditProductItem = () => {
           keyboardDismissMode="on-drag"
           extraHeight={150}
           extraScrollHeight={150}
+          bounces={false}
           enableOnAndroid={true}>
           <View
             style={{

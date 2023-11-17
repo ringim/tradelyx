@@ -117,7 +117,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
         style={{
           alignSelf: 'center',
           width: '95%',
-          borderWidth: 0.4,
+          borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
           marginTop: SIZES.base,
         }}

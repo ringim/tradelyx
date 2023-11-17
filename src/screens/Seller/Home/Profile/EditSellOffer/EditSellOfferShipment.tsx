@@ -76,6 +76,8 @@ const EditSellOfferShipment = () => {
   const [type, setType] = useState(sellOfferDetails?.packageType);
   const [jobType, setJobType] = useState<any>(constants.packageType);
 
+  console.log(item)
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -85,7 +87,7 @@ const EditSellOfferShipment = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('DD, MMMM, YYYY');
+    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -116,7 +118,7 @@ const EditSellOfferShipment = () => {
       const input: UpdateSellOfferInput = {
         id: sellOfferDetails?.id,
         rfqType: item,
-        requestCategory: type,
+        packageType: type,
         packageDesc: detail,
         placeOrigin: address1?.description?.formatted_address,
         landmark,
@@ -445,6 +447,7 @@ const EditSellOfferShipment = () => {
           showsVerticalScrollIndicator={false}
           extraHeight={150}
           extraScrollHeight={150}
+          bounces={false}
           enableOnAndroid={true}>
           <View style={{margin: SIZES.semi_margin}}>
             <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>

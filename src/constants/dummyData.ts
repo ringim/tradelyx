@@ -44,21 +44,6 @@ const sellerProfile = {
   keyProduct: 'Grains',
 };
 
-const allCategories = [
-  {
-    id: '1',
-    name: 'Fresh Vegetables',
-    image: require('../assets/images/grains.png'),
-  },
-  {id: '2', name: 'Beans', image: require('../assets/images/bean.png')},
-  {id: '3', name: 'Wood', image: require('../assets/images/woods.png')},
-  {
-    id: '4',
-    name: 'Plants & Trees',
-    image: require('../assets/images/plant.png'),
-  },
-];
-
 const promos = [
   {
     id: '1',
@@ -1552,7 +1537,6 @@ export default {
   reviews,
   promos,
   orders,
-  allCategories,
   myProfile,
   shipIcons,
   sellerProfile,

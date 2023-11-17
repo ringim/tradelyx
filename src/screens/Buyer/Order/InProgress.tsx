@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import {FlashList} from '@shopify/flash-list';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {OrderItem, OrderTabItem} from '../../../components';
+import {OrderTabItem, RFFOrderItem, RFQOrderItem} from '../../../components';
 
 const InProgress = () => {
   const navigation = useNavigation<any>();
@@ -91,7 +91,7 @@ const InProgress = () => {
             renderItem={({item, index}) => {
               /* Popular items */
               return (
-                <OrderItem
+                <RFFOrderItem
                   key={index}
                   item={item}
                   status={true}
@@ -127,8 +127,8 @@ const InProgress = () => {
             renderItem={({item, index}) => {
               /* Popular items */
               return (
-                <OrderItem
-                key={index}
+                <RFQOrderItem
+                  key={index}
                   item={item}
                   status={true}
                   arrow={true}

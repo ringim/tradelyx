@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useMutation} from '@apollo/client';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
@@ -18,14 +18,7 @@ import {
   UploadDocs,
   SellerLocationMapHeader,
 } from '../../../../../components';
-import {
-  COLORS,
-  FONTS,
-  SIZES,
-  constants,
-  icons,
-  images,
-} from '../../../../../constants';
+import {COLORS, FONTS, SIZES, icons, images} from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {
   UpdateRFQInput,
@@ -33,13 +26,11 @@ import {
   UpdateRFQMutationVariables,
 } from '../../../../../API';
 import {updateRFQ} from '../../../../../queries/RequestQueries';
-import {useAuthContext} from '../../../../../context/AuthContext';
 import {
   getCountryFlag,
-  selectFile,
-  uploadFile,
+  selectFile2,
+  uploadFile2,
 } from '../../../../../utilities/service';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 interface IProductQuotation {
   landmark: string;
@@ -52,8 +43,6 @@ const EngagementTerms = () => {
   const route = useRoute<any>();
   const mapRef = useRef(null);
 
-  const {userID} = useAuthContext();
-
   const {control, handleSubmit, setValue}: any = useForm();
 
   const [address, setAddress] = useState<any>('');
@@ -62,11 +51,6 @@ const EngagementTerms = () => {
   const [code, setCode] = useState<any>('');
   const [cName, setCName] = useState<any>('');
   const [cCity, setCCity] = useState<any>('');
-
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [incoterms, setIncoterms] = useState('');
-  const [incotermsType, setIncotermsType] = useState<any>(constants.incoterms2);
 
   const {location} = address;
 
@@ -96,18 +80,16 @@ const EngagementTerms = () => {
       const input: UpdateRFQInput = {
         id: route?.params.rfqID,
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, //flag
-        city: cCity, //city
-        countryName: cName, //country
+        // city: cCity, //city
+        // countryName: cName, //country
         placeOrigin: address?.description?.formatted_address,
         landmark,
-        incoterms,
         documents: files,
-        userID,
       };
 
       if (singleFile) {
         const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile(singleFile?.uri)),
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
         );
         input.documents = fileKeys;
       }
@@ -130,6 +112,10 @@ const EngagementTerms = () => {
     }
   };
 
+  function isSubmit() {
+    return singleFile !== null;
+  }
+
   useEffect(() => {
     let unmounted = true;
     if (route.params?.userAddress && unmounted) {
@@ -151,95 +137,13 @@ const EngagementTerms = () => {
         style={{
           marginHorizontal: SIZES.margin,
         }}>
-        {/* Incoterms */}
-        <Controller
-          control={control}
-          name="incoterms"
-          rules={{
-            required: 'Incoterms is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: SIZES.padding}}>
-              <Text
-                style={{
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                }}>
-                Incoterms
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open2}
-                showArrowIcon={true}
-                placeholder="Select Incoterms"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value2}
-                items={incotermsType}
-                setOpen={setOpen2}
-                setValue={setValue2}
-                setItems={setIncotermsType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Choose Incoterms"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setIncoterms(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
-
         {/* delivery address */}
         <FormInput
           label="Delivery Location"
           name="address"
           control={control}
           editable={false}
-          placeholder="Add origin"
+          placeholder="Add delivery location"
           rules={{
             required: 'Address is required',
           }}
@@ -302,12 +206,15 @@ const EngagementTerms = () => {
           name="landmark"
           control={control}
           multiline={true}
+          rules={{
+            required: 'landmark is required',
+          }}
           placeholder="Enter a Landmark or full address"
           containerStyle={{marginTop: address ? 8 : 30}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{
             marginTop: SIZES.radius,
-            height: 120,
+            height: 100,
             padding: SIZES.base,
           }}
         />
@@ -318,6 +225,7 @@ const EngagementTerms = () => {
             flex: 1,
             justifyContent: 'center',
             marginTop: SIZES.base,
+            marginBottom: 150,
           }}>
           {singleFile?.length >= 1 ? (
             <FileSection
@@ -328,7 +236,7 @@ const EngagementTerms = () => {
           ) : (
             <UploadDocs
               title="Attach Supporting Document"
-              selectFile={() => selectFile(setSingleFile, singleFile)}
+              selectFile={() => selectFile2(setSingleFile, singleFile)}
               containerStyle={{marginHorizontal: 10}}
             />
           )}
@@ -366,15 +274,18 @@ const EngagementTerms = () => {
           showsVerticalScrollIndicator={false}
           extraHeight={100}
           extraScrollHeight={100}
+          bounces={false}
           enableOnAndroid={true}>
           {requestForm()}
         </KeyboardAwareScrollView>
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
+            disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

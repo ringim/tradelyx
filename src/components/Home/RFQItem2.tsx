@@ -137,7 +137,7 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         style={{
           alignSelf: 'center',
           width: '95%',
-          borderWidth: 0.4,
+          borderWidth: 0.5,
           borderColor: COLORS.Neutral7,
           marginTop: SIZES.semi_margin,
         }}
@@ -184,36 +184,6 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
               color: COLORS.Neutral1,
             }}>
             {item?.title}
-          </Text>
-        </View>
-      </View>
-
-      {/* Qty */}
-      <View
-        style={{
-          flexDirection: 'row',
-          marginHorizontal: SIZES.semi_margin,
-          justifyContent: 'space-between',
-        }}>
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
-          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            Qty Required
-          </Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              ...FONTS.cap1,
-              fontWeight: '600',
-              color: COLORS.Neutral1,
-            }}>
-            {item?.qty} bags
           </Text>
         </View>
       </View>

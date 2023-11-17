@@ -27,9 +27,10 @@ interface IItem {
   onPress?: any;
   containerStyle?: any;
   onCopy?: any;
+  title: any;
 }
 
-const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
+const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
   const navigation = useNavigation<any>();
 
   const [visible, setIsVisible] = useState(false);
@@ -40,7 +41,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
     maximumFractionDigits: 2,
   };
 
-  const expiryDateString = item?.deliveryDate;
+  const expiryDateString = item?.offerValidity;
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
@@ -176,46 +177,6 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
           </View>
         </View>
 
-        {/* sell offer from  */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: SIZES.semi_margin,
-          }}>
-          {/* Buyer Country Name */}
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.cap1,
-                fontWeight: '500',
-                color: COLORS.Neutral6,
-              }}>
-              Sell Offer From
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-            }}>
-            <Text
-              style={{
-                ...FONTS.cap1,
-                fontWeight: '600',
-                color: COLORS.Neutral1,
-              }}>
-              {userInfo?.title}
-            </Text>
-          </View>
-        </View>
-
         {/* Sell Offer Number */}
         <View
           style={{
@@ -306,7 +267,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
           style={{
             alignSelf: 'center',
             width: '95%',
-            borderWidth: 0.4,
+            borderWidth: 0.5,
             borderColor: COLORS.Neutral7,
             marginTop: SIZES.semi_margin,
           }}
@@ -320,7 +281,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text
-            numberOfLines={3}
+            numberOfLines={2}
             style={{...FONTS.cap1, fontWeight: '600', color: COLORS.Neutral1}}>
             {item?.description}
           </Text>
@@ -358,38 +319,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
           </View>
         </View>
 
-        {/* Qty */}
-        <View
-          style={{
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-              Quantity Offered
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.cap1,
-                fontWeight: '600',
-                color: COLORS.Neutral1,
-              }}>
-              {item?.qty} bags
-            </Text>
-          </View>
-        </View>
-
-        {/* Qty Measure */}
+        {/*  Supply Capacity */}
         <View
           style={{
             flexDirection: 'row',
@@ -415,7 +345,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
                 fontWeight: '600',
                 color: COLORS.Neutral1,
               }}>
-              {item?.qtyMeasure} bags
+              {item?.qtyMeasure} {item?.unit}
             </Text>
           </View>
         </View>
@@ -469,7 +399,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
                 fontWeight: '500',
                 color: COLORS.Neutral6,
               }}>
-              FOB Price
+              Base Price
             </Text>
             <Text
               style={{
@@ -478,7 +408,7 @@ const SellOfferItem = ({containerStyle, item, onPress}: IItem) => {
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦{item?.fobPrice?.toLocaleString('en-US', options)}
+              ₦{item?.basePrice?.toLocaleString('en-US', options)}
             </Text>
           </View>
 
