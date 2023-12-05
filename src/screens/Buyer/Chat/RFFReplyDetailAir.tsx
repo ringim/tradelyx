@@ -1,0 +1,274 @@
+import {View, Text, ActivityIndicator} from 'react-native';
+import React from 'react';
+import {useQuery} from '@apollo/client';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {ScrollView} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
+
+import {
+  Header,
+  OriginDestinationDetails,
+  QuoteRequestItem,
+  QuoteRequestItem2,
+} from '../../../components';
+import {COLORS, SIZES, icons, FONTS} from '../../../constants';
+import {ChatRouteProp} from '../../../components/navigation/SellerNav/type/navigation';
+import {GetRFFReplyQuery, GetRFFReplyQueryVariables} from '../../../API';
+import {getRFFReply} from '../../../queries/RFFQueries';
+import {TextIconButton} from '../../../components';
+import {ChatStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
+
+const RFFReplyDetailAir = () => {
+  const navigation = useNavigation<ChatStackNavigatorParamList>();
+  const route: any = useRoute<ChatRouteProp>();
+
+  const {data, loading} = useQuery<GetRFFReplyQuery, GetRFFReplyQueryVariables>(
+    getRFFReply,
+    {variables: {id: route?.params?.rff}},
+  );
+  const rffDetails: any = data?.getRFFReply;
+
+  const options = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+
+  const onCopy = () => {
+    Clipboard.setString(rffDetails?.rffNo);
+  };
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="small" color={COLORS.primary6} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+      <Header title={'RFF Reply Detail'} tintColor={COLORS.Neutral1} />
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            marginTop: SIZES.radius,
+            marginHorizontal: SIZES.base,
+            borderRadius: SIZES.radius,
+            backgroundColor: COLORS.white,
+          }}>
+          <QuoteRequestItem
+            to={rffDetails?.placeDestinationName}
+            from={rffDetails?.placeOriginName}
+            fromImg={rffDetails?.placeOriginFlag}
+            toImg={rffDetails?.placeDestinationFlag}
+          />
+
+          <QuoteRequestItem2
+            orderID={rffDetails?.rffNo}
+            onCopy={onCopy}
+            packageType={rffDetails?.packageType}
+            name={rffDetails?.productName}
+            containerCount={rffDetails?.qty}
+            transportMode={rffDetails?.rffType}
+            containerSize={rffDetails?.containerSize}
+            containerDetails={rffDetails?.containerDetails}
+            relatedServices={rffDetails?.relatedServices}
+            container={rffDetails?.container}
+            containerType={rffDetails?.containerType}
+            rffType={rffDetails?.rffType}
+            weight={rffDetails?.weight}
+            notes={rffDetails?.notes}
+            handling={rffDetails?.handling}
+            length={rffDetails?.length}
+            height={rffDetails?.height}
+          />
+
+          {/* payment method */}
+          <View
+            style={{
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.base,
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                }}>
+                Payment Method
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                }}>
+                {rffDetails?.paymentMethod}
+              </Text>
+            </View>
+          </View>
+
+          {/* Payment terms */}
+          <View
+            style={{
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.base,
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                }}>
+                Payment Terms
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                }}>
+                {rffDetails?.paymentType}
+              </Text>
+            </View>
+          </View>
+
+          {/* Origin Details*/}
+          <OriginDestinationDetails
+            address={rffDetails?.placeOriginName}
+            type={'Origin'}
+            departDate={rffDetails?.loadDate}
+            typeName={'Ready to load date'}
+          />
+
+          {/* Destination Details  */}
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.base,
+              borderRadius: SIZES.radius,
+              padding: SIZES.radius,
+              backgroundColor: COLORS.Neutral10,
+            }}>
+            <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
+              Destination
+            </Text>
+            <View
+              style={{
+                marginTop: SIZES.base,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View
+                style={{
+                  marginTop: 5,
+                  justifyContent: 'center',
+                  padding: SIZES.base,
+                  width: 32,
+                  height: 32,
+                  borderRadius: SIZES.radius,
+                  backgroundColor: COLORS.secondary10,
+                }}>
+                <FastImage
+                  source={icons?.location}
+                  tintColor={COLORS.secondary1}
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: SIZES.radius,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    paddingTop: 4,
+                    ...FONTS.body3,
+                    color: COLORS.Neutral6,
+                  }}>
+                  {rffDetails?.placeDestinationName}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Price */}
+          <View
+            style={{
+              marginTop: SIZES.radius,
+              marginHorizontal: SIZES.radius,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              backgroundColor: COLORS.Neutral10,
+              borderRadius: SIZES.radius,
+              padding: SIZES.semi_margin,
+              marginBottom: 50,
+            }}>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+                Base Price (Exc. Delivery)
+              </Text>
+              <Text
+                style={{
+                  ...FONTS.h3,
+                  color: COLORS.primary1,
+                  letterSpacing: -1,
+                  paddingTop: SIZES.base,
+                }}>
+                ₦{rffDetails?.price?.toLocaleString('en-US', options)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* {userID } */}
+      <View style={{justifyContent: 'flex-end'}}>
+        <TextIconButton
+          label={'Accept'}
+          labelStyle={{
+            ...FONTS.h4,
+            marginLeft: SIZES.radius,
+          }}
+          iconPosition={'LEFT'}
+          icon={icons.pay}
+          iconStyle={COLORS.white}
+          onPress={() => navigation.navigate('ViewAgreement')}
+          containerStyle={{
+            marginBottom: SIZES.margin,
+            marginTop: SIZES.semi_margin,
+            width: 300,
+          }}
+        />
+      </View>
+    </View>
+  );
+};
+
+export default RFFReplyDetailAir;
