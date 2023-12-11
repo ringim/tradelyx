@@ -90,8 +90,6 @@ const QuotesRequestDetails = () => {
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
     {
-      fetchPolicy: 'cache-only',
-      nextFetchPolicy: 'network-only',
       variables: {
         id: userID,
       },

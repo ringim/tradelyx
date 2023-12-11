@@ -39,6 +39,7 @@ import {
   EditProductShipmentAddress,
   SellOfferDetails,
   EditProductDocs2,
+  RFFFilter,
   EditProductShipment,
   ProductSpecification,
   ProductShipmentAddress,
@@ -471,6 +472,11 @@ const SellerStack = () => {
       <Stack.Screen
         name="RFFReplyDetailAir"
         component={RFFReplyDetailAir}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="RFFFilter"
+        component={RFFFilter}
         options={() => options}
       />
     </Stack.Navigator>

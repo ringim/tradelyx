@@ -138,7 +138,6 @@ const RFQReplyDetailStandard = () => {
 
             <View
               style={{
-                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -157,7 +156,7 @@ const RFQReplyDetailStandard = () => {
           {/* RFQ Number */}
           <View
             style={{
-              marginTop: SIZES.margin,
+              marginTop: SIZES.radius,
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginHorizontal: SIZES.semi_margin,

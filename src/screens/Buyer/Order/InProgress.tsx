@@ -78,14 +78,13 @@ const InProgress = () => {
       </View>
 
       {/* Order List */}
-      <View>
+      {/* <View>
         {value === 'All Orders' ? (
           <FlatList
             data={inProgress}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item?.id}
             showsVerticalScrollIndicator={false}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFFOrderItem
                   key={index}
@@ -121,7 +120,6 @@ const InProgress = () => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFQOrderItem
                   key={index}
@@ -152,7 +150,7 @@ const InProgress = () => {
             }
           />
         )}
-      </View>
+      </View> */}
     </View>
   );
 };

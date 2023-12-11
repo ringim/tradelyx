@@ -6,9 +6,8 @@ import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../../constants';
 import {
-  NoItem,
-  SearchBox2,
   LoadingIndicator,
+  SearchBox2,
   SellOfferItem,
 } from '../../../../components';
 import {
@@ -31,16 +30,14 @@ const MySellOffers = () => {
   const [masterDataSource, setMasterDataSource] = useState<any>([]);
 
   // GET USER
-  const {data: newData} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {
-        id: userID,
-      },
-      fetchPolicy: 'network-only',
-      nextFetchPolicy: 'network-only',
+  const {data: newData, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
     },
-  );
+  });
   const userInfo: any = newData?.getUser;
 
   const {data, loading, refetch} = useQuery<
@@ -48,8 +45,6 @@ const MySellOffers = () => {
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
     pollInterval: 500,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'SELLOFFER',
       sortDirection: ModelSortDirection.DESC,
@@ -96,7 +91,11 @@ const MySellOffers = () => {
         isCurrent = false;
       };
     }
-  }, [loading]);
+  }, [loading, data]);
+
+  if (loading) {
+    <LoadingIndicator />;
+  }
 
   return (
     <Root>
@@ -105,7 +104,6 @@ const MySellOffers = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 
@@ -129,7 +127,9 @@ const MySellOffers = () => {
           refreshing={loading}
           onRefresh={() => refetch()}
           ListFooterComponent={
-            <View style={{marginBottom: filteredDataSource?.length - 1 && 200}} />
+            <View
+              style={{marginBottom: filteredDataSource?.length - 1 && 200}}
+            />
           }
         />
       </View>

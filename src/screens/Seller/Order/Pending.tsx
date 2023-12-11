@@ -137,7 +137,54 @@ const Pending = () => {
 
       {/* Order List */}
       <View>
-        {itemSelected === 'RFF' ? (
+        {itemSelected === 'RFQ' ? (
+          <FlatList
+            data={allReplyRFQs}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.id}
+            renderItem={({item, index}) => {
+              return (
+                <RFQReplyOrderItem
+                  item={item}
+                  desc={true}
+                  statusColor={COLORS.Yellow5}
+                  showHR={true}
+                  status={true}
+                  serviceImage={
+                    item?.rfqType === 'STANDARD'
+                      ? require('../../../assets/images/standard.png')
+                      : item?.rfqType === 'DOMESTIC'
+                      ? require('../../../assets/images/domestic.png')
+                      : require('../../../assets/images/international.png')
+                  }
+                  onPress={() => {
+                    item?.rfqType === 'DOMESTIC'
+                      ? navigation.navigate('RFQReplyDetailDomestic', {
+                          rfq: item?.id,
+                        })
+                      : item?.rfqType === 'STANDARD'
+                      ? navigation.navigate('RFQReplyDetailStandard', {
+                          rfq: item?.id,
+                        })
+                      : navigation.navigate('RFQReplyDetailInternational', {
+                          rfq: item?.id,
+                        });
+                  }}
+                />
+              );
+            }}
+            refreshing={loading}
+            onRefresh={() => refetching()}
+            ListFooterComponent={
+              <View
+                style={{
+                  marginBottom: allReplyRFQs?.length - 1 && 250,
+                }}
+              />
+            }
+            onEndReached={() => loadMoreItem()}
+          />
+        ) : (
           <FlatList
             data={allReplyRFFs}
             showsVerticalScrollIndicator={false}
@@ -184,53 +231,6 @@ const Pending = () => {
               />
             }
             onEndReached={() => loadMoreItem2()}
-          />
-        ) : (
-          <FlatList
-            data={allReplyRFQs}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.id}
-            renderItem={({item, index}) => {
-              return (
-                <RFQReplyOrderItem
-                  item={item}
-                  desc={true}
-                  statusColor={COLORS.Yellow5}
-                  showHR={true}
-                  status={true}
-                  serviceImage={
-                    item?.rfqType === 'STANDARD'
-                      ? require('../../../assets/images/standard.png')
-                      : item?.rfqType === 'DOMESTIC'
-                      ? require('../../../assets/images/domestic.png')
-                      : require('../../../assets/images/international.png')
-                  }
-                  onPress={() => {
-                    item?.rfqType === 'DOMESTIC'
-                      ? navigation.navigate('RFQReplyDetailDomestic', {
-                          rfq: item?.id,
-                        })
-                      : item?.rfqType === 'STANDARD'
-                      ? navigation.navigate('RFQReplyDetailStandard', {
-                          rfq: item?.id,
-                        })
-                      : navigation.navigate('RFQReplyDetailInternational', {
-                          rfq: item?.id,
-                        });
-                  }}
-                />
-              );
-            }}
-            refreshing={loading}
-            onRefresh={() => refetching()}
-            ListFooterComponent={
-              <View
-                style={{
-                  marginBottom: allReplyRFQs?.length - 1 && 250,
-                }}
-              />
-            }
-            onEndReached={() => loadMoreItem()}
           />
         )}
       </View>

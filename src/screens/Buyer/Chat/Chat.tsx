@@ -50,7 +50,7 @@ const Chat = () => {
       .find(authUsr => authUsr?.id !== userID) || null;
 
   // ON CREATE MESSAGE SUBSCRIPTION
-  const {data: loadData} = useSubscription<
+  const {data} = useSubscription<
     OnCreateMessageByChatRoomIDSubscription,
     OnCreateMessageByChatRoomIDSubscriptionVariables
   >(onCreateMessageByChatRoomID, {
@@ -75,13 +75,13 @@ const Chat = () => {
 
   // RENDER CREATE MESSAGE SUBSCRIPTION UPDATE
   useEffect(() => {
-    if (loadData?.onCreateMessageByChatRoomID) {
+    if (data?.onCreateMessageByChatRoomID) {
       setMessages((existingMessage: any) => [
-        loadData?.onCreateMessageByChatRoomID,
+        data?.onCreateMessageByChatRoomID,
         ...existingMessage,
       ]);
     }
-  }, [loadData]);
+  }, [data]);
 
   useEffect(() => {
     if (fetchUsers?.logo) {

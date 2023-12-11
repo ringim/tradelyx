@@ -156,11 +156,14 @@ const Explore = () => {
   const user: any = data?.getUser;
 
   if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator
+          size={'large'}
+          color={COLORS.primary6}
+        />
+      </View>
+    );
   }
 
   const onTabPress = useCallback((tabIndex: number) => {

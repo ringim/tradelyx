@@ -1,17 +1,10 @@
-import {View, ActivityIndicator} from 'react-native';
-import React, {useCallback, useState} from 'react';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {View, ActivityIndicator, FlatList} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
-import {FlatList} from 'react-native-gesture-handler';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
-import {
-  BChatRoomItem,
-  HR,
-  NoItem,
-  SearchBox2,
-  TabHeader,
-} from '../../../components';
+import {BChatRoomItem, HR, SearchBox2, TabHeader} from '../../../components';
 import {COLORS, SIZES} from '../../../constants';
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
@@ -29,12 +22,12 @@ const ChatRooms = () => {
   const {userID} = useAuthContext();
 
   // GET USER DETAILS
-  const {data: newData} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {id: userID},
-    },
-  );
+  const {data: newData, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {id: userID},
+  });
   const user: any = newData?.getUser;
 
   const [search, setSearch] = useState('');
@@ -71,43 +64,42 @@ const ChatRooms = () => {
     [],
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      let isCurrent = true;
-      try {
-        const items =
-          isCurrent &&
-          data?.listUserChatRooms?.items
-            ?.filter(cru => cru?.userId === userID)
-            .map(chatRoomUser => chatRoomUser?.chatRoom)
-            .sort((a: any, b: any) => b?.updatedAt > a?.updatedAt)
-            .filter(item => !item?._deleted);
-        setFilteredDataSource(items);
-        setMasterDataSource(items);
-      } catch (error) {
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          textBody: `${(error as Error).message}`,
-          autoClose: 1500,
-        });
-      }
-      return () => {
-        isCurrent = false;
-      };
-    }, [data]),
-  );
+  useEffect(() => {
+    let isCurrent = true;
+    try {
+      const items =
+        isCurrent &&
+        data?.listUserChatRooms?.items
+          ?.filter(cru => cru?.userId === userID)
+          .map(chatRoomUser => chatRoomUser?.chatRoom)
+          .sort((a: any, b: any) => b?.updatedAt > a?.updatedAt);
+      setFilteredDataSource(items);
+      setMasterDataSource(items);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        textBody: `${(error as Error).message}`,
+        autoClose: 1500,
+      });
+    }
+    return () => {
+      isCurrent = false;
+    };
+  }, [data]);
 
-  if (loading) {
-    <ActivityIndicator
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 30,
-      }}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
+  if (loading || newLoad) {
+    return (
+      <ActivityIndicator
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 30,
+        }}
+        size={'large'}
+        color={COLORS.primary6}
+      />
+    );
   }
 
   return (
@@ -126,8 +118,6 @@ const ChatRooms = () => {
           }}
         />
 
-        {filteredDataSource?.length === 0 && <NoItem />}
-
         <FlatList
           data={filteredDataSource}
           showsVerticalScrollIndicator={false}
@@ -139,18 +129,7 @@ const ChatRooms = () => {
           refreshing={loading}
           onRefresh={() => refetch()}
           ListFooterComponent={
-            <View style={{marginBottom: []?.length - 1 && 100}}>
-              {loading && (
-                <ActivityIndicator
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                  color={COLORS.primary6}
-                />
-              )}
-            </View>
+            <View style={{marginBottom: []?.length - 1 && 100}} />
           }
         />
       </View>

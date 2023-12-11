@@ -5,7 +5,7 @@ import {useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../constants';
-import {NoItem, RFFQuoteItem, SearchBox2} from '../../../components';
+import {RFFQuoteItem, SearchBox2} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   ModelSortDirection,
@@ -27,9 +27,7 @@ const QuotesRequest = () => {
     RffByDateQuery,
     RffByDateQueryVariables
   >(rffByDate, {
-    pollInterval: 300,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
+    pollInterval: 500,
     variables: {
       SType: 'RFF',
       sortDirection: ModelSortDirection.DESC,
@@ -83,7 +81,7 @@ const QuotesRequest = () => {
     return () => {
       isCurrent = false;
     };
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading) {
     return (
@@ -107,7 +105,6 @@ const QuotesRequest = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 

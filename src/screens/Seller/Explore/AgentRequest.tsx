@@ -3,7 +3,7 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SIZES, dummyData} from '../../../constants';
-import {AgentRequestItem, NoItem} from '../../../components';
+import {AgentRequestItem,} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 
 const AgentRequest = () => {
@@ -17,7 +17,6 @@ const AgentRequest = () => {
         marginTop: SIZES.radius,
         backgroundColor: COLORS.white,
       }}>
-      {dummyData?.rffAgentReq?.length === 0 && <NoItem />}
 
       <FlatList
         data={dummyData?.rffAgentReq}

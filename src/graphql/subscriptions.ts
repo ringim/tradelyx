@@ -1089,6 +1089,7 @@ export const onCreateRFQ = /* GraphQL */ `subscription OnCreateRFQ($filter: Mode
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1125,6 +1126,7 @@ export const onCreateRFQ = /* GraphQL */ `subscription OnCreateRFQ($filter: Mode
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1169,6 +1171,7 @@ export const onUpdateRFQ = /* GraphQL */ `subscription OnUpdateRFQ($filter: Mode
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1205,6 +1208,7 @@ export const onUpdateRFQ = /* GraphQL */ `subscription OnUpdateRFQ($filter: Mode
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1249,6 +1253,7 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1285,6 +1290,7 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1334,6 +1340,7 @@ export const onCreateRFQReply = /* GraphQL */ `subscription OnCreateRFQReply($fi
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1377,6 +1384,7 @@ export const onUpdateRFQReply = /* GraphQL */ `subscription OnUpdateRFQReply($fi
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1420,6 +1428,7 @@ export const onDeleteRFQReply = /* GraphQL */ `subscription OnDeleteRFQReply($fi
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1462,6 +1471,7 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1498,6 +1508,7 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -1553,6 +1564,7 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1589,6 +1601,7 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -1644,6 +1657,7 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1680,6 +1694,7 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -1736,6 +1751,7 @@ export const onCreateRFFReply = /* GraphQL */ `subscription OnCreateRFFReply($fi
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -1786,6 +1802,7 @@ export const onUpdateRFFReply = /* GraphQL */ `subscription OnUpdateRFFReply($fi
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -1836,6 +1853,7 @@ export const onDeleteRFFReply = /* GraphQL */ `subscription OnDeleteRFFReply($fi
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -2214,6 +2232,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -2259,6 +2278,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -2605,6 +2625,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -2650,6 +2671,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -2996,6 +3018,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -3041,6 +3064,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -3539,6 +3563,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -3580,6 +3605,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry
@@ -3951,6 +3977,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -3992,6 +4019,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry
@@ -4363,6 +4391,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -4404,6 +4433,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry

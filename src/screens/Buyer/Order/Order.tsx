@@ -175,11 +175,15 @@ const Order = () => {
   }
 
   if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator
+          style={{justifyContent: 'center'}}
+          size={'large'}
+          color={COLORS.primary6}
+        />
+      </View>
+    );
   }
 
   function renderScheduleTabContent() {

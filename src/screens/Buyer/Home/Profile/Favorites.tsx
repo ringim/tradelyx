@@ -2,7 +2,7 @@ import {View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 
-import {Header, NoItem, PopularItem} from '../../../../components';
+import {Header, PopularItem} from '../../../../components';
 import {COLORS} from '../../../../constants';
 import {useProductContext} from '../../../../context/ProductContext';
 
@@ -34,8 +34,6 @@ const Favorites = () => {
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
       <Header title={'My Favorites'} tintColor={COLORS.Neutral1} />
-
-      {savedProductItem?.length === 0 && <NoItem />}
 
       <FlatList
         data={savedProductItem}

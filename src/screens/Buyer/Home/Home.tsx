@@ -1,4 +1,4 @@
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
@@ -59,8 +59,6 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     ProductByDateQuery,
     ProductByDateQueryVariables
   >(productByDate, {
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       limit: 4,
       SType: 'JOB',
@@ -78,8 +76,6 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     ListUsersQueryVariables
   >(listUsers, {
     variables: {limit: 4},
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
   });
   const suppliers: any =
     onData?.listUsers?.items
@@ -136,14 +132,6 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
         />
       </>
     );
-  }
-
-  if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
   }
 
   return (

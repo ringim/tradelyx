@@ -139,7 +139,6 @@ const RFQReplyDetailInternational = () => {
 
             <View
               style={{
-                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -190,7 +189,6 @@ const RFQReplyDetailInternational = () => {
 
             <View
               style={{
-                flex: 2.5,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>

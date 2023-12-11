@@ -30,17 +30,13 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
   });
   const userInfo: any = data?.getUser;
 
-  useEffect(() => {
-    getLastOnlineText();
-  }, [userInfo]);
-
   const getLastOnlineText = () => {
     if (!userInfo?.lastOnlineAt) {
       return null;
     }
     // if lastOnlineAt is less than 5 minutes ago, show him as ONLINE
     const lastOnlineDiffMS = dayjs().diff(dayjs(userInfo?.lastOnlineAt));
-    if (lastOnlineDiffMS < 5 * 60 * 1000) {
+    if (lastOnlineDiffMS < 3 * 60 * 1000) {
       // less than 5 minutes
       setOnlineStatus(true);
     } else {
@@ -50,6 +46,10 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
       // );
     }
   };
+
+  useEffect(() => {
+    getLastOnlineText();
+  }, [onlineStatus]);
 
   return (
     <SafeAreaView
@@ -82,7 +82,7 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
 
         <View style={{justifyContent: 'center', paddingLeft: SIZES.margin}}>
           <FastImage
-            source={{uri: image, priority: FastImage.priority.high}}
+            source={{uri: image}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               height: 50,

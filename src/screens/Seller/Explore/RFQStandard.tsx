@@ -29,9 +29,6 @@ const RFQDomestic = () => {
     RfqByDateQuery,
     RfqByDateQueryVariables
   >(rfqByDate, {
-    pollInterval: 300,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -88,12 +85,18 @@ const RFQDomestic = () => {
         isCurrent = false;
       };
     }
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="small" color={COLORS.primary6} />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 30,
+        }}>
+        <ActivityIndicator size="large" color={COLORS.primary6} />
       </View>
     );
   }
@@ -109,6 +112,7 @@ const RFQDomestic = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
+          onPress={() => navigation.navigate('RFQFilter')}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 

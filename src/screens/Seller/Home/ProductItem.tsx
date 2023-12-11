@@ -94,13 +94,15 @@ const ProductItem = () => {
   };
 
   if (loading) {
-    <View style={{flex: 1, justifyContent: 'center'}}>
-      <ActivityIndicator
-        style={{justifyContent: 'center'}}
-        size={'large'}
-        color={COLORS.primary6}
-      />
-    </View>;
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator
+          style={{justifyContent: 'center'}}
+          size={'large'}
+          color={COLORS.primary6}
+        />
+      </View>
+    );
   }
 
   return (

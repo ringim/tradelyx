@@ -1,5 +1,5 @@
 import {ActivityIndicator, View} from 'react-native';
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
@@ -57,7 +57,6 @@ const AllProducts = () => {
     };
   }, [loading]);
 
-
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -79,7 +78,6 @@ const AllProducts = () => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          showFiler={true}
           onPress={() => navigation.navigate('SearchFilter')}
           containerStyle={{marginHorizontal: SIZES.margin}}
         />

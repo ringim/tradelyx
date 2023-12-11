@@ -1,6 +1,7 @@
 import React, {memo, useState} from 'react';
 import {
   View,
+  ActivityIndicator,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -26,7 +27,6 @@ import {
 } from '../../API';
 import {useAuthContext} from '../../context/AuthContext';
 import ChatStyles from './ChatStyles';
-import LoadingIndicator from '../Others/LoadingIndicator';
 
 const MessageInput = ({chatRoom}: any) => {
   const {userID} = useAuthContext();
@@ -220,7 +220,13 @@ const MessageInput = ({chatRoom}: any) => {
   };
 
   if (loading) {
-    return <LoadingIndicator />;
+    return (
+      <ActivityIndicator
+        style={{flex: 1,justifyContent: 'center', top: -50}}
+        size={'small'}
+        color={COLORS.primary6}
+      />
+    );
   }
 
   return (

@@ -1098,6 +1098,7 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1134,6 +1135,7 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1181,6 +1183,7 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1217,6 +1220,7 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1264,6 +1268,7 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1300,6 +1305,7 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1352,6 +1358,7 @@ export const createRFQReply = /* GraphQL */ `mutation CreateRFQReply(
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1398,6 +1405,7 @@ export const updateRFQReply = /* GraphQL */ `mutation UpdateRFQReply(
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1444,6 +1452,7 @@ export const deleteRFQReply = /* GraphQL */ `mutation DeleteRFQReply(
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1489,6 +1498,7 @@ export const createRFF = /* GraphQL */ `mutation CreateRFF(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1525,6 +1535,7 @@ export const createRFF = /* GraphQL */ `mutation CreateRFF(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -1583,6 +1594,7 @@ export const updateRFF = /* GraphQL */ `mutation UpdateRFF(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1619,6 +1631,7 @@ export const updateRFF = /* GraphQL */ `mutation UpdateRFF(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -1677,6 +1690,7 @@ export const deleteRFF = /* GraphQL */ `mutation DeleteRFF(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1713,6 +1727,7 @@ export const deleteRFF = /* GraphQL */ `mutation DeleteRFF(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -1772,6 +1787,7 @@ export const createRFFReply = /* GraphQL */ `mutation CreateRFFReply(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -1825,6 +1841,7 @@ export const updateRFFReply = /* GraphQL */ `mutation UpdateRFFReply(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -1878,6 +1895,7 @@ export const deleteRFFReply = /* GraphQL */ `mutation DeleteRFFReply(
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -2277,6 +2295,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -2322,6 +2341,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -2671,6 +2691,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -2716,6 +2737,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -3065,6 +3087,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -3110,6 +3133,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -3618,6 +3642,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -3659,6 +3684,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry
@@ -4031,6 +4057,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -4072,6 +4099,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry
@@ -4444,6 +4472,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -4485,6 +4514,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry

@@ -27,6 +27,7 @@ export const createRFF = gql`
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       destinationCountry
@@ -82,6 +83,7 @@ export const rffByDate = gql`
         height
         packageType
         placeOrigin
+        placeOriginCountry
         placeOriginFlag
         placeOriginName
         placeDestinationName
@@ -120,6 +122,7 @@ export const rffByDate = gql`
             placeOrigin
             placeOriginFlag
             placeOriginName
+            placeOriginCountry
             placeDestinationName
             placeDestinationFlag
             paymentType
@@ -180,6 +183,7 @@ export const updateRFF = gql`
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       destinationCountry
@@ -221,6 +225,7 @@ export const getRFF = gql`
       packageType
       placeOrigin
       placeOriginFlag
+      placeOriginCountry
       placeOriginName
       placeDestinationName
       placeDestinationFlag
@@ -258,6 +263,7 @@ export const getRFF = gql`
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           paymentType
@@ -327,6 +333,7 @@ export const getRFFReply = gql`
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       paymentType
@@ -391,6 +398,7 @@ export const rffByDateRely = gql`
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -446,6 +454,7 @@ export const createRFFReply = gql`
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       paymentType
@@ -498,6 +507,7 @@ export const updateRFFReply = gql`
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       paymentType

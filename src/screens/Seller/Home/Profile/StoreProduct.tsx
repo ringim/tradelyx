@@ -1,25 +1,11 @@
-import {
-  View,
-  Animated,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Animated, ScrollView, TouchableOpacity} from 'react-native';
 import React, {useState, useCallback, useRef} from 'react';
-import {useQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, SIZES, constants, FONTS} from '../../../../constants';
-import {AltHeader, NoItem} from '../../../../components';
-import {useAuthContext} from '../../../../context/AuthContext';
-import {
-  ModelSortDirection,
-  ProductByDateQuery,
-  ProductByDateQueryVariables,
-} from '../../../../API';
+import {AltHeader} from '../../../../components';
 import MyProducts from './MyProducts';
 import MySellOffers from './MySellOffers';
-import {productByDate} from '../../../../queries/ProductQueries';
 import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 
 const scheduleTabs = constants.storeProducts.map(bottom_tab => ({
@@ -134,7 +120,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
               <Animated.Text
                 style={{
                   color: textColor,
-                  ...FONTS.cap1,
+                  ...FONTS.h5,
                   fontWeight: 'bold',
                   textAlign: 'center',
                 }}>
@@ -153,36 +139,6 @@ const StoreProduct = () => {
 
   const flatListRef = useRef<any>();
   const scrollX = useRef<any>(new Animated.Value(0)).current;
-
-  const {userID} = useAuthContext();
-
-  const {data, loading, refetch} = useQuery<
-    ProductByDateQuery,
-    ProductByDateQueryVariables
-  >(productByDate, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
-    variables: {
-      SType: 'JOB',
-      sortDirection: ModelSortDirection.DESC,
-    },
-  });
-  const userProducts =
-    data?.productByDate?.items
-      .filter(st => st?.SType === 'JOB')
-      ?.filter(usrID => usrID?.userID === userID)
-      .filter((item: any) => !item?._deleted) || [];
-
-  if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center', marginTop: SIZES.margin}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
-  }
-
-  {userProducts?.length === 0 && <NoItem />}
 
   const onTabPress = useCallback((tabIndex: number) => {
     flatListRef?.current?.scrollToOffset({
@@ -238,13 +194,7 @@ const StoreProduct = () => {
                   flex: 1,
                   width: SIZES.width,
                 }}>
-                {item?.id == 0 && (
-                  <MyProducts
-                    data={userProducts}
-                    loading={loading}
-                    refetch={refetch}
-                  />
-                )}
+                {item?.id == 0 && <MyProducts />}
                 {item?.id == 1 && <MySellOffers />}
               </View>
             );

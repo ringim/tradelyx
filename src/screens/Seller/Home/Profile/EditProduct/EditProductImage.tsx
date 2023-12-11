@@ -1,4 +1,4 @@
-import {View, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {Asset} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';

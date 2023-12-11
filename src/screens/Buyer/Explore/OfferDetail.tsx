@@ -1,6 +1,10 @@
 import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import ImageModal, {ImageDetail} from 'react-native-image-modal';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -89,13 +93,14 @@ const OfferDetail = () => {
   }
 
   // GET USER
-  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
-    fetchPolicy: 'cache-only',
-    nextFetchPolicy: 'network-only',
-    variables: {
-      id: userID,
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: userID,
+      },
     },
-  });
+  );
   const userInfo: any = data?.getUser;
 
   const {data: newData, loading: newLoad} = useQuery<
@@ -111,28 +116,30 @@ const OfferDetail = () => {
     ListUsersQueryVariables
   >(listUsers);
 
-  useEffect(() => {
-    let isCurrent = true;
-    try {
-      const crUsers: any =
-        isCurrent &&
-        onData?.listUsers?.items.some(usrID =>
-          usrID?.ChatRooms?.items.find(
-            crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
-          ),
-        );
-      setChatRoomUsers(crUsers);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: `${(error as Error).message}`,
-        autoClose: 1500,
-      });
-    }
-    return () => {
-      isCurrent = false;
-    };
-  }, [onData, onLoad]);
+  useFocusEffect(
+    useCallback(() => {
+      let isCurrent = true;
+      try {
+        const crUsers: any =
+          isCurrent &&
+          onData?.listUsers?.items.some(usrID =>
+            usrID?.ChatRooms?.items.find(
+              crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
+            ),
+          );
+        setChatRoomUsers(crUsers);
+      } catch (error) {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          textBody: `${(error as Error).message}`,
+          autoClose: 1500,
+        });
+      }
+      return () => {
+        isCurrent = false;
+      };
+    }, [onData]),
+  );
 
   // console.log(crUsers);
 
@@ -350,10 +357,7 @@ const OfferDetail = () => {
                 justifyContent: 'center',
               }}>
               <FastImage
-                source={{
-                  uri: imageUri || DUMMY_IMAGE,
-                  priority: FastImage.priority.high,
-                }}
+                source={{uri: imageUri || DUMMY_IMAGE}}
                 resizeMode={FastImage.resizeMode.cover}
                 style={{
                   width: 32,
@@ -419,10 +423,7 @@ const OfferDetail = () => {
                 }}>
                 <FastImage
                   resizeMode={FastImage.resizeMode.cover}
-                  source={{
-                    uri: imageUri2 || DUMMY_IMAGE,
-                    priority: FastImage.priority.high,
-                  }}
+                  source={{uri: imageUri2 || DUMMY_IMAGE}}
                   style={{
                     width: 380,
                     height: 180,

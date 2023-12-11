@@ -1,4 +1,10 @@
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -80,6 +86,14 @@ const BChatRoomItem = ({chatRoom}: any) => {
     setLastMessage(getLM);
   }, [lastMessage, onLoad]);
 
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
+    );
+  }
+
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <FastImage
@@ -94,7 +108,7 @@ const BChatRoomItem = ({chatRoom}: any) => {
 
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-          <Text style={styles.name}>{user?.title}</Text>
+          <Text style={styles.name}>{user?.title || user?.name}</Text>
           <Text style={styles.text}>
             {dayjs(lastMessage?.updatedAt).fromNow()}
           </Text>

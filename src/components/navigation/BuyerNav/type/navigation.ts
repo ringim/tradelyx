@@ -104,7 +104,7 @@ export type ChatStackNavigatorParamList = {
   reset: any;
   navigate: any;
   goBack: any;
-  ChatRooms: any;
+  ChatRooms: undefined;
   Chat: {id: string};
   SellOfferDetails: {sellOffer: string};
   RFQReplyDetailStandard: {rfq: string};

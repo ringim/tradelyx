@@ -8,7 +8,6 @@ import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerN
 import {COLORS, SIZES, constants} from '../../../constants';
 import {Header, HorizontalItem, SearchBox2} from '../../../components';
 
-
 const AllCategories = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
 

@@ -129,7 +129,7 @@ const CompleteProfile = () => {
           input,
         },
       });
-      console.log('Profile Updated', input);
+      // console.log('Profile Updated', input);
       navigation.navigate('BusinessDetail');
     } catch (error) {
       Toast.show({

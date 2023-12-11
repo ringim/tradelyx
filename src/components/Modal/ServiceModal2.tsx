@@ -136,7 +136,7 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         <TextButton
           label="Continue"
           onPress={() => {
-            value === 'Post Sell Offers'
+            value === 'Post offers to buyers'
               ? navigation.navigate('SellOffer')
               : navigation.navigate('AddProducts');
             hideModal();

@@ -62,26 +62,7 @@ const DomesticRFQDetail = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [chatRoomUsers, setChatRoomUsers] = useState(null);
 
-  const {
-    placeOriginFlag,
-    rfqNo,
-    description,
-    tags,
-    documents,
-    landmark,
-    userID,
-    expiryDate,
-    unit,
-    title,
-    qty,
-    paymentMethod,
-    placeOrigin,
-    requestCategory,
-    productName,
-    budget,
-    paymentType,
-    buyFrequency,
-  }: any = route?.params?.rfqItem;
+  const {rfqNo, userID, expiryDate}: any = route?.params?.rfqItem;
 
   function renderViewMore(onPress: any) {
     return (
@@ -141,8 +122,6 @@ const DomesticRFQDetail = () => {
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
     {
-      fetchPolicy: 'cache-only',
-      nextFetchPolicy: 'network-only',
       variables: {
         id: userID,
       },
@@ -259,7 +238,7 @@ const DomesticRFQDetail = () => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.title,
+              name: userInfo?.name,
             },
           },
         });
@@ -315,8 +294,6 @@ const DomesticRFQDetail = () => {
           });
         };
         updateLastMessage(res?.data?.createMessage?.id);
-
-        // navigate to the newly created chatRoom
         navigation.navigate('Chat', {id: newChatRoom?.id});
       }
     } catch (error) {
@@ -379,7 +356,7 @@ const DomesticRFQDetail = () => {
                 justifyContent: 'center',
               }}>
               <FastImage
-                source={{uri: placeOriginFlag}}
+                source={{uri: route?.params?.rfqItem?.placeOriginFlag}}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
                   width: 23,
@@ -390,7 +367,6 @@ const DomesticRFQDetail = () => {
 
             <View
               style={{
-                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -401,7 +377,7 @@ const DomesticRFQDetail = () => {
                   fontWeight: '600',
                   color: COLORS.Neutral1,
                 }}>
-                {placeOrigin}
+                {route?.params?.rfqItem?.placeOriginName}
               </Text>
             </View>
           </View>
@@ -429,7 +405,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.h5,
                   color: COLORS.Neutral1,
                 }}>
-                {rfqNo}
+                {route?.params?.rfqItem?.rfqNo}
               </Text>
             </View>
             {/* Copy icon */}
@@ -474,7 +450,7 @@ const DomesticRFQDetail = () => {
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-                {expiryDate}
+                {route?.params?.rfqItem?.expiryDate}
               </Text>
             </View>
             <View style={{justifyContent: 'center'}}>
@@ -524,7 +500,7 @@ const DomesticRFQDetail = () => {
                 fontWeight: '500',
                 color: COLORS.Neutral1,
               }}>
-              <Text>{description}</Text>
+              <Text>{route?.params?.rfqItem?.description}</Text>
             </ViewMoreText>
           </View>
 
@@ -560,7 +536,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {title}
+                {route?.params?.rfqItem?.title}
               </Text>
             </View>
           </View>
@@ -597,7 +573,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {productName}
+                {route?.params?.rfqItem?.productName}
               </Text>
             </View>
           </View>
@@ -631,7 +607,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {qty} bags
+                {route?.params?.rfqItem?.qty} bags
               </Text>
             </View>
           </View>
@@ -665,7 +641,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {buyFrequency}
+                {route?.params?.rfqItem?.buyFrequency}
               </Text>
             </View>
           </View>
@@ -699,7 +675,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {paymentType}
+                {route?.params?.rfqItem?.paymentType}
               </Text>
             </View>
           </View>
@@ -733,7 +709,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {paymentMethod}
+                {route?.params?.rfqItem?.paymentMethod}
               </Text>
             </View>
           </View>
@@ -767,7 +743,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {unit}
+                {route?.params?.rfqItem?.unit}
               </Text>
             </View>
           </View>
@@ -803,7 +779,7 @@ const DomesticRFQDetail = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {requestCategory}
+                {route?.params?.rfqItem?.requestCategory}
               </Text>
             </View>
           </View>
@@ -816,7 +792,7 @@ const DomesticRFQDetail = () => {
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Tags</Text>
             <FlatList
-              data={tags}
+              data={route?.params?.rfqItem?.tags}
               keyExtractor={item => `${item}`}
               showsVerticalScrollIndicator={false}
               scrollEnabled={false}
@@ -891,7 +867,7 @@ const DomesticRFQDetail = () => {
                   color: COLORS.Neutral1,
                   paddingTop: 4,
                 }}>
-                {landmark}
+                {route?.params?.rfqItem?.landmark}
               </Text>
             </View>
           </View>
@@ -908,7 +884,7 @@ const DomesticRFQDetail = () => {
               </Text>
             </View>
             <FlatList
-              data={documents}
+              data={route?.params?.rfqItem?.documents}
               keyExtractor={item => `${item}`}
               showsHorizontalScrollIndicator={false}
               scrollEnabled={false}
@@ -983,7 +959,11 @@ const DomesticRFQDetail = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦{budget.toLocaleString('en-US', options)}
+                ₦
+                {route?.params?.rfqItem?.budget.toLocaleString(
+                  'en-US',
+                  options,
+                )}
               </Text>
             </View>
 

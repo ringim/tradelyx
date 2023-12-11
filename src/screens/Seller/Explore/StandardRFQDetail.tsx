@@ -67,7 +67,7 @@ const StandardDomesticRFQDetail = () => {
     documents,
     userID,
     title,
-    placeOrigin,
+    placeOriginName,
     requestCategory,
   }: any = route?.params?.rfqItem;
 
@@ -115,8 +115,6 @@ const StandardDomesticRFQDetail = () => {
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
     {
-      fetchPolicy: 'cache-only',
-      nextFetchPolicy: 'network-only',
       variables: {
         id: userID,
       },
@@ -233,7 +231,7 @@ const StandardDomesticRFQDetail = () => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.title,
+              name: userInfo?.name,
             },
           },
         });
@@ -363,7 +361,6 @@ const StandardDomesticRFQDetail = () => {
 
             <View
               style={{
-                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -374,7 +371,7 @@ const StandardDomesticRFQDetail = () => {
                   fontWeight: '600',
                   color: COLORS.Neutral1,
                 }}>
-                {placeOrigin}
+                {placeOriginName}
               </Text>
             </View>
           </View>

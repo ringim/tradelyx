@@ -94,7 +94,7 @@ const SChatRoomItem = ({chatRoom}: any) => {
 
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-          <Text style={styles.name}>{user?.name}</Text>
+        <Text style={styles.name}>{user?.title || user?.name}</Text>
           <Text style={styles.text}>
             {dayjs(lastMessage?.updatedAt).fromNow()}
           </Text>

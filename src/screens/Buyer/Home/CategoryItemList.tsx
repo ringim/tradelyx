@@ -9,7 +9,7 @@ import {
   HomeStackNavigatorParamList,
 } from '../../../components/navigation/BuyerNav/type/navigation';
 import {COLORS, SIZES} from '../../../constants';
-import {Header, NoItem, SearchBox2, SearchItem2} from '../../../components';
+import {Header, SearchBox2, SearchItem2} from '../../../components';
 import {productByDate} from '../../../queries/ProductQueries';
 import {
   ProductByDateQueryVariables,
@@ -56,11 +56,11 @@ const CategoryItemList = () => {
   }, [search]);
 
   if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
+    );
   }
 
   return (
@@ -73,6 +73,7 @@ const CategoryItemList = () => {
         search={search}
       />
 
+      {/* ALL CATEGORIES */}
       <FlatList
         data={filteredDataSource}
         showsVerticalScrollIndicator={false}

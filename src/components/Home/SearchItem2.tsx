@@ -65,10 +65,7 @@ const SearchItem2 = ({containerStyle, profile_image, item, onPress}: IItem) => {
         {/* Product image */}
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={{
-              uri: imageUri || DUMMY_IMAGE,
-              priority: FastImage.priority.high,
-            }}
+            source={{uri: imageUri || DUMMY_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 80,
@@ -96,10 +93,7 @@ const SearchItem2 = ({containerStyle, profile_image, item, onPress}: IItem) => {
                 justifyContent: 'center',
               }}>
               <FastImage
-                source={{
-                  uri: imageUri2 || DUMMY_IMAGE,
-                  priority: FastImage.priority.high,
-                }}
+                source={{uri: imageUri2 || DUMMY_IMAGE}}
                 resizeMode={FastImage.resizeMode.cover}
                 style={{
                   width: 20,

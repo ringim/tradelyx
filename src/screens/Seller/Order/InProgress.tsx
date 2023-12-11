@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {OrderTabItem, RFFReplyOrderItem} from '../../../components';
+import { OrderTabItem, RFFReplyOrderItem} from '../../../components';
 
 const InProgress = () => {
   const navigation = useNavigation<any>();
@@ -73,14 +73,13 @@ const InProgress = () => {
       </View>
 
       {/* Order List */}
-      <View>
+      {/* <View>
         {value === 'All Orders' ? (
           <FlatList
             data={inProgress}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item.id}`}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFFReplyOrderItem
                   item={item}
@@ -113,7 +112,6 @@ const InProgress = () => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item.id}`}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFFReplyOrderItem
                   item={item}
@@ -141,7 +139,7 @@ const InProgress = () => {
             }
           />
         )}
-      </View>
+      </View> */}
     </View>
   );
 };

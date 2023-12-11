@@ -1,17 +1,47 @@
 import {View, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {useQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../../constants';
-import {SearchBox2, ProductItem} from '../../../../components';
+import {
+  SearchBox2,
+  ProductItem,
+  LoadingIndicator,
+} from '../../../../components';
+import {
+  ModelSortDirection,
+  ProductByDateQuery,
+  ProductByDateQueryVariables,
+} from '../../../../API';
+import {productByDate} from '../../../../queries/ProductQueries';
+import {useAuthContext} from '../../../../context/AuthContext';
 
-const MyProducts = ({data, refetch, loading}: any) => {
+const MyProducts = () => {
   const navigation = useNavigation<any>();
+
+  const {userID} = useAuthContext();
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
   const [masterDataSource, setMasterDataSource] = useState<any>([]);
+
+  const {data, loading, refetch} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
+    pollInterval: 500,
+    variables: {
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const userProducts =
+    data?.productByDate?.items
+      .filter(st => st?.SType === 'JOB')
+      ?.filter(usrID => usrID?.userID === userID)
+      .filter((item: any) => !item?._deleted) || [];
 
   // SEARCH FILTER
   const searchFilterFunction = (text: any) => {
@@ -34,7 +64,7 @@ const MyProducts = ({data, refetch, loading}: any) => {
   useEffect(() => {
     let isCurrent = true;
     try {
-      const items = isCurrent && data;
+      const items = isCurrent && userProducts;
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -47,7 +77,11 @@ const MyProducts = ({data, refetch, loading}: any) => {
     return () => {
       isCurrent = false;
     };
-  }, [loading]);
+  }, [loading, data]);
+
+  if (loading) {
+    <LoadingIndicator />;
+  }
 
   return (
     <Root>
@@ -56,7 +90,6 @@ const MyProducts = ({data, refetch, loading}: any) => {
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          // showFiler={true}
           containerStyle={{margin: SIZES.semi_margin}}
         />
 
@@ -79,7 +112,9 @@ const MyProducts = ({data, refetch, loading}: any) => {
           refreshing={loading}
           onRefresh={() => refetch()}
           ListFooterComponent={
-            <View style={{marginBottom: filteredDataSource?.length - 1 && 200}} />
+            <View
+              style={{marginBottom: filteredDataSource?.length - 1 && 200}}
+            />
           }
         />
       </View>

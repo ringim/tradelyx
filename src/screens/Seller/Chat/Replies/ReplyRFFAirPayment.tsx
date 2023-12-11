@@ -128,13 +128,14 @@ const ReplyRFFAirPayment = () => {
       const input: CreateRFFReplyInput = {
         id: uuidV4(),
         rffNo: rffDetails?.rffNo,
-        placeOrigin: rffDetails?.placeOrigin,
-        placeOriginName: rffDetails?.placeOriginName,
+        placeOrigin: rffDetails?.placeOrigin, // city
+        placeOriginCountry: rffDetails?.placeOriginCountry, // country
+        placeOriginName: rffDetails?.placeOriginName, // address
         placeOriginFlag: rffDetails?.placeOriginFlag, //flag
         placeDestination: rffDetails?.placeDestination, //city destination
-        placeDestinationName: rffDetails?.placeDestinationName, // address
+        placeDestinationName: rffDetails?.placeDestinationName, // destination address
         destinationCountry: rffDetails?.destinationCountry, //country
-        placeDestinationFlag: rffDetails?.placeDestinationFlag,
+        placeDestinationFlag: rffDetails?.placeDestinationFlag, // destination flag
         relatedServices: rffDetails?.relatedServices,
         productName: rffDetails?.productName,
         handling: rffDetails?.handling,

@@ -5,7 +5,6 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Header,
   LoadingIndicator,
-  NoItem,
   RFFOrderItem,
   ReplyListItem2,
   SearchBox2,
@@ -91,7 +90,7 @@ const RFFReplyList = () => {
     return () => {
       isCurrent = false;
     };
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading) {
     <LoadingIndicator />;

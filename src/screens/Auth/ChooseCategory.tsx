@@ -72,11 +72,9 @@ const ChooseCategory = () => {
 
   if (loading) {
     return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        size={'large'}
-        color={COLORS.primary6}
-      />
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
     );
   }
 

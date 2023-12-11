@@ -44,10 +44,7 @@ const SearchItem3 = ({containerStyle, profile_image, item, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <FastImage
-            source={{
-              uri: imageUri || DUMMY_IMAGE,
-              priority: FastImage.priority.high,
-            }}
+            source={{uri: imageUri || DUMMY_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 100,

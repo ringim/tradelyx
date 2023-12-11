@@ -1,4 +1,4 @@
-import {View, Text, FlatList,RefreshControl} from 'react-native';
+import {View, Text, FlatList, RefreshControl} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
@@ -67,14 +67,13 @@ const Complete = () => {
       </View>
 
       {/* OrderItem */}
-      <View>
+      {/* <View>
         {value === 'All Orders' ? (
           <FlatList
             data={completed}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFFOrderItem
                   key={index}
@@ -108,7 +107,6 @@ const Complete = () => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item?.id}`}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFQOrderItem
                   item={item}
@@ -144,7 +142,8 @@ const Complete = () => {
             }
           />
         )}
-      </View>
+      </View> */}
+
     </View>
   );
 };

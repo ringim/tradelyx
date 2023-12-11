@@ -1,11 +1,11 @@
 import {ActivityIndicator, FlatList, View} from 'react-native';
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
 
 import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import {COLORS, SIZES} from '../../../constants';
-import {AltHeader, NoItem, ReviewItem} from '../../../components';
+import {COLORS} from '../../../constants';
+import {AltHeader, ReviewItem} from '../../../components';
 import {
   ModelSortDirection,
   ReviewByDateQuery,
@@ -23,8 +23,7 @@ const AllReviews = () => {
     ReviewByDateQuery,
     ReviewByDateQueryVariables
   >(reviewByDate, {
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
+    pollInterval: 500,
     variables: {
       SType: 'REVIEW',
       sortDirection: ModelSortDirection.DESC,
@@ -60,10 +59,6 @@ const AllReviews = () => {
         tintColor={COLORS.Neutral1}
         onPress={() => navigation.navigate('Home')}
       />
-
-      {allReview?.length === 0 && (
-        <NoItem textCont={{marginTop: SIZES.margin}} />
-      )}
 
       {/* list of categories */}
       <FlatList

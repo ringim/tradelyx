@@ -21,6 +21,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       <View
         style={{
           margin: SIZES.base,
+          paddingTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginHorizontal: SIZES.semi_margin,
@@ -123,10 +124,41 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
         }}
       />
 
-      {/* package type */}
+      {/* product name */}
       <View
         style={{
           marginTop: SIZES.base,
+          flexDirection: 'row',
+          marginHorizontal: SIZES.base,
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
+            Product Name
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...FONTS.cap1,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+              lineHeight: 24,
+            }}>
+            {item?.productName}
+          </Text>
+        </View>
+      </View>
+
+      {/* package type */}
+      <View
+        style={{
           flexDirection: 'row',
           marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
@@ -158,7 +190,6 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* Transport Mode */}
       <View
         style={{
-          marginTop: SIZES.base,
           flexDirection: 'row',
           marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
@@ -190,7 +221,6 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* Port of Origin */}
       <View
         style={{
-          marginTop: SIZES.base,
           flexDirection: 'row',
           marginHorizontal: SIZES.base,
           justifyContent: 'space-between',
@@ -225,7 +255,6 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
       {/* Port destination */}
       <View
         style={{
-          marginTop: SIZES.base,
           flexDirection: 'row',
           marginHorizontal: SIZES.base,
           justifyContent: 'space-between',

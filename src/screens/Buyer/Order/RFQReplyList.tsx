@@ -5,7 +5,6 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   Header,
   LoadingIndicator,
-  NoItem,
   RFQOrderItem,
   ReplyListItem,
   SearchBox2,
@@ -91,7 +90,7 @@ const RFQReplyList = () => {
     return () => {
       isCurrent = false;
     };
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading) {
     <LoadingIndicator />;
@@ -124,8 +123,6 @@ const RFQReplyList = () => {
           alignSelf: 'center',
         }}
       />
-
-      {filteredDataSource?.length <= 0 && <NoItem />}
 
       <FlatList
         data={filteredDataSource}

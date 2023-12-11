@@ -4,6 +4,7 @@ import {
   useWindowDimensions,
   Platform,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React, {memo, useEffect, useRef, useState} from 'react';
 import {useQuery} from '@apollo/client';
@@ -102,6 +103,16 @@ const Message = (props: any) => {
   const onCopy = (item: any) => {
     Clipboard.setString(item);
   };
+
+  if (onLoad) {
+    return (
+      <ActivityIndicator
+        style={{flex: 1, justifyContent: 'center'}}
+        size={'small'}
+        color={COLORS.primary6}
+      />
+    );
+  }
 
   return (
     <>

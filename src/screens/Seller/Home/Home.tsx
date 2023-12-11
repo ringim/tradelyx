@@ -46,8 +46,6 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     getUser,
     {
       variables: {id: userID},
-      fetchPolicy: 'network-only',
-      nextFetchPolicy: 'network-only',
     },
   );
   const user: any = data?.getUser;
@@ -59,11 +57,15 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
   }, [showCameraModal]);
 
   if (loading) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator
+          style={{justifyContent: 'center'}}
+          size={'large'}
+          color={COLORS.primary6}
+        />
+      </View>
+    );
   }
 
   return (

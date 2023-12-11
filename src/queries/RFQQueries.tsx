@@ -35,6 +35,7 @@ export const rfqByDate = gql`
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -65,6 +66,7 @@ export const rfqByDate = gql`
             budget
             price
             placeOrigin
+            placeOriginCountry
             placeOriginFlag
             placeOriginName
             landmark
@@ -120,6 +122,7 @@ export const createRFQ = gql`
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       landmark
       unit
       incoterms
@@ -156,6 +159,7 @@ export const getRFQ = gql`
       buyFrequency
       budget
       placeOrigin
+      placeOriginCountry
       placeOriginFlag
       placeOriginName
       landmark
@@ -189,6 +193,7 @@ export const getRFQ = gql`
           price
           placeOrigin
           placeOriginFlag
+          placeOriginCountry
           placeOriginName
           landmark
           unit
@@ -253,6 +258,7 @@ export const updateRFQ = gql`
       budget
       placeOrigin
       placeOriginFlag
+      placeOriginCountry
       placeOriginName
       landmark
       unit
@@ -295,6 +301,7 @@ export const createRFQReply = gql`
       price
       placeOrigin
       placeOriginFlag
+      placeOriginCountry
       placeOriginName
       landmark
       unit
@@ -339,6 +346,7 @@ export const updateRFQReply = gql`
       budget
       price
       placeOrigin
+      placeOriginCountry
       placeOriginFlag
       placeOriginName
       landmark
@@ -410,6 +418,7 @@ export const rfqByDateReply = gql`
         price
         placeOrigin
         placeOriginFlag
+        placeOriginCountry
         placeOriginName
         landmark
         unit
@@ -455,6 +464,7 @@ export const getRFQReply = gql`
       price
       placeOrigin
       placeOriginFlag
+      placeOriginCountry
       placeOriginName
       landmark
       unit

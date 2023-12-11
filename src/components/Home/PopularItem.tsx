@@ -51,8 +51,6 @@ const PopularItem = ({
       variables: {
         id: item?.userID,
       },
-      fetchPolicy: 'network-only',
-      nextFetchPolicy: 'network-only',
     },
   );
   const userInfo: any = data?.getUser;
@@ -82,7 +80,10 @@ const PopularItem = ({
         {/* Product image */}
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={{uri: imageUri || DUMMY_IMAGE, priority: FastImage.priority.high}}
+            source={{
+              uri: imageUri || DUMMY_IMAGE,
+              priority: FastImage.priority.high,
+            }}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 80,

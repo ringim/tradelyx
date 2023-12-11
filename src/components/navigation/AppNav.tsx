@@ -11,7 +11,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NetInfo from '@react-native-community/netinfo';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {useMutation, useQuery} from '@apollo/client';
-import {DataStore} from 'aws-amplify';
 
 import AuthStack from './AuthStack';
 import {useEffect, useState} from 'react';
@@ -30,7 +29,6 @@ import {getUser, updateUser} from '../../queries/UserQueries';
 import {ChooseCategory} from '../../screens';
 import SellerAuthStack from './SellerNav/SellerAuthStack';
 import BuyerAuthStack from './BuyerNav/BuyerAuthStack';
-import {User} from '../../models';
 
 const Stack = createNativeStackNavigator<any>();
 const options: any = {
@@ -58,7 +56,6 @@ const AppNav = ({onBoarded}: any) => {
   const {authUser, userID, isLoading} = useAuthContext();
 
   const [connection, setConnection] = useState<any>(true);
-  const [user, setUser] = useState<User | null>(null);
 
   // GET USER
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -72,33 +69,13 @@ const AppNav = ({onBoarded}: any) => {
   );
   const userInfo: any = data?.getUser;
 
-  const fetchUser = async () => {
-    setUser(userInfo);
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    const subscription = DataStore.observe(User, user.id).subscribe(msg => {
-      if (msg.model === User && msg.opType === 'UPDATE') {
-        setUser(msg.element);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [user?.id]);
-
   // UPDATING LAST SEEN ONLINE
   useEffect(() => {
     const interval = setInterval(async () => {
       await updateLastOnline();
-    }, 10000);
+    }, 1 * 30 * 1000);
     return () => clearInterval(interval);
-  }, [user]);
+  }, [userInfo]);
 
   // UPDATE LAST SEEN ONLINE
   const [doUpdateUser] = useMutation<
@@ -109,15 +86,20 @@ const AppNav = ({onBoarded}: any) => {
     if (!userInfo) {
       return null;
     }
-    const res = await doUpdateUser({
-      variables: {
-        input: {
-          id: userInfo?.id,
-          // rating: jobberRatings,
-          lastOnlineAt: +new Date(),
+    try {
+      const res = await doUpdateUser({
+        variables: {
+          input: {
+            id: userInfo?.id,
+            // rating: jobberRatings,
+            lastOnlineAt: +new Date(),
+          },
         },
-      },
-    });
+      });
+      // console.log('UPDATED USER', res);
+    } catch (error) {
+      return error;
+    }
   };
 
   // Switching between different Wi-Fi does not send events in iOS
@@ -126,7 +108,11 @@ const AppNav = ({onBoarded}: any) => {
       'change',
       async nextAppState => {
         if (Platform.OS === 'ios' && nextAppState == 'active') {
-          await NativeModules.RNCNetInfo.getCurrentState('wifi');
+          let newNetInfo = await NativeModules.RNCNetInfo.getCurrentState(
+            'wifi',
+          );
+          //your code here
+          // console.log('newNetInfo', newNetInfo);
         }
       },
     );

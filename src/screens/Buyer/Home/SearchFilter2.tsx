@@ -31,7 +31,7 @@ const SearchFilter2 = () => {
     SellOffersByDateQuery,
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
-    pollInterval: 300,
+    pollInterval: 500,
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
@@ -57,7 +57,7 @@ const SearchFilter2 = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
 
-  console.log('filtered products', dataList);
+  // console.log('filtered products', dataList);
   // console.log(date);
 
   const handlePress = () => {

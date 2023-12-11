@@ -80,8 +80,7 @@ const EngagementTerms = () => {
       const input: UpdateRFQInput = {
         id: route?.params.rfqID,
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, //flag
-        // city: cCity, //city
-        // countryName: cName, //country
+        placeOriginCountry: cName, //country
         placeOrigin: address?.description?.formatted_address,
         placeOriginName: cCity,
         landmark,

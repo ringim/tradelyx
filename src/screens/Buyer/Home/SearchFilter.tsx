@@ -30,7 +30,7 @@ const SearchFilter = () => {
     ProductByDateQuery,
     ProductByDateQueryVariables
   >(productByDate, {
-    pollInterval: 300,
+    pollInterval: 500,
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {

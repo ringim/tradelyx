@@ -118,8 +118,8 @@ const ReplyRFQDomesticPayment = () => {
       const input: CreateRFQReplyInput = {
         id: uuidV4(),
         rfqNo: rfqDetails?.rfqNo,
-        placeOrigin: rfqDetails?.placeOrigin,
-        placeOriginName: rfqDetails?.placeOriginName,
+        placeOrigin: rfqDetails?.placeOrigin, // city name
+        placeOriginName: rfqDetails?.placeOriginName, // address
         placeOriginFlag: rfqDetails?.placeOriginFlag, //flag
         title: rfqDetails?.title,
         rfqType: RFQTYPE.DOMESTIC,

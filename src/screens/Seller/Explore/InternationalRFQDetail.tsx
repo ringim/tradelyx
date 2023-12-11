@@ -84,7 +84,7 @@ const InternationalDomesticRFQDetail = () => {
     qty,
     paymentMethod,
     placeDestination,
-    placeOrigin,
+    placeOriginName,
     requestCategory,
     productName,
     budget,
@@ -144,8 +144,6 @@ const InternationalDomesticRFQDetail = () => {
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
     {
-      fetchPolicy: 'cache-only',
-      nextFetchPolicy: 'network-only',
       variables: {
         id: userID,
       },
@@ -262,7 +260,7 @@ const InternationalDomesticRFQDetail = () => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.title,
+              name: userInfo?.name,
             },
           },
         });
@@ -389,23 +387,21 @@ const InternationalDomesticRFQDetail = () => {
                 }}
               />
             </View>
-          </View>
-
-          <View
-            style={{
-              flex: 2,
-              marginLeft: SIZES.radius,
-              justifyContent: 'center',
-            }}>
-            <Text
-              numberOfLines={3}
+            <View
               style={{
-                ...FONTS.cap1,
-                fontWeight: '600',
-                color: COLORS.Neutral1,
+                marginLeft: SIZES.radius,
+                justifyContent: 'center',
               }}>
-              {placeOrigin}
-            </Text>
+              <Text
+                numberOfLines={3}
+                style={{
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                {placeOriginName}
+              </Text>
+            </View>
           </View>
 
           {/* Delivery To */}
@@ -443,7 +439,6 @@ const InternationalDomesticRFQDetail = () => {
 
             <View
               style={{
-                flex: 2.5,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>

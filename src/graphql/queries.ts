@@ -1358,6 +1358,7 @@ export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     landmark
     unit
     incoterms
@@ -1394,6 +1395,7 @@ export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -1436,6 +1438,7 @@ export const listRFQS = /* GraphQL */ `query ListRFQS($filter: ModelRFQFilterInp
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       landmark
       unit
       incoterms
@@ -1472,6 +1475,7 @@ export const listRFQS = /* GraphQL */ `query ListRFQS($filter: ModelRFQFilterInp
           unit
           incoterms
           placeDestinationName
+          placeOriginCountry
           placeDestination
           placeDestinationFlag
           destinationCountry
@@ -1531,6 +1535,7 @@ export const rfqByDate = /* GraphQL */ `query RfqByDate(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       landmark
       unit
       incoterms
@@ -1567,6 +1572,7 @@ export const rfqByDate = /* GraphQL */ `query RfqByDate(
           unit
           incoterms
           placeDestinationName
+          placeOriginCountry
           placeDestination
           placeDestinationFlag
           destinationCountry
@@ -1624,6 +1630,7 @@ export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       landmark
       unit
       incoterms
@@ -1660,6 +1667,7 @@ export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
           unit
           incoterms
           placeDestinationName
+          placeOriginCountry
           placeDestination
           placeDestinationFlag
           destinationCountry
@@ -1712,6 +1720,7 @@ export const getRFQReply = /* GraphQL */ `query GetRFQReply($id: ID!) {
     unit
     incoterms
     placeDestinationName
+    placeOriginCountry
     placeDestination
     placeDestinationFlag
     destinationCountry
@@ -1760,6 +1769,7 @@ export const listRFQReplies = /* GraphQL */ `query ListRFQReplies(
       unit
       incoterms
       placeDestinationName
+      placeOriginCountry
       placeDestination
       placeDestinationFlag
       destinationCountry
@@ -1821,6 +1831,7 @@ export const rfqByDateReply = /* GraphQL */ `query RfqByDateReply(
       unit
       incoterms
       placeDestinationName
+      placeOriginCountry
       placeDestination
       placeDestinationFlag
       destinationCountry
@@ -1880,6 +1891,7 @@ export const rFQRepliesByRFQ = /* GraphQL */ `query RFQRepliesByRFQ(
       unit
       incoterms
       placeDestinationName
+      placeOriginCountry
       placeDestination
       placeDestinationFlag
       destinationCountry
@@ -1925,6 +1937,7 @@ export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     destinationCountry
@@ -1961,6 +1974,7 @@ export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         paymentType
@@ -2014,6 +2028,7 @@ export const listRFFS = /* GraphQL */ `query ListRFFS($filter: ModelRFFFilterInp
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       destinationCountry
@@ -2050,6 +2065,7 @@ export const listRFFS = /* GraphQL */ `query ListRFFS($filter: ModelRFFFilterInp
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           paymentType
@@ -2120,6 +2136,7 @@ export const rffByDate = /* GraphQL */ `query RffByDate(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       destinationCountry
@@ -2156,6 +2173,7 @@ export const rffByDate = /* GraphQL */ `query RffByDate(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           paymentType
@@ -2224,6 +2242,7 @@ export const rFFSByUserID = /* GraphQL */ `query RFFSByUserID(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       destinationCountry
@@ -2260,6 +2279,7 @@ export const rFFSByUserID = /* GraphQL */ `query RFFSByUserID(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           paymentType
@@ -2319,6 +2339,7 @@ export const getRFFReply = /* GraphQL */ `query GetRFFReply($id: ID!) {
     placeOrigin
     placeOriginFlag
     placeOriginName
+    placeOriginCountry
     placeDestinationName
     placeDestinationFlag
     paymentType
@@ -2374,6 +2395,7 @@ export const listRFFReplies = /* GraphQL */ `query ListRFFReplies(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       paymentType
@@ -2442,6 +2464,7 @@ export const rffByDateRely = /* GraphQL */ `query RffByDateRely(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       paymentType
@@ -2508,6 +2531,7 @@ export const rFFRepliesByRFF = /* GraphQL */ `query RFFRepliesByRFF(
       placeOrigin
       placeOriginFlag
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       paymentType
@@ -3076,6 +3100,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         landmark
         unit
         incoterms
@@ -3121,6 +3146,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         placeOrigin
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -3465,6 +3491,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -3506,6 +3533,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry
@@ -3997,6 +4025,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           landmark
           unit
           incoterms
@@ -4038,6 +4067,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           placeOrigin
           placeOriginFlag
           placeOriginName
+          placeOriginCountry
           placeDestinationName
           placeDestinationFlag
           destinationCountry

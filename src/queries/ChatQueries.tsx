@@ -6,8 +6,8 @@ export const getChatRoom = gql`
       id
       createdAt
       SType
-      name
       newMessages
+      name
       imageUri
       lastMessage {
         id
@@ -82,8 +82,8 @@ export const getChatRoom = gql`
             id
             createdAt
             SType
-            name
             newMessages
+            name
             imageUri
             updatedAt
             chatRoomLastMessageId
@@ -163,8 +163,8 @@ export const listChatRooms = gql`
         id
         createdAt
         SType
-        name
         newMessages
+        name
         imageUri
         lastMessage {
           id
@@ -261,8 +261,8 @@ export const createChatRoom = gql`
       id
       createdAt
       SType
-      name
       newMessages
+      name
       imageUri
       updatedAt
       chatRoomLastMessageId
@@ -359,8 +359,8 @@ export const listUserChatRooms = gql`
           id
           createdAt
           SType
-          name
           newMessages
+          name
           imageUri
           lastMessage {
             id
@@ -626,58 +626,6 @@ export const onCreateMessageByChatRoomID = gql`
       userID
       chatroomID
       updatedAt
-      __typename
-    }
-  }
-`;
-
-export const onUpdateMessageByChatRoomID = gql`
-  subscription OnUpdateMessageByChatRoomID($chatroomID: ID!) {
-    onUpdateMessageByChatRoomID(chatroomID: $chatroomID) {
-      id
-      text
-      createdAt
-      SType
-      rffID
-      rfqID
-      rfqType
-      rffType
-      sellOfferID
-      requestID
-      requestTitle
-      requestQty
-      packageType
-      serviceType
-      requestPrice
-      serviceImage
-      requestFrom
-      requestFromImg
-      requestTo
-      requestToImg
-      status
-      image
-      file
-      replyToMessageID
-      userID
-      chatroomID
-      updatedAt
-      __typename
-    }
-  }
-`;
-
-export const onUpdateChatRoom = gql`
-  subscription OnUpdateChatRoom($filter: ModelSubscriptionChatRoomFilterInput) {
-    onUpdateChatRoom(filter: $filter) {
-      id
-      createdAt
-      SType
-      newMessages
-      name
-      title
-      imageUri
-      updatedAt
-      chatRoomLastMessageId
       __typename
     }
   }

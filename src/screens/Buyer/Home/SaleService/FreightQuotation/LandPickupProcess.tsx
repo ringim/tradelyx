@@ -109,7 +109,8 @@ const LandPickupProcess = () => {
         SType: 'RFF',
         // city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
-        placeOrigin: cName, //country
+        placeOrigin: cCity, //city
+        placeOriginCountry: cName, // country
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, // flag
         placeDestination: cCity2, //city destination
         placeDestinationName: address2?.description?.formatted_address, // address

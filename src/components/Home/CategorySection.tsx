@@ -28,12 +28,17 @@ const CategorySection = () => {
           numColumns={4}
           columnWrapperStyle={{
             height: 110,
+            alignSelf: 'center',
           }}
           renderItem={({item, index}) =>
             item && (
               <TouchableOpacity
                 key={index}
-                style={{width: SIZES.width / 2 - 110, alignItems: 'center', marginTop: SIZES.margin}}
+                style={{
+                  width: SIZES.width / 2 - 115,
+                  alignItems: 'center',
+                  marginTop: SIZES.margin,
+                }}
                 onPress={() =>
                   navigation.navigate('CategoryItemList', {
                     cateItem: item,

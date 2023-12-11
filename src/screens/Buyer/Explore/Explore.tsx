@@ -1,4 +1,6 @@
-import {View, FlatList} from 'react-native';
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react-native/no-inline-styles */
+import {View, FlatList, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
@@ -50,7 +52,6 @@ const Explore = () => {
     {
       pollInterval: 500,
       fetchPolicy: 'network-only',
-      nextFetchPolicy: 'network-only',
       variables: {
         SType: 'SELLOFFER',
         sortDirection: ModelSortDirection.DESC,
@@ -58,10 +59,6 @@ const Explore = () => {
       },
     },
   );
-  const sellOffer: any =
-    newData?.sellOffersByDate?.items
-      .filter(st => st?.SType === 'SELLOFFER')
-      .filter((item: any) => !item?._deleted) || [];
   const nextToken = newData?.sellOffersByDate?.nextToken;
 
   const loadMoreItem = async () => {
@@ -94,7 +91,12 @@ const Explore = () => {
   useEffect(() => {
     let isCurrent = true;
     try {
-      const items = isCurrent && sellOffer;
+      const items =
+        (isCurrent &&
+          newData?.sellOffersByDate?.items
+            .filter(st => st?.SType === 'SELLOFFER')
+            .filter((item: any) => !item?._deleted)) ||
+        [];
       setFilteredDataSource(items);
       setMasterDataSource(items);
     } catch (error) {
@@ -107,7 +109,15 @@ const Explore = () => {
     return () => {
       isCurrent = false;
     };
-  }, [newLoad]);
+  }, [newLoad, newData]);
+
+  if (newLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
+    );
+  }
 
   return (
     <Root>
@@ -126,14 +136,12 @@ const Explore = () => {
           data={filteredDataSource}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => `${item?.id}`}
-          ListHeaderComponent={() =>
-            filteredDataSource.length > 0 && (
-              <PopularProducts
-                title={'Latest Sell Offers'}
-                containerStyle={{marginTop: SIZES.base}}
-              />
-            )
-          }
+          ListHeaderComponent={() => (
+            <PopularProducts
+              title={'Latest Sell Offers'}
+              containerStyle={{marginTop: SIZES.base}}
+            />
+          )}
           renderItem={({item, index}) => {
             return (
               <SearchItem

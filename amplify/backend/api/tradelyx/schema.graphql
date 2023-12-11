@@ -224,6 +224,7 @@ type RFQ @model @auth(rules: [{allow: public}]) {
   placeOrigin: String
   placeOriginFlag: String
   placeOriginName: String
+  placeOriginCountry: String
   landmark: String
   unit: String
   incoterms: String
@@ -268,6 +269,7 @@ type RFQReply @model @auth(rules: [{allow: public}]) {
   unit: String
   incoterms: String
   placeDestinationName: String
+  placeOriginCountry: String
   placeDestination: String
   placeDestinationFlag: String
   destinationCountry: String
@@ -314,6 +316,7 @@ type RFF @model @auth(rules: [{allow: public}]) {
   placeOrigin: String
   placeOriginFlag: String
   placeOriginName: String
+  placeOriginCountry: String
   placeDestinationName: String
   placeDestinationFlag: String
   destinationCountry: String
@@ -358,6 +361,7 @@ type RFFReply @model @auth(rules: [{allow: public}]) {
   placeOrigin: String
   placeOriginFlag: String
   placeOriginName: String
+  placeOriginCountry: String
   placeDestinationName: String
   placeDestinationFlag: String
   paymentType: String

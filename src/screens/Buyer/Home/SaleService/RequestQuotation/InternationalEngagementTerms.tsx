@@ -111,9 +111,8 @@ const InternationalEngagementTerms = () => {
         id: route?.params.rfqID,
         placeOrigin: address?.description?.formatted_address,
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, //flag
-        // city: cCity, //city,
-        placeOriginName: cName, //country
-        // countryName: cName, //country
+        placeOriginName: cCity, //country
+        placeOriginCountry: cName, //country
         placeDestination: address2?.description?.formatted_address,
         placeDestinationName: cCity2, //city destination
         destinationCountry: cName2, //country

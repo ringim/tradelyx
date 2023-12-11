@@ -1,4 +1,4 @@
-import {ActivityIndicator, StyleSheet, FlatList,View} from 'react-native';
+import {ActivityIndicator, StyleSheet, FlatList, View} from 'react-native';
 import React, {useRef} from 'react';
 import {useRoute} from '@react-navigation/native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -62,11 +62,11 @@ const BusinessDetail = () => {
     newData?.reviewByDate?.items.filter((item: any) => !item?._deleted) || [];
 
   if (newLoad) {
-    <ActivityIndicator
-      style={{flex: 1, justifyContent: 'center'}}
-      size={'large'}
-      color={COLORS.primary6}
-    />;
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
+    );
   }
 
   return (

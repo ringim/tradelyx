@@ -13,13 +13,13 @@ const register_options = [
 
 const service = [
   {
-    id: `0`,
+    id: 0,
     label: 'Request for Quotation',
     text: 'Standard & Advanced',
     icon: require('../assets/images/quotation.png'),
   },
   {
-    id: `1`,
+    id: 1,
     label: 'Request for Freight',
     text: 'Air, Ocean, & Land',
     icon: require('../assets/images/freight.png'),
@@ -377,12 +377,14 @@ const paymentMethod = [
 const sellerService = [
   {
     id: `0`,
-    text: 'Post Sell Offers',
+    label: 'Post Sell Offer',
+    text: 'Post offers to buyers',
     icon: require('../assets/images/Buy.png'),
   },
   {
     id: `1`,
-    text: 'Add Products',
+    label: 'Post Products',
+    text: 'Add products to store',
     icon: require('../assets/images/StoreProducts.png'),
   },
 ];
@@ -631,11 +633,11 @@ const orderTabs = [
 const OrderTabItem = [
   {
     id: 1,
-    label: 'RFF',
+    label: 'RFQ',
   },
   {
     id: 2,
-    label: 'RFQ',
+    label: 'RFF',
   },
 ];
 

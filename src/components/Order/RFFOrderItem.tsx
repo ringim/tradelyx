@@ -1,4 +1,4 @@
-import {View, Text, Pressable, ActivityIndicator} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 

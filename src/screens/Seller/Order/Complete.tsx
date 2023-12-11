@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, constants, dummyData} from '../../../constants';
-import {RFFReplyOrderItem, OrderTabItem} from '../../../components';
+import {RFFReplyOrderItem, OrderTabItem,} from '../../../components';
 
 const Complete = () => {
   const navigation = useNavigation<any>();
@@ -68,14 +68,13 @@ const Complete = () => {
       </View>
 
       {/* OrderItem */}
-      <View>
+      {/* <View>
         {value === 'All Orders' ? (
           <FlatList
             data={completed}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item.id}`}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFFReplyOrderItem
                   item={item}
@@ -107,7 +106,6 @@ const Complete = () => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => `${item.id}`}
             renderItem={({item, index}) => {
-              /* Popular items */
               return (
                 <RFFReplyOrderItem
                   item={item}
@@ -134,7 +132,7 @@ const Complete = () => {
             }
           />
         )}
-      </View>
+      </View> */}
     </View>
   );
 };

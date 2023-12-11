@@ -92,6 +92,7 @@ export type ExploreStackNavigatorParamList = {
   RFFList: undefined;
   AgentRequest: undefined;
   QuotesRequest: undefined;
+  RFFFilter: undefined;
   DomesticDomesticRFQDetail: {rfqItem: string};
   StandardDomesticRFQDetail: {rfqItem: string};
   InternationalDomesticRFQDetail: {rfqItem: string};
@@ -109,9 +110,9 @@ export type ChatStackNavigatorParamList = {
   ReplySellofferDetails: {sellOffer: string};
   ReplySellOfferPayment: {sellOffer: string};
   ReplyPackageShipmentAddress: any;
-  SuccessService4: any;
-  SuccessService5: any;
-  SuccessService6: any;
+  SuccessService4: undefined;
+  SuccessService5: undefined;
+  SuccessService6: undefined;
   SellOfferDetails: {sellOffer: string};
   ReplyRFQStandard: {rfq: string};
   ReplyRFQStandardPayment: {rfq: string};

@@ -113,13 +113,14 @@ const ReplyRFQInternationalPayment = () => {
       const input: CreateRFQReplyInput = {
         id: uuidV4(),
         rfqNo: rfqDetails?.rfqNo,
-        placeOrigin: rfqDetails?.placeOrigin,
-        placeOriginName: rfqDetails?.placeOriginName,
+        placeOrigin: rfqDetails?.placeOrigin, // city
+        placeOriginName: rfqDetails?.placeOriginName, // address
+        placeOriginCountry: rfqDetails?.placeOriginCountry, // country
         placeOriginFlag: rfqDetails?.placeOriginFlag, //flag
-        placeDestination: rfqDetails?.placeDestination,
-        placeDestinationName: rfqDetails?.placeDestinationName, //city destination
+        placeDestination: rfqDetails?.placeDestination, //city destination
+        placeDestinationName: rfqDetails?.placeDestinationName, //city address
         destinationCountry: rfqDetails?.destinationCountry, //country
-        placeDestinationFlag: rfqDetails?.placeDestinationFlag,
+        placeDestinationFlag: rfqDetails?.placeDestinationFlag, // destination flag
         incoterms: rfqDetails?.incoterms,
         title: rfqDetails?.title,
         rfqType: RFQTYPE.INTERNATIONAL,

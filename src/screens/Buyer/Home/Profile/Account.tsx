@@ -1,4 +1,4 @@
-import {View, Text, Alert, ActivityIndicator} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';

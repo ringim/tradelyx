@@ -13,6 +13,7 @@ import {
   SearchModal,
   SearchItem4,
   SearchItem3,
+  NoItem,
 } from '../../../components';
 import {
   AccountCategoryType,
@@ -37,7 +38,7 @@ const Search = () => {
     ProductByDateQuery,
     ProductByDateQueryVariables
   >(productByDate, {
-    pollInterval: 300,
+    pollInterval: 500,
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
@@ -51,14 +52,14 @@ const Search = () => {
       .filter((item: any) => !item?._deleted) || [];
 
   // LIST SUPPLIERS
-  const {data: onData} = useQuery<ListUsersQuery, ListUsersQueryVariables>(
-    listUsers,
-    {
-      pollInterval: 300,
-      fetchPolicy: 'network-only',
-      nextFetchPolicy: 'network-only',
-    },
-  );
+  const {data: onData, loading: onLoad} = useQuery<
+    ListUsersQuery,
+    ListUsersQueryVariables
+  >(listUsers, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'network-only',
+  });
   const suppliers: any =
     onData?.listUsers?.items
       .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
@@ -69,7 +70,7 @@ const Search = () => {
     SellOffersByDateQuery,
     SellOffersByDateQueryVariables
   >(sellOffersByDate, {
-    pollInterval: 300,
+    pollInterval: 500,
     fetchPolicy: 'network-only',
     nextFetchPolicy: 'network-only',
     variables: {
@@ -83,7 +84,7 @@ const Search = () => {
       ?.filter((item: any) => !item?._deleted) || [];
 
   const mergedSearchType = [...allSellOffers, ...allProducts, ...suppliers];
-  // console.log('all products', allProducts);
+  // console.log('all products', mergedSearchType);
 
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState<any>('');
@@ -121,7 +122,7 @@ const Search = () => {
     return () => {
       isCurrent = false;
     };
-  }, [itemSelected, loading]);
+  }, [itemSelected, loading, newLoad, onLoad]);
 
   // SEARCH FILTER
   useEffect(() => {
@@ -135,7 +136,15 @@ const Search = () => {
     return () => {
       isCurrent = false;
     };
-  }, [search]);
+  }, [search, dataList]);
+
+  if (newLoad || loading || onLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
+    );
+  }
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
@@ -199,7 +208,7 @@ const Search = () => {
       <FlatList
         data={filteredDataSource}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.id}
+        keyExtractor={item => `${item?.id}`}
         renderItem={({item, index}: any) => {
           // console.log(item)
           if (item?.__typename === 'Product') {
@@ -244,19 +253,8 @@ const Search = () => {
           <View
             style={{
               marginBottom: filteredDataSource?.length - 1 && 300,
-            }}>
-            {newLoad && (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: 30,
-                }}>
-                <ActivityIndicator size="small" color={COLORS.primary6} />
-              </View>
-            )}
-          </View>
+            }}
+          />
         }
       />
     </View>

@@ -5,6 +5,7 @@ import {useRoute, useNavigation} from '@react-navigation/native';
 import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import Share from 'react-native-share';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {
   Header,
@@ -89,9 +90,10 @@ const CompanyDetail = () => {
     usrID => usrID?.userId === ID,
   );
 
-  const {data: onData} = useQuery<ListUsersQuery, ListUsersQueryVariables>(
-    listUsers,
-  );
+  const {data: onData, loading: onLoad} = useQuery<
+    ListUsersQuery,
+    ListUsersQueryVariables
+  >(listUsers);
   const crUsers = onData?.listUsers?.items.some(usrID =>
     usrID?.ChatRooms?.items.find(
       crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
@@ -187,7 +189,7 @@ const CompanyDetail = () => {
     }
   };
 
-  if (newLoad || loading) {
+  if (newLoad || loading || onLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />
@@ -197,6 +199,11 @@ const CompanyDetail = () => {
 
   return (
     <Root>
+      <Spinner
+        visible={isSubmitting}
+        animation={'fade'}
+        overlayColor={'rgba(0,0,0,0.5)'}
+      />
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
         <Header
           title={'Company Details'}

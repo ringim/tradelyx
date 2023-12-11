@@ -9,7 +9,6 @@ import {
   RFFOrderItem,
   LoadingIndicator,
   RFQOrderItem,
-  NoItem,
 } from '../../../components';
 import {
   ModelSortDirection,
@@ -134,61 +133,8 @@ const Pending = () => {
         })}
       </View>
 
-      {allRFFs?.length == 0 && <NoItem />}
-      {allRFQs?.length == 0 && <NoItem />}
-
-      {/* RFF List */}
       <View>
-        {itemSelected === 'RFF' ? (
-          <FlatList
-            data={allRFFs}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => item?.id}
-            renderItem={({item, index}) => {
-              return (
-                <RFFOrderItem
-                  key={index}
-                  item={item}
-                  showHR={true}
-                  btn={true}
-                  desc={true}
-                  type={item?.__typename}
-                  serviceImage={
-                    item?.rffType === 'AIR'
-                      ? require('../../../assets/images/air.png')
-                      : item?.rffType === 'LAND'
-                      ? require('../../../assets/images/land.png')
-                      : require('../../../assets/images/water.png')
-                  }
-                  // replies={RFFReplyLength}
-                  onPress={() =>
-                    navigation.navigate('RFFReplyList', {sellerItem: item})
-                  }
-                />
-              );
-            }}
-            refreshing={loading}
-            onRefresh={() => refetch()}
-            ListFooterComponent={
-              <View
-                style={{
-                  marginBottom: allRFFs?.length - 1 && 250,
-                }}>
-                {loading && (
-                  <ActivityIndicator
-                    style={{
-                      flex: 1,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    color={COLORS.primary6}
-                  />
-                )}
-              </View>
-            }
-            onEndReached={() => loadMoreItem()}
-          />
-        ) : (
+        {itemSelected === 'RFQ' ? (
           <FlatList
             data={allRFQs}
             showsVerticalScrollIndicator={false}
@@ -226,6 +172,45 @@ const Pending = () => {
               </View>
             }
             onEndReached={() => loadMoreItem2()}
+          />
+        ) : (
+          <FlatList
+            data={allRFFs}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item?.id}
+            renderItem={({item, index}) => {
+              return (
+                <RFFOrderItem
+                  key={index}
+                  item={item}
+                  showHR={true}
+                  btn={true}
+                  desc={true}
+                  type={item?.__typename}
+                  serviceImage={
+                    item?.rffType === 'AIR'
+                      ? require('../../../assets/images/air.png')
+                      : item?.rffType === 'LAND'
+                      ? require('../../../assets/images/land.png')
+                      : require('../../../assets/images/water.png')
+                  }
+                  // replies={RFFReplyLength}
+                  onPress={() =>
+                    navigation.navigate('RFFReplyList', {sellerItem: item})
+                  }
+                />
+              );
+            }}
+            refreshing={loading}
+            onRefresh={() => refetch()}
+            ListFooterComponent={
+              <View
+                style={{
+                  marginBottom: allRFFs?.length - 1 && 250,
+                }}
+              />
+            }
+            onEndReached={() => loadMoreItem()}
           />
         )}
       </View>

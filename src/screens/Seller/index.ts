@@ -33,6 +33,7 @@ import QuotesRequestDetails from './Explore/QuotesRequestDetails';
 import AgentRequestDetails from './Explore/AgentRequestDetails';
 import StandardDomesticRFQDetail from './Explore/StandardRFQDetail';
 import InternationalDomesticRFQDetail from './Explore/InternationalRFQDetail';
+import RFFFilter from './Explore/RFFFilter';
 
 // Order
 import OrderDetail from './Order/OrderDetail';
@@ -169,4 +170,5 @@ export {
   ReplyRFFLandPayment,
   RFQReplyDetailDomestic,
   RFQReplyDetailInternational,
+  RFFFilter,
 };

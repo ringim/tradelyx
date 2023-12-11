@@ -1,4 +1,4 @@
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FastImage from 'react-native-fast-image';
@@ -94,7 +94,7 @@ const CompleteProfile = () => {
           input,
         },
       });
-      console.log('Profile Updated', input);
+      // console.log('Profile Updated', input);
       navigation.reset({
         index: 0,
         routes: [{name: 'Home'}],

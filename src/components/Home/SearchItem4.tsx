@@ -85,10 +85,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
             justifyContent: 'center',
           }}>
           <FastImage
-            source={{
-              uri: imageUri2 || DUMMY_IMAGE,
-              priority: FastImage.priority.high,
-            }}
+            source={{uri: imageUri2 || DUMMY_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 32,
@@ -150,10 +147,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
             alignSelf: 'center',
           }}>
           <FastImage
-            source={{
-              uri: imageUri || DUMMY_IMAGE,
-              priority: FastImage.priority.high,
-            }}
+            source={{uri: imageUri || DUMMY_IMAGE}}
             resizeMode={FastImage.resizeMode.cover}
             style={{
               width: 325,

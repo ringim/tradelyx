@@ -6,7 +6,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, SIZES} from '../../../constants';
-import {NoItem, RFQItem, SearchBox2} from '../../../components';
+import {RFQItem, SearchBox2} from '../../../components';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   ModelSortDirection,
@@ -29,9 +29,7 @@ const RFQInternational = () => {
     RfqByDateQuery,
     RfqByDateQueryVariables
   >(rfqByDate, {
-    pollInterval: 300,
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
+    pollInterval: 500,
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -89,7 +87,7 @@ const RFQInternational = () => {
         isCurrent = false;
       };
     }
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading) {
     return (
