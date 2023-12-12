@@ -150,10 +150,34 @@ import FreightTab from './Modal/FreightTab';
 import QuoteTab from './Modal/QuoteTab';
 import OptionModal from './Modal/OptionModal';
 
+// Request Types
+import DomesticRFQDetail1 from './RFQ/DomesticRFQDetail1';
+import DomesticRFQDetail2 from './RFQ/DomesticRFQDetail2';
+import DomesticRFQDetail3 from './RFQ/DomesticRFQDetail3';
+import InternationalRFQDetail1 from './RFQ/InternationalRFQDetail1';
+import InternationalRFQDetail2 from './RFQ/InternationalRFQDetail2';
+import InternationalRFQDetail3 from './RFQ/InternationalRFQDetail3';
+import StandardRFQDetail1 from './RFQ/StandardRFQDetail1';
+import StandardRFQDetail2 from './RFQ/StandardRFQDetail2';
+import QuoteDetail from './RFF/QuoteDetail'
+import SellOfferDetail2 from './SellOffer/SellOfferDetail2';
+import SellOfferDetail1 from './SellOffer/SellOfferDetail1';
+
 export {
   MultipleImages,
   Tags,
+  InternationalRFQDetail1,
+  InternationalRFQDetail2,
+  InternationalRFQDetail3,
+  StandardRFQDetail1,
+  StandardRFQDetail2,
+  DomesticRFQDetail1,
+  DomesticRFQDetail2,
+  DomesticRFQDetail3,
+  SellOfferDetail1,
+  SellOfferDetail2,
   Packaging,
+  QuoteDetail,
   ChatHeader,
   ViewProductImageEdit,
   Handling,

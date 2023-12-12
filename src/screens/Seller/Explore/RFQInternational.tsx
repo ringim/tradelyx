@@ -30,6 +30,7 @@ const RFQInternational = () => {
     RfqByDateQueryVariables
   >(rfqByDate, {
     pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -141,7 +142,7 @@ const RFQInternational = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource.length - 1 && 200,
+                marginBottom: filteredDataSource.length - 1  ? 300 : 300,
               }}
             />
           }

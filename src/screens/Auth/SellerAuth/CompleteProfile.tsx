@@ -257,7 +257,7 @@ const CompleteProfile = () => {
           label="Company Address"
           name="address"
           control={control}
-          editable={false}
+          // editable={false}
           placeholder="Add Company Address"
           rules={{
             required: 'Company Address is required',

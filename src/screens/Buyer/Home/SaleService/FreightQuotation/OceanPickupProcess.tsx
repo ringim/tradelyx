@@ -194,7 +194,7 @@ const OceanPickupProcess = () => {
             label="Port of Origin"
             name="address1"
             control={control}
-            editable={false}
+            // editable={false}
             placeholder="Add origin"
             rules={{
               required: 'Address is required',
@@ -258,7 +258,7 @@ const OceanPickupProcess = () => {
             label="Port of Destination"
             name="address2"
             control={control}
-            editable={false}
+            // editable={false}
             placeholder="Add destination"
             rules={{
               required: 'Destination is required',

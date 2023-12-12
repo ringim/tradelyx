@@ -165,7 +165,7 @@ const RFFReplyOrderItem = ({
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.notes}
+            {item?.productName}
           </Text>
         </View>
       )}

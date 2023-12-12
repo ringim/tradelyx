@@ -28,6 +28,7 @@ const QuotesRequest = () => {
     RffByDateQueryVariables
   >(rffByDate, {
     pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'RFF',
       sortDirection: ModelSortDirection.DESC,
@@ -132,7 +133,7 @@ const QuotesRequest = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource?.length - 1 && 200,
+                marginBottom: filteredDataSource?.length - 1  ? 300 : 300,
               }}
             />
           }

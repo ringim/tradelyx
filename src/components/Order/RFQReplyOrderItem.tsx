@@ -163,7 +163,7 @@ const RFQReplyOrderItem = ({
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.description}
+            {item?.title}
           </Text>
         </View>
       )}

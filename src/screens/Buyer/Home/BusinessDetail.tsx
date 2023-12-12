@@ -175,7 +175,7 @@ const BusinessDetail = () => {
           return <ReviewItem key={index} item={item} />;
         }}
         ListFooterComponent={
-          <View style={{marginBottom: reviews?.length - 1 && 150}} />
+          <View style={{marginBottom: reviews?.length - 1 ? 300 : 300}} />
         }
       />
     </View>

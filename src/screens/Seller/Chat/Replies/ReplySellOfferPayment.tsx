@@ -602,7 +602,7 @@ const ReplySellOfferPayment = () => {
           label="Place of Origin"
           name="address1"
           control={control}
-          editable={false}
+          // editable={false}
           placeholder="e.g. Ringim, Jigawa State"
           rules={{
             required: 'Destination is required',

@@ -1,8 +1,7 @@
 import {View, ActivityIndicator, FlatList} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {BChatRoomItem, HR, SearchBox2, TabHeader} from '../../../components';
 import {COLORS, SIZES} from '../../../constants';
@@ -59,29 +58,20 @@ const ChatRooms = () => {
     }
   };
 
-  const keyExtractor = useCallback(
-    (item: any, i: number) => `${i}-${item.id}`,
-    [],
-  );
-
   useEffect(() => {
     let isCurrent = true;
-    try {
-      const items =
-        isCurrent &&
-        data?.listUserChatRooms?.items
-          ?.filter(cru => cru?.userId === userID)
-          .map(chatRoomUser => chatRoomUser?.chatRoom)
-          .sort((a: any, b: any) => b?.updatedAt > a?.updatedAt);
-      setFilteredDataSource(items);
-      setMasterDataSource(items);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: `${(error as Error).message}`,
-        autoClose: 1500,
-      });
-    }
+    const items =
+      isCurrent &&
+      data?.listUserChatRooms?.items
+        ?.filter(cru => cru?.userId === userID)
+        .map(chatRoomUser => chatRoomUser?.chatRoom);
+
+    const sortedRooms = items?.sort(
+      (r1, r2) => new Date(r2.updatedAt) - new Date(r1.updatedAt),
+    );
+    setFilteredDataSource(sortedRooms);
+    setMasterDataSource(sortedRooms);
+
     return () => {
       isCurrent = false;
     };
@@ -89,51 +79,42 @@ const ChatRooms = () => {
 
   if (loading || newLoad) {
     return (
-      <ActivityIndicator
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: 30,
-        }}
-        size={'large'}
-        color={COLORS.primary6}
-      />
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
+      </View>
     );
   }
 
   return (
-    <Root>
-      <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <TabHeader userImage={user?.logo} />
+    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+      <TabHeader userImage={user?.logo} />
 
-        {/* Search Box */}
-        <SearchBox2
-          searchFilterFunction={(text: any) => searchFilterFunction(text)}
-          search={search}
-          onPress={() => navigation.navigate('SearchFilter')}
-          containerStyle={{
-            marginHorizontal: SIZES.margin,
-            marginBottom: SIZES.base,
-          }}
-        />
+      {/* Search Box */}
+      <SearchBox2
+        searchFilterFunction={(text: any) => searchFilterFunction(text)}
+        search={search}
+        onPress={() => navigation.navigate('SearchFilter')}
+        containerStyle={{
+          marginHorizontal: SIZES.margin,
+          marginBottom: SIZES.base,
+        }}
+      />
 
-        <FlatList
-          data={filteredDataSource}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={keyExtractor}
-          renderItem={({item}: any) => {
-            return <BChatRoomItem chatRoom={item} />;
-          }}
-          ItemSeparatorComponent={() => <HR />}
-          refreshing={loading}
-          onRefresh={() => refetch()}
-          ListFooterComponent={
-            <View style={{marginBottom: []?.length - 1 && 100}} />
-          }
-        />
-      </View>
-    </Root>
+      <FlatList
+        data={filteredDataSource}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => `${item?.id}`}
+        renderItem={({item}: any) => {
+          return <BChatRoomItem chatRoom={item} />;
+        }}
+        ItemSeparatorComponent={() => <HR />}
+        refreshing={loading}
+        onRefresh={() => refetch()}
+        ListFooterComponent={
+          <View style={{marginBottom: []?.length - 1 ? 300 : 300}} />
+        }
+      />
+    </View>
   );
 };
 

@@ -106,7 +106,7 @@ const Chat = () => {
         }}
         inverted
         ListFooterComponent={
-          <View style={{marginBottom: messages?.length - 1 && 100}} />
+          <View style={{marginBottom: messages?.length - 1  ? 300 : 300,}} />
         }
       />
       <MessageInput chatRoom={route?.params} />

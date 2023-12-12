@@ -274,7 +274,7 @@ const InternationalEngagementTerms = () => {
           label="Port of Loading"
           name="address"
           control={control}
-          editable={false}
+          // editable={false}
           placeholder="Add Port Destination"
           rules={{
             required: 'Address is required',
@@ -340,7 +340,7 @@ const InternationalEngagementTerms = () => {
           label="Destination Port"
           name="address2"
           control={control}
-          editable={false}
+          // editable={false}
           placeholder="Add Destination "
           rules={{
             required: 'Destination is required',

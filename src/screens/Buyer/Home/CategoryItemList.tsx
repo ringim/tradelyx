@@ -92,7 +92,7 @@ const CategoryItemList = () => {
           );
         }}
         ListFooterComponent={
-          <View style={{marginBottom: filteredDataSource?.length - 1 && 200}} />
+          <View style={{marginBottom: filteredDataSource?.length - 1  ? 300 : 300,}} />
         }
       />
     </View>

@@ -158,7 +158,7 @@ const RFQReplyList = () => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: dummyData?.replyList?.length - 1 && 200,
+              marginBottom: dummyData?.replyList?.length - 1  ? 300 : 300,
             }}
           />
         }

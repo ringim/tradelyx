@@ -29,6 +29,8 @@ const RFQDomestic = () => {
     RfqByDateQuery,
     RfqByDateQueryVariables
   >(rfqByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -145,7 +147,7 @@ const RFQDomestic = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource.length - 1 && 200,
+                marginBottom: filteredDataSource.length - 1 ? 300 : 300,
               }}
             />
           }

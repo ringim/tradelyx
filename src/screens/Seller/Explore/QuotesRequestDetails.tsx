@@ -1,5 +1,5 @@
 import {View, Platform, Text, ActivityIndicator} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -15,6 +15,7 @@ import {
 import {
   Header,
   OriginDestinationDetails,
+  QuoteDetail,
   QuoteRequestItem,
   QuoteRequestItem2,
   TextButton,
@@ -53,34 +54,9 @@ const QuotesRequestDetails = () => {
   const route: any = useRoute<QuotesRequestDetailsRouteProp>();
 
   const {authUser}: any = useAuthContext();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [chatRoomUsers, setChatRoomUsers] = useState(null);
 
   // console.log(route?.params?.quoteItem);
-  const {
-    loadDate,
-    qty,
-    containerSize,
-    productName,
-    container,
-    containerType,
-    rffType,
-    rffNo,
-    placeOriginName,
-    packageType,
-    placeDestinationName,
-    placeOriginFlag,
-    weight,
-    placeDestinationFlag,
-    notes,
-    relatedServices,
-    userID,
-    containerDetails,
-    handling,
-    height,
-    length,
-  } = route?.params?.quoteItem;
 
   const onCopy = () => {
     Clipboard.setString(route?.params?.quoteItem?.orderID);
@@ -91,47 +67,31 @@ const QuotesRequestDetails = () => {
     getUser,
     {
       variables: {
-        id: userID,
+        id: route?.params?.quoteItem?.userID,
       },
     },
   );
   const userInfo: any = data?.getUser;
 
+  // LIST CHAT ROOM USERS
   const {data: newData, loading: newLoad} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.find(
-    usrID => usrID?.userId === userID,
+    usrID => usrID?.userId === route?.params?.quoteItem?.userID,
   );
 
+  // LIST USERS
   const {data: onData, loading: onLoad} = useQuery<
     ListUsersQuery,
     ListUsersQueryVariables
   >(listUsers);
-
-  useEffect(() => {
-    let isCurrent = true;
-    try {
-      const crUsers: any =
-        isCurrent &&
-        onData?.listUsers?.items.some(usrID =>
-          usrID?.ChatRooms?.items.find(
-            crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
-          ),
-        );
-      setChatRoomUsers(crUsers);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: `${(error as Error).message}`,
-        autoClose: 1500,
-      });
-    }
-    return () => {
-      isCurrent = false;
-    };
-  }, [onLoad]);
+  const crUsers = onData?.listUsers?.items.some(usrID =>
+    usrID?.ChatRooms?.items.find(
+      crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
+    ),
+  );
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -164,7 +124,7 @@ const QuotesRequestDetails = () => {
     setIsSubmitting(true);
     try {
       // if chatRoom exist with user
-      if (chatRoomUsers === true) {
+      if (crUsers === true) {
         // initial message
         const res = await doCreateMessage({
           variables: {
@@ -177,7 +137,7 @@ const QuotesRequestDetails = () => {
               requestTitle: route?.params?.quoteItem?.productName,
               requestID: route?.params?.quoteItem?.id,
               serviceType: serviceType?.RFF,
-              rffType: rffType,
+              rffType: route?.params?.quoteItem?.rffType,
               chatroomID: allChatRoomUsers?.chatRoomId,
             },
           },
@@ -216,7 +176,7 @@ const QuotesRequestDetails = () => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: userID,
+              userId: route?.params?.quoteItem?.userID,
             },
           },
         });
@@ -242,7 +202,7 @@ const QuotesRequestDetails = () => {
               requestTitle: route?.params?.quoteItem?.productName,
               requestID: route?.params?.quoteItem?.id,
               serviceType: serviceType?.RFF,
-              rffType: rffType,
+              rffType: route?.params?.quoteItem?.rffType,
               chatroomID: newChatRoom?.id,
             },
           },
@@ -276,7 +236,8 @@ const QuotesRequestDetails = () => {
       setIsSubmitting(false);
     }
   };
-  if (loading) {
+
+  if (loading || newLoad || onLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -312,95 +273,44 @@ const QuotesRequestDetails = () => {
               backgroundColor: COLORS.white,
             }}>
             <QuoteRequestItem
-              to={placeDestinationName}
-              from={placeOriginName}
-              fromImg={placeOriginFlag}
-              toImg={placeDestinationFlag}
+              to={route?.params?.quoteItem?.placeDestinationName}
+              from={route?.params?.quoteItem?.placeOriginName}
+              fromImg={route?.params?.quoteItem?.placeOriginFlag}
+              toImg={route?.params?.quoteItem?.placeDestinationFlag}
             />
 
             <QuoteRequestItem2
-              orderID={rffNo}
+              orderID={route?.params?.quoteItem?.rffNo}
               onCopy={onCopy}
-              packageType={packageType}
-              name={productName}
-              containerCount={qty}
-              transportMode={rffType}
-              containerSize={containerSize}
-              containerDetails={containerDetails}
-              relatedServices={relatedServices}
-              container={container}
-              containerType={containerType}
-              rffType={rffType}
-              weight={weight}
-              notes={notes}
-              handling={handling}
-              length={length}
-              height={height}
+              packageType={route?.params?.quoteItem?.packageType}
+              name={route?.params?.quoteItem?.productName}
+              containerCount={route?.params?.quoteItem?.qty}
+              transportMode={route?.params?.quoteItem?.rffType}
+              containerSize={route?.params?.quoteItem?.containerSize}
+              containerDetails={route?.params?.quoteItem?.containerDetails}
+              relatedServices={route?.params?.quoteItem?.relatedServices}
+              container={route?.params?.quoteItem?.container}
+              containerType={route?.params?.quoteItem?.containerType}
+              rffType={route?.params?.quoteItem?.rffType}
+              weight={route?.params?.quoteItem?.weight}
+              notes={route?.params?.quoteItem?.notes}
+              handling={route?.params?.quoteItem?.handling}
+              length={route?.params?.quoteItem?.length}
+              height={route?.params?.quoteItem?.height}
             />
 
             {/* Origin Details*/}
             <OriginDestinationDetails
-              address={placeOriginName}
+              address={route?.params?.quoteItem?.placeOriginName}
               type={'Origin'}
-              departDate={loadDate}
+              departDate={route?.params?.quoteItem?.loadDate}
               typeName={'Ready to load date'}
             />
 
             {/* Destination Details  */}
-            <View
-              style={{
-                marginTop: SIZES.semi_margin,
-                marginHorizontal: SIZES.base,
-                borderRadius: SIZES.radius,
-                padding: SIZES.radius,
-                backgroundColor: COLORS.Neutral10,
-              }}>
-              <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
-                Destination
-              </Text>
-              <View
-                style={{
-                  marginTop: SIZES.base,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <View
-                  style={{
-                    marginTop: 5,
-                    justifyContent: 'center',
-                    padding: SIZES.base,
-                    width: 32,
-                    height: 32,
-                    borderRadius: SIZES.radius,
-                    backgroundColor: COLORS.secondary10,
-                  }}>
-                  <FastImage
-                    source={icons?.location}
-                    tintColor={COLORS.secondary1}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{
-                      width: 20,
-                      height: 20,
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    marginLeft: SIZES.radius,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      paddingTop: 4,
-                      ...FONTS.body3,
-                      color: COLORS.Neutral6,
-                    }}>
-                    {placeDestinationName}
-                  </Text>
-                </View>
-              </View>
-            </View>
+            <QuoteDetail
+              place={route?.params?.quoteItem?.placeDestinationName}
+            />
 
             {/* Button */}
             <TextButton

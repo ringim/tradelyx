@@ -142,7 +142,7 @@ const EngagementTerms = () => {
           label="Delivery Location"
           name="address"
           control={control}
-          editable={false}
+          // editable={false}
           placeholder="Add delivery location"
           rules={{
             required: 'Address is required',

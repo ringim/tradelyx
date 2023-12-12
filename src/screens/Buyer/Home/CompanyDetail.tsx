@@ -82,6 +82,7 @@ const CompanyDetail = () => {
       .filter((item: any) => !item?._deleted) || [];
   const nextToken = newData?.productByDate?.nextToken;
 
+  // LIST CHAT ROOM USERS
   const {data: softData} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
@@ -90,6 +91,7 @@ const CompanyDetail = () => {
     usrID => usrID?.userId === ID,
   );
 
+   // LIST USERS
   const {data: onData, loading: onLoad} = useQuery<
     ListUsersQuery,
     ListUsersQueryVariables
@@ -255,7 +257,7 @@ const CompanyDetail = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: allProducts?.length - 1 && 200,
+                marginBottom: allProducts?.length - 1  ? 300 : 300,
               }}
             />
           }

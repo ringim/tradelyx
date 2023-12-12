@@ -82,7 +82,7 @@ const AllCategories = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource?.length - 1 && 300,
+                marginBottom: filteredDataSource?.length - 1  ? 300 : 300,
               }}
             />
           }

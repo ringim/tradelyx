@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
@@ -54,39 +54,54 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
+  const [products, setProducts] = useState<any>([]);
+  const [suppliers, setSuppliers] = useState<any>([]);
+
   // LIST PRODUCTS
-  const {data: newData} = useQuery<
+  const {data: newData, loading: newLoad} = useQuery<
     ProductByDateQuery,
     ProductByDateQueryVariables
   >(productByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       limit: 4,
       SType: 'JOB',
       sortDirection: ModelSortDirection.DESC,
     },
   });
-  const allProducts: any =
-    newData?.productByDate?.items
-      .filter(st => st?.SType === 'JOB')
-      .filter((item: any) => !item?._deleted) || [];
 
   // LIST SUPPLIERS
   const {data: onData, loading} = useQuery<
     ListUsersQuery,
     ListUsersQueryVariables
   >(listUsers, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {limit: 4},
   });
-  const suppliers: any =
-    onData?.listUsers?.items
-      .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
-      .filter((item: any) => !item?._deleted) || [];
 
   // GET USER DETAILS
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
     variables: {id: userID},
   });
   const user: any = data?.getUser;
+
+  useEffect(() => {
+    const sellers: any =
+      onData?.listUsers?.items
+        .filter(sup => sup?.accountType === AccountCategoryType?.SELLER)
+        .filter((item: any) => !item?._deleted) || [];
+    setSuppliers(sellers);
+  }, [loading, onData]);
+
+  useEffect(() => {
+    const allProducts: any =
+      newData?.productByDate?.items
+        .filter(st => st?.SType === 'JOB')
+        .filter((item: any) => !item?._deleted) || [];
+    setProducts(allProducts);
+  }, [newLoad, newData]);
 
   useEffect(() => {
     if (showCameraModal) {
@@ -129,6 +144,14 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
               />
             </>
           )}
+          ListFooterComponent={
+            <View
+              style={{
+                marginBottom: suppliers?.length - 1 ? 100 : 100,
+                backgroundColor: COLORS.white,
+              }}
+            />
+          }
         />
       </>
     );
@@ -149,7 +172,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
       <SearchBox
         onSearch={() => navigation.navigate('Search')}
         onPress={() => navigation.navigate('SearchFilter')}
-        searchTerm={'Search product or seller'}
+        searchTerm={'Search for Products, Sell Offers & Sellers'}
         containerStyle={{
           marginHorizontal: SIZES.semi_margin,
           marginBottom: SIZES.base,
@@ -158,7 +181,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
 
       {/* ALL PRODUCTS */}
       <FlatList
-        data={allProducts}
+        data={products}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => `${item?.id}`}
         ListHeaderComponent={
@@ -189,7 +212,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: allProducts?.length - 1 && 150,
+              marginBottom: products?.length - 1 ? 150 : 150,
               backgroundColor: COLORS.white,
             }}>
             <SeeAll onPress={() => navigation.navigate('Search')} />

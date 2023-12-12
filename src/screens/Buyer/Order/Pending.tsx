@@ -34,6 +34,7 @@ const Pending = () => {
     refetch: refetching,
   } = useQuery<RfqByDateQuery, RfqByDateQueryVariables>(rfqByDate, {
     pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
@@ -53,6 +54,7 @@ const Pending = () => {
     refetch,
   } = useQuery<RffByDateQuery, RffByDateQueryVariables>(rffByDate, {
     pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'RFF',
       sortDirection: ModelSortDirection.DESC,
@@ -166,7 +168,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allRFQs?.length - 1 && 250,
+                  marginBottom: allRFQs?.length - 1  ? 300 : 300,
                 }}>
                 {newLoad && <LoadingIndicator />}
               </View>
@@ -206,7 +208,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allRFFs?.length - 1 && 250,
+                  marginBottom: allRFFs?.length - 1 ? 300 : 300,
                 }}
               />
             }

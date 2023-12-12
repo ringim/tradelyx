@@ -128,7 +128,7 @@ const MySellOffers = () => {
           onRefresh={() => refetch()}
           ListFooterComponent={
             <View
-              style={{marginBottom: filteredDataSource?.length - 1 && 200}}
+              style={{marginBottom: filteredDataSource?.length - 1 ? 300 : 300}}
             />
           }
         />

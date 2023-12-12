@@ -40,7 +40,6 @@ const Search = () => {
   >(productByDate, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'JOB',
       sortDirection: ModelSortDirection.DESC,
@@ -58,7 +57,6 @@ const Search = () => {
   >(listUsers, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
   });
   const suppliers: any =
     onData?.listUsers?.items
@@ -72,7 +70,6 @@ const Search = () => {
   >(sellOffersByDate, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'SELLOFFER',
       sortDirection: ModelSortDirection.DESC,

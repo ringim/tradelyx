@@ -1,5 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react-native/no-inline-styles */
 import {View, FlatList, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -165,7 +163,7 @@ const Explore = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource?.length - 1 && 300,
+                marginBottom: filteredDataSource?.length - 1  ? 300 : 300,
               }}
             />
           }

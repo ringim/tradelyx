@@ -69,27 +69,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   const {storeProductId, savedProductItem, removeProductItem}: any =
     useProductContext();
 
-  const {
-    category,
-    storeName,
-    image,
-    images,
-    title,
-    minOrderQty,
-    supplyCapacity,
-    commodityCategory,
-    paymentType,
-    transportMode,
-    productSpec,
-    productCert,
-    productCertDocs,
-    productDocs,
-    rating,
-    packageType,
-    userID,
-    description,
-    id,
-  }: any = route?.params.productItem;
+  const {title, userID, id}: any = route?.params.productItem;
 
   const bottomSheetModalRef = useRef<any>(null);
 
@@ -262,7 +242,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           hideModalWithNavigation={hideModalWithNavigation}
         />
 
-        {images.map((item: any, index: number) => {
+        {route?.params.productItem?.images.map((item: any, index: number) => {
           const dotOpacityAnimatedStyle = useAnimatedStyle(() => {
             return {
               opacity: interpolate(
@@ -302,16 +282,16 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           borderRadius: SIZES.padding,
           marginTop: SIZES.margin,
         }}>
-        {image ? (
+        {route?.params.productItem?.image ? (
           <ImageCaption
-            productItem={productItem}
-            item={image}
-            rating={rating}
-            name={title}
-            supplierName={storeName}
-            commodityCategory={commodityCategory}
-            category={category}
-            banner_image={image}
+            productItem={route?.params.productItem?.productItem}
+            item={route?.params.productItem?.image}
+            rating={route?.params.productItem?.rating}
+            name={route?.params.productItem?.title}
+            supplierName={route?.params.productItem?.storeName}
+            commodityCategory={route?.params.productItem?.commodityCategory}
+            category={route?.params.productItem?.category}
+            banner_image={route?.params.productItem?.image}
           />
         ) : (
           <>
@@ -323,19 +303,21 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
               snapToInterval={SIZES.width}
               scrollEventThrottle={16}
               onScroll={onScroll}
-              data={images}
+              data={route?.params.productItem?.images}
               keyExtractor={item => `${item}`}
               renderItem={({item, index}: any) => {
                 return (
                   <ImageCaption
                     key={index}
-                    productItem={productItem}
+                    productItem={route?.params.productItem?.productItem}
                     item={item}
-                    name={title}
-                    rating={rating}
-                    supplierName={storeName}
-                    commodityCategory={commodityCategory}
-                    category={category}
+                    name={route?.params.productItem?.title}
+                    rating={route?.params.productItem?.rating}
+                    supplierName={route?.params.productItem?.storeName}
+                    commodityCategory={
+                      route?.params.productItem?.commodityCategory
+                    }
+                    category={route?.params.productItem?.category}
                     banner_image={item}
                   />
                 );
@@ -404,11 +386,14 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
                 }
               />
               {/* Product Description */}
-              <BusinessDesc productItem={description} title={'Description'} />
+              <BusinessDesc
+                productItem={route?.params.productItem?.description}
+                title={'Description'}
+              />
 
               {/* Product Specification */}
               <ProductSpec
-                spec={productSpec}
+                spec={route?.params.productItem?.productSpec}
                 title="Product Specification"
                 icon={icons.info}
               />
@@ -416,50 +401,44 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
               {/* Product Packaging */}
               <PriceQty
                 title={'Product Packaging'}
-                packageType={packageType}
+                packageType={route?.params.productItem?.packageType}
                 icon={icons.packages}
-                moq={minOrderQty}
-                paymentType={paymentType}
-                supply={supplyCapacity}
-                cert={productCert}
-                transMode={transportMode}
+                moq={route?.params.productItem?.minOrderQty}
+                paymentType={route?.params.productItem?.paymentType}
+                supply={route?.params.productItem?.supplyCapacity}
+                cert={route?.params.productItem?.productCert}
+                transMode={route?.params.productItem?.transportMode}
               />
 
               {/* product brochure */}
-              {productDocs.length > 0 && (
-                <View
-                  style={{
+              {route?.params.productItem?.productDocs.length > 0 && (
+                <ShowDocs
+                  title="Product Documentation"
+                  file={route?.params.productItem?.productDocs}
+                  icon={icons.brochure}
+                  contentStyle={{
                     marginTop: SIZES.base,
                     padding: SIZES.semi_margin,
                     borderRadius: SIZES.radius,
                     backgroundColor: COLORS.white,
                     marginHorizontal: SIZES.semi_margin,
-                  }}>
-                  <ShowDocs
-                    title="Product Documentation"
-                    file={productDocs}
-                    icon={icons.brochure}
-                    contentStyle={{marginTop: 0}}
-                  />
-                </View>
+                  }}
+                />
               )}
               {/* Product Certifications */}
-              {productCertDocs.length > 0 && (
-                <View
-                  style={{
+              {route?.params.productItem?.productCertDocs.length > 0 && (
+                <ShowDocs
+                  title="Product Certifications"
+                  icon={icons.cert}
+                  file={route?.params.productItem?.productCertDocs}
+                  contentStyle={{
                     marginTop: SIZES.base,
                     padding: SIZES.semi_margin,
                     borderRadius: SIZES.radius,
                     backgroundColor: COLORS.white,
                     marginHorizontal: SIZES.semi_margin,
-                  }}>
-                  <ShowDocs
-                    title="Product Certifications"
-                    icon={icons.cert}
-                    file={productCertDocs}
-                    contentStyle={{marginTop: 0}}
-                  />
-                </View>
+                  }}
+                />
               )}
             </>
           }

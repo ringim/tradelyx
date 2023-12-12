@@ -267,7 +267,7 @@ const Account = () => {
           control={control}
           label="Email"
           name="email"
-          editable={false}
+          // editable={false}
           inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           containerStyle={{marginTop: SIZES.radius}}
         />

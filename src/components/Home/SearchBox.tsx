@@ -4,7 +4,13 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const SearchBox = ({containerStyle, onSearch, searchTerm, onPress}: any) => {
+const SearchBox = ({
+  containerStyle,
+  onSearch,
+  searchTerm,
+  onPress,
+  showFilter,
+}: any) => {
   return (
     <View
       style={{
@@ -23,7 +29,7 @@ const SearchBox = ({containerStyle, onSearch, searchTerm, onPress}: any) => {
           borderRadius: SIZES.semi_margin,
           borderColor: COLORS.Neutral8,
           borderWidth: 1,
-          width: '82%',
+          width: '100%',
         }}>
         <View
           style={{
@@ -54,7 +60,7 @@ const SearchBox = ({containerStyle, onSearch, searchTerm, onPress}: any) => {
             }}>
             <Text
               style={{
-                ...FONTS.body3,
+                ...FONTS.cap1,
                 color: COLORS.Neutral6,
               }}>
               {searchTerm}
@@ -64,25 +70,27 @@ const SearchBox = ({containerStyle, onSearch, searchTerm, onPress}: any) => {
       </TouchableOpacity>
 
       {/* Filter Button */}
-      <TouchableOpacity
-        onPress={onPress}
-        style={{
-          justifyContent: 'center',
-          backgroundColor: COLORS.primary1,
-          borderRadius: SIZES.semi_margin,
-          padding: SIZES.semi_margin,
-          marginLeft: SIZES.radius,
-        }}>
-        <FastImage
-          source={icons.filter}
-          tintColor={COLORS.white}
-          resizeMode={FastImage.resizeMode.contain}
+      {showFilter && (
+        <TouchableOpacity
+          onPress={onPress}
           style={{
-            height: 24,
-            width: 24,
-          }}
-        />
-      </TouchableOpacity>
+            justifyContent: 'center',
+            backgroundColor: COLORS.primary1,
+            borderRadius: SIZES.semi_margin,
+            padding: SIZES.semi_margin,
+            marginLeft: SIZES.radius,
+          }}>
+          <FastImage
+            source={icons.filter}
+            tintColor={COLORS.white}
+            resizeMode={FastImage.resizeMode.contain}
+            style={{
+              height: 24,
+              width: 24,
+            }}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

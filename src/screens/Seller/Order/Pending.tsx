@@ -35,6 +35,7 @@ const Pending = () => {
     rfqByDateReply,
     {
       pollInterval: 500,
+      fetchPolicy: 'network-only',
       variables: {
         SType: 'RFQREFPLY',
         sortDirection: ModelSortDirection.DESC,
@@ -55,6 +56,7 @@ const Pending = () => {
     refetch,
   } = useQuery<RffByDateRelyQuery, RffByDateRelyQueryVariables>(rffByDateRely, {
     pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'RFFREFPLY',
       sortDirection: ModelSortDirection.DESC,
@@ -178,7 +180,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allReplyRFQs?.length - 1 && 250,
+                  marginBottom: allReplyRFQs?.length - 1 ? 300 : 300,
                 }}
               />
             }
@@ -226,7 +228,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allReplyRFFs?.length - 1 && 250,
+                  marginBottom: allReplyRFFs?.length - 1 ? 300 : 300,
                 }}
               />
             }
