@@ -46,10 +46,8 @@ import {
   GetUserQueryVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
-  ListUsersQuery,
-  ListUsersQueryVariables,
 } from '../../../API';
-import {getUser, listUsers, reviewByDate} from '../../../queries/UserQueries';
+import {getUser, reviewByDate} from '../../../queries/UserQueries';
 import {shareOptions} from '../../../utilities/service';
 import {useProductContext} from '../../../context/ProductContext';
 import {useAuthContext} from '../../../context/AuthContext';
@@ -142,18 +140,28 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
-  const allChatRoomUsers = newData?.listUserChatRooms?.items.find(
+  const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
     usrID => usrID?.userId === userID,
   );
+  const newArray = allChatRoomUsers?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
-  const {data: onData} = useQuery<ListUsersQuery, ListUsersQueryVariables>(
-    listUsers,
-  );
-  const crUsers = onData?.listUsers?.items.some(usrID =>
-    usrID?.ChatRooms?.items.find(
-      crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
-    ),
-  );
+  // GET USER 1
+  const {data: onData, loading: onLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+  const userDetail: any = onData?.getUser?.ChatRooms?.items;
+  const newArray2 = userDetail?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
   // CREATE CHATROOM
   const [doCreateChatRoom] = useMutation<
@@ -173,10 +181,13 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     }
     setIsSubmitting(true);
     try {
+      const similarChatRoomIDs = newArray?.filter((obj1: any) =>
+        newArray2?.some((obj2: any) => obj1?.chatRoomId === obj2?.chatRoomId),
+      );
       // if chatRoom exist with user
-      if (crUsers === true) {
+      if (similarChatRoomIDs?.length > 0) {
         navigation.navigate('Chat', {
-          id: allChatRoomUsers?.chatRoomId,
+          id: similarChatRoomIDs[0]?.chatRoomId,
           offerDetail: route?.params?.detail,
         });
       } else {
@@ -339,7 +350,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     }
   };
 
-  if (loading || newLoad) {
+  if (loading || newLoad || onLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />

@@ -1,5 +1,5 @@
 import {View, Text, FlatList, ActivityIndicator} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
 
@@ -43,10 +43,6 @@ const Pending = () => {
       },
     },
   );
-  const allReplyRFQs: any =
-    data?.rfqByDateReply?.items
-      ?.filter(usrId => usrId?.forUserID === userID)
-      .filter((item: any) => !item?._deleted) || [];
 
   // LIST RFFs
   const {
@@ -57,20 +53,18 @@ const Pending = () => {
   } = useQuery<RffByDateRelyQuery, RffByDateRelyQueryVariables>(rffByDateRely, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    variables: {
+    variables: { 
       SType: 'RFFREFPLY',
       sortDirection: ModelSortDirection.DESC,
       limit: 10,
     },
   });
-  const allReplyRFFs: any =
-    newData?.rffByDateRely?.items
-      ?.filter(usrId => usrId?.forUserID === userID)
-      .filter((item: any) => !item?._deleted) || [];
 
   const [selectedOption, setSelectedOptions] = useState(true);
   const [fetchingMore, setFetchingMore] = useState<any>(false);
-  const [itemSelected, setItemSelect] = useState<any>('RFF');
+  const [itemSelected, setItemSelect] = useState<any>('RFQ');
+  const [rfqReply, setRFQReply] = useState<any>([]);
+  const [rffReply, setRFFReply] = useState<any>([]);
 
   const nextToken = newData?.rffByDateRely?.nextToken;
   const nextToken2 = data?.rfqByDateReply?.nextToken;
@@ -92,6 +86,22 @@ const Pending = () => {
     await keepFetch({variables: {nextToken: nextToken2}});
     setFetchingMore(false);
   };
+
+  useEffect(() => {
+    const items =
+      data?.rfqByDateReply?.items
+        ?.filter(usrId => usrId?.forUserID === userID)
+        .filter((item: any) => !item?._deleted) || [];
+    setRFQReply(items);
+  }, [data, loading]);
+
+  useEffect(() => {
+    const items =
+      newData?.rffByDateRely?.items
+        ?.filter(usrId => usrId?.forUserID === userID)
+        .filter((item: any) => !item?._deleted) || [];
+    setRFFReply(items);
+  }, [newData, newLoad]);
 
   if (loading || newLoad) {
     return (
@@ -141,7 +151,7 @@ const Pending = () => {
       <View>
         {itemSelected === 'RFQ' ? (
           <FlatList
-            data={allReplyRFQs}
+            data={rfqReply}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => {
@@ -180,7 +190,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allReplyRFQs?.length - 1 ? 300 : 300,
+                  marginBottom: rfqReply?.length - 1 ? 300 : 300,
                 }}
               />
             }
@@ -188,7 +198,7 @@ const Pending = () => {
           />
         ) : (
           <FlatList
-            data={allReplyRFFs}
+            data={rffReply}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.id}
             renderItem={({item, index}) => {
@@ -228,7 +238,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allReplyRFFs?.length - 1 ? 300 : 300,
+                  marginBottom: rffReply?.length - 1 ? 300 : 300,
                 }}
               />
             }

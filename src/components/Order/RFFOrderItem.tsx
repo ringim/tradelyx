@@ -9,6 +9,7 @@ const RFFOrderItem = ({
   item,
   onPress,
   showHR,
+  replyNumber,
   status,
   btn,
   statusColor,
@@ -220,7 +221,7 @@ const RFFOrderItem = ({
             borderRadius: SIZES.base,
             marginTop: SIZES.semi_margin,
           }}
-          label={`Show ${type} Replies`}
+          label={`Show ${type} Replies (${replyNumber})`}
           labelStyle={{...FONTS.h5}}
           onPress={onPress}
         />

@@ -20,8 +20,11 @@ import {
   ChatRouteProp,
   ChatStackNavigatorParamList,
 } from '../../../components/navigation/BuyerNav/type/navigation';
-import {GetSellOfferQuery, GetSellOfferQueryVariables} from '../../../API';
-import {getSellOffer} from '../../../queries/SellOfferQueries';
+import {
+  GetSellOfferReplyQuery,
+  GetSellOfferReplyQueryVariables,
+} from '../../../API';
+import {getSellOfferReply} from '../../../queries/SellOfferQueries';
 
 const SellOfferDetails = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
@@ -31,10 +34,10 @@ const SellOfferDetails = () => {
   const [imageUri, setImageUri] = useState<string | any>(null);
 
   const {data, loading} = useQuery<
-    GetSellOfferQuery,
-    GetSellOfferQueryVariables
-  >(getSellOffer, {variables: {id: route?.params?.sellOffer}});
-  const getSellOfferDetail: any = data?.getSellOffer;
+    GetSellOfferReplyQuery,
+    GetSellOfferReplyQueryVariables
+  >(getSellOfferReply, {variables: {id: route?.params?.sellOffer}});
+  const getSellOfferDetail: any = data?.getSellOfferReply;
 
   const options = {
     style: 'decimal',
@@ -116,11 +119,10 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* RFQ Number */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: SIZES.semi_margin,
@@ -157,7 +159,6 @@ const SellOfferDetails = () => {
             />
           </TouchableOpacity>
         </View>
-
         {/* expiry */}
         <View
           style={{
@@ -186,7 +187,7 @@ const SellOfferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {getSellOfferDetail?.offerValidity}
+              {dayjs(getSellOfferDetail?.offerValidity).format('MMMM DD, YYYY')}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -203,7 +204,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* Horizontal Rule */}
         <View
           style={{
@@ -214,7 +214,6 @@ const SellOfferDetails = () => {
             marginTop: SIZES.semi_margin,
           }}
         />
-
         {/* SellOffer Image */}
         <View
           style={{
@@ -236,7 +235,6 @@ const SellOfferDetails = () => {
             }}
           />
         </View>
-
         {/* Package Description */}
         <View
           style={{
@@ -265,7 +263,6 @@ const SellOfferDetails = () => {
             </Text>
           </ViewMoreText>
         </View>
-
         {/* Detailed Description */}
         <View
           style={{
@@ -294,8 +291,7 @@ const SellOfferDetails = () => {
             </Text>
           </ViewMoreText>
         </View>
-
-        {/* Product Name */}
+        {/* “Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
@@ -315,7 +311,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Product Name
+              “Product Title
             </Text>
           </View>
           <View
@@ -332,8 +328,7 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
-        {/* Supply title */}
+        {/* Quantity Offered */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -352,7 +347,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Supply Capacity
+              Quantity Offered
             </Text>
           </View>
           <View
@@ -370,7 +365,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* Type */}
         <View
           style={{
@@ -406,7 +400,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* Qty */}
         <View
           style={{
@@ -442,7 +435,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* FOB Price */}
         {getSellOfferDetail?.fobPrice ? (
           <View
@@ -482,7 +474,6 @@ const SellOfferDetails = () => {
         ) : (
           <View />
         )}
-
         {/* Packaging */}
         <View
           style={{
@@ -518,7 +509,8 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
+        
+        {/* Quantity Offered */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -537,7 +529,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Supply Capacity
+              Quantity Offered
             </Text>
           </View>
           <View
@@ -551,11 +543,10 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral1,
                 lineHeight: 24,
               }}>
-              {getSellOfferDetail?.rfqType}
+              {getSellOfferDetail?.qtyMeasure}
             </Text>
           </View>
         </View>
-
         {/* payment method */}
         <View
           style={{
@@ -591,7 +582,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* Payment terms */}
         <View
           style={{
@@ -627,7 +617,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* Delivery date */}
         <View
           style={{
@@ -663,7 +652,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-
         {/* Horizontal Rule */}
         <View
           style={{
@@ -674,7 +662,6 @@ const SellOfferDetails = () => {
             marginTop: SIZES.padding,
           }}
         />
-
         {/* images */}
         <View
           style={{
@@ -702,7 +689,6 @@ const SellOfferDetails = () => {
             />
           )}
         </View>
-
         {/* Price */}
         <View
           style={{

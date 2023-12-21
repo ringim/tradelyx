@@ -674,7 +674,6 @@ export const onCreateOrder = /* GraphQL */ `subscription OnCreateOrder($filter: 
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -696,7 +695,6 @@ export const onUpdateOrder = /* GraphQL */ `subscription OnUpdateOrder($filter: 
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -718,7 +716,6 @@ export const onDeleteOrder = /* GraphQL */ `subscription OnDeleteOrder($filter: 
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -761,13 +758,13 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -834,13 +831,13 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -907,13 +904,13 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -954,13 +951,13 @@ export const onCreateSellOfferReply = /* GraphQL */ `subscription OnCreateSellOf
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -995,13 +992,13 @@ export const onUpdateSellOfferReply = /* GraphQL */ `subscription OnUpdateSellOf
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -1036,13 +1033,13 @@ export const onDeleteSellOfferReply = /* GraphQL */ `subscription OnDeleteSellOf
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -1137,6 +1134,7 @@ export const onCreateRFQ = /* GraphQL */ `subscription OnCreateRFQ($filter: Mode
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1219,6 +1217,7 @@ export const onUpdateRFQ = /* GraphQL */ `subscription OnUpdateRFQ($filter: Mode
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1301,6 +1300,7 @@ export const onDeleteRFQ = /* GraphQL */ `subscription OnDeleteRFQ($filter: Mode
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1351,6 +1351,7 @@ export const onCreateRFQReply = /* GraphQL */ `subscription OnCreateRFQReply($fi
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -1395,6 +1396,7 @@ export const onUpdateRFQReply = /* GraphQL */ `subscription OnUpdateRFQReply($fi
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -1439,6 +1441,7 @@ export const onDeleteRFQReply = /* GraphQL */ `subscription OnDeleteRFQReply($fi
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -1951,6 +1954,7 @@ export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filt
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2003,6 +2007,7 @@ export const onUpdateProduct = /* GraphQL */ `subscription OnUpdateProduct($filt
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2055,6 +2060,7 @@ export const onDeleteProduct = /* GraphQL */ `subscription OnDeleteProduct($filt
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2151,7 +2157,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -2173,6 +2178,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -2544,7 +2550,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -2566,6 +2571,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -2937,7 +2943,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -2959,6 +2964,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -3486,7 +3492,6 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -3508,6 +3513,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType
@@ -3900,7 +3906,6 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -3922,6 +3927,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType
@@ -4314,7 +4320,6 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -4336,6 +4341,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType

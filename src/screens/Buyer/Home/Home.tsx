@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {View, Platform} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
@@ -65,7 +65,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     pollInterval: 500,
     fetchPolicy: 'network-only',
     variables: {
-      limit: 4,
+      limit: 5,
       SType: 'JOB',
       sortDirection: ModelSortDirection.DESC,
     },
@@ -78,7 +78,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
   >(listUsers, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    variables: {limit: 4},
+    variables: {limit: 6},
   });
 
   // GET USER DETAILS
@@ -159,7 +159,14 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
-      <TabHeader userImage={user?.logo} />
+      <TabHeader
+        userImage={user?.logo}
+        containerStyle={{
+          paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,
+          height: Platform.OS == 'ios' ? '14%' : '10%',
+          marginBottom: SIZES.base,
+        }}
+      />
 
       {/* Modal */}
       <ServiceModal

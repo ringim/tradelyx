@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, FlatList, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import ViewMoreText from 'react-native-view-more-text';
 
@@ -6,6 +6,7 @@ import TextIconButton from '../Button/TextIconButton';
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {options} from '../../utilities/service';
 import FastImage from 'react-native-fast-image';
+import SOImage from '../Others/SOImage';
 
 const SellOfferDetail2 = ({
   basePrice,
@@ -14,6 +15,8 @@ const SellOfferDetail2 = ({
   daysUntilExpiry,
   offerValidity,
   packageDesc,
+  image,
+  images
 }: any) => {
   function renderViewMore(onPress: any) {
     return (
@@ -114,7 +117,6 @@ const SellOfferDetail2 = ({
           justifyContent: 'space-between',
           borderRadius: SIZES.base,
           padding: SIZES.radius,
-          marginBottom: 100,
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
@@ -140,9 +142,36 @@ const SellOfferDetail2 = ({
           </Text>
         </View>
       </View>
+
+      {/* images */}
+      <View
+        style={{
+          marginTop: SIZES.semi_margin,
+          marginHorizontal: SIZES.margin,
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Images</Text>
+        </View>
+
+        {image ? (
+          <SOImage image={image} containerStyle={{marginLeft: 0}} />
+        ) : (
+          <FlatList
+            data={images}
+            keyExtractor={item => `${item}`}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item, index}) => {
+              return <SOImage image={item} index={index} />;
+            }}
+          />
+        )}
+      </View>
+
       {/* Price && bTn */}
       <View
         style={{
+          marginTop: SIZES.semi_margin,
           backgroundColor: COLORS.Neutral9,
           borderBottomLeftRadius: SIZES.radius,
           borderBottomRightRadius: SIZES.radius,

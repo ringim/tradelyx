@@ -2,6 +2,7 @@ import {View, Text, TouchableOpacity, Pressable} from 'react-native';
 import {useQuery} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import dayjs from 'dayjs';
 import {Storage} from 'aws-amplify';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
@@ -197,14 +198,14 @@ const SearchItem = ({
           </View>
         )}
 
-        {/* Product Name */}
+        {/* Product title */}
         <View
           style={{
             marginTop: SIZES.radius,
             marginHorizontal: SIZES.semi_margin,
           }}>
           <Text numberOfLines={2} style={{...FONTS.h4, color: COLORS.Neutral1}}>
-            {item?.productName}
+            {item?.title}
           </Text>
         </View>
 
@@ -263,7 +264,7 @@ const SearchItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {item?.qtyMeasure} bags
+              {item?.qtyMeasure} {item?.unit}
             </Text>
           </View>
         </View>
@@ -278,7 +279,7 @@ const SearchItem = ({
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Base Price (FOB)
+              FOB Price
             </Text>
           </View>
           <View
@@ -288,7 +289,7 @@ const SearchItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              ₦{parseFloat(item?.basePrice).toFixed(2)}
+              ₦{item?.fobPrice.toLocaleString('en-US', options)}
             </Text>
           </View>
         </View>
@@ -318,7 +319,7 @@ const SearchItem = ({
           </View>
         </View>
 
-        {/* delivery duration */}
+        {/* offer Validity*/}
         <View
           style={{
             marginTop: SIZES.base,
@@ -328,7 +329,7 @@ const SearchItem = ({
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Expiry Date
+              Offer Expiry Date
             </Text>
           </View>
           <View
@@ -338,7 +339,7 @@ const SearchItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              {item?.offerValidity}
+              {dayjs(item?.offerValidity).format('MMMM DD, YYYY')}
             </Text>
           </View>
         </View>

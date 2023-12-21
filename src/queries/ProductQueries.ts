@@ -34,6 +34,7 @@ export const productByDate = gql`
         minOrderQty
         packageType
         quantity
+        landmark
         noOfReviews
         transportMode
         placeOrigin
@@ -83,6 +84,7 @@ export const getProduct = gql`
       productSpec
       rating
       tags
+      landmark
       productCert
       supplyCapacity
       minOrderQty
@@ -137,6 +139,7 @@ export const createProduct = gql`
       productSpec
       rating
       tags
+      landmark
       productCert
       supplyCapacity
       minOrderQty
@@ -173,6 +176,7 @@ export const updateProduct = gql`
       description
       productSpec
       rating
+      landmark
       tags
       productCert
       supplyCapacity

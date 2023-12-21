@@ -110,7 +110,7 @@ const BChatRoomItem = ({chatRoom}: any) => {
         <View style={styles.row}>
           <Text style={styles.name}>{user?.title || user?.name}</Text>
           <Text style={styles.text}>
-            {dayjs(lastMessage?.updatedAt).fromNow()}
+            {dayjs(chatRoom?.lastMessage?.updatedAt).fromNow()}
           </Text>
         </View>
         <Text numberOfLines={1} style={styles.text1}>

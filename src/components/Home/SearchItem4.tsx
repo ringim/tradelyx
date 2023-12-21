@@ -157,7 +157,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
           />
         </View>
 
-        {/* Product Name */}
+        {/* “Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
@@ -270,7 +270,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-              {item?.offerValidity}
+             {dayjs(item?.offerValidity).format('MMMM DD, YYYY')}
             </Text>
           </View>
         </View>

@@ -142,7 +142,7 @@ const BBottomTabs = ({toggleCameraModal, showCameraModal}: any) => {
         })}
       />
       <Tabs.Screen
-        name="Order"
+        name="Orders"
         component={Order}
         options={{
           tabBarIcon: ({focused}) => {
@@ -179,7 +179,7 @@ const BBottomTabs = ({toggleCameraModal, showCameraModal}: any) => {
         }}
       />
       <Tabs.Screen
-        name="ChatRoomsC"
+        name="ChatRooms"
         component={ChatRooms}
         options={{
           tabBarIcon: ({focused}) => {

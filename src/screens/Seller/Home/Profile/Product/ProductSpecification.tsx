@@ -1,4 +1,4 @@
-import {View, Text, Platform} from 'react-native';
+import {View, Text, Platform, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {Controller, useForm} from 'react-hook-form';
@@ -28,7 +28,6 @@ interface IAddProduct {
   supply: string;
   moq: string;
   packageType: string;
-  desc: string;
   file: string;
   file2: any;
 }
@@ -40,6 +39,7 @@ const ProductSpecification = () => {
   const {control, handleSubmit}: any = useForm();
 
   const [loading, setLoading] = useState(false);
+  const [productSpec, setProductSpec] = useState('');
   const [singleFile, setSingleFile] = useState<any>([]);
 
   // UPDATE REQUEST QUOTATION
@@ -48,13 +48,7 @@ const ProductSpecification = () => {
     UpdateProductMutationVariables
   >(updateProduct);
 
-  const onSubmit = async ({
-    moq,
-    supply,
-    file2,
-    desc,
-    packageType,
-  }: IAddProduct) => {
+  const onSubmit = async ({moq, supply, file2, packageType}: IAddProduct) => {
     if (loading) {
       return;
     }
@@ -64,7 +58,7 @@ const ProductSpecification = () => {
         id: route?.params.productID,
         minOrderQty: moq,
         supplyCapacity: supply,
-        productSpec: desc,
+        productSpec,
         productDocs: file2,
         packageType,
       };
@@ -103,23 +97,40 @@ const ProductSpecification = () => {
           marginBottom: 100,
         }}>
         {/* Product Specification */}
-        <FormInput
-          label="Product Specification"
-          name="desc"
-          control={control}
-          multiline={true}
-          placeholder="Add a specification"
-          containerStyle={{marginTop: SIZES.radius}}
-          rules={{
-            required: 'Product Specification is required',
-          }}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{
-            marginTop: SIZES.base,
-            height: 140,
-            padding: SIZES.base,
-          }}
-        />
+        <View
+          style={{
+            marginTop: SIZES.radius,
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Product Specification
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={setProductSpec}
+            value={productSpec}
+            multiline={true}
+            placeholder="Add a specification"
+            placeholderTextColor={COLORS.gray}
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              marginTop: SIZES.base,
+              paddingTop: SIZES.base,
+              height: 140,
+              fontWeight: '500',
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              marginBottom: 120,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
 
         {/* Supply capacity */}
         <FormInput
@@ -178,7 +189,7 @@ const ProductSpecification = () => {
             />
           ) : (
             <UploadDocs
-              title="Attach Specification Document"
+              title="Attach Relevant Documents"
               selectFile={() => selectFile2(setSingleFile, singleFile)}
               containerStyle={{marginHorizontal: 1}}
             />

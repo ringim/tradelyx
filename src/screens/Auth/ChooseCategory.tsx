@@ -1,5 +1,11 @@
 import React, {useState, useRef} from 'react';
-import {View, Alert, Text, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Alert,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import {ALERT_TYPE, Toast, Root} from 'react-native-alert-notification';
@@ -117,11 +123,29 @@ const ChooseCategory = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header
-          nav={true}
-          title={'Product Category'}
-          onPress={() => navigation.goBack()}
-        />
+        {/* Header */}
+        <View
+          style={{
+            paddingTop: SIZES.height > 700 ? 60 : 30,
+            height: SIZES.height > 700 ? 100 : 70,
+            backgroundColor: COLORS.white,
+          }}>
+          {/* Header Title */}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.h4,
+                color: COLORS.Neutral1,
+                textAlign: 'center',
+              }}>
+              Complete your profile
+            </Text>
+          </View>
+        </View>
 
         <View
           style={{
@@ -147,8 +171,8 @@ const ChooseCategory = () => {
             marginHorizontal: SIZES.padding,
           }}>
           <Text style={{...FONTS.body2, color: COLORS.Neutral1}}>
-            Welcome Abaz, choose at least one category that pertains to your
-            interest
+            Welcome, Take a moment to complete your profile for a tailored
+            experience
           </Text>
         </View>
 

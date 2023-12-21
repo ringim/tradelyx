@@ -105,6 +105,7 @@ import AcceptPolicy from './Others/AcceptPolicy';
 import MultipleFiles from './Others/MultipleFiles';
 import Tags from './Others/Tags';
 import UploadID from './Others/UploadID';
+import CategoryOption2 from './Others/CategoryOption2'
 
 //ORDER
 import RFFOrderItem from './Order/RFFOrderItem';
@@ -179,6 +180,7 @@ export {
   Packaging,
   QuoteDetail,
   ChatHeader,
+  CategoryOption2,
   ViewProductImageEdit,
   Handling,
   OneImage,

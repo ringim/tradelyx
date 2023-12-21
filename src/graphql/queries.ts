@@ -692,7 +692,6 @@ export const getOrder = /* GraphQL */ `query GetOrder($id: ID!) {
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -716,7 +715,6 @@ export const listOrders = /* GraphQL */ `query ListOrders(
       orderDate
       paidThrough
       paymentResponse
-      agreement
       userID
       updatedAt
       __typename
@@ -756,7 +754,6 @@ export const ordersByDate = /* GraphQL */ `query OrdersByDate(
       orderDate
       paidThrough
       paymentResponse
-      agreement
       userID
       updatedAt
       __typename
@@ -794,7 +791,6 @@ export const ordersByUserID = /* GraphQL */ `query OrdersByUserID(
       orderDate
       paidThrough
       paymentResponse
-      agreement
       userID
       updatedAt
       __typename
@@ -840,13 +836,13 @@ export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -918,13 +914,13 @@ export const listSellOffers = /* GraphQL */ `query ListSellOffers(
           id
           createdAt
           SType
-          sellOfferID
           requestCategory
           title
           tags
           productName
           description
           packageDesc
+          sellOfferID
           sellOfferImage
           image
           images
@@ -1009,13 +1005,13 @@ export const sellOffersByDate = /* GraphQL */ `query SellOffersByDate(
           id
           createdAt
           SType
-          sellOfferID
           requestCategory
           title
           tags
           productName
           description
           packageDesc
+          sellOfferID
           sellOfferImage
           image
           images
@@ -1098,13 +1094,13 @@ export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
           id
           createdAt
           SType
-          sellOfferID
           requestCategory
           title
           tags
           productName
           description
           packageDesc
+          sellOfferID
           sellOfferImage
           image
           images
@@ -1146,13 +1142,13 @@ export const getSellOfferReply = /* GraphQL */ `query GetSellOfferReply($id: ID!
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -1190,13 +1186,13 @@ export const listSellOfferReplies = /* GraphQL */ `query ListSellOfferReplies(
       id
       createdAt
       SType
-      sellOfferID
       requestCategory
       title
       tags
       productName
       description
       packageDesc
+      sellOfferID
       sellOfferImage
       image
       images
@@ -1247,13 +1243,13 @@ export const sellOffersByDateRely = /* GraphQL */ `query SellOffersByDateRely(
       id
       createdAt
       SType
-      sellOfferID
       requestCategory
       title
       tags
       productName
       description
       packageDesc
+      sellOfferID
       sellOfferImage
       image
       images
@@ -1302,13 +1298,13 @@ export const sellOfferRepliesBySellOffer = /* GraphQL */ `query SellOfferReplies
       id
       createdAt
       SType
-      sellOfferID
       requestCategory
       title
       tags
       productName
       description
       packageDesc
+      sellOfferID
       sellOfferImage
       image
       images
@@ -1406,6 +1402,7 @@ export const getRFQ = /* GraphQL */ `query GetRFQ($id: ID!) {
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1486,6 +1483,7 @@ export const listRFQS = /* GraphQL */ `query ListRFQS($filter: ModelRFQFilterInp
           forUserID
           userID
           statusText
+          agreement
           RFQ
           updatedAt
           __typename
@@ -1583,6 +1581,7 @@ export const rfqByDate = /* GraphQL */ `query RfqByDate(
           forUserID
           userID
           statusText
+          agreement
           RFQ
           updatedAt
           __typename
@@ -1678,6 +1677,7 @@ export const rFQSByUserID = /* GraphQL */ `query RFQSByUserID(
           forUserID
           userID
           statusText
+          agreement
           RFQ
           updatedAt
           __typename
@@ -1731,6 +1731,7 @@ export const getRFQReply = /* GraphQL */ `query GetRFQReply($id: ID!) {
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -1780,6 +1781,7 @@ export const listRFQReplies = /* GraphQL */ `query ListRFQReplies(
       forUserID
       userID
       statusText
+      agreement
       RFQ
       updatedAt
       __typename
@@ -1842,6 +1844,7 @@ export const rfqByDateReply = /* GraphQL */ `query RfqByDateReply(
       forUserID
       userID
       statusText
+      agreement
       RFQ
       updatedAt
       __typename
@@ -1902,6 +1905,7 @@ export const rFQRepliesByRFQ = /* GraphQL */ `query RFQRepliesByRFQ(
       forUserID
       userID
       statusText
+      agreement
       RFQ
       updatedAt
       __typename
@@ -2725,6 +2729,7 @@ export const getProduct = /* GraphQL */ `query GetProduct($id: ID!) {
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2782,6 +2787,7 @@ export const listProducts = /* GraphQL */ `query ListProducts(
       rating
       tags
       productCert
+      landmark
       supplyCapacity
       minOrderQty
       packageType
@@ -2852,6 +2858,7 @@ export const productByDate = /* GraphQL */ `query ProductByDate(
       rating
       tags
       productCert
+      landmark
       supplyCapacity
       minOrderQty
       packageType
@@ -2920,6 +2927,7 @@ export const productsByUserID = /* GraphQL */ `query ProductsByUserID(
       rating
       tags
       productCert
+      landmark
       supplyCapacity
       minOrderQty
       packageType
@@ -3019,7 +3027,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -3041,6 +3048,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -3414,7 +3422,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -3436,6 +3443,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType
@@ -3948,7 +3956,6 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -3970,6 +3977,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType

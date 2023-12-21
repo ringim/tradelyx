@@ -25,7 +25,8 @@ type SignUpData = {
   passwordRepeat: string;
 };
 
-const privacyPolicy = 'https://tradely.com/privacy-policy';
+const privacyPolicy = 'https://www.tradelyx.com/privacy-policy';
+const tos = 'https://www.tradelyx.com/termsofservice';
 
 const SignUp = () => {
   const navigation = useNavigation<AuthStackNavigatorParamList>();
@@ -37,6 +38,16 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [showPass2, setShowPass2] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected2, setIsSelected2] = useState(false);
+
+  const handleCheckBoxChange = () => {
+    setIsSelected(!isSelected);
+  };
+
+  const handleCheckBoxChange2 = () => {
+    setIsSelected2(!isSelected2);
+  };
 
   const onSubmit = async ({
     password,
@@ -69,6 +80,10 @@ const SignUp = () => {
       reset();
     }
   };
+
+  function isSubmit() {
+    return isSelected === true && isSelected2 === true;
+  }
 
   function renderFormSection() {
     return (
@@ -143,7 +158,7 @@ const SignUp = () => {
                 textInputStyle={{
                   right: 25,
                 }}
-                textContainerStyle={{  
+                textContainerStyle={{
                   backgroundColor: COLORS.white,
                   borderColor: COLORS.Neutral7,
                   borderWidth: 0.1,
@@ -243,22 +258,30 @@ const SignUp = () => {
       <View style={{marginTop: SIZES.radius, marginHorizontal: SIZES.margin}}>
         {/* SignUp Terms */}
         <AcceptPolicy
-          text1={'By pressing the "Register" button, I agree to the'}
-          text2="Delivery Terms"
-          onPress={() => Linking.openURL(privacyPolicy)}
+          text1={
+            'By checking this button, I agree with TradelyX’s Terms of Service'
+          }
+          isSelected={isSelected}
+          onPress={() => Linking.openURL(tos)}
+          onCheck={handleCheckBoxChange}
         />
         <AcceptPolicy
           text1={
-            'By pressing the "register" button, I agree to the terms of the'
+            'By checking this button, I agree with TradelyX’s Privacy Policy'
           }
-          text2="Payment Method"
+          isSelected={isSelected2}
           onPress={() => Linking.openURL(privacyPolicy)}
+          onCheck={handleCheckBoxChange2}
         />
 
         {/* sign up btn */}
         <TextButton
+          disabled={isSubmit() ? false : true}
           label={loading ? 'Loading...' : 'Register'}
-          buttonContainerStyle={{marginTop: 28}}
+          buttonContainerStyle={{
+            marginTop: 28,
+            backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+          }}
           onPress={handleSubmit(onSubmit)}
         />
 

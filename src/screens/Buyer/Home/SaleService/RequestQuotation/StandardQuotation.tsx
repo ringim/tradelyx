@@ -62,23 +62,14 @@ const StandardQuotation = () => {
   const {location} = address;
 
   useEffect(() => {
-    let isCurrent = true;
-    isCurrent &&
-      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
-    return () => {
-      isCurrent = false;
-    };
+    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
   }, [address]);
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress && unmounted) {
+    if (route.params?.userAddress) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
-    return () => {
-      unmounted = false;
-    };
   }, [
     setValue,
     route.params?.userAddress,
@@ -100,6 +91,7 @@ const StandardQuotation = () => {
       const input: CreateRFQInput = {
         rfqNo: referralCode(),
         SType: 'RFQ',
+        placeOriginCountry: cName, // country
         placeOrigin: address?.description?.formatted_address,
         placeOriginName: cCity,
         placeOriginFlag: `https://flagcdn.com/32x24/${code}.png`, //flag

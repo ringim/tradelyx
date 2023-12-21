@@ -71,28 +71,17 @@ const InternationalEngagementTerms = () => {
   const {location} = address;
 
   useEffect(() => {
-    let isCurrent = true;
-    isCurrent &&
-      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
-
-    return () => {
-      isCurrent = false;
-    };
+    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
   }, [address]);
 
   useEffect(() => {
-    let isCurrent = true;
-    isCurrent &&
-      getCountryFlag(
-        address2?.location?.lat,
-        address2?.location?.lng,
-        setCode2,
-        setCName2,
-        setCCity2,
-      );
-    return () => {
-      isCurrent = false;
-    };
+    getCountryFlag(
+      address2?.location?.lat,
+      address2?.location?.lng,
+      setCode2,
+      setCName2,
+      setCCity2,
+    );
   }, [address2]);
 
   // UPDATE REQUEST QUOTATION
@@ -147,18 +136,14 @@ const InternationalEngagementTerms = () => {
   };
 
   function isSubmit() {
-    return singleFile !== null;
+    return address !== '' && address2 !== '' && singleFile !== null;
   }
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress && unmounted) {
+    if (route.params?.userAddress) {
       setAddress(route.params?.userAddress);
       setValue('address', address?.description?.formatted_address);
     }
-    return () => {
-      unmounted = false;
-    };
   }, [
     setValue,
     route.params?.userAddress,
@@ -166,14 +151,10 @@ const InternationalEngagementTerms = () => {
   ]);
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress2 && unmounted) {
+    if (route.params?.userAddress2) {
       setAddress2(route.params?.userAddress2);
       setValue('address2', address2?.description?.formatted_address);
     }
-    return () => {
-      unmounted = false;
-    };
   }, [
     setValue,
     route.params?.userAddress2,
@@ -435,7 +416,7 @@ const InternationalEngagementTerms = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'Request Quotation'} />
+        <Header title={'Request for Quotation'} />
 
         <Spinner
           visible={loading}

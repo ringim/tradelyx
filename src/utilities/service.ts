@@ -390,3 +390,14 @@ export const saveImageToCameraRoll = async ({imageUri}: any) => {
     }
   }
 };
+
+export function areArraysSimilar(
+  arr1: any[],
+  arr2: any[],
+  compareFunction: any,
+) {
+  return arr1.every((obj1: any) =>
+    arr2.some((obj2: any) => compareFunction(obj1, obj2)),
+  );
+}
+ 

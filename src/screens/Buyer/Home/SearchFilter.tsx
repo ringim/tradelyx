@@ -161,7 +161,7 @@ const SearchFilter = () => {
           />
         </View>
 
-        {/* Product Name */}
+        {/* “Product Title */}
         <View style={{marginTop: SIZES.padding}}>
           <Text
             style={{
@@ -169,7 +169,7 @@ const SearchFilter = () => {
               fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
-            Product Name
+            “Product Title
           </Text>
           <TextInput
             style={{

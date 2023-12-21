@@ -1,15 +1,15 @@
 import {View, Text, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {useMutation} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
-import DropDownPicker from 'react-native-dropdown-picker';
 
-import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
+import {COLORS, FONTS, SIZES, constants} from '../../../constants';
 import {
+  CategoryOption,
+  CategoryOption2,
   FormInput,
   Header,
   LoadingIndicator,
@@ -46,11 +46,8 @@ const BusinessDetail = () => {
   const {userID} = useAuthContext();
   const {control, handleSubmit} = useForm<CompleteAccountData>();
 
-  const [open4, setOpen4] = useState(false);
-  const [value4, setValue4] = useState(null);
-  const [busType, setBusType] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<any>([]);
   const [singleFile, setSingleFile] = useState<any>([]);
-  const [businessType, setBusinessType] = useState<any>(constants.businessType);
   const [date, setDate] = useState('');
   const [initialTags, setInitialTags] = useState(['Africa', 'Europe', 'Asia']);
   const [initialTags2, setInitialTags2] = useState([
@@ -58,6 +55,10 @@ const BusinessDetail = () => {
     'French',
     'Hausa',
   ]);
+
+  const selectedProp = selectedCategories?.map(
+    (obj: {label: any}) => obj?.label,
+  );
 
   const onTagPress = (deleted: any) => {
     return deleted ? 'deleted' : 'not deleted';
@@ -116,7 +117,7 @@ const BusinessDetail = () => {
       const input: UpdateUserInput = {
         id: userID,
         totalStaff,
-        businessType: busType,
+        businessType: selectedProp,
         certifications,
         incorporateDate: date,
         rcNumber,
@@ -162,8 +163,59 @@ const BusinessDetail = () => {
           marginTop: SIZES.padding,
           marginHorizontal: SIZES.semi_margin,
         }}>
+        {/* Business Type */}
+        <Text
+          style={{
+            marginTop: SIZES.base,
+            ...FONTS.h3,
+            color: COLORS.Neutral1,
+            lineHeight: 18,
+            marginBottom: SIZES.radius,
+          }}>
+          Choose Business Type
+        </Text>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            marginHorizontal: SIZES.base,
+          }}>
+          {constants.businessType.map((item: any, index) => {
+            return (
+              <CategoryOption2
+                key={`Category-${index}`}
+                category={item}
+                isSelected={
+                  selectedCategories.findIndex(
+                    (category: {id: number}) => category?.id === item.id,
+                  ) >= 0
+                }
+                onPress={() => {
+                  let newSelectedCategories = JSON.parse(
+                    JSON.stringify(selectedCategories),
+                  );
+
+                  const index = selectedCategories.findIndex(
+                    (category: {id: number}) => category?.id === item.id,
+                  );
+
+                  if (index >= 0) {
+                    newSelectedCategories.splice(index, 1);
+                  } else {
+                    newSelectedCategories.push(item);
+                  }
+
+                  setSelectedCategories(newSelectedCategories);
+                }}
+              />
+            );
+          })}
+        </View>
+
         {/* Date of Incorporation */}
-        <View>
+        <View style={{marginTop: SIZES.padding}}>
           <Text
             style={{
               ...FONTS.body3,
@@ -235,89 +287,6 @@ const BusinessDetail = () => {
           containerStyle={{marginTop: SIZES.radius}}
         />
 
-        {/* Business Type */}
-        <Controller
-          control={control}
-          name="businessType"
-          rules={{
-            required: 'Business Type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View>
-              <Text
-                style={{
-                  marginTop: SIZES.semi_margin,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Business Type
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open4}
-                showArrowIcon={true}
-                placeholder="Select Business Type "
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value4 || value}
-                items={businessType}
-                setOpen={setOpen4}
-                setValue={setValue4}
-                setItems={setBusinessType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select Identification"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setBusType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
-
         {/* Main Markets */}
         <RequestTags
           initialTags={initialTags}
@@ -371,7 +340,7 @@ const BusinessDetail = () => {
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
         <Header
           nav={true}
-          title={'Complete Account'}
+          title={'Business Account'}
           onPress={() => navigation.goBack()}
         />
 
@@ -386,9 +355,6 @@ const BusinessDetail = () => {
             style={{
               marginHorizontal: SIZES.semi_margin,
             }}>
-            <Text style={{...FONTS.h2, color: COLORS.NeutralBlue1}}>
-              Business Account
-            </Text>
             <Text
               style={{...FONTS.sh3, color: COLORS.gray, marginTop: SIZES.base}}>
               Complete the form below to begin sales

@@ -275,7 +275,7 @@ const ReplyRFFOceanPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 150,
+                    width: 200,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}

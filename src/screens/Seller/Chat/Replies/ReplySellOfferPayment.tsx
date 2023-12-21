@@ -29,9 +29,9 @@ import {
   images,
 } from '../../../../constants';
 import {
-  CreateSellOfferInput,
-  CreateSellOfferMutation,
-  CreateSellOfferMutationVariables,
+  CreateSellOfferReplyInput,
+  CreateSellOfferReplyMutation,
+  CreateSellOfferReplyMutationVariables,
   GetSellOfferQuery,
   GetSellOfferQueryVariables,
   CreateMessageMutation,
@@ -42,7 +42,7 @@ import {
   UpdateChatRoomMutationVariables,
 } from '../../../../API';
 import {
-  createSellOffer,
+  createSellOfferReply,
   getSellOffer,
 } from '../../../../queries/SellOfferQueries';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -135,6 +135,13 @@ const ReplySellOfferPayment = () => {
     address1?.description?.formatted_address,
   ]);
 
+  // GET SELL OFFER ID
+  const {data, loading: onLoad} = useQuery<
+    GetSellOfferQuery,
+    GetSellOfferQueryVariables
+  >(getSellOffer, {variables: {id: route?.params.sellOffer}});
+  const getSellOfferDetail: any = data?.getSellOffer;
+
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
     CreateMessageMutation,
@@ -147,18 +154,11 @@ const ReplySellOfferPayment = () => {
     UpdateChatRoomMutationVariables
   >(updateChatRoom);
 
-  // GET SELL OFFER ID
-  const {data, loading: onLoad} = useQuery<
-    GetSellOfferQuery,
-    GetSellOfferQueryVariables
-  >(getSellOffer, {variables: {id: route?.params.sellOffer}});
-  const getSellOfferDetail: any = data?.getSellOffer;
-
-  // CREATE REQUEST QUOTATION
-  const [doCreateSellOffer] = useMutation<
-    CreateSellOfferMutation,
-    CreateSellOfferMutationVariables
-  >(createSellOffer);
+  // CREATE SELL OFFER REPLY
+  const [doCreateSellOfferReply] = useMutation<
+    CreateSellOfferReplyMutation,
+    CreateSellOfferReplyMutationVariables
+  >(createSellOfferReply);
 
   const onSubmit = async ({basePrice, landmark, fobPrice, qty}: IFreight) => {
     if (loading) {
@@ -166,8 +166,9 @@ const ReplySellOfferPayment = () => {
     }
     setLoading(true);
     try {
-      const input: CreateSellOfferInput = {
+      const input: CreateSellOfferReplyInput = {
         id: uuidV4(),
+        SType: 'SELLOFFERREPLY',
         sellOfferID: getSellOfferDetail?.sellOfferID,
         title: getSellOfferDetail?.title,
         requestCategory: getSellOfferDetail?.requestCategory,
@@ -181,7 +182,6 @@ const ReplySellOfferPayment = () => {
         packageDesc: getSellOfferDetail?.packageDesc,
         packageType: getSellOfferDetail?.packageType,
         userID: getSellOfferDetail?.userID,
-        SType: 'MESSAGE',
         basePrice,
         fobPrice,
         paymentType: type3,
@@ -192,9 +192,10 @@ const ReplySellOfferPayment = () => {
         landmark,
         placeOrigin: address1?.description?.formatted_address,
         unit: type,
+        SellOffer: getSellOfferDetail?.id,
       };
 
-      await doCreateSellOffer({
+      const res = await doCreateSellOfferReply({
         variables: {
           input,
         },
@@ -203,7 +204,7 @@ const ReplySellOfferPayment = () => {
       const res1 = await doCreateMessage({
         variables: {
           input: {
-            SType: 'SELLOFFER_MESSAGE_REPLY',
+            SType: 'MESSAGE',
             userID: authUser?.attributes?.sub,
             status: MessageStatus.SENT,
             text: "Hello, I've replied your Sell Offer request",
@@ -211,7 +212,7 @@ const ReplySellOfferPayment = () => {
             requestTitle: getSellOfferDetail?.title,
             packageType: getSellOfferDetail?.packageType,
             serviceImage: getSellOfferDetail?.sellOfferImage,
-            requestID: getSellOfferDetail?.id,
+            requestID: res?.data?.createSellOfferReply?.id,
             requestQty: getSellOfferDetail?.qtyMeasure,
             requestPrice: getSellOfferDetail?.basePrice,
             serviceType: serviceType?.SELLOFFERS_REPLY,
@@ -311,7 +312,7 @@ const ReplySellOfferPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 150,
+                    width: 200,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -680,7 +681,7 @@ const ReplySellOfferPayment = () => {
         <ExpiryDate
           date={date2}
           onPress={showDatePicker2}
-          title={'Expected Delivery Date'}
+          title={'Date Available'}
           containerStyle={{marginTop: SIZES.semi_margin, marginBottom: 150}}
         />
       </View>

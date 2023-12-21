@@ -18,6 +18,8 @@ import {
   TextButton,
   FormInput,
   ExpiryDate,
+  UploadedID,
+  UploadID
 } from '../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
 import {
@@ -37,6 +39,7 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
+import { selectFile2 } from '../../../../utilities/service';
 
 interface IFreight {
   basePrice: number;
@@ -52,6 +55,7 @@ const ReplyRFQDomesticPayment = () => {
 
   const {control, handleSubmit}: any = useForm();
 
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -117,6 +121,7 @@ const ReplyRFQDomesticPayment = () => {
     try {
       const input: CreateRFQReplyInput = {
         id: uuidV4(),
+        SType: 'RFQREFPLY',
         rfqNo: rfqDetails?.rfqNo,
         placeOrigin: rfqDetails?.placeOrigin, // city name
         placeOriginName: rfqDetails?.placeOriginName, // address
@@ -138,7 +143,6 @@ const ReplyRFQDomesticPayment = () => {
         paymentType: type3,
         paymentMethod: type2,
         expiryDate: date,
-        SType: 'RFQREFPLY',
         statusText: 'RFQ Replies Sent',
         qty: qty,
         unit: type,
@@ -514,6 +518,27 @@ const ReplyRFQDomesticPayment = () => {
           title="Expiry Date"
           containerStyle={{marginTop: SIZES.margin}}
         />
+
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Terms & Conditions'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Attach Terms & Conditions"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }

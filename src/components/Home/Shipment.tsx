@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 
-const Shipment = ({transportMode, date, address}: any) => {
+const Shipment = ({landmark, date, address}: any) => {
   return (
     <View
       style={{
@@ -34,7 +34,7 @@ const Shipment = ({transportMode, date, address}: any) => {
         </View>
       </View>
 
-      {/* Transport Mode */}
+      {/* landmark */}
       <View
         style={{
           alignItems: 'center',
@@ -43,20 +43,18 @@ const Shipment = ({transportMode, date, address}: any) => {
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Transport Mode:
-          </Text>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>landmark</Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
             numberOfLines={2}
             style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
-            {transportMode}
+            {landmark}
           </Text>
         </View>
       </View>
 
-      {/* Qty */}
+      {/* Date Available */}
       <View
         style={{
           alignItems: 'center',
@@ -66,7 +64,7 @@ const Shipment = ({transportMode, date, address}: any) => {
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Shipping Date:
+            Date Available:
           </Text>
         </View>
         <View style={{justifyContent: 'center'}}>

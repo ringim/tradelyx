@@ -2,8 +2,6 @@ import {View, Text, StyleSheet, Platform} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
-import dayjs from 'dayjs';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -22,7 +20,6 @@ import {
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {
-  ExpiryDate,
   FormInput,
   Header,
   QuotationProgress2,
@@ -49,10 +46,6 @@ const PackingShipment = () => {
 
   const mapRef = useRef(null);
 
-  const [item, setItem] = useState<any>('International');
-  const [selectedItem, setSelectedItem] = useState<any>(true);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [date, setDate] = useState<any>('');
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
 
@@ -60,20 +53,6 @@ const PackingShipment = () => {
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
   const [jobType, setJobType] = useState<any>(constants.packageType);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format('YYYY-MM-DD');
-    setDate(selectedDate);
-    hideDatePicker();
-  };
 
   // UPDATE REQUEST QUOTATION
   const [doCreateSellOffer] = useMutation<
@@ -89,12 +68,10 @@ const PackingShipment = () => {
     try {
       const input: UpdateSellOfferInput = {
         id: route?.params.sellOfferID,
-        rfqType: item,
         packageDesc: detail,
         packageType: type,
         placeOrigin: address1?.description?.formatted_address,
         landmark,
-        deliveryDate: date,
       };
 
       await doCreateSellOffer({
@@ -136,28 +113,6 @@ const PackingShipment = () => {
         style={{
           marginHorizontal: SIZES.semi_margin,
         }}>
-        {/* source location */}
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: SIZES.padding,
-          }}>
-          {constants.sourceLocation.map((item, index) => {
-            return (
-              <SourceLocationItem
-                key={`SourceLocationItem-${index}`}
-                item={item}
-                selected={item.id == selectedItem}
-                onPress={() => {
-                  setSelectedItem(item.id);
-                  setItem(item?.label);
-                }}
-              />
-            );
-          })}
-        </View>
-
         {/* Package type */}
         <Controller
           control={control}
@@ -340,14 +295,6 @@ const PackingShipment = () => {
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
-
-        {/* select date */}
-        <ExpiryDate
-          date={date}
-          onPress={showDatePicker}
-          title={'Expected Delivery Date'}
-          containerStyle={{marginTop: SIZES.semi_margin, marginBottom: 150}}
-        />
       </View>
     );
   }
@@ -364,13 +311,6 @@ const PackingShipment = () => {
           visible={loading}
           animation={'fade'}
           overlayColor={'rgba(0,0,0,0.5)'}
-        />
-
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
         />
 
         <QuotationProgress2

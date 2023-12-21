@@ -17,10 +17,10 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
 
   // Bottom Sheet
   const snapPoints = useMemo(() => {
-    if (Platform.OS === 'ios') {
+    if (SIZES.height > 700) {
       return ['40%'];
     } else {
-      return ['40%'];
+      return ['50%'];
     }
   }, []);
 
@@ -113,7 +113,7 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
               ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
-            Add sales offers or customize your products
+           Add sales offers or customize your products
           </Text>
         </View>
 

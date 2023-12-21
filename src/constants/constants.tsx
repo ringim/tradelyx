@@ -295,12 +295,14 @@ const categories = [
     id: `0`,
     label: 'Buyer',
     type: 'BUYER',
+    desc: 'Request for Services',
     icon: require('../assets/icons/buy.png'),
   },
   {
     id: `1`,
     label: 'Seller',
     type: 'SELLER',
+    desc: 'Provide Product & Services',
     icon: require('../assets/icons/sell.png'),
   },
 ];
@@ -308,27 +310,51 @@ const categories = [
 const incoterms2 = [
   {
     id: 1,
-    type: 'Free on Board (FOB)',
+    type: 'EXW - Ex Works ',
   },
   {
     id: 2,
-    type: 'Free Alongside Ship (FAS)',
+    type: 'FCA - Free Carrier',
   },
   {
     id: 3,
-    type: 'Free Carrier (FCA)',
+    type: 'CPT - Carriage Paid To',
   },
   {
     id: 4,
-    type: 'Cost Insurance and Freight',
+    type: 'CIP - Carriage and Insurance Paid To',
   },
   {
     id: 5,
-    type: 'Carriage Paid To (CPT)',
+    type: 'DAP - Delivered at Place',
   },
   {
     id: 6,
-    type: 'Carriage and Insurance Paid To (CIP)',
+    type: 'DPU - Delivered at Place Unloaded',
+  },
+  {
+    id: 7,
+    type: 'DDP - Delivered Duty Paid',
+  },
+  {
+    id: 8,
+    type: 'FAS - Free Alongside Ship',
+  },
+  {
+    id: 9,
+    type: 'CIP - Carriage and Insurance Paid To (CIP)',
+  },
+  {
+    id: 10,
+    type: 'FOB - Free on Board',
+  },
+  {
+    id: 11,
+    type: 'CFR - Cost and Freight',
+  },
+  {
+    id: 12,
+    type: 'CIF - Cost, Insurance and Freight',
   },
 ];
 
@@ -348,6 +374,17 @@ const paymentType = [
   {
     id: 4,
     type: 'Documentary Collections',
+  },
+];
+
+const paymentType2 = [
+  {
+    id: 2,
+    type: 'Advance Payment',
+  },
+  {
+    id: 3,
+    type: 'Full Payment',
   },
 ];
 
@@ -374,6 +411,13 @@ const paymentMethod = [
   },
 ];
 
+const paymentMethod2 = [
+  {
+    id: 1,
+    type: 'Wallet',
+  },
+];
+
 const sellerService = [
   {
     id: `0`,
@@ -392,27 +436,55 @@ const sellerService = [
 const filterUnit = [
   {
     id: 1,
-    type: 'Containers',
+    type: 'Kilograms (kg)',
   },
   {
     id: 2,
-    type: 'Tonnes',
+    type: 'Grams (g)',
   },
   {
     id: 3,
-    type: 'Kilograms',
+    type: 'Metric Tonnes (MT)',
   },
   {
     id: 4,
-    type: 'Metric Tonnes',
+    type: 'Tonnes (T)',
   },
   {
     id: 5,
-    type: 'Meter',
+    type: 'Pounds (lb)',
   },
   {
     id: 6,
-    type: 'Yard',
+    type: 'Ounces (oz)',
+  },
+  {
+    id: 7,
+    type: 'Bushels (bu)',
+  },
+  {
+    id: 8,
+    type: 'Bags (bg)',
+  },
+  {
+    id: 9,
+    type: 'Dozen (dz)',
+  },
+  {
+    id: 10,
+    type: 'Crates (cr)',
+  },
+  {
+    id: 11,
+    type: 'Pallets (plt)',
+  },
+  {
+    id: 12,
+    type: 'Truckloads',
+  },
+  {
+    id: 11,
+    type: 'Containers (20ft, 40ft)',
   },
 ];
 
@@ -512,6 +584,10 @@ const contSize = [
     id: 3,
     label: '40 FT HC',
   },
+  {
+    id: 4,
+    label: '45 FT HC',
+  },
 ];
 
 const searchType = [
@@ -553,65 +629,6 @@ const searchType2 = [
   {
     id: 4,
     label: 'Ocean',
-  },
-];
-
-const countries = [
-  {
-    id: 1,
-    type: 'Algeria',
-  },
-  {
-    id: 40,
-    type: 'Brazil',
-  },
-  {
-    id: 13,
-    type: 'Congo',
-  },
-  {
-    id: 21,
-    type: 'Ethiopia',
-  },
-  {
-    id: 11,
-    type: 'Finland',
-  },
-  {
-    id: 13,
-    type: 'India',
-  },
-  {
-    id: 15,
-    type: 'Jamaica',
-  },
-  {
-    id: 10,
-    type: 'Kenya',
-  },
-  {
-    id: 2,
-    type: 'Ghana',
-  },
-  {
-    id: 3,
-    type: 'Nigeria',
-  },
-  {
-    id: 3,
-    type: 'United Arab Emirates',
-  },
-  {
-    id: 3,
-    type: 'United Kingdom',
-  },
-  {
-    id: 3,
-    type: 'USA',
-  },
-  {
-    id: 3,
-    type: 'Zimbabwe',
   },
 ];
 
@@ -674,31 +691,48 @@ const requestType = [
 const businessType = [
   {
     id: 0,
-    type: 'Importer',
+    type: 'Exporter',
+    icon: require('../assets/icons/exporter.png'),
   },
   {
     id: 1,
-    type: 'Exporter',
+    type: 'Importer',
+    icon: require('../assets/icons/importer.png'),
   },
   {
     id: 2,
-    type: 'Trading',
+    type: 'Trade Association',
+    icon: require('../assets/icons/trade.png'),
   },
   {
     id: 3,
-    type: 'Producer',
+    type: 'Manufacturer',
+    icon: require('../assets/icons/manufacturing.png'),
   },
   {
     id: 4,
-    type: 'Association',
+    type: 'Producer',
+    icon: require('../assets/icons/producer.png'),
   },
   {
     id: 5,
-    type: 'Agent',
+    type: 'Reseller/Distributor',
+    icon: require('../assets/icons/distributor.png'),
   },
   {
     id: 6,
-    type: 'Logistics',
+    type: 'Agent',
+    icon: require('../assets/icons/agent.png'),
+  },
+  {
+    id: 7,
+    type: 'Freight Forwarder',
+    icon: require('../assets/icons/freight.png'),
+  },
+  {
+    id: 8,
+    type: 'Logistics Provider',
+    icon: require('../assets/icons/logistics.png'),
   },
 ];
 
@@ -769,7 +803,37 @@ const payType = [
   },
   {
     id: 2,
-    type: 'Instant Payment',
+    type: 'Advance Payment',
+  },
+  {
+    id: 3,
+    type: 'Full Payment',
+  },
+];
+
+const payType3 = [
+  {
+    id: 1,
+    type: 'Full Payment',
+  },
+  {
+    id: 2,
+    type: 'Letter of Credit',
+  },
+  {
+    id: 3,
+    type: 'Free on Board',
+  },
+];
+
+const payType2 = [
+  {
+    id: 1,
+    type: 'Full Payment',
+  },
+  {
+    id: 2,
+    type: 'Advance Payment',
   },
 ];
 
@@ -821,58 +885,13 @@ const storeProducts = [
   },
 ];
 
-const packageType2 = [
-  {
-    id: 1,
-    type: 'Bag',
-    image: require('../assets/icons/bag.png'),
-  },
-  {
-    id: 2,
-    type: 'Box',
-    image: require('../assets/icons/box.png'),
-  },
-  {
-    id: 3,
-    type: 'Crate',
-    image: require('../assets/icons/crate.png'),
-  },
-  {
-    id: 4,
-    type: 'Barrel',
-    image: require('../assets/icons/barrel.png'),
-  },
-  {
-    id: 5,
-    type: 'Pallet',
-    image: require('../assets/icons/pallet.png'),
-  },
-  {
-    id: 6,
-    type: 'Container',
-    image: require('../assets/icons/container.png'),
-  },
-  {
-    id: 8,
-    type: 'Less Truck Load',
-    image: require('../assets/icons/fullTruck.png'),
-  },
-  {
-    id: 9,
-    type: 'Full Truck Load',
-    image: require('../assets/icons/fullTruck.png'),
-  },
-];
-
 export default {
   freightType,
-  countries,
   OrderTabItem,
   requestType,
   weight,
   orderTabs,
   storeProducts,
-  packageType2,
   payType,
   languages,
   exploreTabs,
@@ -898,6 +917,7 @@ export default {
   paymentMethod,
   signUp,
   categories,
+  paymentMethod2,
   sourceLocation,
   sellerService,
   identification,
@@ -905,6 +925,9 @@ export default {
   loadType,
   priceOffer,
   freight,
+  paymentType2,
   RFFType,
   businessType,
+  payType2,
+  payType3,
 };

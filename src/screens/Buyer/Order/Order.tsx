@@ -4,6 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import React, {useState, useCallback, useRef} from 'react';
 import {useQuery} from '@apollo/client';
@@ -86,10 +87,9 @@ const Tabs = ({scrollX, onTabPress}: any) => {
     <View
       ref={containerRef}
       style={{
-        flex: 1,
         flexDirection: 'row',
         backgroundColor: COLORS.Neutral9,
-        borderRadius: SIZES.radius,
+        top: -2
       }}>
       {/* Tab Indicator */}
       {measureLayout.length > 0 && (
@@ -114,16 +114,16 @@ const Tabs = ({scrollX, onTabPress}: any) => {
           <TouchableOpacity
             key={index}
             style={{
-              paddingHorizontal: 5,
+              paddingHorizontal: SIZES.radius,
               justifyContent: 'center',
-              width: 125,
+              width: 130,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View
               style={{
                 backgroundColor: bgColor,
-                padding: SIZES.radius,
-                borderRadius: SIZES.base,
+                paddingVertical: SIZES.height > 700 ? SIZES.radius : SIZES.base,
+                borderRadius: SIZES.margin,
               }}>
               <Animated.Text
                 style={{
@@ -166,7 +166,6 @@ const Order = () => {
         style={{
           flex: 0.07,
           alignItems: 'center',
-          backgroundColor: COLORS.white,
           borderRadius: SIZES.base,
         }}>
         <Tabs scrollX={scrollX} onTabPress={onTabPress} />
@@ -234,7 +233,14 @@ const Order = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral9}}>
-      <TabHeader userImage={user?.logo} />
+      <TabHeader
+        userImage={user?.logo}
+        containerStyle={{
+          paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,
+          height: Platform.OS == 'ios' ? '14%' : '10%',
+          marginBottom: SIZES.base,
+        }}
+      />
       {renderTopTabBar()}
       <ScrollView
         showsVerticalScrollIndicator={false}

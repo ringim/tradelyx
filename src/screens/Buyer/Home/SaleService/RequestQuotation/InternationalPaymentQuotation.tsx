@@ -220,7 +220,7 @@ const InternationalPaymentQuotation = () => {
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
         <Header
-          title={'Request Quotation'}
+          title={'Request for Quotation'}
           contentStyle={{marginBottom: 0}}
           tintColor={COLORS.Neutral1}
         />

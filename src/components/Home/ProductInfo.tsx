@@ -84,7 +84,7 @@ const ProductInfo = ({image, tags, cate, type, name}: any) => {
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Product Name:
+            “Product Title:
           </Text>
         </View>
         <View

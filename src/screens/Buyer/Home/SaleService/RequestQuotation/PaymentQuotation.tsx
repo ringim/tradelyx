@@ -45,12 +45,12 @@ const PaymentQuotation = () => {
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
-  const [jobType, setJobType] = useState<any>(constants.paymentType);
+  const [jobType, setJobType] = useState<any>(constants.payType2);
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod);
+  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod2);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -307,7 +307,7 @@ const PaymentQuotation = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'Request Quotation'} tintColor={COLORS.Neutral1} />
+        <Header title={'Request for Quotation'} tintColor={COLORS.Neutral1} />
 
         <Spinner
           visible={loading}

@@ -100,7 +100,10 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             flex: 1,
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral6}}>RFQ No</Text>
+          <Text
+            style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral6}}>
+            RFQ No
+          </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
@@ -194,7 +197,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
         </Text>
       </View>
 
-      {/* Product Name */}
+      {/* “Product Title */}
       <View
         style={{
           marginTop: SIZES.radius,
@@ -207,7 +210,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            Product Name
+            “Product Title
           </Text>
         </View>
         <View
@@ -250,7 +253,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.qty} bags
+            {item?.qty} {item?.unit}
           </Text>
         </View>
       </View>

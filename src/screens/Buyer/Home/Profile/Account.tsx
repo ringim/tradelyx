@@ -170,7 +170,7 @@ const Account = () => {
     return () => {
       unmounted = false;
     };
-  }, [setValue, route.params?.userAddress]);
+  }, [setValue, route.params?.userAddress, loading]);
 
   const getHomeAddress = async () => {
     await AsyncStorage.getItem('homeAddress').then((value: any) => {

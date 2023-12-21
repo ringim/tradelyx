@@ -16,10 +16,14 @@ import {
   RfqByDateQueryVariables,
   RffByDateQuery,
   RffByDateQueryVariables,
+  RfqByDateReplyQuery,
+  RfqByDateReplyQueryVariables,
+  RffByDateRelyQuery,
+  RffByDateRelyQueryVariables,
 } from '../../../API';
-import {rffByDate} from '../../../queries/RFFQueries';
+import {rffByDate, rffByDateRely} from '../../../queries/RFFQueries';
 import {useAuthContext} from '../../../context/AuthContext';
-import {rfqByDate} from '../../../queries/RFQQueries';
+import {rfqByDate, rfqByDateReply} from '../../../queries/RFQQueries';
 import {OrderStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
 
 const Pending = () => {
@@ -46,6 +50,28 @@ const Pending = () => {
       ?.filter(usrId => usrId?.userID === userID)
       .filter((item: any) => !item?._deleted) || [];
 
+  // LIST RFQs ByDateRely
+  const {data: onData, loading: onLoad} = useQuery<
+    RfqByDateReplyQuery,
+    RfqByDateReplyQueryVariables
+  >(rfqByDateReply, {
+    variables: {
+      SType: 'RFQREFPLY',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
+  // LIST RFFs ByDateRely
+  const {data: softData, loading: softLoad} = useQuery<
+    RffByDateRelyQuery,
+    RffByDateRelyQueryVariables
+  >(rffByDateRely, {
+    variables: {
+      SType: 'RFFREFPLY',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
   // LIST RFFs
   const {
     data: newData,
@@ -68,7 +94,7 @@ const Pending = () => {
 
   const [selectedOption, setSelectedOptions] = useState(true);
   const [fetchingMore, setFetchingMore] = useState<any>(false);
-  const [itemSelected, setItemSelect] = useState<any>('RFF');
+  const [itemSelected, setItemSelect] = useState<any>('RFQ');
 
   const nextToken = newData?.rffByDate?.nextToken;
   const nextToken2 = data?.rfqByDate?.nextToken;
@@ -91,7 +117,7 @@ const Pending = () => {
     setFetchingMore(false);
   };
 
-  if (loading || newLoad) {
+  if (loading || newLoad || onLoad || softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -142,12 +168,19 @@ const Pending = () => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.id}
             renderItem={({item, index}) => {
+              const allRfqByDateReplies =
+                onData?.rfqByDateReply?.items
+                  ?.filter(rfqID => rfqID?.RFQ === item?.id)
+                  ?.filter(usrID => usrID?.userID === userID)
+                  .filter((item: any) => !item?._deleted) || [];
+
               return (
                 <RFQOrderItem
                   key={index}
                   item={item}
                   showHR={true}
                   btn={true}
+                  replyNumber={allRfqByDateReplies?.length || 0}
                   desc={true}
                   type={item?.__typename}
                   serviceImage={
@@ -168,7 +201,7 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allRFQs?.length - 1  ? 300 : 300,
+                  marginBottom: allRFQs?.length - 1 ? 300 : 300,
                 }}>
                 {newLoad && <LoadingIndicator />}
               </View>
@@ -181,12 +214,18 @@ const Pending = () => {
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.id}
             renderItem={({item, index}) => {
+              const allRffByDateRelies =
+                softData?.rffByDateRely?.items
+                  ?.filter(rffID => rffID?.RFF === item.id)
+                  ?.filter(usrID => usrID?.userID === userID)
+                  .filter((item: any) => !item?._deleted) || [];
               return (
                 <RFFOrderItem
                   key={index}
                   item={item}
                   showHR={true}
                   btn={true}
+                  replyNumber={allRffByDateRelies?.length || 0}
                   desc={true}
                   type={item?.__typename}
                   serviceImage={

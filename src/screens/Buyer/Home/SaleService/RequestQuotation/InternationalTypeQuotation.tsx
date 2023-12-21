@@ -120,7 +120,7 @@ const InternationalTypeQuotation = () => {
           marginBottom: 150,
         }}>
         <FormInput
-          label="Product Name"
+          label="“Product Title"
           name="name"
           control={control}
           placeholder="Add product name"
@@ -343,7 +343,7 @@ const InternationalTypeQuotation = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'Request Quotation'} />
+        <Header title={'Request for Quotation'} />
 
         <Spinner
           visible={loading}

@@ -77,7 +77,7 @@ import {
   RFFReplyDetailLand,
   RFFReplyDetailAir,
 } from '../../../screens/Seller';
-import CBottomTabs from './SBottomTabs';
+import SBottomTabs from './SBottomTabs';
 
 const Stack = createSharedElementStackNavigator();
 const options: any = {
@@ -112,7 +112,7 @@ const SellerStack = () => {
       {/* AppStack */}
       <Stack.Screen
         name="Home"
-        component={CBottomTabs}
+        component={SBottomTabs}
         options={{
           gestureEnabled: true,
         }}

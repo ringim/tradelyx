@@ -218,7 +218,7 @@ const RFQReplyDetailStandard = () => {
             }}>
             <Text
               style={{...FONTS.body3, color: COLORS.Neutral6, lineHeight: 24}}>
-              Detail Description
+              Request
             </Text>
             <ViewMoreText
               numberOfLines={5}
@@ -234,7 +234,7 @@ const RFQReplyDetailStandard = () => {
             </ViewMoreText>
           </View>
 
-          {/* Product Name */}
+          {/* “Product Title */}
           <View
             style={{
               marginTop: SIZES.semi_margin,
@@ -251,7 +251,7 @@ const RFQReplyDetailStandard = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Product Name
+                “Product Title
               </Text>
             </View>
             <View

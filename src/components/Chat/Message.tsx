@@ -136,7 +136,7 @@ const Message = (props: any) => {
           },
         ]}
         shouldOpenOnLongPress={true}>
-        {/* first RFF reply */}
+        {/* first RFF request */}
         {message?.text === "Hello, I'll respond to your RFF request soon" && (
           <ServiceReply
             serviceType={message?.serviceType}
@@ -182,7 +182,7 @@ const Message = (props: any) => {
           />
         )}
 
-        {/* first RFf Land reply */}
+        {/* first RFf Land request */}
         {message?.text === "Hello, I've replied your RFF (Land) request" && (
           <ServiceReplyType
             requestID={message?.rffID}
@@ -194,7 +194,7 @@ const Message = (props: any) => {
             packageType={message?.packageType}
             qty={message?.requestQty}
             onPress={() =>
-              navigation.navigate('RFFReplyDetailAir', {
+              navigation.navigate('RFFReplyDetailLand', {
                 rff: message?.requestID,
               })
             }
@@ -213,14 +213,14 @@ const Message = (props: any) => {
             packageType={message?.packageType}
             qty={message?.requestQty}
             onPress={() =>
-              navigation.navigate('RFFReplyDetailAir', {
+              navigation.navigate('RFFReplyDetailOcean', {
                 rff: message?.requestID,
               })
             }
           />
         )}
 
-        {/* first RFQ reply */}
+        {/* first RFQ request */}
         {message?.text === "Hello, I'll respond to your RFQ request soon" && (
           <ServiceReply
             serviceType={message?.serviceType}
@@ -280,7 +280,7 @@ const Message = (props: any) => {
             packageType={message?.packageType}
             qty={message?.requestQty}
             onPress={() =>
-              navigation.navigate('RFQReplyDetailInternational', {
+              navigation.navigate('RFQReplyDetailStandard', {
                 rfq: message?.requestID,
               })
             }
@@ -300,14 +300,14 @@ const Message = (props: any) => {
             packageType={message?.packageType}
             qty={message?.requestQty}
             onPress={() =>
-              navigation.navigate('RFQReplyDetailInternational', {
+              navigation.navigate('RFQReplyDetailDomestic', {
                 rfq: message?.requestID,
               })
             }
           />
         )}
 
-        {/* first sell offer reply */}
+        {/* first sell offer request */}
         {message?.text === "Hello, I'm interested in this Sell Offer" && (
           <SellOfferReply
             imageUri2={imageUri2}
@@ -328,7 +328,7 @@ const Message = (props: any) => {
           />
         )}
 
-        {/* sell offer reply text */}
+        {/* sell offer reply */}
         {message?.text === "Hello, I've replied your Sell Offer request" && (
           <SellOfferReplyType
             imageUri2={imageUri2}
@@ -471,6 +471,7 @@ const Message = (props: any) => {
               <Text
                 style={{
                   color: isMe ? COLORS.NeutralBlue2 : COLORS.white,
+                  fontWeight: '500',
                   ...FONTS.cap1,
                 }}>
                 {message?.text}

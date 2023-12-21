@@ -84,7 +84,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
         <PromoSection />
 
         {/* Balance section */}
-        <BalanceSection />
+        <BalanceSection balance={user?.ledgerBalance} />
 
         {/* Financial Stats */}
         <View

@@ -26,6 +26,7 @@ import {
   OceanFreight,
   LandFreight,
   ReplyDetailOcean,
+  Order,
   ReplyDetailAir,
   ReplyDetailLand,
   ReplyDetailStandard,
@@ -79,6 +80,7 @@ import {
   RFFReplyDetailLand,
   RFFReplyDetailAir,
 } from '../../../screens/Buyer';
+import BBottomTabs from './BBottomTabs';
 
 const Stack = createSharedElementStackNavigator();
 const options: any = {
@@ -112,7 +114,7 @@ const BuyerStack = () => {
       detachInactiveScreens={false}>
       <Stack.Screen
         name="Home"
-        component={IBottomTabs}
+        component={BBottomTabs}
         options={{
           gestureEnabled: true,
         }}
@@ -473,6 +475,11 @@ const BuyerStack = () => {
         options={() => options}
       />
 
+      <Stack.Screen
+        name="Order"
+        component={BBottomTabs}
+        options={() => options}
+      />
       <Stack.Screen
         name="ReplyDetailInternational"
         component={ReplyDetailInternational}

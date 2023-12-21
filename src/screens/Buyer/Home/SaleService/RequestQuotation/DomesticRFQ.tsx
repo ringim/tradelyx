@@ -215,7 +215,7 @@ const DomesticRFQ = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <Header title={'Request Quotation'} />
+        <Header title={'Request for Quotation'} />
 
         <Spinner
           visible={loading}

@@ -287,7 +287,7 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
           </Text>
         </View>
 
-        {/* Product Name */}
+        {/* “Product Title */}
         <View
           style={{
             marginTop: SIZES.radius,
@@ -301,7 +301,7 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
             }}>
             <Text
               style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-              Product Name
+              Product Title
             </Text>
           </View>
           <View
@@ -314,12 +314,12 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
                 fontWeight: '600',
                 color: COLORS.Neutral1,
               }}>
-              {item?.productName}
+              {item?.title}
             </Text>
           </View>
         </View>
 
-        {/*  Supply Capacity */}
+        {/* Quantity Offered */}
         <View
           style={{
             flexDirection: 'row',
@@ -332,7 +332,7 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
             }}>
             <Text
               style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-              Supply Capacity
+              Quantity Offered
             </Text>
           </View>
           <View

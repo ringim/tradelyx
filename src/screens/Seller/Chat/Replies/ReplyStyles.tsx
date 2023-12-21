@@ -14,7 +14,7 @@ export default StyleSheet.create({
     borderRadius: SIZES.radius,
     padding: SIZES.radius,
     backgroundColor: COLORS.Neutral10,
-    marginBottom: 50,
+    // marginBottom: 50,
   },
   container3: {
     marginTop: SIZES.base,

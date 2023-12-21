@@ -15,8 +15,6 @@ import {
   Header,
   TextButton,
   UpdateProfilePhoto,
-  UploadID,
-  UploadedID,
 } from '../../../components';
 import {SetupNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {useAuthContext} from '../../../context/AuthContext';
@@ -28,13 +26,9 @@ import {
 } from '../../../API';
 import {updateUser} from '../../../queries/UserQueries';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
-import {
-  onChangePhoto,
-  selectFile2,
-  uploadFile2,
-  uploadMedia,
-} from '../../../utilities/service';
+import {onChangePhoto, uploadMedia} from '../../../utilities/service';
 import {CountryCodeList} from '../../../../types/types';
+import {DEFAULT_BANNER_IMAGE} from '../../../utilities/Utils';
 
 type CompleteAccountData = {
   phoneNumber: string;
@@ -60,7 +54,6 @@ const CompleteProfile = () => {
   const [uploading, setUploading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhoto1, setSelectedPhoto1] = useState<any | Asset>('');
-  const [singleFile, setSingleFile] = useState<any>([]);
   const [url, setURL] = useState('');
 
   const [open4, setOpen4] = useState(false);
@@ -97,7 +90,7 @@ const CompleteProfile = () => {
       const input: UpdateUserInput = {
         id: userID,
         logo: selectedPhoto,
-        backgroundImage: selectedPhoto1,
+        backgroundImage: selectedPhoto1 || DEFAULT_BANNER_IMAGE,
         country: country,
         address: address?.description?.formatted_address,
         title,
@@ -116,12 +109,6 @@ const CompleteProfile = () => {
       }
       if (selectedPhoto1?.uri) {
         input.backgroundImage = await uploadMedia(selectedPhoto1.uri);
-      }
-      if (singleFile) {
-        const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
-        );
-        input.identityDocs = fileKeys;
       }
 
       await doUpdateUser({
@@ -154,12 +141,7 @@ const CompleteProfile = () => {
   };
 
   function isSubmit() {
-    return (
-      singleFile.length !== 0 &&
-      url !== '' &&
-      selectedPhoto !== '' &&
-      selectedPhoto1 !== ''
-    );
+    return selectedPhoto !== '';
   }
 
   useEffect(() => {
@@ -250,21 +232,6 @@ const CompleteProfile = () => {
             height: 120,
             padding: SIZES.base,
           }}
-        />
-
-        {/* Company Address */}
-        <FormInput
-          label="Company Address"
-          name="address"
-          control={control}
-          // editable={false}
-          placeholder="Add Company Address"
-          rules={{
-            required: 'Company Address is required',
-          }}
-          containerStyle={{marginTop: SIZES.radius}}
-          inputContainerStyle={{marginTop: SIZES.base}}
-          onPress={() => navigation.navigate('BusinessAddress')}
         />
 
         {/* Country */}
@@ -376,6 +343,21 @@ const CompleteProfile = () => {
           containerStyle={{marginTop: SIZES.margin}}
         />
 
+        {/* Company Address */}
+        <FormInput
+          label="Company Address"
+          name="address"
+          control={control}
+          // editable={false}
+          placeholder="Add Company Address"
+          rules={{
+            required: 'Company Address is required',
+          }}
+          containerStyle={{marginTop: SIZES.radius}}
+          inputContainerStyle={{marginTop: SIZES.base}}
+          onPress={() => navigation.navigate('BusinessAddress')}
+        />
+
         {/* zipCode */}
         <FormInput
           control={control}
@@ -483,28 +465,6 @@ const CompleteProfile = () => {
           name="IdNumber"
           containerStyle={{marginTop: SIZES.padding}}
         />
-
-        {/* Upload Identity Doc */}
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            marginTop:
-              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
-          }}>
-          {singleFile?.length >= 1 ? (
-            <UploadedID
-              title={'Company Documents'}
-              file={singleFile}
-              setSingleFile={setSingleFile}
-            />
-          ) : (
-            <UploadID
-              title="Upload Company Documents"
-              onScanPress={() => selectFile2(setSingleFile, singleFile)}
-            />
-          )}
-        </View>
       </View>
     );
   }

@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {FlatList} from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
@@ -24,10 +24,8 @@ import {
   DeleteSellOfferMutationVariables,
 } from '../../../../API';
 import {deleteSellOffer} from '../../../../queries/SellOfferQueries';
-import {ProfileStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 
 const SellOfferDetail = () => {
-  const navigation = useNavigation<ProfileStackNavigatorParamList>();
   const route: any = useRoute<SellOfferDetailRouteProp>();
 
   // console.log(route?.params.sellOffer);
@@ -252,7 +250,7 @@ const SellOfferDetail = () => {
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-                {offerValidity}
+                {dayjs(offerValidity).format('MMMM DD, YYYY')}
               </Text>
             </View>
             <View style={{justifyContent: 'center'}}>
@@ -363,10 +361,48 @@ const SellOfferDetail = () => {
 
           <HR containerStyle={{marginTop: SIZES.padding}} />
 
-          {/* Product Name */}
+          {/*  Sell Offer Title */}
           <View
             style={{
               marginTop: SIZES.semi_margin,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                  lineHeight: 24,
+                }}>
+                Sell Offer Title
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                numberOfLines={3}
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral1,
+                  lineHeight: 24,
+                }}>
+                {title}
+              </Text>
+            </View>
+          </View>
+
+          {/* Product Name */}
+          <View
+            style={{
+              marginTop: SIZES.base,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -401,45 +437,7 @@ const SellOfferDetail = () => {
             </View>
           </View>
 
-          {/* Supply title */}
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                  lineHeight: 24,
-                }}>
-                Supply Capacity
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                numberOfLines={3}
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral1,
-                  lineHeight: 24,
-                }}>
-                {title}
-              </Text>
-            </View>
-          </View>
-
-          {/* Type */}
+          {/* Product Category */}
           <View
             style={{
               marginTop: SIZES.base,
@@ -457,7 +455,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral6,
                   lineHeight: 24,
                 }}>
-                Product Type
+                Product Category
               </Text>
             </View>
             <View
@@ -587,6 +585,7 @@ const SellOfferDetail = () => {
             </View>
           </View>
 
+          {/* Offer Coverage */}
           <View
             style={{
               marginTop: SIZES.base,
@@ -605,7 +604,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral6,
                   lineHeight: 24,
                 }}>
-                Supply Capacity
+                Offer Coverage
               </Text>
             </View>
             <View
@@ -714,7 +713,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral6,
                   lineHeight: 24,
                 }}>
-                Delivery date
+                Date Available
               </Text>
             </View>
             <View
@@ -727,7 +726,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {deliveryDate}
+                {dayjs(deliveryDate).format('MMMM DD, YYYY')}
               </Text>
             </View>
           </View>
@@ -799,20 +798,6 @@ const SellOfferDetail = () => {
 
           <TextButton
             buttonContainerStyle={{
-              marginTop: 40,
-              height: 48,
-            }}
-            label="Edit Product"
-            labelStyle={{...FONTS.h4}}
-            onPress={() =>
-              navigation.navigate('EditSellOfferItem', {
-                sellOffer: route?.params.sellOffer,
-              })
-            }
-          />
-
-          <TextButton
-            buttonContainerStyle={{
               backgroundColor: COLORS.white,
               borderWidth: 1,
               borderColor: COLORS.Rose4,
@@ -820,7 +805,7 @@ const SellOfferDetail = () => {
               height: 48,
               marginBottom: 100,
             }}
-            label="Delete Product"
+            label="Delete Sell Offer"
             labelStyle={{...FONTS.h4, color: COLORS.Rose4}}
             onPress={confirmDelete}
           />

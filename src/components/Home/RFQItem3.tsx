@@ -194,7 +194,7 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         </Text>
       </View>
 
-      {/* Product Name */}
+      {/* “Product Title */}
       <View
         style={{
           marginTop: SIZES.radius,
@@ -207,7 +207,7 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            Product Name
+            “Product Title
           </Text>
         </View>
         <View

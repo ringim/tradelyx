@@ -139,6 +139,7 @@ const RFQReplyDetailDomestic = () => {
 
             <View
               style={{
+                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -260,7 +261,7 @@ const RFQReplyDetailDomestic = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Detail Description
+              Request
             </Text>
             <ViewMoreText
               numberOfLines={5}
@@ -279,7 +280,7 @@ const RFQReplyDetailDomestic = () => {
           {/* Request */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: SIZES.semi_margin,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -313,10 +314,10 @@ const RFQReplyDetailDomestic = () => {
             </View>
           </View>
 
-          {/* Product Name */}
+          {/* “Product Title */}
           <View
             style={{
-              marginTop: SIZES.semi_margin,
+              marginTop: SIZES.base,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -330,7 +331,7 @@ const RFQReplyDetailDomestic = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Product Name
+                “Product Title
               </Text>
             </View>
             <View
@@ -367,7 +368,7 @@ const RFQReplyDetailDomestic = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Qty Required
+                Qty Offered
               </Text>
             </View>
             <View
@@ -379,7 +380,7 @@ const RFQReplyDetailDomestic = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {rfqDetail?.qty} bags
+                {rfqDetail?.qty} {rfqDetail?.unit}
               </Text>
             </View>
           </View>
@@ -482,40 +483,6 @@ const RFQReplyDetailDomestic = () => {
                   color: COLORS.Neutral1,
                 }}>
                 {rfqDetail?.paymentMethod}
-              </Text>
-            </View>
-          </View>
-
-          {/* Unit */}
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                }}>
-                Unit
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.cap1,
-                  color: COLORS.Neutral1,
-                }}>
-                {rfqDetail?.unit}
               </Text>
             </View>
           </View>

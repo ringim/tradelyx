@@ -16,7 +16,9 @@ import {ChatStackNavigatorParamList} from '../../../../components/navigation/Sel
 import {
   Header,
   TextButton,
+  UploadedID,
   FormInput,
+  UploadID,
   ExpiryDate,
 } from '../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
@@ -37,6 +39,7 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
+import {selectFile2} from '../../../../utilities/service';
 
 interface IFreight {
   basePrice: number;
@@ -53,6 +56,7 @@ const ReplyRFQInternationalPayment = () => {
   const {control, handleSubmit}: any = useForm();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
 
@@ -64,7 +68,7 @@ const ReplyRFQInternationalPayment = () => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod);
+  const [jobType2, setJobType2] = useState<any>(constants.payType3);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -351,7 +355,7 @@ const ReplyRFQInternationalPayment = () => {
             <>
               <Text
                 style={{
-                  marginTop: SIZES.semi_margin,
+                  marginTop: SIZES.radius,
                   color: COLORS.Neutral1,
                   ...FONTS.body3,
                 }}>
@@ -430,6 +434,27 @@ const ReplyRFQInternationalPayment = () => {
           title="Expiry Date"
           containerStyle={{marginTop: SIZES.margin}}
         />
+
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Terms & Conditions'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Attach Terms & Conditions"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }

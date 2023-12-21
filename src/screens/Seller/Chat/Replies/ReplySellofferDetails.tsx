@@ -186,7 +186,7 @@ const ReplySellofferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {getSellOfferDetail?.offerValidity}
+              {dayjs(getSellOfferDetail?.offerValidity).format('MMMM DD, YYYY')}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -297,10 +297,48 @@ const ReplySellofferDetails = () => {
 
         <HR containerStyle={{marginTop: SIZES.padding}} />
 
-        {/* Product Name */}
+        {/*  Sell Offer Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
+            flexDirection: 'row',
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Sell Offer Title
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              numberOfLines={3}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {getSellOfferDetail?.title}
+            </Text>
+          </View>
+        </View>
+
+        {/* “Product Name */}
+        <View
+          style={{
+            marginTop: SIZES.base,
             flexDirection: 'row',
             marginHorizontal: SIZES.semi_margin,
             justifyContent: 'space-between',
@@ -335,7 +373,7 @@ const ReplySellofferDetails = () => {
           </View>
         </View>
 
-        {/* Supply title */}
+        {/*  Sell Offer Title */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -354,7 +392,7 @@ const ReplySellofferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Supply Capacity
+              Sell Offer Title
             </Text>
           </View>
           <View
@@ -373,7 +411,7 @@ const ReplySellofferDetails = () => {
           </View>
         </View>
 
-        {/* Type */}
+        {/* Product Category */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -391,7 +429,7 @@ const ReplySellofferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Product Type
+              Product Category
             </Text>
           </View>
           <View
@@ -521,6 +559,7 @@ const ReplySellofferDetails = () => {
           </View>
         </View>
 
+        {/* Offer Coverage */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -539,7 +578,7 @@ const ReplySellofferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Supply Capacity
+              Offer Coverage
             </Text>
           </View>
           <View
@@ -648,7 +687,7 @@ const ReplySellofferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Delivery date
+              Date Available
             </Text>
           </View>
           <View

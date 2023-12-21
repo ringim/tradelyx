@@ -17,6 +17,8 @@ import {
   Header,
   TextButton,
   FormInput,
+  UploadedID,
+  UploadID,
   ExpiryDate,
 } from '../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
@@ -37,6 +39,7 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
+import { selectFile2 } from '../../../../utilities/service';
 
 interface IFreight {
   basePrice: number;
@@ -54,6 +57,7 @@ const ReplyRFQStandardPayment = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [date, setDate] = useState<any>('');
 
   const [open, setOpen] = useState(false);
@@ -508,6 +512,27 @@ const ReplyRFQStandardPayment = () => {
           title="Expiry Date"
           containerStyle={{marginTop: SIZES.padding}}
         />
+
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Terms & Conditions'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Attach Terms & Conditions"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }

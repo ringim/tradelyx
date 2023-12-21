@@ -210,7 +210,7 @@ const LandFreight = () => {
 
         {/* product name */}
         <FormInput
-          label="Product Name"
+          label="“Product Title"
           name="name"
           control={control}
           placeholder="Add product name"

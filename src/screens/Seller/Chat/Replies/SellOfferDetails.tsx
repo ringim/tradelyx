@@ -17,20 +17,22 @@ import {Storage} from 'aws-amplify';
 import {COLORS, SIZES, icons, FONTS} from '../../../../constants';
 import {HR, Header, SOImage} from '../../../../components';
 import {ChatRouteProp} from '../../../../components/navigation/SellerNav/type/navigation';
-import {GetSellOfferQuery, GetSellOfferQueryVariables} from '../../../../API';
-import {getSellOffer} from '../../../../queries/SellOfferQueries';
+import {
+  GetSellOfferReplyQuery,
+  GetSellOfferReplyQueryVariables,
+} from '../../../../API';
+import {getSellOfferReply} from '../../../../queries/SellOfferQueries';
 
 const SellOfferDetails = () => {
   const route: any = useRoute<ChatRouteProp>();
 
-  // console.log(route?.params.sellOffer);
   const [imageUri, setImageUri] = useState<string | any>(null);
 
   const {data, loading} = useQuery<
-    GetSellOfferQuery,
-    GetSellOfferQueryVariables
-  >(getSellOffer, {variables: {id: route?.params?.sellOffer}});
-  const getSellOfferDetail: any = data?.getSellOffer;
+    GetSellOfferReplyQuery,
+    GetSellOfferReplyQueryVariables
+  >(getSellOfferReply, {variables: {id: route?.params?.sellOffer}});
+  const getSellOfferDetail: any = data?.getSellOfferReply;
 
   const options = {
     style: 'decimal',
@@ -80,7 +82,7 @@ const SellOfferDetails = () => {
   }
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <Header title={'Sell Offer Details'} tintColor={COLORS.Neutral1} />
+      <Header title={'Sell Offer Reply Details'} tintColor={COLORS.Neutral1} />
 
       <ScrollView
         style={{marginHorizontal: 5}}
@@ -88,14 +90,14 @@ const SellOfferDetails = () => {
         {/* shipping from  */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: SIZES.semi_margin,
           }}>
           <View
             style={{
-              flex: 1,
+              flex: 1.6,
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
@@ -293,7 +295,7 @@ const SellOfferDetails = () => {
 
         <HR containerStyle={{marginTop: SIZES.padding}} />
 
-        {/* Product Name */}
+        {/* “Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
@@ -313,7 +315,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Product Name
+              “Product Title
             </Text>
           </View>
           <View

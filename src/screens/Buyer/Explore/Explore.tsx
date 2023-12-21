@@ -146,7 +146,7 @@ const Explore = () => {
                 key={index}
                 item={item}
                 item_image={item?.image}
-                item_image2={item?.images[0]}
+                item_image2={item?.sellOfferImage}
                 onPress={() =>
                   navigation.navigate('CompanyDetail', {
                     ID: item?.userID,

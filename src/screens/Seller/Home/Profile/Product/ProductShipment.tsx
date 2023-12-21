@@ -26,14 +26,7 @@ import {
   UpdateProductMutationVariables,
 } from '../../../../../API';
 import {updateProduct} from '../../../../../queries/ProductQueries';
-import {
-  COLORS,
-  FONTS,
-  constants,
-  images,
-  SIZES,
-  icons,
-} from '../../../../../constants';
+import {COLORS, FONTS, images, SIZES, icons} from '../../../../../constants';
 
 const InternationalEngagementTerms = () => {
   const navigation = useNavigation<any>();
@@ -47,11 +40,6 @@ const InternationalEngagementTerms = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
   const [loading, setLoading] = useState(false);
-
-  const [open, setOpen] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [tpMode, setTpMode] = useState('');
-  const [tpModeType, setTpModeType] = useState<any>(constants.freight);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -73,7 +61,7 @@ const InternationalEngagementTerms = () => {
     UpdateProductMutationVariables
   >(updateProduct);
 
-  const onSubmit = async () => {
+  const onSubmit = async ({landmark}: any) => {
     if (loading) {
       return;
     }
@@ -83,7 +71,7 @@ const InternationalEngagementTerms = () => {
         id: route?.params.productID,
         SType: 'JOB',
         placeOrigin: address?.description?.formatted_address,
-        transportMode: tpMode,
+        landmark,
         dateAvailable: date,
       };
       await doUpdateProduct({
@@ -194,86 +182,19 @@ const InternationalEngagementTerms = () => {
           )}
         </SellerLocationMapHeader>
 
-        {/* transport mode */}
-        <Controller
+        <FormInput
+          label="Landmark"
+          name="landmark"
           control={control}
-          name="transportMode"
+          placeholder="Enter a landmark or full address"
           rules={{
-            required: 'Transport Mode is required',
+            required: 'Landmark is required',
           }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: address ? SIZES.padding : 60}}>
-              <Text
-                style={{
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                }}>
-                Transport Mode
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open}
-                showArrowIcon={true}
-                placeholder="Select Transport Mode"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1}
-                items={tpModeType}
-                setOpen={setOpen}
-                setValue={setValue1}
-                setItems={setTpModeType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Choose Transport Mode"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setTpMode(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
+          containerStyle={{
+            marginTop: address ? -SIZES.padding * 1.3 : 0,
+          }}
+          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
+          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
 
         {/* select date */}

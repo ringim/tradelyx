@@ -205,7 +205,7 @@ const ReplyRFQInternational = () => {
                   ...FONTS.h5,
                   color: COLORS.Neutral1,
                 }}>
-                {rfqDetails?.placeDestination}
+                {rfqDetails?.placeDestinationName}
               </Text>
             </View>
           </View>
@@ -316,7 +316,7 @@ const ReplyRFQInternational = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Detail Description
+              Request
             </Text>
             <ViewMoreText
               numberOfLines={5}
@@ -336,7 +336,7 @@ const ReplyRFQInternational = () => {
           {/* Request */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: SIZES.semi_margin,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -370,10 +370,10 @@ const ReplyRFQInternational = () => {
             </View>
           </View>
 
-          {/* Product Name */}
+          {/* “Product Title */}
           <View
             style={{
-              marginTop: SIZES.radius,
+              marginTop: SIZES.base,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -387,7 +387,7 @@ const ReplyRFQInternational = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Product Name
+                “Product Title
               </Text>
             </View>
             <View
@@ -433,7 +433,7 @@ const ReplyRFQInternational = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {rfqDetails?.qty} bags
+                {rfqDetails?.qty} {rfqDetails?.unit}
               </Text>
             </View>
           </View>
@@ -536,40 +536,6 @@ const ReplyRFQInternational = () => {
                   color: COLORS.Neutral1,
                 }}>
                 {rfqDetails?.paymentMethod}
-              </Text>
-            </View>
-          </View>
-
-          {/* Unit */}
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                }}>
-                Unit
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.cap1,
-                  color: COLORS.Neutral1,
-                }}>
-                {rfqDetails?.unit}
               </Text>
             </View>
           </View>

@@ -7,7 +7,7 @@ import {Storage} from 'aws-amplify';
 import {SIZES, COLORS, images, icons} from '../../constants';
 import {DEFAULT_PROFILE_IMAGE} from '../../utilities/Utils';
 
-const TabHeader = ({userImage}: any) => {
+const TabHeader = ({userImage, containerStyle}: any) => {
   const navigation = useNavigation<any>();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -25,9 +25,11 @@ const TabHeader = ({userImage}: any) => {
   return (
     <View
       style={{
-        paddingTop: Platform.OS == 'ios' ? 45 : SIZES.radius,
-        height: Platform.OS == 'ios' ? '14%' : '10%',
+        paddingTop: SIZES.height > 700 ? 55 : SIZES.semi_margin,
+        height: SIZES.height > 700 ? 100 : 70,
+        marginBottom: SIZES.margin,
         backgroundColor: COLORS.white,
+        ...containerStyle
       }}>
       <View
         style={{

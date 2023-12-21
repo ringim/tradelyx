@@ -109,7 +109,6 @@ type Order @model @auth(rules: [{allow: public}]) {
   orderDate: Float
   paidThrough: String
   paymentResponse: String
-  agreement: String
 
   userID: ID! @index(name: "byUser")
 }
@@ -172,13 +171,13 @@ type SellOfferReply @model @auth(rules: [{allow: public}]) {
       queryField: "sellOffersByDateRely"
       sortKeyFields: ["createdAt"]
     )
-  sellOfferID: String!
   requestCategory: String
   title: String
   tags: [String]
   productName: String
   description: String
   packageDesc: String
+  sellOfferID: String
   sellOfferImage: String
   image: String
   images: [String]
@@ -280,6 +279,7 @@ type RFQReply @model @auth(rules: [{allow: public}]) {
   forUserID: String
   userID: String
   statusText: String
+  agreement: String
 
   RFQ: ID! @index(name: "byRFQ")
 }
@@ -419,6 +419,7 @@ type Product @model @auth(rules: [{allow: public}]) {
   rating: Float
   tags: [String]
   productCert: String
+  landmark: String
   supplyCapacity: String
   minOrderQty: String
   packageType: String
@@ -485,7 +486,7 @@ type User @model @auth(rules: [{allow: public}]) {
   logo: String
   backgroundImage: String
   images: [String]
-  businessType: String
+  businessType: [String]
   certifications: String
   certsDoc: [String]
   mainMarkets: [String]

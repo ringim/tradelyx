@@ -4,6 +4,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import React, {useState, useCallback, useRef} from 'react';
 import {useQuery} from '@apollo/client';
@@ -85,9 +86,9 @@ const Tabs = ({scrollX, onTabPress}: any) => {
     <View
       ref={containerRef}
       style={{
-        flex: 1,
         flexDirection: 'row',
-        backgroundColor: COLORS.lightYellow,
+        backgroundColor: COLORS.Neutral9,
+        top: -2
       }}>
       {/* Tab Indicator */}
       {measureLayout.length > 0 ? (
@@ -114,22 +115,20 @@ const Tabs = ({scrollX, onTabPress}: any) => {
           <TouchableOpacity
             key={index}
             style={{
-              paddingHorizontal: 5,
               justifyContent: 'center',
-              width: 180,
+              width: 210,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View
               style={{
                 backgroundColor: bgColor,
-                padding: SIZES.radius,
-                borderRadius: SIZES.base,
+                paddingVertical: SIZES.height > 700 ? SIZES.radius : SIZES.base,
+                borderRadius: SIZES.margin,
               }}>
               <Animated.Text
                 style={{
                   color: textColor,
                   ...FONTS.h5,
-                  fontWeight: 'bold',
                   textAlign: 'center',
                 }}>
                 {item.label}
@@ -158,10 +157,7 @@ const Explore = () => {
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator
-          size={'large'}
-          color={COLORS.primary6}
-        />
+        <ActivityIndicator size={'large'} color={COLORS.primary6} />
       </View>
     );
   }
@@ -178,6 +174,7 @@ const Explore = () => {
         style={{
           flex: 0.07,
           alignItems: 'center',
+          backgroundColor: COLORS.white,
           borderRadius: SIZES.base,
         }}>
         <Tabs scrollX={scrollX} onTabPress={onTabPress} />
@@ -232,7 +229,14 @@ const Explore = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral9}}>
-      <TabHeader userImage={user?.logo} />
+      <TabHeader
+        userImage={user?.logo}
+        containerStyle={{
+          paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,
+          height: Platform.OS == 'ios' ? '14%' : '10%',
+          marginBottom: SIZES.base,
+        }}
+      />
 
       {renderTopTabBar()}
 

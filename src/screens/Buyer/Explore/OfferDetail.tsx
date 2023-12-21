@@ -19,7 +19,7 @@ import {
   HomeStackNavigatorParamList,
   OfferDetailRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
-import {getUser, listUsers} from '../../../queries/UserQueries';
+import {getUser} from '../../../queries/UserQueries';
 import {
   CreateChatRoomMutation,
   CreateChatRoomMutationVariables,
@@ -29,8 +29,6 @@ import {
   GetUserQueryVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
-  ListUsersQuery,
-  ListUsersQueryVariables,
   CreateMessageMutation,
   CreateMessageMutationVariables,
   MessageStatus,
@@ -80,20 +78,28 @@ const OfferDetail = () => {
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
-  const allChatRoomUsers: any = newData?.listUserChatRooms?.items.find(
+  const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
     usrID => usrID?.userId === userID,
   );
+  const newArray = allChatRoomUsers?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
-  // LIST USERS
-  const {data: onData, loading: onLoad} = useQuery<
-    ListUsersQuery,
-    ListUsersQueryVariables
-  >(listUsers);
-  const crUsers = onData?.listUsers?.items.some(usrID =>
-    usrID?.ChatRooms?.items.find(
-      crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
-    ),
-  );
+  // GET USER 1
+  const {data: softData, loading: softLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+  const userDetail: any = softData?.getUser?.ChatRooms?.items;
+  const newArray2 = userDetail?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -125,8 +131,11 @@ const OfferDetail = () => {
     }
     setIsSubmitting(true);
     try {
+      const similarChatRoomIDs = newArray?.filter((obj1: any) =>
+        newArray2?.some((obj2: any) => obj1?.chatRoomId === obj2?.chatRoomId),
+      );
       // if chatRoom exist with user
-      if (crUsers === true) {
+      if (similarChatRoomIDs?.length > 0) {
         // initial message
         const res = await doCreateMessage({
           variables: {
@@ -143,7 +152,7 @@ const OfferDetail = () => {
               requestQty: route?.params?.detail?.qtyMeasure,
               requestPrice: route?.params?.detail?.basePrice,
               serviceType: serviceType?.SELLOFFERS,
-              chatroomID: allChatRoomUsers?.chatRoomId,
+              chatroomID: similarChatRoomIDs[0]?.chatRoomId,
             },
           },
         });
@@ -152,7 +161,7 @@ const OfferDetail = () => {
           await doUpdateChatRoom({
             variables: {
               input: {
-                id: allChatRoomUsers?.chatRoomId,
+                id: similarChatRoomIDs[0]?.chatRoomId,
                 SType: 'CHATROOM',
                 chatRoomLastMessageId: newMessage,
               },
@@ -161,7 +170,7 @@ const OfferDetail = () => {
         };
         updateLastMessage(res?.data?.createMessage?.id);
         navigation.navigate('Chat', {
-          id: allChatRoomUsers?.chatRoomId,
+          id: similarChatRoomIDs[0]?.chatRoomId,
         });
       } else {
         // create a new chatRoom
@@ -277,7 +286,7 @@ const OfferDetail = () => {
     };
   }, [images[0]]);
 
-  if (onLoad || newLoad || loading) {
+  if (newLoad || softLoad || loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />
@@ -305,7 +314,7 @@ const OfferDetail = () => {
             image={image}
             title={route?.params?.detail?.title}
             unit={route?.params?.detail?.unit}
-            deliveryDate={route?.params?.detail?.deliveryDate}
+            deliveryDate={route?.params?.detail?.offerValidity}
             paymentType={route?.params?.detail?.paymentType}
             fobPrice={route?.params?.detail?.fobPrice}
             qtyMeasure={route?.params?.detail?.qtyMeasure}
@@ -317,6 +326,8 @@ const OfferDetail = () => {
             packageDesc={route?.params?.detail?.packageDesc}
             description={route?.params?.detail?.description}
             onPress={onPress}
+            image={image}
+            images={images}
             offerValidity={route?.params?.detail?.offerValidity}
           />
 
@@ -332,9 +343,9 @@ const OfferDetail = () => {
             iconStyle={COLORS.primary1}
             onPress={() => navigation.navigate('ViewAgreement')}
             containerStyle={{
-              marginBottom: SIZES.margin,
+              marginBottom: SIZES.padding * 2.5,
               backgroundColor: COLORS.white,
-              marginTop: SIZES.semi_margin,
+              marginTop: SIZES.radius,
               width: 350,
             }}
           />

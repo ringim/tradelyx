@@ -115,7 +115,7 @@ const SellOfferReply = ({
                 height: 30,
                 borderRadius: SIZES.base,
                 marginTop: SIZES.radius,
-                width: 230,
+                width: 200,
               }}
               labelStyle={{...FONTS.cap1, fontWeight: '600'}}
               label="Reply Sell Offer"

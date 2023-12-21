@@ -8,7 +8,7 @@ import TextButton from '../Button/TextButton';
 const RFQOrderItem = ({
   item,
   onPress,
-  replies,
+  replyNumber,
   showHR,
   status,
   btn,
@@ -75,6 +75,7 @@ const RFQOrderItem = ({
             {/* from location */}
             <View
               style={{
+                flex: item?.rfqType !== 'INTERNATIONAL' ? 1 : 0,
                 justifyContent: 'center',
               }}>
               <FastImage
@@ -86,7 +87,7 @@ const RFQOrderItem = ({
             <View
               style={{
                 flex: item?.rfqType !== 'INTERNATIONAL' ? 0 : 6,
-                marginLeft: SIZES.base,
+                marginLeft: SIZES.padding,
                 justifyContent: 'center',
               }}>
               <Text
@@ -234,7 +235,7 @@ const RFQOrderItem = ({
             borderRadius: SIZES.base,
             marginTop: SIZES.semi_margin,
           }}
-          label={`Show ${type} Replies`}
+          label={`Show ${type} Replies (${replyNumber})`}
           labelStyle={{...FONTS.h5}}
           onPress={onPress}
         />

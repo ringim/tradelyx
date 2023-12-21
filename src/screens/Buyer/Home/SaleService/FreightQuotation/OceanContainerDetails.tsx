@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -47,9 +47,9 @@ const OceanContainerDetails = () => {
   const {userID} = useAuthContext();
 
   const [loading, setLoading] = useState(false);
-  const [selectedOption, setSelectedOptions] = useState(true);
+  const [selectedOption, setSelectedOptions] = useState('');
   const [contType, setContType] = useState('FCL');
-  const [selectedOption2, setSelectedOptions2] = useState(true);
+  const [selectedOption2, setSelectedOptions2] = useState<any>('');
   const [contSize, setContSize] = useState('20 FT');
 
   const [open, setOpen] = useState(false);
@@ -96,13 +96,17 @@ const OceanContainerDetails = () => {
     }
   };
 
+  function isSubmit() {
+    return selectedOption !== '' && selectedOption2 !== ''
+  }
+
   function requestForm() {
     return (
       <View
         style={{
           marginTop: SIZES.semi_margin,
           marginHorizontal: SIZES.semi_margin,
-          marginBottom: 200
+          marginBottom: 200,
         }}>
         {/* container detail */}
         <View style={{marginTop: SIZES.semi_margin}}>
@@ -146,22 +150,28 @@ const OceanContainerDetails = () => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            {constants.contSize.map((item: any, index: any) => {
-              return (
+            <FlatList
+              data={constants.contSize}
+              keyExtractor={item => `${item?.id}`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => (
                 <ContainerType
-                  key={`ContainerType-${index}`}
+                  key={index}
                   item={item}
-                  selected={item.id == selectedOption2}
+                  textStyle={{...FONTS.cap1}}
+                  selected={item.id === selectedOption2}
                   containerStyle={{
-                    width: 105,
+                    width: 90,
+                    marginRight: SIZES.radius,
                   }}
                   onPress={() => {
-                    setSelectedOptions2(item.id);
+                    setSelectedOptions2(item?.id);
                     setContSize(item.label);
                   }}
                 />
-              );
-            })}
+              )}
+            />
           </View>
         </View>
 
@@ -173,7 +183,7 @@ const OceanContainerDetails = () => {
             required: 'Container type is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{marginTop: SIZES.padding}}>
+            <View style={{marginTop: SIZES.semi_margin}}>
               <Text
                 style={{
                   color: COLORS.Neutral1,
@@ -247,51 +257,9 @@ const OceanContainerDetails = () => {
           )}
         />
 
-        {/* Weight */}
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            marginTop: SIZES.base,
-          }}>
-          <View style={{flex: 0.95, justifyContent: 'center'}}>
-            <FormInput
-              label="Weight"
-              name="weight"
-              control={control}
-              keyboardType={'numeric'}
-              placeholder="Add nominal"
-              rules={{
-                required: 'weight is required',
-              }}
-              containerStyle={{marginTop: SIZES.semi_margin}}
-              labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-              inputContainerStyle={{marginTop: SIZES.base}}
-            />
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              backgroundColor: COLORS.lightYellow,
-              width: 55,
-              height: 50,
-              top: 40,
-              borderRadius: SIZES.semi_margin,
-            }}>
-            <Text
-              style={{
-                ...FONTS.h5,
-                color: COLORS.Neutral6,
-                textAlign: 'center',
-              }}>
-              Kg
-            </Text>
-          </View>
-        </View>
-
-        {/* Qty Handler */}
+        {/* Container Count */}
         <FormInput
-          label="Quantity"
+          label=" Container Count"
           name="qty"
           control={control}
           rules={{
@@ -299,9 +267,9 @@ const OceanContainerDetails = () => {
           }}
           keyboardType={'numeric'}
           placeholder="Add your quantity"
-          containerStyle={{marginTop: SIZES.semi_margin}}
+          containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.radius}}
+          inputContainerStyle={{marginTop: SIZES.base}}
         />
       </View>
     );
@@ -353,7 +321,12 @@ const OceanContainerDetails = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7
+            }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}
           />

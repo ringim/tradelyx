@@ -130,9 +130,9 @@ const AppNav = ({onBoarded}: any) => {
   }, [connection]);
 
   // IF NO NETWORK CONNECTION
-  if (!connection) {
-    return <NoInternet />;
-  }
+  // if (!connection) {
+  //   return <NoInternet />;
+  // }
 
   // STACK SCREENS
   let stackScreens = null;

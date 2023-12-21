@@ -112,7 +112,7 @@ const SellOfferReplyType = ({
                 height: 30,
                 borderRadius: SIZES.base,
                 marginTop: SIZES.radius,
-                width: 230,
+                width: 200,
                 backgroundColor: COLORS.white,
                 borderWidth: 1,
                 borderColor: COLORS.primary1,

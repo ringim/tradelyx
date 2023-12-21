@@ -1,4 +1,4 @@
-import {View, Text, Platform} from 'react-native';
+import {View, Text, Platform, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {useMutation} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -46,7 +46,6 @@ import {allCategories, crateTypes} from '../../../../../../types/types';
 interface IAddProduct {
   title: string;
   desc: string;
-  cert: string;
   file: any;
 }
 
@@ -61,16 +60,12 @@ const AddProducts = () => {
   const [loading, setLoading] = useState(false);
   const [singleFile, setSingleFile] = useState<any>([]);
   const [initialTags, setInitialTags] = useState([]);
+  const [productCert, setProductCert] = useState('');
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState<any>('');
   const [jobType, setJobType] = useState<any>(allCategories);
-
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [type2, setType2] = useState<any>('');
-  const [jobType2, setJobType2] = useState<any>(crateTypes);
 
   // CREATE REQUEST QUOTATION
   const [doCreateProduct] = useMutation<
@@ -78,7 +73,7 @@ const AddProducts = () => {
     CreateProductMutationVariables
   >(createProduct);
 
-  const onSubmit = async ({cert, file, desc, title}: IAddProduct) => {
+  const onSubmit = async ({file, desc, title}: IAddProduct) => {
     if (loading) {
       return;
     }
@@ -93,9 +88,8 @@ const AddProducts = () => {
         title,
         description: desc,
         productCertDocs: file,
-        productCert: cert,
+        productCert,
         category: type,
-        commodityCategory: type2,
         rating: 0,
         userID,
       };
@@ -174,90 +168,6 @@ const AddProducts = () => {
           )}
         </View>
 
-        {/* Commodity Category Type */}
-        <Controller
-          control={control}
-          name="category"
-          rules={{
-            required: 'Category type is required',
-          }}
-          render={({field: {onChange}, fieldState: {error}}: any) => (
-            <View>
-              <Text
-                style={{
-                  marginTop: SIZES.margin,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Product Type
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'id',
-                }}
-                open={open2}
-                showArrowIcon={true}
-                placeholder="Select product category"
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value2}
-                onChangeValue={onChange}
-                items={jobType2}
-                setOpen={setOpen2}
-                setValue={setValue2}
-                setItems={setJobType2}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 25,
-                  height: 25,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select your category"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setType2(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                    marginBottom: 2,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
-        />
-
         {/* Category Type */}
         <Controller
           control={control}
@@ -320,7 +230,7 @@ const AddProducts = () => {
                 modalContentContainerStyle={{
                   paddingHorizontal: SIZES.padding * 3,
                 }}
-                modalTitle="Select your category"
+                modalTitle="Select Product Category"
                 modalTitleStyle={{
                   fontWeight: '600',
                 }}
@@ -387,17 +297,39 @@ const AddProducts = () => {
         />
 
         {/* Certification */}
-        <FormInput
-          label="Product Certification"
-          name="cert"
-          control={control}
-          rules={{
-            required: 'Product certification is required',
-          }}
-          placeholder="e.g Organic, Non-GMO, SON, ISO"
-          containerStyle={{marginTop: SIZES.radius}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-        />
+        <View
+          style={{
+            marginTop: SIZES.radius,
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Product Certification
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={setProductCert}
+            value={productCert}
+            placeholder="e.g Organic, Non-GMO, SON, ISO"
+            placeholderTextColor={COLORS.gray}
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              marginTop: SIZES.base,
+              paddingTop: SIZES.base,
+              height: 50,
+              fontWeight: '500',
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              marginBottom: 120,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
 
         {/* upload docs */}
         <View

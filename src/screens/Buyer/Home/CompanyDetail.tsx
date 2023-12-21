@@ -30,10 +30,8 @@ import {
   GetUserQueryVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
-  ListUsersQuery,
-  ListUsersQueryVariables,
 } from '../../../API';
-import {getUser, listUsers} from '../../../queries/UserQueries';
+import {getUser} from '../../../queries/UserQueries';
 import {
   createChatRoom,
   createUserChatRoom,
@@ -83,24 +81,32 @@ const CompanyDetail = () => {
   const nextToken = newData?.productByDate?.nextToken;
 
   // LIST CHAT ROOM USERS
-  const {data: softData} = useQuery<
+  const {data: softData, loading: softLoad} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
-  const allChatRoomUsers = softData?.listUserChatRooms?.items.find(
+  const allChatRoomUsers: any = softData?.listUserChatRooms?.items.filter(
     usrID => usrID?.userId === ID,
   );
+  const newArray = allChatRoomUsers?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
-   // LIST USERS
+  // GET USER 1
   const {data: onData, loading: onLoad} = useQuery<
-    ListUsersQuery,
-    ListUsersQueryVariables
-  >(listUsers);
-  const crUsers = onData?.listUsers?.items.some(usrID =>
-    usrID?.ChatRooms?.items.find(
-      crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
-    ),
-  );
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+  const userDetail: any = onData?.getUser?.ChatRooms?.items;
+  const newArray2 = userDetail?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
   // CREATE CHATROOM
   const [doCreateChatRoom] = useMutation<
@@ -120,10 +126,13 @@ const CompanyDetail = () => {
     }
     setIsSubmitting(true);
     try {
+      const similarChatRoomIDs = newArray?.filter((obj1: any) =>
+        newArray2?.some((obj2: any) => obj1?.chatRoomId === obj2?.chatRoomId),
+      );
       // if chatRoom exist with user
-      if (crUsers === true) {
+      if (similarChatRoomIDs?.length > 0) {
         navigation.navigate('Chat', {
-          id: allChatRoomUsers?.chatRoomId,
+          id: similarChatRoomIDs[0]?.chatRoomId,
           offerDetail: route?.params?.detail,
         });
       } else {
@@ -191,7 +200,7 @@ const CompanyDetail = () => {
     }
   };
 
-  if (newLoad || loading || onLoad) {
+  if (newLoad || loading || softLoad || onLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />
@@ -257,7 +266,7 @@ const CompanyDetail = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: allProducts?.length - 1  ? 300 : 300,
+                marginBottom: allProducts?.length - 1 ? 300 : 300,
               }}
             />
           }

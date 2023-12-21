@@ -300,7 +300,7 @@ const ReplyDetailInternational = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Detail Description
+              Request
             </Text>
             <ViewMoreText
               numberOfLines={5}
@@ -326,7 +326,7 @@ const ReplyDetailInternational = () => {
           {/* Request */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: SIZES.semi_margin,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -360,10 +360,10 @@ const ReplyDetailInternational = () => {
             </View>
           </View>
 
-          {/* Product Name */}
+          {/* “Product Title */}
           <View
             style={{
-              marginTop: SIZES.radius,
+              marginTop: SIZES.base,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -377,7 +377,7 @@ const ReplyDetailInternational = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Product Name
+                “Product Title
               </Text>
             </View>
             <View
@@ -411,7 +411,7 @@ const ReplyDetailInternational = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Qty Required
+                Qty Offered
               </Text>
             </View>
             <View
@@ -423,7 +423,7 @@ const ReplyDetailInternational = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {route?.params?.sellerItem?.qty} bags
+                {route?.params?.sellerItem?.qty} {route?.params?.sellerItem?.unit}
               </Text>
             </View>
           </View>
@@ -526,40 +526,6 @@ const ReplyDetailInternational = () => {
                   color: COLORS.Neutral1,
                 }}>
                 {route?.params?.sellerItem?.paymentMethod}
-              </Text>
-            </View>
-          </View>
-
-          {/* Unit */}
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                }}>
-                Unit
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.cap1,
-                  color: COLORS.Neutral1,
-                }}>
-                {route?.params?.sellerItem?.unit}
               </Text>
             </View>
           </View>
@@ -756,14 +722,14 @@ const ReplyDetailInternational = () => {
           </View>
 
           {/* button */}
-          <TextButton
+          {/* <TextButton
             label={'Accept Offer'}
             onPress={() => navigation.navigate('ViewAgreement')}
             buttonContainerStyle={{
               marginTop: SIZES.padding,
               width: 300,
             }}
-          />
+          /> */}
 
           <TextButton
             label={'Decline Offer'}

@@ -251,7 +251,7 @@ const ReplyDetailStandard = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Detail Description
+              Request
             </Text>
             <ViewMoreText
               numberOfLines={5}
@@ -277,7 +277,7 @@ const ReplyDetailStandard = () => {
           {/* Request */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: SIZES.semi_margin,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -328,7 +328,7 @@ const ReplyDetailStandard = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                Qty Required
+                Qty Offered
               </Text>
             </View>
             <View
@@ -340,7 +340,8 @@ const ReplyDetailStandard = () => {
                   ...FONTS.cap1,
                   color: COLORS.Neutral1,
                 }}>
-                {route?.params?.sellerItem?.qty} bags
+                {route?.params?.sellerItem?.qty}{' '}
+                {route?.params?.sellerItem?.unit}
               </Text>
             </View>
           </View>
@@ -409,40 +410,6 @@ const ReplyDetailStandard = () => {
                   color: COLORS.Neutral1,
                 }}>
                 {route?.params?.sellerItem?.paymentMethod}
-              </Text>
-            </View>
-          </View>
-
-          {/* Unit */}
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                }}>
-                Unit
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.cap1,
-                  color: COLORS.Neutral1,
-                }}>
-                {route?.params?.sellerItem?.unit}
               </Text>
             </View>
           </View>
@@ -543,14 +510,14 @@ const ReplyDetailStandard = () => {
           </View>
 
           {/* button */}
-          <TextButton
+          {/* <TextButton
             label={'Accept Offer'}
             onPress={() => navigation.navigate('ViewAgreement')}
             buttonContainerStyle={{
               marginTop: SIZES.padding,
               width: 300,
             }}
-          />
+          /> */}
 
           <TextButton
             label={'Decline Offer'}

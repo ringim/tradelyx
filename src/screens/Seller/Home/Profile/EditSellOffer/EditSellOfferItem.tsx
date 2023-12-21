@@ -255,7 +255,7 @@ const EditSellOfferItem = () => {
 
         {/* Product name */}
         <FormInput
-          label="Product Name"
+          label="“Product Title"
           name="productName"
           control={control}
           placeholder="e.g. Fresh Tomato"

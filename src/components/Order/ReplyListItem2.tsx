@@ -9,6 +9,7 @@ import TextButton from '../Button/TextButton';
 import {GetUserQuery, GetUserQueryVariables, RFFReply} from '../../API';
 import {getUser} from '../../queries/UserQueries';
 import {DEFAULT_PROFILE_IMAGE} from '../../utilities/Utils';
+import HR from '../Others/HR';
 
 interface IReplyListItem {
   item: RFFReply | any;
@@ -126,7 +127,7 @@ const ReplyListItem2 = ({
       </Pressable>
 
       <View>
-        {/* Product Name */}
+        {/* “Product Title */}
         <View
           style={{
             marginTop: SIZES.base,
@@ -186,7 +187,7 @@ const ReplyListItem2 = ({
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.sh3, color: COLORS.Neutral6}}>
-              Expected Delivery Date:
+              Date Available:
             </Text>
           </View>
           <View
@@ -225,54 +226,25 @@ const ReplyListItem2 = ({
               fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
-            ₦{parseFloat(item?.budget).toFixed(2)}
+            ₦{item?.budget?.toLocaleString('en-US', options)}
           </Text>
         </View>
       </View>
 
-      {/* Price */}
-      <View
-        style={{
-          marginTop: SIZES.semi_margin,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.Neutral9,
-          borderBottomLeftRadius: SIZES.radius,
-          borderBottomRightRadius: SIZES.radius,
-          padding: SIZES.semi_margin,
-        }}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text
-            style={{
-              ...FONTS.body3,
-              fontWeight: '500',
-              color: COLORS.Neutral6,
-            }}>
-            Base Price (FOB)
-          </Text>
-          <Text
-            style={{
-              ...FONTS.h3,
-              color: COLORS.primary1,
-              letterSpacing: -1,
-              paddingTop: SIZES.base,
-            }}>
-            ₦{item?.price.toLocaleString('en-US', options)}
-          </Text>
-        </View>
+      <HR containerStyle={{marginTop: SIZES.radius}} />
 
-        <TextButton
-          buttonContainerStyle={{
-            height: 45,
-            borderRadius: SIZES.radius,
-            width: 100,
-            justifyContent: 'center',
-            marginTop: 0,
-          }}
-          label="View"
-          onPress={onPress}
-        />
-      </View>
+      <TextButton
+        buttonContainerStyle={{
+          height: 45,
+          borderRadius: SIZES.radius,
+          width: '80%',
+          justifyContent: 'center',
+          marginTop: SIZES.radius,
+          marginBottom: SIZES.radius,
+        }}
+        label="View"
+        onPress={onPress}
+      />
     </View>
   );
 };

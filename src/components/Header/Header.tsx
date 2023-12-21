@@ -21,8 +21,8 @@ const Header = ({
   return (
     <View
       style={{
-        paddingTop: Platform.OS == 'ios' ? 60 : SIZES.radius,
-        height: Platform.OS === 'android' ? 70 : 115,
+        paddingTop: SIZES.height > 700 ? 60 : 30,
+        height: SIZES.height > 700 ? 100 : 70,
         backgroundColor: COLORS.white,
         ...contentStyle,
       }}>
@@ -69,7 +69,7 @@ const Header = ({
           <>
             <TouchableOpacity
               onPress={onOther}
-              style={{justifyContent: 'center',}}>
+              style={{justifyContent: 'center'}}>
               <FastImage
                 source={icon}
                 resizeMode={FastImage.resizeMode.contain}
@@ -83,7 +83,11 @@ const Header = ({
 
             <TouchableOpacity
               onPress={onOther2}
-              style={{marginLeft: SIZES.base, justifyContent: 'center', left: 10}}>
+              style={{
+                marginLeft: SIZES.base,
+                justifyContent: 'center',
+                left: 10,
+              }}>
               <FastImage
                 source={icons.share}
                 resizeMode={FastImage.resizeMode.contain}

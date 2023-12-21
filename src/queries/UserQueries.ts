@@ -1,5 +1,27 @@
 import {gql} from '@apollo/client';
 
+export const listChatRoom = gql`
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      ChatRooms {
+        items {
+          chatRoom {
+            id
+            users {
+              items {
+                user {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const getUser = gql`
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -54,9 +76,11 @@ export const getUser = gql`
           userId
           chatRoom {
             id
-            newMessages
-            imageUri
             createdAt
+            SType
+            newMessages
+            name
+            imageUri
             updatedAt
             chatRoomLastMessageId
             __typename

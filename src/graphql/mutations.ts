@@ -662,7 +662,6 @@ export const createOrder = /* GraphQL */ `mutation CreateOrder(
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -687,7 +686,6 @@ export const updateOrder = /* GraphQL */ `mutation UpdateOrder(
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -712,7 +710,6 @@ export const deleteOrder = /* GraphQL */ `mutation DeleteOrder(
     orderDate
     paidThrough
     paymentResponse
-    agreement
     userID
     updatedAt
     __typename
@@ -758,13 +755,13 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -834,13 +831,13 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -910,13 +907,13 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -958,13 +955,13 @@ export const createSellOfferReply = /* GraphQL */ `mutation CreateSellOfferReply
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -1000,13 +997,13 @@ export const updateSellOfferReply = /* GraphQL */ `mutation UpdateSellOfferReply
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -1042,13 +1039,13 @@ export const deleteSellOfferReply = /* GraphQL */ `mutation DeleteSellOfferReply
     id
     createdAt
     SType
-    sellOfferID
     requestCategory
     title
     tags
     productName
     description
     packageDesc
+    sellOfferID
     sellOfferImage
     image
     images
@@ -1146,6 +1143,7 @@ export const createRFQ = /* GraphQL */ `mutation CreateRFQ(
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1231,6 +1229,7 @@ export const updateRFQ = /* GraphQL */ `mutation UpdateRFQ(
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1316,6 +1315,7 @@ export const deleteRFQ = /* GraphQL */ `mutation DeleteRFQ(
         forUserID
         userID
         statusText
+        agreement
         RFQ
         updatedAt
         __typename
@@ -1369,6 +1369,7 @@ export const createRFQReply = /* GraphQL */ `mutation CreateRFQReply(
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -1416,6 +1417,7 @@ export const updateRFQReply = /* GraphQL */ `mutation UpdateRFQReply(
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -1463,6 +1465,7 @@ export const deleteRFQReply = /* GraphQL */ `mutation DeleteRFQReply(
     forUserID
     userID
     statusText
+    agreement
     RFQ
     updatedAt
     __typename
@@ -2005,6 +2008,7 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2060,6 +2064,7 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2115,6 +2120,7 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
     rating
     tags
     productCert
+    landmark
     supplyCapacity
     minOrderQty
     packageType
@@ -2214,7 +2220,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -2236,6 +2241,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -2610,7 +2616,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -2632,6 +2637,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -3006,7 +3012,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         orderDate
         paidThrough
         paymentResponse
-        agreement
         userID
         updatedAt
         __typename
@@ -3028,6 +3033,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         rating
         tags
         productCert
+        landmark
         supplyCapacity
         minOrderQty
         packageType
@@ -3565,7 +3571,6 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -3587,6 +3592,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType
@@ -3980,7 +3986,6 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -4002,6 +4007,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType
@@ -4395,7 +4401,6 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           orderDate
           paidThrough
           paymentResponse
-          agreement
           userID
           updatedAt
           __typename
@@ -4417,6 +4422,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           rating
           tags
           productCert
+          landmark
           supplyCapacity
           minOrderQty
           packageType

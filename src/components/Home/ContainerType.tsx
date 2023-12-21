@@ -4,7 +4,13 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
 
-const ContainerType = ({selected, item, onPress, containerStyle}: any) => {
+const ContainerType = ({
+  selected,
+  item,
+  onPress,
+  containerStyle,
+  textStyle,
+}: any) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -16,13 +22,13 @@ const ContainerType = ({selected, item, onPress, containerStyle}: any) => {
         padding: SIZES.base,
         borderColor: selected ? COLORS.primary2 : COLORS.Neutral8,
         backgroundColor: selected ? COLORS.primary10 : 'transparent',
-        ...containerStyle
+        ...containerStyle,
       }}>
       <View
         style={{
           justifyContent: 'center',
         }}>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
+        <Text style={{...FONTS.body3, color: COLORS.Neutral1, ...textStyle}}>
           {item?.label}
         </Text>
       </View>
@@ -30,12 +36,12 @@ const ContainerType = ({selected, item, onPress, containerStyle}: any) => {
       {selected && (
         <View
           style={{
-            marginLeft: SIZES.base,
+            marginLeft: 5,
             justifyContent: 'center',
           }}>
           <FastImage
             source={icons.checked}
-            style={{width: 24, height: 24}}
+            style={{width: 17, height: 17}}
             resizeMode={FastImage.resizeMode.contain}
           />
         </View>

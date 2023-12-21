@@ -25,8 +25,6 @@ import {
   GetUserQueryVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
-  ListUsersQuery,
-  ListUsersQueryVariables,
   CreateMessageMutation,
   CreateMessageMutationVariables,
   MessageStatus,
@@ -42,7 +40,7 @@ import {
   createMessage,
   updateChatRoom,
 } from '../../../queries/ChatQueries';
-import {getUser, listUsers} from '../../../queries/UserQueries';
+import {getUser} from '../../../queries/UserQueries';
 
 const StandardDomesticRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
@@ -69,20 +67,28 @@ const StandardDomesticRFQDetail = () => {
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
-  const allChatRoomUsers: any = newData?.listUserChatRooms?.items.find(
+  const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
     usrID => usrID?.userId === userID,
   );
+  const newArray = allChatRoomUsers?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
-  // LIST USERS
-  const {data: onData, loading: onLoad} = useQuery<
-    ListUsersQuery,
-    ListUsersQueryVariables
-  >(listUsers);
-  const crUsers = onData?.listUsers?.items.some(usrID =>
-    usrID?.ChatRooms?.items.find(
-      crID => crID?.chatRoomId === allChatRoomUsers?.chatRoomId,
-    ),
-  );
+  // GET USER 1
+  const {data: softData, loading: softLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+  const userDetail: any = softData?.getUser?.ChatRooms?.items;
+  const newArray2 = userDetail?.map((item: any) => ({
+    chatRoomId: item.chatRoomId,
+    userId: item.userId,
+  }));
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -114,8 +120,11 @@ const StandardDomesticRFQDetail = () => {
     }
     setIsSubmitting(true);
     try {
+      const similarChatRoomIDs = newArray?.filter((obj1: any) =>
+        newArray2?.some((obj2: any) => obj1?.chatRoomId === obj2?.chatRoomId),
+      );
       // if chatRoom exist with user
-      if (crUsers === true) {
+      if (similarChatRoomIDs?.length > 0) {
         // initial message
         const res = await doCreateMessage({
           variables: {
@@ -129,6 +138,8 @@ const StandardDomesticRFQDetail = () => {
               requestID: route?.params?.rfqItem?.id,
               serviceType: serviceType?.RFQ,
               rfqType: RFQTYPE.STANDARD,
+              requestPrice: route?.params?.rfqItem?.budget,
+              packageType: route?.params?.rfqItem?.packageType,
               chatroomID: allChatRoomUsers?.chatRoomId,
             },
           },
@@ -228,7 +239,7 @@ const StandardDomesticRFQDetail = () => {
     }
   };
 
-  if (loading || newLoad || onLoad) {
+  if (loading || newLoad || softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}

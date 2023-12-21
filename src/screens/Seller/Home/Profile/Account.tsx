@@ -1,4 +1,4 @@
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Auth} from 'aws-amplify';
 import {Root, ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {
   AccountImage,
@@ -19,8 +18,8 @@ import {
   TextIconButton,
   Tags as RenderTags,
   RequestTags,
-  ShowFiles,
   LoadingIndicator,
+  TextButton,
 } from '../../../../components';
 import {COLORS, SIZES, FONTS, icons, constants} from '../../../../constants';
 import {ProfileStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
@@ -114,7 +113,7 @@ const Account = () => {
         address: displayAddress,
         country,
         identification: identity,
-        businessType: busType,
+        // businessType: [busType],
         mainMarkets: initialTags,
         languages: initialTags2,
         ...formData,
@@ -198,7 +197,7 @@ const Account = () => {
     return () => {
       unmounted = false;
     };
-  }, [setValue, route.params?.userAddress]);
+  }, [setValue, route.params?.userAddress, loading]);
 
   const getSellerAddress = async () => {
     await AsyncStorage.getItem('sellerAddress').then((value: any) => {
@@ -266,8 +265,7 @@ const Account = () => {
         <FormInput
           control={control}
           label="Email"
-          name="email"
-          // editable={false}
+          editable={false}
           inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           containerStyle={{marginTop: SIZES.radius}}
         />
@@ -276,16 +274,8 @@ const Account = () => {
         <FormInput
           control={control}
           label="Business Name"
-          placeholder="Enter your Business name"
-          name="title"
-          rules={{
-            required: 'Business name is required',
-            minLength: {
-              value: 3,
-              message: 'names should be more than 5 characters',
-            },
-          }}
-          keyboardType={'default'}
+          editable={false}
+          inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           containerStyle={{marginTop: SIZES.radius}}
         />
 
@@ -693,52 +683,92 @@ const Account = () => {
           name="identificationNumber"
           containerStyle={{marginTop: SIZES.padding}}
         />
+      </View>
+    );
+  }
 
-        {/* show docs */}
-        <View
+  function renderIdDocs() {
+    return (
+      <View
+        style={{marginTop: SIZES.radius, marginHorizontal: SIZES.semi_margin}}>
+        <Text
           style={{
-            flex: 1,
-            justifyContent: 'center',
-            marginTop: SIZES.base,
+            ...FONTS.body3,
+            fontWeight: '500',
+            color: COLORS.Neutral1,
+            marginBottom: 5,
           }}>
-          {userAccount?.identityDocs && (
-            <ShowFiles
-              title="Identity Documents"
-              file={userAccount?.identityDocs}
-              contentStyle={{marginTop: SIZES.semi_margin}}
-              buttonStyle={{marginTop: SIZES.margin}}
-              showEdit={true}
-              onPress={() =>
-                navigation.navigate('EditIdentityDoc', {
-                  idDoc: userAccount?.id,
-                })
-              }
-            />
-          )}
-        </View>
+          Identity Documents
+        </Text>
 
-        {/* show docs 2 */}
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            marginTop: SIZES.base,
-          }}>
-          {userAccount?.certsDoc && (
-            <ShowFiles
-              title="Company Documents"
-              file={userAccount?.certsDoc}
-              contentStyle={{marginTop: SIZES.semi_margin}}
-              buttonStyle={{marginTop: SIZES.margin}}
-              showEdit={true}
-              onPress={() =>
-                navigation.navigate('EditCompanyDocs', {
-                  idDoc: userAccount?.id,
-                })
-              }
-            />
+        <FlatList
+          data={userAccount?.identityDocs}
+          keyExtractor={item => `${item}`}
+          renderItem={({item, index}) => (
+            <View key={index} style={{marginTop: SIZES.base}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  backgroundColor: COLORS.white,
+                  padding: SIZES.radius,
+                  borderRadius: SIZES.base,
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                  }}>
+                  <FastImage
+                    tintColor={COLORS.secondary1}
+                    source={icons.summary}
+                    style={{width: 20, height: 20}}
+                  />
+                </View>
+
+                {/* file name and date of upload */}
+                <View
+                  style={{
+                    flex: 1,
+                    marginLeft: SIZES.base,
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      ...FONTS.cap1,
+                      fontWeight: '500',
+                      color: COLORS.primary1,
+                    }}
+                    numberOfLines={2}>
+                    {item}
+                  </Text>
+                </View>
+              </View>
+            </View>
           )}
-        </View>
+        />
+        <TextButton
+          label={'Edit Docs'}
+          labelStyle={{
+            ...FONTS.body3,
+            fontWeight: 'bold',
+            color: COLORS.primary1,
+          }}
+          buttonContainerStyle={{
+            alignSelf: 'flex-start',
+            width: 120,
+            height: 35,
+            borderRadius: SIZES.base,
+            borderWidth: 1,
+            borderColor: COLORS.primary1,
+            marginTop: SIZES.semi_margin,
+            backgroundColor: COLORS.white,
+          }}
+          onPress={() =>
+            navigation.navigate('EditIdentityDoc', {
+              idDoc: userAccount?.id,
+            })
+          }
+        />
       </View>
     );
   }
@@ -758,63 +788,148 @@ const Account = () => {
           overlayColor={'rgba(0,0,0,0.5)'}
         />
 
-        <KeyboardAwareScrollView
-          keyboardDismissMode="on-drag"
-          showsVerticalScrollIndicator={false}
-          extraHeight={100}
-          extraScrollHeight={100}
-          bounces={false}
-          enableOnAndroid={true}>
-          {/* Profile Pic */}
-          <AccountImage
-            showBanner={true}
-            name={userAccount?.name}
-            bg_image={userAccount?.backgroundImage}
-            profile_image={userAccount?.logo}
-            onPress2={() =>
-              navigation.navigate('EditAccountBGImage', {
-                imageID: userAccount?.id,
-              })
+        <View style={{marginTop: SIZES.radius}}>
+          <FlatList
+            data={userAccount?.certsDoc}
+            keyExtractor={item => `${item}`}
+            ListHeaderComponent={
+              <View>
+                {/* Profile Pic */}
+                <AccountImage
+                  showBanner={true}
+                  name={userAccount?.name}
+                  bg_image={userAccount?.backgroundImage}
+                  profile_image={userAccount?.logo}
+                  onPress2={() =>
+                    navigation.navigate('EditAccountBGImage', {
+                      imageID: userAccount?.id,
+                    })
+                  }
+                  onEdit={() =>
+                    navigation.navigate('EditAccountImage', {
+                      imageID: userAccount?.id,
+                    })
+                  }
+                />
+                {renderForm()}
+                <Text
+                  style={{
+                    marginTop: SIZES.radius,
+                    marginHorizontal: SIZES.semi_margin,
+                    ...FONTS.body3,
+                    fontWeight: '500',
+                    color: COLORS.Neutral1,
+                    marginBottom: 5,
+                  }}>
+                  Company Documents
+                </Text>
+              </View>
             }
-            onEdit={() =>
-              navigation.navigate('EditAccountImage', {
-                imageID: userAccount?.id,
-              })
+            renderItem={({item, index}) => (
+              <View
+                key={index}
+                style={{
+                  marginTop: SIZES.base,
+                  marginHorizontal: SIZES.semi_margin,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    backgroundColor: COLORS.white,
+                    padding: SIZES.radius,
+                    borderRadius: SIZES.base,
+                  }}>
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                    }}>
+                    <FastImage
+                      tintColor={COLORS.secondary1}
+                      source={icons.summary}
+                      style={{width: 20, height: 20}}
+                    />
+                  </View>
+
+                  {/* file name and date of upload */}
+                  <View
+                    style={{
+                      flex: 1,
+                      marginLeft: SIZES.base,
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        ...FONTS.cap1,
+                        fontWeight: '500',
+                        color: COLORS.primary1,
+                      }}
+                      numberOfLines={2}>
+                      {item}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+            ListFooterComponent={
+              <View style={{marginBottom: 300}}>{renderIdDocs()}</View>
             }
           />
 
-          {renderForm()}
-
-          {/* Save */}
-          <TextIconButton
-            label={uploading ? 'Saving...' : 'Save'}
-            labelStyle={{marginLeft: SIZES.radius}}
-            iconPosition={'LEFT'}
-            icon={icons.saver}
-            iconStyle={COLORS.white}
-            onPress={handleSubmit(storeData)}
-            containerStyle={{
-              marginTop: SIZES.padding * 1.5,
+          <TextButton
+            label={'Edit Docs'}
+            labelStyle={{
+              ...FONTS.body3,
+              fontWeight: 'bold',
+              color: COLORS.primary1,
             }}
-          />
-
-          {/* delete account */}
-          <TextIconButton
-            label={'Delete Account'}
-            labelStyle={{marginLeft: SIZES.radius, color: COLORS.Rose4}}
-            containerStyle={{
-              backgroundColor: COLORS.white,
-              borderWidth: 2,
-              borderColor: COLORS.Rose4,
-              marginBottom: 100,
+            buttonContainerStyle={{
+              alignSelf: 'flex-start',
+              width: 120,
+              height: 35,
+              borderRadius: SIZES.base,
+              borderWidth: 1,
+              borderColor: COLORS.primary1,
               marginTop: SIZES.semi_margin,
+              backgroundColor: COLORS.white,
             }}
-            iconPosition={'LEFT'}
-            icon={icons.remove}
-            iconStyle={COLORS.Rose4}
-            onPress={confirmDelete}
+            onPress={() =>
+              navigation.navigate('EditCompanyDocs', {
+                idDoc: userAccount?.id,
+              })
+            }
           />
-        </KeyboardAwareScrollView>
+        </View>
+
+        {/* Save */}
+        <TextIconButton
+          label={uploading ? 'Saving...' : 'Save'}
+          labelStyle={{marginLeft: SIZES.radius}}
+          iconPosition={'LEFT'}
+          icon={icons.saver}
+          iconStyle={COLORS.white}
+          onPress={handleSubmit(storeData)}
+          containerStyle={{
+            marginTop: SIZES.padding * 1.5,
+          }}
+        />
+
+        {/* delete account */}
+        <TextIconButton
+          label={'Delete Account'}
+          labelStyle={{marginLeft: SIZES.radius, color: COLORS.Rose4}}
+          containerStyle={{
+            backgroundColor: COLORS.white,
+            borderWidth: 2,
+            borderColor: COLORS.Rose4,
+            marginBottom: 100,
+            marginTop: SIZES.semi_margin,
+          }}
+          iconPosition={'LEFT'}
+          icon={icons.remove}
+          iconStyle={COLORS.Rose4}
+          onPress={confirmDelete}
+        />
       </View>
     </Root>
   );

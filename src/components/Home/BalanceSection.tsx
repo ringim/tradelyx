@@ -1,11 +1,11 @@
 import {View, Text} from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, icons, images} from '../../constants';
 import TextButton from '../Button/TextButton';
+import { options } from '../../utilities/service';
 
-const BalanceSection = () => {
+const BalanceSection = ({balance, onPress}: any) => {
   return (
     <View
       style={{
@@ -22,30 +22,33 @@ const BalanceSection = () => {
               color: COLORS.white,
               paddingTop: 4,
             }}>
-            ₦500,000.00
+            ₦{balance.toLocaleString('en-US', options)}
           </Text>
-
           <Text
             style={{
               ...FONTS.body3,
               color: COLORS.white,
               paddingTop: SIZES.radius,
             }}>
-            Available for Withdrawal
+            {balance >= 20 && 'Available for Withdrawal'}
           </Text>
         </View>
 
         <TextButton
+          disabled={balance < 20 ? true : false}
           buttonContainerStyle={{
             height: 40,
             width: 100,
             marginTop: SIZES.base,
             justifyContent: 'center',
-            backgroundColor: COLORS.white,
+            backgroundColor: balance < 20 ? COLORS.Neutral10 : COLORS.Neutral7,
           }}
           label="Withdraw"
-          labelStyle={{...FONTS.h5, color: COLORS.primary1}}
-          // onPress={onPress}
+          labelStyle={{
+            ...FONTS.h5,
+            color: balance < 20 ? COLORS.Neutral1 : COLORS.primary1,
+          }}
+          onPress={onPress}
         />
       </View>
     </View>

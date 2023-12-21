@@ -17,10 +17,10 @@ const ServiceModal = ({bottomSheetModalRef, hideModal}: any) => {
 
   // Bottom Sheet
   const snapPoints = useMemo(() => {
-    if (Platform.OS === 'ios') {
+    if (SIZES.height > 700) {
       return ['40%'];
     } else {
-      return ['40%'];
+      return ['50%'];
     }
   }, []);
 

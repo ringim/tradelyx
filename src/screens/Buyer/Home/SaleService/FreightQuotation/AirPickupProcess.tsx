@@ -1,4 +1,4 @@
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, TextInput} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import React, {useState, useRef, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -53,6 +53,8 @@ const AirPickupProcess = () => {
 
   const {control, handleSubmit, setValue}: any = useForm();
 
+  const [amount, setAmount] = useState<any>('');
+  const [notes, setNotes] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
@@ -69,30 +71,18 @@ const AirPickupProcess = () => {
   );
   const {location} = address1;
 
-  // console.log(selectedCategories)
-
   useEffect(() => {
-    let isCurrent = true;
-    isCurrent &&
-      getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
-    return () => {
-      isCurrent = false;
-    };
+    getCountryFlag(location?.lat, location?.lng, setCode, setCName, setCCity);
   }, [address1]);
 
   useEffect(() => {
-    let isCurrent = true;
-    isCurrent &&
-      getCountryFlag(
-        address2?.location?.lat,
-        address2?.location?.lng,
-        setCode2,
-        setCName2,
-        setCCity2,
-      );
-    return () => {
-      isCurrent = false;
-    };
+    getCountryFlag(
+      address2?.location?.lat,
+      address2?.location?.lng,
+      setCode2,
+      setCName2,
+      setCCity2,
+    );
   }, [address2]);
 
   // CREATE UPDATE RFF
@@ -145,14 +135,10 @@ const AirPickupProcess = () => {
   };
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress && unmounted) {
+    if (route.params?.userAddress) {
       setAddress1(route.params?.userAddress);
       setValue('address1', address1?.description?.formatted_address);
     }
-    return () => {
-      unmounted = false;
-    };
   }, [
     route.params?.userAddress,
     setValue,
@@ -160,14 +146,10 @@ const AirPickupProcess = () => {
   ]);
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress2 && unmounted) {
+    if (route.params?.userAddress2) {
       setAddress2(route.params?.userAddress2);
       setValue('address2', address2?.description?.formatted_address);
     }
-    return () => {
-      unmounted = false;
-    };
   }, [
     route.params?.userAddress2,
     setValue,
@@ -175,7 +157,7 @@ const AirPickupProcess = () => {
   ]);
 
   function isSubmit() {
-    return selectedProp?.length !== 0;
+    return address1 !== '' && address2 !== '';
   }
 
   function requestForm() {
@@ -378,32 +360,46 @@ const AirPickupProcess = () => {
         {/* Invoice amount */}
         <View
           style={{
-            marginTop: 6,
+            marginTop: SIZES.semi_margin,
             justifyContent: 'space-between',
             flexDirection: 'row',
           }}>
           <View style={{flex: 0.95, justifyContent: 'center'}}>
-            <FormInput
-              name="amount"
-              label="Invoice Amount"
-              control={control}
-              keyboardType={'numeric'}
-              placeholder="Amount"
-              rules={{
-                required: 'amount is required',
+            <Text
+              style={{
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
+              }}>
+              Invoice Amount
+            </Text>
+            <TextInput
+              autoFocus={false}
+              onChangeText={setAmount}
+              value={amount}
+              placeholder="Invoice Amount"
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.gray}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                marginTop: SIZES.base,
+                height: 50,
+                fontWeight: '500',
+                paddingHorizontal: SIZES.radius,
+                borderRadius: SIZES.base,
+                borderWidth: 0.5,
+                borderColor: COLORS.Neutral7,
               }}
-              containerStyle={{marginTop: SIZES.radius}}
-              labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-              inputContainerStyle={{marginTop: SIZES.radius, height: 50}}
             />
           </View>
           <View
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 55,
+              width: 60,
               height: 50,
-              top: 40,
+              top: 25,
               borderRadius: SIZES.semi_margin,
             }}>
             <Text
@@ -418,21 +414,40 @@ const AirPickupProcess = () => {
         </View>
 
         {/* Additional Notes */}
-        <FormInput
-          label="Additional Notes"
-          name="notes"
-          control={control}
-          placeholder="Add notes"
-          multiline={true}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{
-            marginTop: SIZES.radius,
-            height: 120,
-            padding: SIZES.base,
-            marginBottom: 120,
-          }}
-        />
+        <View
+          style={{
+            marginTop: SIZES.semi_margin,
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Additional Notes
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={setNotes}
+            value={notes}
+            multiline={true}
+            placeholder="Add notes"
+            placeholderTextColor={COLORS.gray}
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              marginTop: SIZES.base,
+              paddingTop: SIZES.base,
+              height: 120,
+              fontWeight: '500',
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              marginBottom: 120,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
       </View>
     );
   }

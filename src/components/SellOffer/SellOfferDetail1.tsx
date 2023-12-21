@@ -2,10 +2,11 @@ import {View, Text} from 'react-native';
 import React, {useRef} from 'react';
 import FastImage from 'react-native-fast-image';
 import ImageModal, {ImageDetail} from 'react-native-image-modal';
+import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
-import { options } from '../../utilities/service';
+import {options} from '../../utilities/service';
 
 const SellOfferDetail1 = ({
   imageUri,
@@ -137,7 +138,7 @@ const SellOfferDetail1 = ({
           </View>
         )}
 
-        {/* Product Name */}
+        {/* “Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
@@ -271,7 +272,7 @@ const SellOfferDetail1 = ({
         </View>
       </View>
 
-      {/* delivery duration */}
+      {/* offer Validity */}
       <View
         style={{
           marginTop: SIZES.radius,
@@ -281,7 +282,7 @@ const SellOfferDetail1 = ({
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-            Delivery Date
+            Offer Expiry Date
           </Text>
         </View>
         <View
@@ -295,7 +296,7 @@ const SellOfferDetail1 = ({
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {deliveryDate}
+            {dayjs(deliveryDate).format('MMMM DD, YYYY')}
           </Text>
         </View>
       </View>

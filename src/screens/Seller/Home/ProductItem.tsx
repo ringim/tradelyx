@@ -30,29 +30,9 @@ import {deleteProduct} from '../../../queries/ProductQueries';
 
 const ProductItem = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const route = useRoute<StoreItemRouteProp>();
+  const route: any = useRoute<StoreItemRouteProp>();
 
-  const {
-    id,
-    description,
-    supplyCapacity,
-    productImage,
-    commodityCategory,
-    category,
-    productDocs,
-    dateAvailable,
-    transportMode,
-    images,
-    productCert,
-    productSpec,
-    packageType,
-    image,
-    placeOrigin,
-    title,
-    productCertDocs,
-    tags,
-    minOrderQty,
-  }: any = route?.params?.storeItem;
+  const {id, productDocs}: any = route?.params?.storeItem;
 
   const [doDeleteProduct, {loading}] = useMutation<
     DeleteProductMutation,
@@ -122,11 +102,11 @@ const ProductItem = () => {
           enableOnAndroid={true}>
           {/* Product info */}
           <ProductInfo
-            name={title}
-            image={productImage}
-            tags={tags}
-            cate={category}
-            type={commodityCategory}
+            name={route?.params?.storeItem?.title}
+            image={route?.params?.storeItem?.productImage}
+            tags={route?.params?.storeItem?.tags}
+            cate={route?.params?.storeItem?.category}
+            type={route?.params?.storeItem?.commodityCategory}
           />
 
           {/* Product Image */}
@@ -145,9 +125,9 @@ const ProductItem = () => {
               }}>
               Product Images
             </Text>
-            {image ? (
+            {route?.params?.storeItem?.image ? (
               <SingleImage
-                product={image}
+                product={route?.params?.storeItem?.image}
                 showEdit={false}
                 contentStyle={{marginTop: SIZES.padding * 1.5}}
               />
@@ -157,7 +137,7 @@ const ProductItem = () => {
                   marginTop: SIZES.base,
                 }}>
                 <FlatList
-                  data={images}
+                  data={route?.params?.storeItem?.images}
                   keyExtractor={(item: any) => `${item}`}
                   horizontal
                   showsHorizontalScrollIndicator={false}
@@ -176,28 +156,34 @@ const ProductItem = () => {
           </View>
 
           {/* Product Description */}
-          <BusinessDesc productItem={description} title={'Description'} />
+          <BusinessDesc
+            productItem={route?.params?.storeItem?.description}
+            title={'Description'}
+          />
 
           {/* Product Specification */}
-          <BusinessDesc productItem={productSpec} title={'Specification'} />
+          <BusinessDesc
+            productItem={route?.params?.storeItem?.productSpec}
+            title={'Specification'}
+          />
 
           {/* Packaging */}
           <Packaging
-            packageType={packageType}
-            productCert={productCert}
-            moq={minOrderQty}
-            supply={supplyCapacity}
+            packageType={route?.params?.storeItem?.packageType}
+            productCert={route?.params?.storeItem?.productCert}
+            moq={route?.params?.storeItem?.minOrderQty}
+            supply={route?.params?.storeItem?.supplyCapacity}
           />
 
           {/* Shipment */}
           <Shipment
-            address={placeOrigin}
-            date={dateAvailable}
-            transportMode={transportMode}
+            address={route?.params?.storeItem?.placeOrigin}
+            date={route?.params?.storeItem?.dateAvailable}
+            landmark={route?.params?.storeItem?.landmark}
           />
 
           {/* Product Certification */}
-          {productCertDocs.length > 0 && (
+          {route?.params?.storeItem?.productCertDocs.length > 0 && (
             <View
               style={{
                 marginTop: SIZES.base,
@@ -209,7 +195,7 @@ const ProductItem = () => {
               <ShowDocs
                 title="Product Certification"
                 icon={icons.info}
-                file={productCertDocs}
+                file={route?.params?.storeItem?.productCertDocs}
                 contentStyle={{marginTop: 0}}
                 buttonStyle={{marginTop: SIZES.margin}}
               />
@@ -217,7 +203,7 @@ const ProductItem = () => {
           )}
 
           {/* Product Brochure*/}
-          {productDocs.length > 0 && (
+          {route?.params?.storeItem?.productDocs.length > 0 && (
             <View
               style={{
                 marginTop: SIZES.base,

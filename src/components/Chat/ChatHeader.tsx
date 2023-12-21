@@ -52,13 +52,12 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
   }, [onlineStatus]);
 
   return (
-    <SafeAreaView
-      style={{flex: 1, marginBottom: Platform.OS === 'ios' ? 60 : 80}}>
+    <SafeAreaView style={{flex: 1, marginBottom: SIZES.height > 700 ? 60 : 65}}>
       <View
         style={{
-          height: Platform.OS == 'ios' ? 130 : 150,
+          height: SIZES.height > 700 ? 130 : 140,
           bottom: 70,
-          paddingTop: Platform.OS == 'ios' ? 70 : 90,
+          paddingTop: SIZES.height > 700 ? 70 : 80,
           padding: SIZES.radius,
           backgroundColor: COLORS.white,
           flexDirection: 'row',
@@ -67,8 +66,8 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
         }}>
         {/* Header Back Button */}
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{justifyContent: 'center'}}>
+          onPress={() => navigation.navigate('ChatRooms')}
+          style={{justifyContent: 'center', marginLeft: 4}}>
           <FastImage
             source={icons.back}
             resizeMode={FastImage.resizeMode.contain}
@@ -97,7 +96,7 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
           style={{
             flex: 1,
             justifyContent: 'center',
-            paddingLeft: SIZES.radius,
+            paddingLeft: SIZES.semi_margin,
           }}>
           <Text
             style={{

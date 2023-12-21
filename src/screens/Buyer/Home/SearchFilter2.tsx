@@ -146,7 +146,7 @@ const SearchFilter2 = () => {
           />
         </View>
 
-        {/* Product Name */}
+        {/* “Product Title */}
         <View style={{marginTop: SIZES.radius}}>
           <Text
             style={{
@@ -154,7 +154,7 @@ const SearchFilter2 = () => {
               fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
-            Product Name
+            “Product Title
           </Text>
           <TextInput
             style={{

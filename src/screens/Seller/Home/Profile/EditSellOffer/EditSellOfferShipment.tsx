@@ -391,7 +391,7 @@ const EditSellOfferShipment = () => {
         <ExpiryDate
           date={date}
           onPress={showDatePicker}
-          title={'Expected Delivery Date'}
+          title={'Date Available'}
           containerStyle={{marginTop: SIZES.semi_margin, marginBottom: 150}}
         />
       </View>

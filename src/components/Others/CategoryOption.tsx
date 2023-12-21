@@ -7,8 +7,8 @@ const CategoryOption = ({category, isSelected, onPress}: any) => {
   return (
     <TouchableOpacity
       style={{
-        height: (SIZES.width - SIZES.padding * 2 - 30) / 2.5,
-        width: (SIZES.width - SIZES.padding * 2 - 30) / 3,
+        height: (SIZES.width - SIZES.padding * 2 - 30) / 2,
+        width: (SIZES.width - SIZES.padding * 2 - 0) / 3,
         marginTop: SIZES.radius,
         alignItems: 'center',
         justifyContent: 'center',
@@ -24,7 +24,7 @@ const CategoryOption = ({category, isSelected, onPress}: any) => {
         resizeMode={FastImage.resizeMode.contain}
         style={{
           width: 40,
-          height: 40,  
+          height: 40,
         }}
         tintColor={isSelected ? COLORS.white : COLORS.Neutral6}
       />
@@ -33,12 +33,22 @@ const CategoryOption = ({category, isSelected, onPress}: any) => {
         style={{
           textAlign: 'center',
           marginTop: SIZES.radius,
-          ...FONTS.h2,
+          ...FONTS.h5,
           color: isSelected ? COLORS.white : COLORS.Neutral1,
           lineHeight: 18,
-          fontSize: 14,
         }}>
         {category?.label}
+      </Text>
+
+      <Text
+        style={{
+          textAlign: 'center',
+          marginTop: SIZES.radius,
+          ...FONTS.cap1,
+          color: isSelected ? COLORS.white : COLORS.Neutral1,
+          fontWeight: '500'
+        }}>
+        {category?.desc}
       </Text>
     </TouchableOpacity>
   );

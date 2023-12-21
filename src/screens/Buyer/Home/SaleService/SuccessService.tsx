@@ -22,7 +22,7 @@ const SuccessService = () => {
         flex: 1,
         backgroundColor: COLORS.white,
         justifyContent: 'center',
-        padding: SIZES.margin
+        padding: SIZES.margin,
       }}>
       <View style={{marginTop: 0}}>
         <FastImage
@@ -38,7 +38,7 @@ const SuccessService = () => {
       <View style={{marginTop: SIZES.padding * 2}}>
         <Text
           style={{...FONTS.h4, textAlign: 'center', color: COLORS.Neutral1}}>
-          {type} sent successfully
+          {type} Sent Successfully
         </Text>
       </View>
       <View style={{marginTop: SIZES.padding}}>
@@ -62,7 +62,12 @@ const SuccessService = () => {
         }}
         label="Go to Orders"
         labelStyle={{...FONTS.h4}}
-        onPress={() => navigation.navigate('Order')}
+        onPress={() => {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Order'}],
+          });
+        }}
       />
 
       <TextButton

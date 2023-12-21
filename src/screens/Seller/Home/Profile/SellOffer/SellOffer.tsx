@@ -11,7 +11,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
-import {COLORS, FONTS, SIZES, icons} from '../../../../../constants';
+import {COLORS, FONTS, SIZES, constants, icons} from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {
   FormInput,
@@ -25,6 +25,7 @@ import {
   MultipleImages,
   ViewProductImage,
   ProductImage,
+  SourceLocationItem,
 } from '../../../../../components';
 import {
   CreateSellOfferInput,
@@ -56,6 +57,8 @@ const SellOffer = () => {
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState<any>('');
   const [jobType, setJobType] = useState<any>(crateTypes);
+  const [item, setItem] = useState<any>('');
+  const [selectedItem, setSelectedItem] = useState<any>(true);
 
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>([]);
@@ -91,6 +94,7 @@ const SellOffer = () => {
         id: uuidV4(),
         sellOfferID: referralCode(),
         title: sellOffer,
+        rfqType: item,
         requestCategory: type,
         tags: initialTags,
         productName,
@@ -140,6 +144,28 @@ const SellOffer = () => {
           marginHorizontal: SIZES.semi_margin,
           marginBottom: 100,
         }}>
+        {/* source location */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginHorizontal: SIZES.padding,
+          }}>
+          {constants.sourceLocation.map((item, index) => {
+            return (
+              <SourceLocationItem
+                key={`SourceLocationItem-${index}`}
+                item={item}
+                selected={item.id == selectedItem}
+                onPress={() => {
+                  setSelectedItem(item.id);
+                  setItem(item?.label);
+                }}
+              />
+            );
+          })}
+        </View>
+
         {/* sellOfferImage */}
         <View>
           {!sellOfferImage ? (
@@ -264,7 +290,7 @@ const SellOffer = () => {
 
         {/* Product name */}
         <FormInput
-          label="Product Name"
+          label="“Product Title"
           name="productName"
           control={control}
           placeholder="e.g. Fresh Tomato"

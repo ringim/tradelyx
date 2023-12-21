@@ -1,28 +1,31 @@
-import {View, Text} from 'react-native';
+import {View, Text, Pressable, TouchableOpacity} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, icons, SIZES} from '../../constants';
 
-const AcceptPolicy = ({onPress, text1, text2}: any) => {
+const AcceptPolicy = ({onPress, onCheck, text1, isSelected}: any) => {
   return (
-    <View
+    <Pressable
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: SIZES.radius,
-      }}>
+      }}
+      onPress={onCheck}>
       <View style={{justifyContent: 'center'}}>
         <FastImage
-          source={icons.checked}
+          source={isSelected ? icons.checked : icons.circle}
           style={{width: 20, height: 20}}
           resizeMode={FastImage.resizeMode.contain}
+          // tintColor=
         />
       </View>
-      <View
+      <TouchableOpacity
+        onPress={onPress}
         style={{
           flex: 1,
-          marginLeft: SIZES.radius,
+          marginLeft: SIZES.semi_margin,
           justifyContent: 'center',
         }}>
         <Text
@@ -31,13 +34,10 @@ const AcceptPolicy = ({onPress, text1, text2}: any) => {
             color: COLORS.Neutral1,
             lineHeight: 20,
           }}>
-          {text1} {'\n'}
-          <Text style={{fontWeight: '600'}} onPress={onPress}>
-            {text2}.
-          </Text>
+          {text1}
         </Text>
-      </View>
-    </View>
+      </TouchableOpacity>
+    </Pressable>
   );
 };
 

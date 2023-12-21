@@ -184,7 +184,7 @@ const QuoteRequestItem2 = ({
                 ...FONTS.body3,
                 color: COLORS.Neutral6,
               }}>
-              Product Name
+              “Product Title
             </Text>
           </View>
           <View

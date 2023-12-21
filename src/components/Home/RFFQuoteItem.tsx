@@ -137,7 +137,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            Product Name
+            “Product Title
           </Text>
         </View>
         <View
