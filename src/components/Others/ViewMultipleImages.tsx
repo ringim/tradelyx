@@ -35,8 +35,6 @@ const ViewMultipleImages = ({images, index}: ProductImage) => {
         marginLeft: index == 0 ? 2 : 15,
         marginRight: index == images.length - 1 ? SIZES.padding : 0,
         marginTop: SIZES.radius,
-        borderWidth: 0.5,
-        borderColor: COLORS.Neutral7,
         borderRadius: SIZES.base,
       }}>
       <ImageModal

@@ -131,8 +131,8 @@ const ProductItem = ({containerStyle, item, product_image, onPress}: IItem) => {
               }}
               resizeMode={FastImage.resizeMode.cover}
               style={{
-                width: 100,
-                height: 100,
+                width: 80,
+                height: 80,
                 borderRadius: SIZES.radius,
               }}
             />

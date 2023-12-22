@@ -80,7 +80,7 @@ const Shipment = ({landmark, date, address}: any) => {
       <View
         style={{
           alignItems: 'center',
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>

@@ -25,7 +25,7 @@ const SOImage = ({image, index, containerStyle}: any) => {
     <View
       style={{
         marginLeft: index == 0 ? 2 : 8,
-        marginRight: index == image.length - 1 ? SIZES.padding : 0,
+        marginRight: index == image?.length - 1 ? SIZES.padding : 0,
         marginTop: SIZES.radius,
         ...containerStyle,
       }}>

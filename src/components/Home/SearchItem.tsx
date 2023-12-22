@@ -173,7 +173,7 @@ const SearchItem = ({
               }}
               style={{
                 width: 330,
-                height: 150,
+                height: 120,
                 borderRadius: SIZES.base,
               }}
             />
@@ -191,7 +191,7 @@ const SearchItem = ({
               }}
               style={{
                 width: 330,
-                height: 150,
+                height: 120,
                 borderRadius: SIZES.base,
               }}
             />
@@ -204,7 +204,7 @@ const SearchItem = ({
             marginTop: SIZES.radius,
             marginHorizontal: SIZES.semi_margin,
           }}>
-          <Text numberOfLines={2} style={{...FONTS.h4, color: COLORS.Neutral1}}>
+          <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
             {item?.title}
           </Text>
         </View>
@@ -213,7 +213,7 @@ const SearchItem = ({
         <View
           style={{
             marginTop: SIZES.base,
-            marginHorizontal: SIZES.semi_margin,
+            marginHorizontal: SIZES.radius,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
@@ -231,15 +231,13 @@ const SearchItem = ({
           <View
             style={{
               flex: 1,
-              marginLeft: SIZES.radius,
+              marginLeft: 4,
               justifyContent: 'center',
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {userInfo?.city}
-              {', '}
-              {userInfo?.country}
+              style={{...FONTS.cap1, color: COLORS.Neutral6}}>
+              {item?.placeOrigin}
             </Text>
           </View>
         </View>
@@ -272,14 +270,14 @@ const SearchItem = ({
         {/* base price */}
         <View
           style={{
-            marginTop: SIZES.base,
+            marginTop: 6,
             marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
           <View style={{justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              FOB Price
+              Base Price
             </Text>
           </View>
           <View
@@ -289,7 +287,7 @@ const SearchItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              ₦{item?.fobPrice.toLocaleString('en-US', options)}
+              ₦{item?.basePrice?.toLocaleString('en-US', options)}
             </Text>
           </View>
         </View>
@@ -297,7 +295,7 @@ const SearchItem = ({
         {/* payment type */}
         <View
           style={{
-            marginTop: SIZES.base,
+            marginTop: 6,
             marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -322,7 +320,7 @@ const SearchItem = ({
         {/* offer Validity*/}
         <View
           style={{
-            marginTop: SIZES.base,
+            marginTop: 6,
             marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',

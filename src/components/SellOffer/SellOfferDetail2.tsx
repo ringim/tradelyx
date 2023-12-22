@@ -1,6 +1,7 @@
 import {View, FlatList, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import ViewMoreText from 'react-native-view-more-text';
+import dayjs from 'dayjs';
 
 import TextIconButton from '../Button/TextIconButton';
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
@@ -13,10 +14,10 @@ const SellOfferDetail2 = ({
   onPress,
   description,
   daysUntilExpiry,
-  offerValidity,
+  createdAt,
   packageDesc,
   image,
-  images
+  images,
 }: any) => {
   function renderViewMore(onPress: any) {
     return (
@@ -110,22 +111,12 @@ const SellOfferDetail2 = ({
       {/* expiry */}
       <View
         style={{
-          marginTop: SIZES.margin,
-          marginHorizontal: SIZES.margin,
+          marginTop: SIZES.radius,
           flexDirection: 'row',
-          backgroundColor: COLORS.Neutral9,
           justifyContent: 'space-between',
-          borderRadius: SIZES.base,
+          backgroundColor: COLORS.Neutral10,
           padding: SIZES.radius,
         }}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral1}}>
-            Expiry Date:{' '}
-            <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {offerValidity}
-            </Text>
-          </Text>
-        </View>
         <View style={{justifyContent: 'center'}}>
           <FastImage
             source={icons.calender}
@@ -136,8 +127,24 @@ const SellOfferDetail2 = ({
             }}
           />
         </View>
-        <View style={{marginLeft: SIZES.base, justifyContent: 'center'}}>
-          <Text style={{...FONTS.sh3, color: COLORS.Neutral5}}>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 5,
+            justifyContent: 'center',
+          }}>
+          <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+            {dayjs(createdAt).format('MMM DD, YYYY - HH:mm A')}
+          </Text>
+        </View>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Exp in:</Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
             {daysUntilExpiry} days
           </Text>
         </View>

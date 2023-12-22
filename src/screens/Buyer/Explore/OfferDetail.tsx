@@ -50,7 +50,7 @@ const OfferDetail = () => {
 
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<OfferDetailRouteProp>();
-  const {image, images, userID, id}: any = route?.params?.detail;
+  const {image, images, userID, id, sellOfferImage}: any = route?.params?.detail;
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
@@ -179,7 +179,7 @@ const OfferDetail = () => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.title,
+              name: userInfo?.id,
             },
           },
         });
@@ -312,11 +312,13 @@ const OfferDetail = () => {
             imageUri2={imageUri2}
             imageUri3={imageUri3}
             image={image}
+            placeOrigin={route?.params?.detail?.placeOrigin}
             title={route?.params?.detail?.title}
             unit={route?.params?.detail?.unit}
             deliveryDate={route?.params?.detail?.offerValidity}
             paymentType={route?.params?.detail?.paymentType}
-            fobPrice={route?.params?.detail?.fobPrice}
+            basePrice={route?.params?.detail?.basePrice}
+            productName={route?.params?.detail?.productName}
             qtyMeasure={route?.params?.detail?.qtyMeasure}
           />
 
@@ -328,7 +330,7 @@ const OfferDetail = () => {
             onPress={onPress}
             image={image}
             images={images}
-            offerValidity={route?.params?.detail?.offerValidity}
+            createdAtd={route?.params?.detail?.createdAtd}
           />
 
           <TextIconButton

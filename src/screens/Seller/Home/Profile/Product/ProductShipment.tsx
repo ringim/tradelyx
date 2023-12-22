@@ -191,7 +191,7 @@ const InternationalEngagementTerms = () => {
             required: 'Landmark is required',
           }}
           containerStyle={{
-            marginTop: address ? -SIZES.padding * 1.3 : 0,
+            marginTop: address ? SIZES.base : 70,
           }}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
@@ -202,7 +202,7 @@ const InternationalEngagementTerms = () => {
           date={date}
           onPress={showDatePicker}
           title={'Date Available'}
-          containerStyle={{marginTop: SIZES.padding * 1.2}}
+          containerStyle={{marginTop: SIZES.radius}}
         />
       </View>
     );

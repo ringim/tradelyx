@@ -90,7 +90,7 @@ const CompleteProfile = () => {
       const input: UpdateUserInput = {
         id: userID,
         logo: selectedPhoto,
-        backgroundImage: selectedPhoto1 || DEFAULT_BANNER_IMAGE,
+        backgroundImage: selectedPhoto1,
         country: country,
         address: address?.description?.formatted_address,
         title,

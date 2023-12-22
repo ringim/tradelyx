@@ -73,15 +73,15 @@ const SearchFilter = () => {
             (cp: {
               category: string;
               storeName: string;
-              fobPrice: number;
+              basePrice: number;
               title: string;
               storeAddress: string | any[];
               quantity: number;
             }) =>
               cp?.category === type &&
               cp?.title?.includes(productName) &&
-              cp?.fobPrice >= sliderValue[0] &&
-              cp?.fobPrice <= sliderValue[1] &&
+              cp?.basePrice >= sliderValue[0] &&
+              cp?.basePrice <= sliderValue[1] &&
               cp?.storeAddress?.includes(address) &&
               cp?.quantity >= qty,
           ),

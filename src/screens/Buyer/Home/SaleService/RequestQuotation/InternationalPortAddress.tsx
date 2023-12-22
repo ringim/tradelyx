@@ -145,7 +145,7 @@ const InternationalPortAddress = () => {
         buttonContainerStyle={{
           backgroundColor: COLORS.primary1,
           position: 'absolute',
-          marginTop: SIZES.padding * 31,
+          marginTop:SIZES.height > 700 ? SIZES.padding * 29 : SIZES.padding * 23,
         }}
         onPress={checKNavigation}
       />

@@ -35,7 +35,7 @@ const CategoryOption2 = ({category, isSelected, onPress}: any) => {
           textAlign: 'center',
           marginTop: SIZES.radius,
           ...FONTS.cap1,
-          fontWeight: '700',
+          fontWeight: '500',
           color: isSelected ? COLORS.white : COLORS.Neutral1,
         }}>
         {category?.type}

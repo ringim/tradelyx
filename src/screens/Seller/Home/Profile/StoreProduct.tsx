@@ -1,12 +1,14 @@
 import {View, Animated, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useState, useCallback, useRef} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {connect} from 'react-redux';
 
-import {COLORS, SIZES, constants, FONTS} from '../../../../constants';
-import {AltHeader} from '../../../../components';
+import {COLORS, SIZES, constants, FONTS, icons} from '../../../../constants';
+import {AltHeader, ServiceModal2} from '../../../../components';
 import MyProducts from './MyProducts';
 import MySellOffers from './MySellOffers';
 import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
+import {toggleCameraModal} from '../../../../redux/modal/modalActions';
 
 const scheduleTabs = constants.storeProducts.map(bottom_tab => ({
   ...bottom_tab,
@@ -134,11 +136,34 @@ const Tabs = ({scrollX, onTabPress}: any) => {
   );
 };
 
-const StoreProduct = () => {
+const StoreProduct = ({toggleCameraModal, showCameraModal}: any) => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
 
   const flatListRef = useRef<any>();
   const scrollX = useRef<any>(new Animated.Value(0)).current;
+
+  const bottomSheetModalRef = useRef<any>(null);
+
+  // callbacks
+  const showModal = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const hideModal = useCallback(() => {
+    toggleCameraModal(false);
+    bottomSheetModalRef.current?.dismiss();
+  }, []);
+
+  const hideModalWithNavigation = useCallback(() => {
+    toggleCameraModal(false);
+    bottomSheetModalRef.current?.dismiss();
+  }, []);
+
+  useEffect(() => {
+    if (showCameraModal) {
+      showModal();
+    }
+  }, [showCameraModal]);
 
   const onTabPress = useCallback((tabIndex: number) => {
     flatListRef?.current?.scrollToOffset({
@@ -210,7 +235,19 @@ const StoreProduct = () => {
         title={'Products & Sell Offers'}
         contentStyle={{marginBottom: 0}}
         tintColor={COLORS.Neutral1}
+        other={true}
+        icon={icons.plus}
+        iconStyle={{width: 30, height: 30}}
+        otherStyle={{left: SIZES.radius}}
+        onOther={showModal}
         onPress={() => navigation.navigate('Profile')}
+      />
+
+      {/* Modal */}
+      <ServiceModal2
+        bottomSheetModalRef={bottomSheetModalRef}
+        hideModal={hideModal}
+        hideModalWithNavigation={hideModalWithNavigation}
       />
 
       {renderTopTabBar()}
@@ -226,4 +263,18 @@ const StoreProduct = () => {
   );
 };
 
-export default StoreProduct;
+function mapStateToProps(state: any) {
+  return {
+    showCameraModal: state.modalReducer.showCameraModal,
+  };
+}
+
+function mapDispatchToProps(dispatch: any) {
+  return {
+    toggleCameraModal: (toggleValue: any) => {
+      return dispatch(toggleCameraModal(toggleValue));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoreProduct);

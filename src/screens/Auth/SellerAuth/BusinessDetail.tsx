@@ -8,7 +8,6 @@ import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {COLORS, FONTS, SIZES, constants} from '../../../constants';
 import {
-  CategoryOption,
   CategoryOption2,
   FormInput,
   Header,
@@ -46,6 +45,7 @@ const BusinessDetail = () => {
   const {userID} = useAuthContext();
   const {control, handleSubmit} = useForm<CompleteAccountData>();
 
+  const [uploading, setUploading] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<any>([]);
   const [singleFile, setSingleFile] = useState<any>([]);
   const [date, setDate] = useState('');
@@ -56,9 +56,7 @@ const BusinessDetail = () => {
     'Hausa',
   ]);
 
-  const selectedProp = selectedCategories?.map(
-    (obj: {label: any}) => obj?.label,
-  );
+  const selectedProp = selectedCategories?.map((obj: {type: any}) => obj?.type);
 
   const onTagPress = (deleted: any) => {
     return deleted ? 'deleted' : 'not deleted';
@@ -113,6 +111,10 @@ const BusinessDetail = () => {
     file,
     rcNumber,
   }: CompleteAccountData) => {
+    if (uploading) {
+      return;
+    }
+    setUploading(true);
     try {
       const input: UpdateUserInput = {
         id: userID,
@@ -364,7 +366,7 @@ const BusinessDetail = () => {
           {renderFormSection()}
           <TextButton
             disabled={isSubmit() ? false : true}
-            label={loading ? 'Loading...' : 'Continue'}
+            label={uploading ? 'Loading...' : 'Continue'}
             buttonContainerStyle={{
               alignSelf: 'center',
               marginTop: SIZES.padding * 2,

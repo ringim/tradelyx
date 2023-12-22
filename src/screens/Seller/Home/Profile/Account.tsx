@@ -55,6 +55,9 @@ const Account = () => {
   const [displayAddress, setDisplayAddress] = useState(userAccount?.address);
   const [initialTags, setInitialTags] = useState(userAccount?.mainMarkets);
   const [initialTags2, setInitialTags2] = useState(userAccount?.languages);
+  const [initialTags3, setInitialTags3] = useState<any>(
+    userAccount?.businessType,
+  );
 
   const [open4, setOpen4] = useState(false);
   const [value4, setValue4] = useState(null);
@@ -65,11 +68,6 @@ const Account = () => {
   const [value2, setValue2] = useState(null);
   const [country, setCountry] = useState('');
   const [countryType, setCountryType] = useState<any>(CountryCodeList);
-
-  const [open1, setOpen1] = useState(false);
-  const [value1, setValue1] = useState(null);
-  const [busType, setBusType] = useState(userAccount?.businessType);
-  const [businessType, setBusinessType] = useState<any>(constants.businessType);
 
   // UPDATE USER DETAILS
   const [doUpdateUser, {loading: updateLoading}] = useMutation<
@@ -85,7 +83,6 @@ const Account = () => {
       setValue('identification', userAccount.identification);
       setValue('identificationNumber', userAccount.identificationNumber);
       setValue('certifications', userAccount.certifications);
-      setValue('businessType', userAccount.businessType);
       setValue('totalStaff', userAccount.totalStaff);
       setValue('overview', userAccount?.overview);
       setValue('incorporateDate', userAccount?.incorporateDate);
@@ -113,7 +110,7 @@ const Account = () => {
         address: displayAddress,
         country,
         identification: identity,
-        // businessType: [busType],
+        businessType: initialTags3,
         mainMarkets: initialTags,
         languages: initialTags2,
         ...formData,
@@ -229,6 +226,18 @@ const Account = () => {
     return <RenderTags key={index} tag={tag} onPress={onPress} />;
   };
 
+  const onTagPress3 = (deleted: any) => {
+    return deleted ? 'deleted' : 'not deleted';
+  };
+
+  const onChangeTags3 = (tags: any) => {
+    setInitialTags3(tags);
+  };
+
+  const renderTag3 = ({tag, index, onPress}: any) => {
+    return <RenderTags key={index} tag={tag} onPress={onPress} />;
+  };
+
   function renderForm() {
     return (
       <View style={{marginHorizontal: SIZES.semi_margin, marginTop: 180}}>
@@ -254,10 +263,12 @@ const Account = () => {
           control={control}
           label="Mobile number"
           placeholder="Enter mobile number"
+          editable={false}
           name="phone_number"
           rules={{required: 'Mobile number is required'}}
           keyboardType={'phone-pad'}
           containerStyle={{marginTop: SIZES.radius}}
+          inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           maxLength={15}
         />
 
@@ -265,6 +276,7 @@ const Account = () => {
         <FormInput
           control={control}
           label="Email"
+          name="email"
           editable={false}
           inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           containerStyle={{marginTop: SIZES.radius}}
@@ -274,8 +286,18 @@ const Account = () => {
         <FormInput
           control={control}
           label="Business Name"
+          placeholder="Enter your Business name"
           editable={false}
+          name="title"
+          rules={{
+            required: 'Business name is required',
+            minLength: {
+              value: 3,
+              message: 'names should be more than 5 characters',
+            },
+          }}
           inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
+          keyboardType={'default'}
           containerStyle={{marginTop: SIZES.radius}}
         />
 
@@ -470,86 +492,13 @@ const Account = () => {
         />
 
         {/* Business Type */}
-        <Controller
-          control={control}
-          name="businessType"
-          rules={{
-            required: 'Business Type is required',
-          }}
-          render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View>
-              <Text
-                style={{
-                  marginTop: SIZES.radius,
-                  color: COLORS.Neutral1,
-                  ...FONTS.body3,
-                  fontWeight: '500',
-                }}>
-                Business Type
-              </Text>
-              <DropDownPicker
-                schema={{
-                  label: 'type',
-                  value: 'type',
-                }}
-                onChangeValue={onChange}
-                open={open1}
-                showArrowIcon={true}
-                placeholder="Select Business Type "
-                showTickIcon={true}
-                dropDownDirection="AUTO"
-                listMode="MODAL"
-                value={value1 || value}
-                items={businessType}
-                setOpen={setOpen1}
-                setValue={setValue1}
-                setItems={setBusinessType}
-                style={{
-                  borderRadius: SIZES.base,
-                  height: 40,
-                  marginTop: SIZES.base,
-                  borderColor: COLORS.Neutral7,
-                  borderWidth: 0.5,
-                }}
-                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
-                textStyle={{color: COLORS.Neutral1}}
-                closeIconStyle={{
-                  width: 24,
-                  height: 24,
-                }}
-                modalProps={{
-                  animationType: 'fade',
-                }}
-                ArrowDownIconComponent={({style}) => (
-                  <FastImage
-                    source={icons.down}
-                    style={{width: 15, height: 15}}
-                  />
-                )}
-                modalContentContainerStyle={{
-                  paddingHorizontal: SIZES.padding * 3,
-                }}
-                modalTitle="Select Identification"
-                modalTitleStyle={{
-                  fontWeight: '600',
-                }}
-                onSelectItem={(value: any) => {
-                  setBusType(value?.type);
-                }}
-              />
-              {error && (
-                <Text
-                  style={{
-                    ...FONTS.cap1,
-                    color: COLORS.Rose4,
-                    top: 14,
-                    left: 5,
-                  }}>
-                  This field is required.
-                </Text>
-              )}
-            </View>
-          )}
+        <RequestTags
+          initialTags={initialTags3}
+          onChangeTags={onChangeTags3}
+          onTagPress={onTagPress3}
+          renderTag={renderTag3}
+          title={'Business Type'}
+          contentStyle={{marginTop: SIZES.padding}}
         />
 
         {/* Main Markets */}
@@ -559,7 +508,7 @@ const Account = () => {
           onTagPress={onTagPress}
           renderTag={renderTag}
           title={'Main Markets'}
-          contentStyle={{marginTop: SIZES.padding}}
+          contentStyle={{marginTop: SIZES.semi_margin}}
         />
 
         {/* Languages */}

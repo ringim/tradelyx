@@ -222,6 +222,8 @@ const Account = () => {
           placeholder="Enter your email"
           name="email"
           keyboardType="email-address"
+          editable={false}
+          inputContainerStyle={{backgroundColor: COLORS.Neutral9}}
           textInputStyle={{color: COLORS.gray}}
           containerStyle={{marginTop: SIZES.radius}}
         />

@@ -126,7 +126,6 @@ const ProductSpecification = () => {
               paddingHorizontal: SIZES.radius,
               borderRadius: SIZES.base,
               borderWidth: 0.5,
-              marginBottom: 120,
               borderColor: COLORS.Neutral7,
             }}
           />
@@ -141,7 +140,7 @@ const ProductSpecification = () => {
           rules={{
             required: 'Supply capacity is required',
           }}
-          containerStyle={{marginTop: SIZES.margin}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
@@ -155,7 +154,7 @@ const ProductSpecification = () => {
             required: 'MOQ is required',
           }}
           placeholder="E.g. 1 Tonne"
-          containerStyle={{marginTop: SIZES.margin}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />
@@ -169,7 +168,7 @@ const ProductSpecification = () => {
             required: 'Packaging is required',
           }}
           placeholder="e.g Bags, Crate e.t.c."
-          containerStyle={{marginTop: SIZES.padding}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />

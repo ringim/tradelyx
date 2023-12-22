@@ -47,7 +47,7 @@ const CompleteProfile = () => {
 
   const [address, setAddress] = useState<any>('');
   const [uploading, setUploading] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<null | Asset>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
@@ -109,6 +109,10 @@ const CompleteProfile = () => {
       setUploading(false);
     }
   };
+
+  function isSubmit() {
+    return selectedPhoto !== '';
+  }
 
   useEffect(() => {
     let unmounted = true;
@@ -314,10 +318,12 @@ const CompleteProfile = () => {
 
           {renderFormSection()}
           <TextButton
+            disabled={isSubmit() ? false : true}
             label={uploading ? 'Loading...' : 'Continue'}
             buttonContainerStyle={{
               alignSelf: 'center',
               marginTop: SIZES.padding * 2,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
               marginBottom: 100,
             }}
             onPress={handleSubmit(onSubmit)}

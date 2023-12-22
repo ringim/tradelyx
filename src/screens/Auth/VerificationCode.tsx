@@ -103,6 +103,7 @@ const VerificationCode = () => {
       <View
         style={{
           marginTop: SIZES.radius,
+          marginHorizontal: SIZES.base
         }}>
         {/* OTP Code */}
         <Controller
@@ -115,7 +116,7 @@ const VerificationCode = () => {
             <>
               <OTPTextView
                 ref={input}
-                containerStyle={{margin: SIZES.margin}}
+                // containerStyle={{margin: SIZES.radius}}
                 textInputStyle={{
                   borderRadius: 10,
                   borderWidth: 1,
@@ -196,7 +197,7 @@ const VerificationCode = () => {
           label={loading ? 'Verifying...' : 'Verify'}
           buttonContainerStyle={{
             alignSelf: 'center',
-            marginTop: SIZES.base,
+            marginTop: SIZES.padding,
           }}
           onPress={handleSubmit(onSubmit)}
         />

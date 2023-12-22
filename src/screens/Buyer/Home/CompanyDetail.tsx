@@ -142,7 +142,7 @@ const CompanyDetail = () => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.title,
+              name: userInfo?.id,
             },
           },
         });

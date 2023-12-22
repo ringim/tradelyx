@@ -325,7 +325,6 @@ const AddProducts = () => {
               paddingHorizontal: SIZES.radius,
               borderRadius: SIZES.base,
               borderWidth: 0.5,
-              marginBottom: 120,
               borderColor: COLORS.Neutral7,
             }}
           />

@@ -162,10 +162,8 @@ const ReplySellofferDetails = () => {
         <View
           style={{
             marginTop: SIZES.radius,
-            marginHorizontal: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            borderRadius: SIZES.base,
             backgroundColor: COLORS.Neutral10,
             padding: SIZES.radius,
           }}>
@@ -186,7 +184,9 @@ const ReplySellofferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {dayjs(getSellOfferDetail?.offerValidity).format('MMMM DD, YYYY')}
+              {dayjs(getSellOfferDetail?.createdAt).format(
+                'MMM DD, YYYY - HH:mm A',
+              )}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -483,8 +483,8 @@ const ReplySellofferDetails = () => {
           </View>
         </View>
 
-        {/* FOB Price */}
-        {getSellOfferDetail?.fobPrice ? (
+        {/* Base Price */}
+        {getSellOfferDetail?.basePrice ? (
           <View
             style={{
               marginTop: SIZES.base,
@@ -502,7 +502,7 @@ const ReplySellofferDetails = () => {
                   color: COLORS.Neutral6,
                   lineHeight: 24,
                 }}>
-                FOB Price
+                Base Price
               </Text>
             </View>
             <View
@@ -515,7 +515,7 @@ const ReplySellofferDetails = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                ₦{getSellOfferDetail?.fobPrice.toLocaleString('en-US', options)}
+                ₦{getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
               </Text>
             </View>
           </View>

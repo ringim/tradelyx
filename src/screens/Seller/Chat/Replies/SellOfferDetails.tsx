@@ -90,14 +90,14 @@ const SellOfferDetails = () => {
         {/* shipping from  */}
         <View
           style={{
-            marginTop: SIZES.base,
+            marginTop: 4,
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: SIZES.semi_margin,
           }}>
           <View
             style={{
-              flex: 1.6,
+              flex: 1,
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
@@ -160,10 +160,8 @@ const SellOfferDetails = () => {
         <View
           style={{
             marginTop: SIZES.radius,
-            marginHorizontal: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            borderRadius: SIZES.base,
             backgroundColor: COLORS.Neutral10,
             padding: SIZES.radius,
           }}>
@@ -184,7 +182,9 @@ const SellOfferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {getSellOfferDetail?.offerValidity}
+              {dayjs(route?.params.sellOffer?.createdAt).format(
+                'MMM DD, YYYY - HH:mm A',
+              )}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -315,7 +315,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              “Product Title
+              Product Title
             </Text>
           </View>
           <View
@@ -352,7 +352,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Supply Capacity
+              Sell Offer Title
             </Text>
           </View>
           <View
@@ -443,8 +443,8 @@ const SellOfferDetails = () => {
           </View>
         </View>
 
-        {/* FOB Price */}
-        {getSellOfferDetail?.fobPrice ? (
+        {/* Base Price */}
+        {getSellOfferDetail?.basePrice ? (
           <View
             style={{
               marginTop: SIZES.base,
@@ -462,7 +462,7 @@ const SellOfferDetails = () => {
                   color: COLORS.Neutral6,
                   lineHeight: 24,
                 }}>
-                FOB Price
+                Base Price
               </Text>
             </View>
             <View
@@ -475,7 +475,7 @@ const SellOfferDetails = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                ₦{getSellOfferDetail?.fobPrice.toLocaleString('en-US', options)}
+                ₦{getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
               </Text>
             </View>
           </View>
@@ -538,7 +538,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Supply Capacity
+              Offer Coverage
             </Text>
           </View>
           <View

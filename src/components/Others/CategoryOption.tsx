@@ -8,7 +8,7 @@ const CategoryOption = ({category, isSelected, onPress}: any) => {
     <TouchableOpacity
       style={{
         height: (SIZES.width - SIZES.padding * 2 - 30) / 2,
-        width: (SIZES.width - SIZES.padding * 2 - 0) / 3,
+        width: (SIZES.width - SIZES.padding * 2 ) / 2.5,
         marginTop: SIZES.radius,
         alignItems: 'center',
         justifyContent: 'center',

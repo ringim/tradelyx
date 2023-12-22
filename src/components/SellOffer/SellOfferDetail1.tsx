@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
 import {options} from '../../utilities/service';
+import HR from '../Others/HR';
 
 const SellOfferDetail1 = ({
   imageUri,
@@ -14,9 +15,11 @@ const SellOfferDetail1 = ({
   imageUri2,
   image,
   imageUri3,
+  productName,
   userInfo,
-  fobPrice,
+  basePrice,
   deliveryDate,
+  placeOrigin,
   paymentType,
   unit,
   qtyMeasure,
@@ -91,7 +94,7 @@ const SellOfferDetail1 = ({
         </View>
       </View>
 
-      {/* Product Image */}
+      {/* sellOfferImage */}
       <View style={{}}>
         {image ? (
           <View
@@ -103,7 +106,7 @@ const SellOfferDetail1 = ({
               resizeMode={FastImage.resizeMode.cover}
               source={{uri: imageUri2 || DUMMY_IMAGE}}
               style={{
-                width: 380,
+                width: SIZES.height > 700 ? 380 : 350,
                 height: 180,
                 borderRadius: SIZES.radius,
               }}
@@ -122,7 +125,7 @@ const SellOfferDetail1 = ({
               swipeToDismiss={false}
               modalRef={element}
               style={{
-                width: 380,
+                width: SIZES.height > 700 ? 380 : 350,
                 height: 180,
                 borderRadius: SIZES.radius,
               }}
@@ -152,7 +155,7 @@ const SellOfferDetail1 = ({
         {/* Supplier Location */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.base,
             marginHorizontal: SIZES.margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -175,20 +178,53 @@ const SellOfferDetail1 = ({
               justifyContent: 'center',
             }}>
             <Text
-              numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral5}}>
-              {userInfo?.city}
-              {', '}
-              {userInfo?.country}
+              numberOfLines={3}
+              style={{
+                ...FONTS.cap1,
+                fontWeight: '500',
+                color: COLORS.Neutral5,
+              }}>
+              {placeOrigin}
             </Text>
           </View>
+        </View>
+      </View>
+
+      <HR containerStyle={{width: '90%', marginTop: SIZES.semi_margin}} />
+
+      {/* Product Title */}
+      <View
+        style={{
+          marginTop: SIZES.semi_margin,
+          marginHorizontal: SIZES.margin,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+            Product Title
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...FONTS.body3,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
+            }}>
+            {productName}
+          </Text>
         </View>
       </View>
 
       {/* Qty offered */}
       <View
         style={{
-          marginTop: SIZES.semi_margin,
+          marginTop: SIZES.base,
           marginHorizontal: SIZES.margin,
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -217,14 +253,14 @@ const SellOfferDetail1 = ({
       {/* base price */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           marginHorizontal: SIZES.margin,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-            FOB Price
+            Base Price
           </Text>
         </View>
         <View
@@ -238,7 +274,7 @@ const SellOfferDetail1 = ({
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            ₦{fobPrice.toLocaleString('en-US', options)}
+            ₦{basePrice.toLocaleString('en-US', options)}
           </Text>
         </View>
       </View>
@@ -246,7 +282,7 @@ const SellOfferDetail1 = ({
       {/* payment type */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           marginHorizontal: SIZES.margin,
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -275,7 +311,7 @@ const SellOfferDetail1 = ({
       {/* offer Validity */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           marginHorizontal: SIZES.margin,
           flexDirection: 'row',
           justifyContent: 'space-between',

@@ -3,7 +3,7 @@ import React from 'react';
 
 import {COLORS, FONTS, SIZES, icons, images} from '../../constants';
 import TextButton from '../Button/TextButton';
-import { options } from '../../utilities/service';
+import {options} from '../../utilities/service';
 
 const BalanceSection = ({balance, onPress}: any) => {
   return (
@@ -30,7 +30,9 @@ const BalanceSection = ({balance, onPress}: any) => {
               color: COLORS.white,
               paddingTop: SIZES.radius,
             }}>
-            {balance >= 20 && 'Available for Withdrawal'}
+            {balance >= 20
+              ? 'Available for Withdrawal'
+              : 'Do some business to withdraw'}
           </Text>
         </View>
 
@@ -41,12 +43,12 @@ const BalanceSection = ({balance, onPress}: any) => {
             width: 100,
             marginTop: SIZES.base,
             justifyContent: 'center',
-            backgroundColor: balance < 20 ? COLORS.Neutral10 : COLORS.Neutral7,
+            backgroundColor: balance < 20 ? COLORS.Neutral7 : COLORS.white,
           }}
           label="Withdraw"
           labelStyle={{
             ...FONTS.h5,
-            color: balance < 20 ? COLORS.Neutral1 : COLORS.primary1,
+            color: balance < 20 ? COLORS.Neutral5 : COLORS.primary1,
           }}
           onPress={onPress}
         />

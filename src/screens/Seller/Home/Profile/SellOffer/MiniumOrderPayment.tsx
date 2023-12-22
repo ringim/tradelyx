@@ -31,7 +31,6 @@ interface IFreight {
   moq: string;
   validity: string;
   basePrice: number;
-  fobPrice: number;
   qty: number;
 }
 
@@ -69,7 +68,7 @@ const MiniumOrderPayment = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -80,7 +79,7 @@ const MiniumOrderPayment = () => {
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
 
-  const onSubmit = async ({basePrice, fobPrice, qty}: IFreight) => {
+  const onSubmit = async ({basePrice, qty}: IFreight) => {
     if (loading) {
       return;
     }
@@ -90,7 +89,6 @@ const MiniumOrderPayment = () => {
         id: route?.params.sellOfferID,
         SType: 'SELLOFFER',
         basePrice,
-        fobPrice,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
@@ -231,45 +229,12 @@ const MiniumOrderPayment = () => {
 
         <FormInput
           name="basePrice"
-          label="Base Price (Exc. Delivery)"
+          label="Base Price"
           control={control}
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"
           rules={{
             required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
-              style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
-              }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
-
-        <FormInput
-          name="fobPrice"
-          label="FOB Price (Inc. Delivery)"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'FOB price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -466,7 +431,7 @@ const MiniumOrderPayment = () => {
         <ExpiryDate
           date={date}
           onPress={showDatePicker}
-          title="Offer Validity (1-30 days)"
+          title="Offer Validity"
           containerStyle={{marginTop: SIZES.padding, marginBottom: 100}}
         />
       </View>
@@ -484,9 +449,10 @@ const MiniumOrderPayment = () => {
 
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode="date"
+          mode="datetime"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
+          display="inline"
         />
 
         <Spinner

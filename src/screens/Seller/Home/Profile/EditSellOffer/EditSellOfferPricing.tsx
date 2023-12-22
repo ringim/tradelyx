@@ -31,7 +31,6 @@ interface IFreight {
   moq: string;
   paymentMethod: string;
   basePrice: number;
-  fobPrice: number;
   qty: number;
   paymentType: string;
 }
@@ -87,7 +86,7 @@ const EditSellOfferPricing = () => {
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
 
-  const onSubmit = async ({basePrice, fobPrice, qty}: IFreight) => {
+  const onSubmit = async ({basePrice, qty}: IFreight) => {
     if (loading) {
       return;
     }
@@ -96,7 +95,6 @@ const EditSellOfferPricing = () => {
       const input: UpdateSellOfferInput = {
         id: sellOfferDetails.id,
         basePrice,
-        fobPrice,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
@@ -132,7 +130,6 @@ const EditSellOfferPricing = () => {
       setValue('unit', sellOfferDetails?.unit);
       setValue('basePrice', sellOfferDetails?.basePrice.toString());
       setValue('paymentMethod', sellOfferDetails?.paymentMethod);
-      setValue('fobPrice', sellOfferDetails?.fobPrice.toString());
       setValue('paymentType', sellOfferDetails?.paymentType);
     }
     return () => {
@@ -284,8 +281,8 @@ const EditSellOfferPricing = () => {
         />
 
         <FormInput
-          name="fobPrice"
-          label="FOB Price (Inc. Delivery)"
+          name="basePrice"
+          label="Base Price (Inc. Delivery)"
           control={control}
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"

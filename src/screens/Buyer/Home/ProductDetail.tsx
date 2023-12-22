@@ -197,7 +197,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.title,
+              name: userInfo?.id,
             },
           },
         });
@@ -300,7 +300,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
             rating={route?.params.productItem?.rating}
             name={route?.params.productItem?.title}
             supplierName={route?.params.productItem?.storeName}
-            commodityCategory={route?.params.productItem?.commodityCategory}
+            commodityCategory={route?.params.productItem?.category}
             category={route?.params.productItem?.category}
             banner_image={route?.params.productItem?.image}
           />
@@ -325,9 +325,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
                     name={route?.params.productItem?.title}
                     rating={route?.params.productItem?.rating}
                     supplierName={route?.params.productItem?.storeName}
-                    commodityCategory={
-                      route?.params.productItem?.commodityCategory
-                    }
+                    commodityCategory={route?.params.productItem?.category}
                     category={route?.params.productItem?.category}
                     banner_image={item}
                   />

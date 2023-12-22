@@ -31,29 +31,7 @@ const SellOfferDetail = () => {
   // console.log(route?.params.sellOffer);
   const [imageUri, setImageUri] = useState<string | any>(null);
 
-  const {
-    sellOfferID,
-    packageDesc,
-    rfqType,
-    offerValidity,
-    deliveryDate,
-    title,
-    fobPrice,
-    paymentType,
-    packageType,
-    requestCategory,
-    paymentMethod,
-    basePrice,
-    description,
-    images,
-    image,
-    unit,
-    qtyMeasure,
-    productName,
-    sellOfferImage,
-    id,
-    placeOrigin,
-  }: any = route?.params.sellOffer;
+  const {offerValidity, sellOfferImage, id}: any = route?.params.sellOffer;
 
   const options = {
     style: 'decimal',
@@ -164,19 +142,18 @@ const SellOfferDetail = () => {
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
               }}>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
                 Shipping from
               </Text>
             </View>
-            <View style={{justifyContent: 'center'}}>
+            <View style={{flex: 2, justifyContent: 'center'}}>
               <Text
                 style={{
                   ...FONTS.h5,
                   color: COLORS.Neutral1,
                 }}>
-                {placeOrigin}
+                {route?.params.sellOffer?.placeOrigin}
               </Text>
             </View>
           </View>
@@ -184,7 +161,7 @@ const SellOfferDetail = () => {
           {/* RFQ Number */}
           <View
             style={{
-              marginTop: 4,
+              marginTop: SIZES.radius,
               flexDirection: 'row',
               justifyContent: 'space-between',
               marginHorizontal: SIZES.semi_margin,
@@ -204,7 +181,7 @@ const SellOfferDetail = () => {
                   ...FONTS.h5,
                   color: COLORS.Neutral1,
                 }}>
-                {sellOfferID}
+                {route?.params.sellOffer?.sellOfferID}
               </Text>
             </View>
 
@@ -226,10 +203,8 @@ const SellOfferDetail = () => {
           <View
             style={{
               marginTop: SIZES.radius,
-              marginHorizontal: SIZES.base,
               flexDirection: 'row',
               justifyContent: 'space-between',
-              borderRadius: SIZES.base,
               backgroundColor: COLORS.Neutral10,
               padding: SIZES.radius,
             }}>
@@ -246,11 +221,13 @@ const SellOfferDetail = () => {
             <View
               style={{
                 flex: 1,
-                marginLeft: SIZES.base,
+                marginLeft: 5,
                 justifyContent: 'center',
               }}>
               <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-                {dayjs(offerValidity).format('MMMM DD, YYYY')}
+                {dayjs(route?.params.sellOffer?.createdAt).format(
+                  'MMM DD, YYYY - HH:mm A',
+                )}
               </Text>
             </View>
             <View style={{justifyContent: 'center'}}>
@@ -321,11 +298,11 @@ const SellOfferDetail = () => {
               textStyle={{...FONTS.h5, color: COLORS.Neutral1}}>
               <Text
                 style={{
-                  ...FONTS.cap1,
+                  ...FONTS.body3,
                   color: COLORS.Neutral1,
                   fontWeight: '500',
                 }}>
-                {packageDesc}
+                {route?.params.sellOffer?.packageDesc}
               </Text>
             </ViewMoreText>
           </View>
@@ -350,11 +327,11 @@ const SellOfferDetail = () => {
               textStyle={{...FONTS.h5, color: COLORS.Neutral1}}>
               <Text
                 style={{
-                  ...FONTS.cap1,
+                  ...FONTS.body3,
                   color: COLORS.Neutral1,
                   fontWeight: '500',
                 }}>
-                {description}
+                {route?.params.sellOffer?.description}
               </Text>
             </ViewMoreText>
           </View>
@@ -394,7 +371,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {title}
+                {route?.params.sellOffer?.title}
               </Text>
             </View>
           </View>
@@ -402,7 +379,7 @@ const SellOfferDetail = () => {
           {/* Product Name */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -419,7 +396,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral6,
                   lineHeight: 24,
                 }}>
-                Product Name
+                Product Title
               </Text>
             </View>
             <View
@@ -432,7 +409,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {productName}
+                {route?.params.sellOffer?.productName}
               </Text>
             </View>
           </View>
@@ -440,7 +417,7 @@ const SellOfferDetail = () => {
           {/* Product Category */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -468,7 +445,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {requestCategory}
+                {route?.params.sellOffer?.requestCategory}
               </Text>
             </View>
           </View>
@@ -476,7 +453,7 @@ const SellOfferDetail = () => {
           {/* Qty */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -504,16 +481,17 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {qtyMeasure} {unit}
+                {route?.params.sellOffer?.qtyMeasure}{' '}
+                {route?.params.sellOffer?.unit}
               </Text>
             </View>
           </View>
 
-          {/* FOB Price */}
-          {fobPrice ? (
+          {/* Base Price */}
+          {route?.params.sellOffer?.basePrice ? (
             <View
               style={{
-                marginTop: SIZES.base,
+                marginTop: 4,
                 flexDirection: 'row',
                 marginHorizontal: SIZES.semi_margin,
                 justifyContent: 'space-between',
@@ -528,7 +506,7 @@ const SellOfferDetail = () => {
                     color: COLORS.Neutral6,
                     lineHeight: 24,
                   }}>
-                  FOB Price
+                  Base Price
                 </Text>
               </View>
               <View
@@ -541,7 +519,11 @@ const SellOfferDetail = () => {
                     color: COLORS.Neutral1,
                     lineHeight: 24,
                   }}>
-                  ₦{fobPrice.toLocaleString('en-US', options)}
+                  ₦
+                  {route?.params.sellOffer?.basePrice.toLocaleString(
+                    'en-US',
+                    options,
+                  )}
                 </Text>
               </View>
             </View>
@@ -552,7 +534,7 @@ const SellOfferDetail = () => {
           {/* Packaging */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -580,7 +562,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {packageType}
+                {route?.params.sellOffer?.packageType}
               </Text>
             </View>
           </View>
@@ -588,7 +570,7 @@ const SellOfferDetail = () => {
           {/* Offer Coverage */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -618,7 +600,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {rfqType}
+                {route?.params.sellOffer?.rfqType}
               </Text>
             </View>
           </View>
@@ -626,7 +608,7 @@ const SellOfferDetail = () => {
           {/* payment method */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -654,7 +636,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {paymentMethod}
+                {route?.params.sellOffer?.paymentMethod}
               </Text>
             </View>
           </View>
@@ -662,7 +644,7 @@ const SellOfferDetail = () => {
           {/* Payment terms */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -690,7 +672,7 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {paymentType}
+                {route?.params.sellOffer?.paymentType}
               </Text>
             </View>
           </View>
@@ -698,7 +680,7 @@ const SellOfferDetail = () => {
           {/* Delivery date */}
           <View
             style={{
-              marginTop: SIZES.base,
+              marginTop: 4,
               flexDirection: 'row',
               marginHorizontal: SIZES.semi_margin,
               justifyContent: 'space-between',
@@ -726,7 +708,9 @@ const SellOfferDetail = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                {dayjs(deliveryDate).format('MMMM DD, YYYY')}
+                {dayjs(route?.params.sellOffer?.deliveryDate).format(
+                  'MMMM DD, YYYY',
+                )}
               </Text>
             </View>
           </View>
@@ -754,11 +738,14 @@ const SellOfferDetail = () => {
               </Text>
             </View>
 
-            {image ? (
-              <SOImage image={image} containerStyle={{marginLeft: 0}} />
+            {route?.params.sellOffer?.image ? (
+              <SOImage
+                image={route?.params.sellOffer?.image}
+                containerStyle={{marginLeft: 0}}
+              />
             ) : (
               <FlatList
-                data={images}
+                data={route?.params.sellOffer?.images}
                 keyExtractor={item => `${item}`}
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -791,7 +778,11 @@ const SellOfferDetail = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦{basePrice.toLocaleString('en-US', options)}
+                ₦
+                {route?.params.sellOffer?.basePrice.toLocaleString(
+                  'en-US',
+                  options,
+                )}
               </Text>
             </View>
           </View>

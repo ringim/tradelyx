@@ -53,7 +53,6 @@ interface IFreight {
   moq: string;
   validity: string;
   basePrice: number;
-  fobPrice: number;
   qty: number;
   landmark: string;
 }
@@ -85,12 +84,12 @@ const ReplySellOfferPayment = () => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod);
+  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod2);
 
   const [open3, setOpen3] = useState(false);
   const [value3, setValue3] = useState(null);
   const [type3, setType3] = useState('');
-  const [jobType3, setJobType3] = useState<any>(constants.paymentType);
+  const [jobType3, setJobType3] = useState<any>(constants.paymentType2);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -160,7 +159,7 @@ const ReplySellOfferPayment = () => {
     CreateSellOfferReplyMutationVariables
   >(createSellOfferReply);
 
-  const onSubmit = async ({basePrice, landmark, fobPrice, qty}: IFreight) => {
+  const onSubmit = async ({basePrice, landmark, qty}: IFreight) => {
     if (loading) {
       return;
     }
@@ -183,7 +182,6 @@ const ReplySellOfferPayment = () => {
         packageType: getSellOfferDetail?.packageType,
         userID: getSellOfferDetail?.userID,
         basePrice,
-        fobPrice,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
@@ -277,7 +275,7 @@ const ReplySellOfferPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 180,
+              width: 150,
             }}
           />
           {/* Quantity & Unit Measurement */}
@@ -312,7 +310,7 @@ const ReplySellOfferPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 200,
+                    width: 170,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -359,45 +357,12 @@ const ReplySellOfferPayment = () => {
 
         <FormInput
           name="basePrice"
-          label="Base Price (Exc. Delivery)"
+          label="Base Price"
           control={control}
           keyboardType={'numeric'}
           placeholder="Ex. ₦100,000"
           rules={{
             required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
-              style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
-              }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
-
-        <FormInput
-          name="fobPrice"
-          label="FOB Price (Inc. Delivery)"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'FOB price is required',
           }}
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
@@ -594,7 +559,7 @@ const ReplySellOfferPayment = () => {
         <ExpiryDate
           date={date}
           onPress={showDatePicker}
-          title="Offer Validity (1-30 days)"
+          title="Offer Validity"
           containerStyle={{marginTop: SIZES.padding}}
         />
 

@@ -231,6 +231,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     </View>
   );
 };
+
 function mapStateToProps(state: any) {
   return {
     showCameraModal: state.modalReducer.showCameraModal,

@@ -12,7 +12,7 @@ import TextButton from '../Button/TextButton';
 const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
   const navigation = useNavigation<any>();
 
-  const [selectedItem, setSelectedItem] = useState<any>(true);
+  const [selectedItem, setSelectedItem] = useState<any>('');
   const [value, setValue] = useState<any>(null);
 
   // Bottom Sheet
@@ -65,7 +65,7 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
         {/* Header */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.semi_margin,
             marginHorizontal: SIZES.padding,
             flexDirection: 'row',
             justifyContent: 'space-between',

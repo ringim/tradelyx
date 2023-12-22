@@ -176,7 +176,7 @@ const DomesticRFQDetail = () => {
             input: {
               newMessages: 0,
               SType: 'CHATROOM',
-              name: userInfo?.name,
+              name: userInfo?.id,
             },
           },
         });

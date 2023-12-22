@@ -24,7 +24,6 @@ import {
   Header,
   QuotationProgress2,
   SellerLocationMapHeader,
-  SourceLocationItem,
   TextButton,
 } from '../../../../../components';
 import {
@@ -48,7 +47,6 @@ const PackingShipment = () => {
 
   const [loading, setLoading] = useState(false);
   const [address1, setAddress1] = useState<any>('');
-
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
@@ -112,6 +110,7 @@ const PackingShipment = () => {
       <View
         style={{
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100
         }}>
         {/* Package type */}
         <Controller

@@ -117,7 +117,7 @@ const ProductContextProvider = ({children}: {children: ReactNode}) => {
   //     const res = await doCreateWishlist({
   //       variables: {
   //         input: {
-  //           fobPrice,
+  //           basePrice,
   //           minOrderQty,
   //           SType: 'WISHLIST',
   //           title,

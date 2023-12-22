@@ -13,13 +13,13 @@ const register_options = [
 
 const service = [
   {
-    id: 0,
+    id: `0`,
     label: 'Request for Quotation',
     text: 'Standard & Advanced',
     icon: require('../assets/images/quotation.png'),
   },
   {
-    id: 1,
+    id: `1`,
     label: 'Request for Freight',
     text: 'Air, Ocean, & Land',
     icon: require('../assets/images/freight.png'),
@@ -39,11 +39,11 @@ const signUp = [
 
 const sourceLocation = [
   {
-    id: 0,
+    id: `0`,
     label: 'Domestic',
   },
   {
-    id: 1,
+    id: `1`,
     label: 'International',
   },
 ];
@@ -414,7 +414,7 @@ const paymentMethod = [
 const paymentMethod2 = [
   {
     id: 1,
-    type: 'Wallet',
+    type: 'Escrow',
   },
 ];
 

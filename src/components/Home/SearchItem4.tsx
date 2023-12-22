@@ -290,7 +290,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Text
             style={{...FONTS.h3, color: COLORS.primary1, letterSpacing: -1}}>
-            ₦{item?.fobPrice.toLocaleString('en-US', options)}
+            ₦{item?.basePrice.toLocaleString('en-US', options)}
           </Text>
         </View>
 

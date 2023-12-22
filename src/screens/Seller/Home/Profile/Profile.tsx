@@ -8,12 +8,7 @@ import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {useQuery} from '@apollo/client';
 
 import {COLORS, SIZES, icons} from '../../../../constants';
-import {
-  AltHeader,
-  Header,
-  ProfileItem,
-  ProfilePhoto,
-} from '../../../../components';
+import {AltHeader, ProfileItem, ProfilePhoto} from '../../../../components';
 import {GetUserQuery, GetUserQueryVariables} from '../../../../API';
 import {ProfileStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 import {getUser} from '../../../../queries/UserQueries';

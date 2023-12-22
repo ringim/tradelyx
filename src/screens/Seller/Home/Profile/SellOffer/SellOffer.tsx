@@ -58,7 +58,7 @@ const SellOffer = () => {
   const [type, setType] = useState<any>('');
   const [jobType, setJobType] = useState<any>(crateTypes);
   const [item, setItem] = useState<any>('');
-  const [selectedItem, setSelectedItem] = useState<any>(true);
+  const [selectedItem, setSelectedItem] = useState<any>('');
 
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhotos, setSelectedPhotos] = useState<any | Asset>([]);
@@ -167,7 +167,7 @@ const SellOffer = () => {
         </View>
 
         {/* sellOfferImage */}
-        <View>
+        <View style={{marginTop: SIZES.radius}}>
           {!sellOfferImage ? (
             <ProductImage
               title={'Sell Offer Thumbnail'}
@@ -386,7 +386,7 @@ const SellOffer = () => {
           enableOnAndroid={true}>
           <View style={{margin: SIZES.semi_margin}}>
             <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
-              Additional Information
+              Sell Offer Information
             </Text>
           </View>
 

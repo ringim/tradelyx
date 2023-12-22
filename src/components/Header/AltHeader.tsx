@@ -12,9 +12,13 @@ const AltHeader = ({
   contentStyle,
   onOther2,
   icon,
+  tintColor2,
   titleStyle,
   onPress,
+  iconStyle,
   tintColor,
+  otherStyle,
+  other2,
 }: any) => {
   return (
     <View
@@ -62,35 +66,36 @@ const AltHeader = ({
         </View>
 
         {other && (
-          <>
-            <TouchableOpacity
-              onPress={onOther}
-              style={{justifyContent: 'center'}}>
-              <FastImage
-                source={icon}
-                resizeMode={FastImage.resizeMode.contain}
-                tintColor={COLORS.primary1}
-                style={{
-                  width: 24,
-                  height: 24,
-                }}
-              />
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onOther}
+            style={{justifyContent: 'center', ...otherStyle}}>
+            <FastImage
+              source={icon}
+              resizeMode={FastImage.resizeMode.contain}
+              tintColor={tintColor2}
+              style={{
+                width: 24,
+                height: 24,
+                ...iconStyle
+              }}
+            />
+          </TouchableOpacity>
+        )}
 
-            <TouchableOpacity
-              onPress={onOther2}
-              style={{marginLeft: SIZES.radius, justifyContent: 'center'}}>
-              <FastImage
-                source={icons.share}
-                resizeMode={FastImage.resizeMode.contain}
-                tintColor={COLORS.primary1}
-                style={{
-                  width: 24,
-                  height: 24,
-                }}
-              />
-            </TouchableOpacity>
-          </>
+        {other2 && (
+          <TouchableOpacity
+            onPress={onOther2}
+            style={{marginLeft: SIZES.radius, justifyContent: 'center'}}>
+            <FastImage
+              source={icons.share}
+              resizeMode={FastImage.resizeMode.contain}
+              tintColor={COLORS.primary1}
+              style={{
+                width: 24,
+                height: 24,
+              }}
+            />
+          </TouchableOpacity>
         )}
       </View>
     </View>

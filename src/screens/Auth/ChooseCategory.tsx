@@ -1,18 +1,13 @@
 import React, {useState, useRef} from 'react';
-import {
-  View,
-  Alert,
-  Text,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Alert, Text, ActivityIndicator} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import {ALERT_TYPE, Toast, Root} from 'react-native-alert-notification';
 import {useMutation} from '@apollo/client';
 
 import {SIZES, COLORS, FONTS, constants} from '../../constants';
-import {TextButton, Header, CategoryOption} from '../../components';
+import {TextButton, CategoryOption} from '../../components';
 import {AuthStackNavigatorParamList} from '../../components/navigation/navigation';
 import {UpdateUserMutation, UpdateUserMutationVariables} from '../../API';
 import {updateUser} from '../../queries/UserQueries';
@@ -93,7 +88,6 @@ const ChooseCategory = () => {
       <View
         style={{
           marginTop: SIZES.margin,
-          marginHorizontal: SIZES.padding,
         }}>
         <View
           style={{
@@ -147,47 +141,56 @@ const ChooseCategory = () => {
           </View>
         </View>
 
-        <View
-          style={{
-            marginHorizontal: SIZES.margin,
-            alignItems: 'center',
-          }}>
-          <LottieView
-            autoPlay
-            ref={animation}
+        <KeyboardAwareScrollView
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+          extraHeight={100}
+          bounces={false}
+          extraScrollHeight={100}
+          enableOnAndroid={true}>
+          <View
             style={{
-              width: 300,
-              height: 300,
-              alignSelf: 'center',
-              marginTop: SIZES.base,
+              marginHorizontal: SIZES.margin,
+              alignItems: 'center',
+            }}>
+            <LottieView
+              autoPlay
+              ref={animation}
+              style={{
+                width: 300,
+                height: 300,
+                alignSelf: 'center',
+                marginTop: SIZES.base,
+              }}
+              source={require('../../../src/assets/json/category.json')}
+            />
+          </View>
+
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.padding,
+            }}>
+            <Text style={{...FONTS.body2, color: COLORS.Neutral1}}>
+              Welcome, Take a moment to complete your profile for a tailored
+              experience
+            </Text>
+          </View>
+
+          {/* Categories */}
+          {renderCategories()}
+
+          <TextButton
+            disabled={isSubmit() ? false : true}
+            label={'Continue'}
+            buttonContainerStyle={{
+              marginTop: SIZES.padding * 1.5,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+              marginBottom: 100
             }}
-            source={require('../../../src/assets/json/category.json')}
+            onPress={onSubmit}
           />
-        </View>
-
-        <View
-          style={{
-            marginTop: SIZES.semi_margin,
-            marginHorizontal: SIZES.padding,
-          }}>
-          <Text style={{...FONTS.body2, color: COLORS.Neutral1}}>
-            Welcome, Take a moment to complete your profile for a tailored
-            experience
-          </Text>
-        </View>
-
-        {/* Categories */}
-        {renderCategories()}
-
-        <TextButton
-          disabled={isSubmit() ? false : true}
-          label={'Continue'}
-          buttonContainerStyle={{
-            marginTop: SIZES.padding * 1.5,
-            backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
-          }}
-          onPress={onSubmit}
-        />
+        </KeyboardAwareScrollView>
       </View>
     </Root>
   );
