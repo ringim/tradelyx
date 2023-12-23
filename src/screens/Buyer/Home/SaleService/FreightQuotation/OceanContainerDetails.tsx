@@ -106,7 +106,7 @@ const OceanContainerDetails = () => {
         style={{
           marginTop: SIZES.semi_margin,
           marginHorizontal: SIZES.semi_margin,
-          marginBottom: 200,
+          marginBottom: 100,
         }}>
         {/* container detail */}
         <View style={{marginTop: SIZES.semi_margin}}>
@@ -175,7 +175,7 @@ const OceanContainerDetails = () => {
           </View>
         </View>
 
-        {/* Category Type */}
+        {/* Container Type */}
         <Controller
           control={control}
           name="containerType"
@@ -199,7 +199,7 @@ const OceanContainerDetails = () => {
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select"
+                placeholder="Select Container Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -259,14 +259,14 @@ const OceanContainerDetails = () => {
 
         {/* Container Count */}
         <FormInput
-          label=" Container Count"
+          label="Container Count"
           name="qty"
           control={control}
           rules={{
             required: 'quantity is required',
           }}
           keyboardType={'numeric'}
-          placeholder="Add your quantity"
+          placeholder="Add Container quantity"
           containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base}}

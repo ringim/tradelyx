@@ -123,6 +123,7 @@ const LandFreight = () => {
         style={{
           marginTop: SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100
         }}>
         {/* Category Type */}
         <Controller
@@ -210,12 +211,12 @@ const LandFreight = () => {
 
         {/* product name */}
         <FormInput
-          label="“Product Title"
+          label="Product Title"
           name="name"
           control={control}
-          placeholder="Add product name"
+          placeholder="Add Product Title"
           rules={{
-            required: 'Product name is required',
+            required: 'Product Title is required',
           }}
           containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}

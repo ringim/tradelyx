@@ -90,12 +90,13 @@ const InternationalRFQ = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
+          marginBottom: 100
         }}>
         <FormInput
           label="Title of Quotation"
           name="title"
           control={control}
-          placeholder="Add quotation name"
+          placeholder="Quotation Title"
           rules={{
             required: 'Quotation title is required',
           }}
@@ -129,7 +130,7 @@ const InternationalRFQ = () => {
                 }}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select Category"
+                placeholder="Select Category Type"
                 showTickIcon={true}
                 onChangeValue={onChange}
                 dropDownDirection="AUTO"
@@ -193,7 +194,7 @@ const InternationalRFQ = () => {
           name="requirements"
           control={control}
           multiline={true}
-          placeholder="Add description"
+          placeholder="Add a description"
           rules={{
             required: 'Product detail is required',
           }}

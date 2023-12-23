@@ -231,7 +231,7 @@ const EditSellOfferShipment = () => {
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select"
+                placeholder="Select Package Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"

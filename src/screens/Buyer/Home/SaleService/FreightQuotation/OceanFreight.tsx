@@ -135,6 +135,7 @@ const OceanFreight = () => {
         style={{
           marginTop: SIZES.base,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100
         }}>
         {/* Category Type */}
         <Controller
@@ -222,10 +223,10 @@ const OceanFreight = () => {
 
         {/* product name */}
         <FormInput
-          label="“Product Title"
+          label="Product Title"
           name="name"
           control={control}
-          placeholder="Add product name"
+          placeholder="Add Product Title"
           rules={{
             required: 'Product name is required',
           }}
@@ -260,7 +261,7 @@ const OceanFreight = () => {
                 onChangeValue={onChange}
                 open={open2}
                 showArrowIcon={true}
-                placeholder="Select"
+                placeholder="Select Package Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"

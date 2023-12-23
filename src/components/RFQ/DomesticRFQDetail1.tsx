@@ -50,6 +50,7 @@ const DomesticRFQDetail1 = ({
 
         <View
           style={{
+            flex: 2,
             marginLeft: SIZES.radius,
             justifyContent: 'center',
           }}>
@@ -57,7 +58,7 @@ const DomesticRFQDetail1 = ({
             numberOfLines={3}
             style={{
               ...FONTS.cap1,
-              fontWeight: '600',
+              fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
             {placeOriginName}

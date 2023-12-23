@@ -112,6 +112,7 @@ const InternationalPaymentQuotation = () => {
         style={{
           marginTop: -SIZES.semi_margin,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100
         }}>
         {/* Date Select */}
         <ExpiryDate date={date} onPress={showDatePicker} title={'RFQ Expiry'} />

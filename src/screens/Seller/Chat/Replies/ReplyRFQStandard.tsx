@@ -235,7 +235,7 @@ const ReplyRFQStandard = () => {
             </ViewMoreText>
           </View>
 
-          {/* “Product Title */}
+          {/* Product Title */}
           <View
             style={{
               marginTop: SIZES.semi_margin,
@@ -252,7 +252,7 @@ const ReplyRFQStandard = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                “Product Title
+                Product Title
               </Text>
             </View>
             <View

@@ -50,11 +50,11 @@ const OfferDetail = () => {
 
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<OfferDetailRouteProp>();
-  const {image, images, userID, id, sellOfferImage}: any = route?.params?.detail;
+  const {image, images, userID, id, sellOfferImage}: any =
+    route?.params?.detail;
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
-  const [imageUri3, setImageUri3] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const expiryDateString = route?.params?.detail?.offerValidity;
@@ -268,23 +268,13 @@ const OfferDetail = () => {
 
   useEffect(() => {
     let isCurrent = true;
-    if (image && isCurrent) {
-      Storage.get(image).then(setImageUri2);
+    if (sellOfferImage && isCurrent) {
+      Storage.get(sellOfferImage).then(setImageUri2);
     }
     return () => {
       isCurrent = false;
     };
-  }, [image]);
-
-  useEffect(() => {
-    let isCurrent = true;
-    if (images[0] && isCurrent) {
-      Storage.get(images[0]).then(setImageUri3);
-    }
-    return () => {
-      isCurrent = false;
-    };
-  }, [images[0]]);
+  }, [sellOfferImage]);
 
   if (newLoad || softLoad || loading) {
     return (
@@ -310,8 +300,6 @@ const OfferDetail = () => {
             userInfo={userInfo}
             imageUri={imageUri}
             imageUri2={imageUri2}
-            imageUri3={imageUri3}
-            image={image}
             placeOrigin={route?.params?.detail?.placeOrigin}
             title={route?.params?.detail?.title}
             unit={route?.params?.detail?.unit}

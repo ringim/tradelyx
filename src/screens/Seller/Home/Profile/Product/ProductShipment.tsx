@@ -115,6 +115,7 @@ const InternationalEngagementTerms = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
+          marginBottom: 100
         }}>
         {/* port of loading */}
         <FormInput

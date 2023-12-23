@@ -51,14 +51,15 @@ const InternationalRFQDetail1 = ({
         </View>
         <View
           style={{
-            marginLeft: SIZES.radius,
+            flex: 2,
+            marginLeft: SIZES.base,
             justifyContent: 'center',
           }}>
           <Text
             numberOfLines={3}
             style={{
               ...FONTS.cap1,
-              fontWeight: '600',
+              fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
             {placeOriginName}
@@ -107,7 +108,8 @@ const InternationalRFQDetail1 = ({
           <Text
             numberOfLines={3}
             style={{
-              ...FONTS.h5,
+              ...FONTS.cap1,
+              fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
             {placeDestination}

@@ -482,7 +482,7 @@ const Account = () => {
         <FormInput
           control={control}
           label="Total Staff"
-          placeholder="Enter your total number of staff"
+          placeholder="Enter total number of Staff"
           name="totalStaff"
           rules={{
             required: 'Total number of staff is required',

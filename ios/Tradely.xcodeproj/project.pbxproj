@@ -20,7 +20,7 @@
 		3946A5BEAB434B1FAD7B50C5 /* PlusJakartaSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB242BD59D514855AA007F61 /* PlusJakartaSans-LightItalic.ttf */; };
 		424287697DDF48CDB970E8A6 /* PlusJakartaSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C5EEE99AFCA4B34A8AAE5EE /* PlusJakartaSans-BoldItalic.ttf */; };
 		5D8CE9D92ADC02BA003E5097 /* GLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8CE9D82ADC02BA003E5097 /* GLS.swift */; };
-		5D8CE9DB2ADC02D5003E5097 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D8CE9DA2ADC02D5003E5097 /* BootSplash.storyboard */; };
+		5DA7B1212B370F1A006E3494 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DA7B1202B370F1A006E3494 /* BootSplash.storyboard */; };
 		657A9A635A3F4CAB9EF0E88F /* PlusJakartaSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7850AD76106E497996A83534 /* PlusJakartaSans-ExtraBold.ttf */; };
 		7AE8C60C827340E2B92F0478 /* PlusJakartaSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12C7CABD794A436C9C01292D /* PlusJakartaSans-Light.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -62,7 +62,7 @@
 		3743C8C1432149999D5606F6 /* PlusJakartaSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlusJakartaSans-SemiBoldItalic.ttf"; path = "../src/assets/fonts/PlusJakartaSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		3EB332928524256CAD28BC27 /* libPods-Tradely-TradelyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tradely-TradelyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D8CE9D82ADC02BA003E5097 /* GLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLS.swift; sourceTree = "<group>"; };
-		5D8CE9DA2ADC02D5003E5097 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Tradely/BootSplash.storyboard; sourceTree = "<group>"; };
+		5DA7B1202B370F1A006E3494 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Tradely/BootSplash.storyboard; sourceTree = "<group>"; };
 		6919E2FDB4444646AB786FC2 /* PlusJakartaSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlusJakartaSans-Regular.ttf"; path = "../src/assets/fonts/PlusJakartaSans-Regular.ttf"; sourceTree = "<group>"; };
 		6C5EEE99AFCA4B34A8AAE5EE /* PlusJakartaSans-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlusJakartaSans-BoldItalic.ttf"; path = "../src/assets/fonts/PlusJakartaSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		7850AD76106E497996A83534 /* PlusJakartaSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlusJakartaSans-ExtraBold.ttf"; path = "../src/assets/fonts/PlusJakartaSans-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 				5D8CE9D82ADC02BA003E5097 /* GLS.swift */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
-				5D8CE9DA2ADC02D5003E5097 /* BootSplash.storyboard */,
+				5DA7B1202B370F1A006E3494 /* BootSplash.storyboard */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -336,7 +336,7 @@
 				424287697DDF48CDB970E8A6 /* PlusJakartaSans-BoldItalic.ttf in Resources */,
 				657A9A635A3F4CAB9EF0E88F /* PlusJakartaSans-ExtraBold.ttf in Resources */,
 				0D759B4D0C8A458BA5C498AA /* PlusJakartaSans-ExtraBoldItalic.ttf in Resources */,
-				5D8CE9DB2ADC02D5003E5097 /* BootSplash.storyboard in Resources */,
+				5DA7B1212B370F1A006E3494 /* BootSplash.storyboard in Resources */,
 				F6A773702A1742968C665481 /* PlusJakartaSans-ExtraLight.ttf in Resources */,
 				29FDE33557DC44F392A41FC7 /* PlusJakartaSans-ExtraLightItalic.ttf in Resources */,
 				B67405B363F449809693448B /* PlusJakartaSans-Italic.ttf in Resources */,

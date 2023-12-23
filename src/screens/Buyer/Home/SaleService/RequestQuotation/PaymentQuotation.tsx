@@ -1,6 +1,7 @@
 import {Text, View} from 'react-native';
 import React, {useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
@@ -61,7 +62,7 @@ const PaymentQuotation = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
@@ -117,6 +118,7 @@ const PaymentQuotation = () => {
         style={{
           marginTop: -SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100,
         }}>
         {/* Date Select */}
         <ExpiryDate date={date} onPress={showDatePicker} title={'RFQ Expiry'} />
@@ -341,7 +343,15 @@ const PaymentQuotation = () => {
           quoteType={'Domestic'}
           subQuoteType={'Only serving domestic delivery'}
         />
-        {requestForm()}
+        <KeyboardAwareScrollView
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+          extraHeight={100}
+          extraScrollHeight={100}
+          bounces={false}
+          enableOnAndroid={true}>
+          {requestForm()}
+        </KeyboardAwareScrollView>
       </View>
 
       <View style={{justifyContent: 'flex-end', backgroundColor: COLORS.white}}>

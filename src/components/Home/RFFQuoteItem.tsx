@@ -52,12 +52,12 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           <Text
             numberOfLines={2}
             style={{
-              ...FONTS.cap1,
-              fontWeight: '600',
+              ...FONTS.cap2,
+              fontWeight: '500',
               marginTop: 2,
               color: COLORS.Neutral1,
             }}>
-            {item?.placeOrigin}
+            {item?.placeOriginName}
           </Text>
         </View>
 
@@ -96,6 +96,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
         {/* Buyer Country Name */}
         <View
           style={{
+            flex: 1,
             marginLeft: SIZES.radius,
             justifyContent: 'center',
           }}>
@@ -103,12 +104,12 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
           <Text
             numberOfLines={2}
             style={{
-              ...FONTS.cap1,
-              fontWeight: '600',
+              ...FONTS.cap2,
+              fontWeight: '500',
               marginTop: 2,
               color: COLORS.Neutral1,
             }}>
-            {item?.placeDestination}
+            {item?.placeDestinationName}
           </Text>
         </View>
       </View>
@@ -137,7 +138,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            “Product Title
+            Product Title
           </Text>
         </View>
         <View

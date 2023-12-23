@@ -166,11 +166,35 @@ const SignIn = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <Header
-        nav={false}
-        title={'Sign In'}
-        onPress={() => navigation.goBack()}
-      />
+      <View
+        style={{
+          paddingTop: SIZES.height > 700 ? 60 : 30,
+          height: SIZES.height > 700 ? 100 : 70,
+          backgroundColor: COLORS.white,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginLeft: SIZES.semi_margin
+          }}>
+          {/* Header Title */}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.h4,
+                color: COLORS.Neutral1,
+              }}>
+              Sign In
+            </Text>
+          </View>
+        </View>
+      </View>
+
       <Spinner
         visible={loading}
         animation={'fade'}

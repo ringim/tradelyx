@@ -94,6 +94,7 @@ const LandFreightPackage = () => {
       <View
         style={{
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100
         }}>
         {/* Package Type */}
         <Controller
@@ -122,7 +123,7 @@ const LandFreightPackage = () => {
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select"
+                placeholder="Select Package Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -189,7 +190,7 @@ const LandFreightPackage = () => {
               name="weight"
               control={control}
               keyboardType={'numeric'}
-              placeholder="Add nominal"
+              placeholder="Add nominal Weight"
               rules={{
                 required: 'weight is required',
               }}
@@ -227,7 +228,7 @@ const LandFreightPackage = () => {
             required: 'quantity is required',
           }}
           keyboardType={'numeric'}
-          placeholder="Add your quantity"
+          placeholder="Add quantity"
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base}}

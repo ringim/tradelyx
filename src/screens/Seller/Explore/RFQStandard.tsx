@@ -135,7 +135,7 @@ const RFQDomestic = () => {
                 item={item}
                 onCopy={copyToClipboard}
                 onPress={() =>
-                  navigation.navigate('StandardDomesticRFQDetail', {
+                  navigation.navigate('StandardRFQDetail', {
                     rfqItem: item,
                   })
                 }

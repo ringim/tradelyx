@@ -13,8 +13,6 @@ const SellOfferDetail1 = ({
   imageUri,
   title,
   imageUri2,
-  image,
-  imageUri3,
   productName,
   userInfo,
   basePrice,
@@ -64,7 +62,6 @@ const SellOfferDetail1 = ({
           {/* Rating, */}
           <View
             style={{
-              margin: SIZES.base,
               marginStart: 0,
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -95,24 +92,8 @@ const SellOfferDetail1 = ({
       </View>
 
       {/* sellOfferImage */}
-      <View style={{}}>
-        {image ? (
-          <View
-            style={{
-              marginHorizontal: SIZES.margin,
-              alignSelf: 'center',
-            }}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.cover}
-              source={{uri: imageUri2 || DUMMY_IMAGE}}
-              style={{
-                width: SIZES.height > 700 ? 380 : 350,
-                height: 180,
-                borderRadius: SIZES.radius,
-              }}
-            />
-          </View>
-        ) : (
+      <View>
+        {imageUri2 && (
           <View
             style={{
               marginHorizontal: SIZES.margin,
@@ -130,7 +111,7 @@ const SellOfferDetail1 = ({
                 borderRadius: SIZES.radius,
               }}
               source={{
-                uri: imageUri3 || DUMMY_IMAGE,
+                uri: imageUri2 || DUMMY_IMAGE,
               }}
               onOpen={() => {
                 setTimeout(() => {
@@ -141,7 +122,7 @@ const SellOfferDetail1 = ({
           </View>
         )}
 
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,

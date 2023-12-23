@@ -116,7 +116,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
             key={index}
             style={{
               justifyContent: 'center',
-              width: 210,
+              width: 180,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View

@@ -1,4 +1,4 @@
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -18,6 +18,8 @@ import {
   TextButton,
   FormInput,
   ExpiryDate,
+  UploadedID,
+  UploadID,
 } from '../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
 import {
@@ -37,15 +39,11 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFFReply, getRFF} from '../../../../queries/RFFQueries';
+import {formatNumericValue, selectFile2, uploadFile2} from '../../../../utilities/service';
 
 interface IFreight {
-  basePrice: number;
   qty: number;
-  landmark: string;
-  weight: any;
-  length: number;
-  height: number;
-  width: number;
+  file: [string];
 }
 
 const ReplyRFFLandPayment = () => {
@@ -56,6 +54,8 @@ const ReplyRFFLandPayment = () => {
 
   const {control, handleSubmit}: any = useForm();
 
+  const [singleFile, setSingleFile] = useState<any>([]);
+  const [price, setPrice] = useState<any>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -79,6 +79,11 @@ const ReplyRFFLandPayment = () => {
   const [value4, setValue4] = useState(null);
   const [type4, setType4] = useState('');
   const [jobType4, setJobType4] = useState<any>(constants.filterUnit);
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, price);
+    setPrice(formattedValue);
+  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -118,7 +123,7 @@ const ReplyRFFLandPayment = () => {
     CreateRFFReplyMutationVariables
   >(createRFFReply);
 
-  const onSubmit = async ({basePrice, qty}: IFreight) => {
+  const onSubmit = async ({qty, file}: IFreight) => {
     if (isSubmitting) {
       return;
     }
@@ -144,17 +149,25 @@ const ReplyRFFLandPayment = () => {
         weight: rffDetails?.weight,
         userID: rffDetails?.userID,
         forUserID: authUser?.attributes?.sub,
+        agreement: file,
         RFF: rffDetails?.id,
         paymentType: type3,
         paymentMethod: type2,
         packageType: type,
         unit: type4,
-        price: basePrice,
+        price: price,
         loadDate: date,
         SType: 'RFFREFPLY',
         statusText: 'RFF Replies Sent',
         qty: qty,
       };
+
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
+        );
+        input.agreement = fileKeys;
+      }
 
       const res = await doCreateRFFReply({
         variables: {
@@ -174,7 +187,7 @@ const ReplyRFFLandPayment = () => {
             requestID: res?.data?.createRFFReply?.id,
             packageType: type,
             requestQty: qty,
-            requestPrice: basePrice,
+            requestPrice: price,
             rffType: RFFTYPE?.LAND,
             serviceType: serviceType?.RFF_REPLY,
             chatroomID: route?.params?.chatroomID,
@@ -209,11 +222,16 @@ const ReplyRFFLandPayment = () => {
     }
   };
 
+  function isSubmit() {
+    return price !== '';
+  }
+
   function requestForm() {
     return (
       <View
         style={{
           marginHorizontal: SIZES.radius,
+          marginBottom: 100,
         }}>
         <View
           style={{
@@ -345,7 +363,7 @@ const ReplyRFFLandPayment = () => {
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select"
+                placeholder="Select Package Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -405,38 +423,60 @@ const ReplyRFFLandPayment = () => {
         />
 
         {/* base price */}
-        <FormInput
-          name="basePrice"
-          label="Base Price (Exc. Delivery)"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.padding}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
+        <View
+          style={{
+            marginTop: SIZES.padding,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 0.95, justifyContent: 'center'}}>
+            <Text
               style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
               }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
+              Base Price (Exc. Delivery)
+            </Text>
+            <TextInput
+              autoFocus={false}
+              onChangeText={handleInputChange}
+              value={price}
+              placeholder="Ex. ₦100,000"
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.gray}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                marginTop: SIZES.base,
+                height: 50,
+                fontWeight: '500',
+                paddingHorizontal: SIZES.radius,
+                borderRadius: SIZES.base,
+                borderWidth: 0.5,
+                borderColor: COLORS.Neutral7,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              backgroundColor: COLORS.lightYellow,
+              width: 80,
+              height: 50,
+              top: 25,
+              borderRadius: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
+              }}>
+              Naira (₦)
+            </Text>
+          </View>
+        </View>
 
         {/* payment type */}
         <Controller
@@ -612,6 +652,28 @@ const ReplyRFFLandPayment = () => {
           title="Expected Load Date"
           containerStyle={{marginTop: SIZES.margin}}
         />
+
+        {/* Agreement file */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Terms & Conditions'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Attach Terms & Conditions"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }
@@ -664,9 +726,11 @@ const ReplyRFFLandPayment = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
+            disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: SIZES.radius,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

@@ -54,7 +54,7 @@ const StandardRFQDetail1 = ({
           </Text>
         </View>
 
-        {/* Buyer from */}
+        {/* Buyer from flag */}
         <View
           style={{
             justifyContent: 'center',
@@ -69,8 +69,10 @@ const StandardRFQDetail1 = ({
           />
         </View>
 
+        {/* Buyer from  */}
         <View
           style={{
+            flex: 2,
             marginLeft: SIZES.radius,
             justifyContent: 'center',
           }}>
@@ -78,7 +80,7 @@ const StandardRFQDetail1 = ({
             numberOfLines={3}
             style={{
               ...FONTS.cap1,
-              fontWeight: '600',
+              fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
             {placeOriginName}
@@ -177,7 +179,7 @@ const StandardRFQDetail1 = ({
               ...FONTS.body3,
               color: COLORS.Neutral6,
             }}>
-            “Product Title
+            Product Title
           </Text>
         </View>
         <View

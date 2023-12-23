@@ -1,5 +1,6 @@
 import {View, useWindowDimensions, Animated} from 'react-native';
 import React from 'react';
+
 import {COLORS, SIZES} from '../../constants';
 
 const Paginator = ({data, scrollX}: any) => {
@@ -26,12 +27,12 @@ const Paginator = ({data, scrollX}: any) => {
           <Animated.View
             key={i.toString()}
             style={{
-              height: SIZES.radius,
+              height: SIZES.margin,
               width: dotWidth,
               opacity: opacity,
               borderRadius: SIZES.padding,
-              backgroundColor: COLORS.primary2,
-              marginHorizontal: SIZES.radius,
+              backgroundColor: COLORS.primary1,
+              marginHorizontal: 5,
             }}
           />
         );

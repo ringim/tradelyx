@@ -36,12 +36,7 @@ import {
   UpdateRFFMutationVariables,
 } from '../../../../../API';
 import {GOOGLE_MAPS_APIKEY} from '../../../../../utilities/Utils';
-import {getCountryFlag} from '../../../../../utilities/service';
-
-interface IFreight {
-  notes: string;
-  amount: number;
-}
+import {formatNumericValue, getCountryFlag} from '../../../../../utilities/service';
 
 const AirPickupProcess = () => {
   Geocoder.init(GOOGLE_MAPS_APIKEY, {language: 'en'});
@@ -65,6 +60,11 @@ const AirPickupProcess = () => {
   const [code2, setCode2] = useState<any>('');
   const [cName2, setCName2] = useState<any>('');
   const [cCity2, setCCity2] = useState<any>('');
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, amount);
+    setAmount(formattedValue);
+  };
 
   const selectedProp = selectedCategories?.map(
     (obj: {label: any}) => obj?.label,
@@ -91,7 +91,7 @@ const AirPickupProcess = () => {
     UpdateRFFMutationVariables
   >(updateRFF);
 
-  const onSubmit = async ({notes, amount}: IFreight) => {
+  const onSubmit = async () => {
     if (loading) {
       return;
     }
@@ -111,7 +111,7 @@ const AirPickupProcess = () => {
         placeDestinationFlag: `https://flagcdn.com/32x24/${code2}.png`,
         relatedServices: selectedProp,
         budget: amount,
-        notes: notes,
+        notes,
       };
       await doUpdateRFQ({
         variables: {
@@ -166,6 +166,7 @@ const AirPickupProcess = () => {
         style={{
           marginTop: SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100,
         }}>
         <View
           style={{
@@ -180,7 +181,7 @@ const AirPickupProcess = () => {
             name="address1"
             control={control}
             // editable={false}
-            placeholder="Add origin"
+            placeholder="Add port of Origin address"
             rules={{
               required: 'Address is required',
             }}
@@ -244,7 +245,7 @@ const AirPickupProcess = () => {
             name="address2"
             control={control}
             // editable={false}
-            placeholder="Add destination"
+            placeholder="Add destination address"
             rules={{
               required: 'Destination is required',
             }}
@@ -375,10 +376,11 @@ const AirPickupProcess = () => {
             </Text>
             <TextInput
               autoFocus={false}
-              onChangeText={setAmount}
+              onChangeText={handleInputChange}
               value={amount}
               placeholder="Invoice Amount"
               keyboardType="numeric"
+              autoCapitalize="none"
               placeholderTextColor={COLORS.gray}
               style={{
                 ...FONTS.body3,
@@ -397,7 +399,7 @@ const AirPickupProcess = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 60,
+              width: 80,
               height: 50,
               top: 25,
               borderRadius: SIZES.semi_margin,
@@ -408,7 +410,7 @@ const AirPickupProcess = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              NGN
+              Naira (₦)
             </Text>
           </View>
         </View>

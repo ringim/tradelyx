@@ -101,7 +101,7 @@ const ImageCaption = ({rating, name, commodityCategory, banner_image}: any) => {
           </View>
         </View>
 
-        {/* “Product Title */}
+        {/* Product Title */}
         <View style={{marginTop: 5}}>
           <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.white}}>
             {name}

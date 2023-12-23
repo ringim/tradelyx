@@ -15,7 +15,7 @@ import ViewMoreText from 'react-native-view-more-text';
 import {Storage} from 'aws-amplify';
 
 import {COLORS, SIZES, icons, FONTS} from '../../../constants';
-import {Header, SOImage, TextIconButton} from '../../../components';
+import {Header, SOImage, TextButton, TextIconButton} from '../../../components';
 import {
   ChatRouteProp,
   ChatStackNavigatorParamList,
@@ -25,12 +25,12 @@ import {
   GetSellOfferReplyQueryVariables,
 } from '../../../API';
 import {getSellOfferReply} from '../../../queries/SellOfferQueries';
+import {downloadAndOpenPdf} from '../../../utilities/service';
 
 const SellOfferDetails = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
   const route: any = useRoute<ChatRouteProp>();
 
-  // console.log(route?.params.sellOffer);
   const [imageUri, setImageUri] = useState<string | any>(null);
 
   const {data, loading} = useQuery<
@@ -106,13 +106,16 @@ const SellOfferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Shipping from
+              Request from
             </Text>
           </View>
-          <View style={{justifyContent: 'center'}}>
+          <View
+            style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
             <Text
+              numberOfLines={3}
               style={{
-                ...FONTS.h5,
+                ...FONTS.cap1,
+                fontWeight: '500',
                 color: COLORS.Neutral1,
               }}>
               {getSellOfferDetail?.placeOrigin}
@@ -291,7 +294,7 @@ const SellOfferDetails = () => {
             </Text>
           </ViewMoreText>
         </View>
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
@@ -311,7 +314,45 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              “Product Title
+              Product Title
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {getSellOfferDetail?.title}
+            </Text>
+          </View>
+        </View>
+
+        {/* “Product Name */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              numberOfLines={2}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Product Name
             </Text>
           </View>
           <View
@@ -328,43 +369,7 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-        {/* Quantity Offered */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral6,
-                lineHeight: 24,
-              }}>
-              Quantity Offered
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              numberOfLines={3}
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral1,
-                lineHeight: 24,
-              }}>
-              {getSellOfferDetail?.title}
-            </Text>
-          </View>
-        </View>
+
         {/* Type */}
         <View
           style={{
@@ -467,13 +472,53 @@ const SellOfferDetails = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                ₦{getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
+                ₦
+                {getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
               </Text>
             </View>
           </View>
         ) : (
           <View />
         )}
+
+        {/* Offer Coverage */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+                lineHeight: 24,
+              }}>
+              Offer Coverage
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              numberOfLines={3}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                lineHeight: 24,
+              }}>
+              {getSellOfferDetail?.rfqType}
+            </Text>
+          </View>
+        </View>
+
         {/* Packaging */}
         <View
           style={{
@@ -510,43 +555,6 @@ const SellOfferDetails = () => {
           </View>
         </View>
 
-        {/* Quantity Offered */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral6,
-                lineHeight: 24,
-              }}>
-              Quantity Offered
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              numberOfLines={3}
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral1,
-                lineHeight: 24,
-              }}>
-              {getSellOfferDetail?.qtyMeasure}
-            </Text>
-          </View>
-        </View>
         {/* payment method */}
         <View
           style={{
@@ -635,7 +643,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Delivery date
+              Date Available
             </Text>
           </View>
           <View
@@ -663,32 +671,98 @@ const SellOfferDetails = () => {
           }}
         />
         {/* images */}
+        {getSellOfferDetail?.image?.length > 0 ||
+          (getSellOfferDetail?.images?.length > 0 && (
+            <View
+              style={{
+                marginTop: SIZES.semi_margin,
+                marginHorizontal: SIZES.margin,
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                  Images
+                </Text>
+              </View>
+
+              {getSellOfferDetail?.image ? (
+                <SOImage
+                  image={getSellOfferDetail?.image}
+                  containerStyle={{marginLeft: 0}}
+                />
+              ) : (
+                <FlatList
+                  data={getSellOfferDetail?.images}
+                  keyExtractor={item => `${item}`}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return <SOImage image={item} index={index} />;
+                  }}
+                />
+              )}
+            </View>
+          ))}
+
+        {/* TOS Doc */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
-            marginHorizontal: SIZES.margin,
+            marginHorizontal: SIZES.semi_margin,
           }}>
           <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Images</Text>
+            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+              Agreement/TOS
+            </Text>
           </View>
-
-          {getSellOfferDetail?.image ? (
-            <SOImage
-              image={getSellOfferDetail?.image}
-              containerStyle={{marginLeft: 0}}
-            />
-          ) : (
-            <FlatList
-              data={getSellOfferDetail?.images}
-              keyExtractor={item => `${item}`}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return <SOImage image={item} index={index} />;
-              }}
-            />
-          )}
+          <FlatList
+            data={getSellOfferDetail?.agreement}
+            keyExtractor={item => `${item}`}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={false}
+            renderItem={({item, index}) => {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginTop: 6,
+                  }}>
+                  <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Text
+                      numberOfLines={2}
+                      style={{
+                        ...FONTS.cap1,
+                        color: COLORS.secondary1,
+                        fontWeight: '500',
+                      }}>
+                      {item}
+                    </Text>
+                  </View>
+                  <View style={{flex: 0, justifyContent: 'center'}}>
+                    <TextButton
+                      label={'View'}
+                      onPress={() => downloadAndOpenPdf(item)}
+                      labelStyle={{color: COLORS.primary1, ...FONTS.h5}}
+                      buttonContainerStyle={{
+                        marginTop: 0,
+                        marginLeft: SIZES.radius,
+                        alignSelf: 'flex-end',
+                        backgroundColor: COLORS.white,
+                        borderRadius: SIZES.base,
+                        borderWidth: 1,
+                        borderColor: COLORS.primary1,
+                        width: 70,
+                        height: 30,
+                      }}
+                    />
+                  </View>
+                </View>
+              );
+            }}
+          />
         </View>
+
         {/* Price */}
         <View
           style={{
@@ -729,7 +803,7 @@ const SellOfferDetails = () => {
           iconPosition={'LEFT'}
           icon={icons.pay}
           iconStyle={COLORS.white}
-          onPress={() => navigation.navigate('ViewAgreement')}
+          // onPress={() => navigation.navigate('ViewAgreement')}
           containerStyle={{
             marginBottom: SIZES.margin,
             marginTop: SIZES.semi_margin,

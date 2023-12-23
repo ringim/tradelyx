@@ -316,7 +316,7 @@ const ReplySellofferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Sell Offer Title
+              Product Title
             </Text>
           </View>
           <View
@@ -515,7 +515,8 @@ const ReplySellofferDetails = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                ₦{getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
+                ₦
+                {getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
               </Text>
             </View>
           </View>
@@ -669,42 +670,6 @@ const ReplySellofferDetails = () => {
           </View>
         </View>
 
-        {/* Delivery date */}
-        <View
-          style={{
-            marginTop: SIZES.base,
-            flexDirection: 'row',
-            marginHorizontal: SIZES.semi_margin,
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral6,
-                lineHeight: 24,
-              }}>
-              Date Available
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.body3,
-                color: COLORS.Neutral1,
-                lineHeight: 24,
-              }}>
-              {getSellOfferDetail?.deliveryDate}
-            </Text>
-          </View>
-        </View>
-
         {/* Horizontal Rule */}
         <View
           style={{
@@ -717,32 +682,37 @@ const ReplySellofferDetails = () => {
         />
 
         {/* images */}
-        <View
-          style={{
-            marginTop: SIZES.semi_margin,
-            marginHorizontal: SIZES.margin,
-          }}>
-          <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Images</Text>
-          </View>
+        {getSellOfferDetail?.image?.length > 0 ||
+          (getSellOfferDetail?.images?.length > 0 && (
+            <View
+              style={{
+                marginTop: SIZES.semi_margin,
+                marginHorizontal: SIZES.margin,
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                  Images
+                </Text>
+              </View>
 
-          {getSellOfferDetail?.image ? (
-            <SOImage
-              image={getSellOfferDetail?.image}
-              containerStyle={{marginLeft: 0}}
-            />
-          ) : (
-            <FlatList
-              data={getSellOfferDetail?.images}
-              keyExtractor={item => `${item}`}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return <SOImage image={item} index={index} />;
-              }}
-            />
-          )}
-        </View>
+              {getSellOfferDetail?.image ? (
+                <SOImage
+                  image={getSellOfferDetail?.image}
+                  containerStyle={{marginLeft: 0}}
+                />
+              ) : (
+                <FlatList
+                  data={getSellOfferDetail?.images}
+                  keyExtractor={item => `${item}`}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return <SOImage image={item} index={index} />;
+                  }}
+                />
+              )}
+            </View>
+          ))}
 
         {/* Price */}
         <View
@@ -783,6 +753,7 @@ const ReplySellofferDetails = () => {
           onPress={() =>
             navigation.navigate('ReplySellOfferPayment', {
               selloffer: route?.params?.sellOffer,
+              chatRoomID: route?.params?.chatRoomID,
             })
           }
         />

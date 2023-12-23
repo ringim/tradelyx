@@ -45,7 +45,7 @@ import {
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 
-const InternationalDomesticRFQDetail = () => {
+const InternationalRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<StandardDomesticRFQDetailRouteProp>();
   const {rfqNo, userID, expiryDate, budget}: any = route?.params?.rfqItem;
@@ -277,9 +277,9 @@ const InternationalDomesticRFQDetail = () => {
             daysUntilExpiry={daysUntilExpiry}
             onCopy={onCopy}
             placeOriginFlag={route?.params?.rfqItem?.placeOriginFlag}
-            placeOriginName={route?.params?.rfqItem?.placeOriginName}
+            placeOriginName={route?.params?.rfqItem?.placeOrigin}
             placeDestinationFlag={route?.params?.rfqItem?.placeDestinationFlag}
-            placeDestination={route?.params?.rfqItem?.placeDestinationName}
+            placeDestination={route?.params?.rfqItem?.placeDestination}
             rfqNo={route?.params?.rfqItem?.rfqNo}
             expiryDate={route?.params?.rfqItem?.expiryDate}
           />
@@ -308,4 +308,4 @@ const InternationalDomesticRFQDetail = () => {
   );
 };
 
-export default InternationalDomesticRFQDetail;
+export default InternationalRFQDetail;

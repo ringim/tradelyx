@@ -8,13 +8,13 @@ const QuoteTab = ({item, selected, onPress}: any) => {
   return (
     <TouchableOpacity
       style={{
-        marginTop: SIZES.padding,
+        marginTop: SIZES.radius,
         marginHorizontal: SIZES.margin,
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderRadius: SIZES.radius,
         borderWidth: 0.5,
-        padding: SIZES.margin,
+        padding: SIZES.radius,
         borderColor: selected ? COLORS.primary2 : COLORS.Neutral8,
         backgroundColor: selected ? COLORS.primary10 : COLORS.white,
       }}
@@ -22,13 +22,13 @@ const QuoteTab = ({item, selected, onPress}: any) => {
       <View
         style={{
           justifyContent: 'center',
-          padding: SIZES.radius,
+          padding: SIZES.base,
           backgroundColor: selected ? COLORS.white : COLORS.lightYellow,
           borderRadius: SIZES.radius,
         }}>
         <FastImage
           source={item?.icon}
-          style={{width: 30, height: 30}}
+          style={{width: 25, height: 25}}
           resizeMode={FastImage.resizeMode.contain}
         />
       </View>

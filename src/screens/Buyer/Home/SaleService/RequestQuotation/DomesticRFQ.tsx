@@ -97,7 +97,7 @@ const DomesticRFQ = () => {
           label="Title of Quotation"
           name="title"
           control={control}
-          placeholder="Add quotation name"
+          placeholder="Title of Quotation "
           rules={{
             required: 'Quotation title is required',
           }}
@@ -131,7 +131,7 @@ const DomesticRFQ = () => {
                 }}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select Category"
+                placeholder="Select Category type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -195,8 +195,8 @@ const DomesticRFQ = () => {
           name="requirements"
           control={control}
           multiline={true}
-          placeholder="Provide more details about product you are 
-          looking for..."
+          placeholder="Provide more details about the product you are 
+          looking for"
           rules={{
             required: 'Product detail is required',
           }}

@@ -94,8 +94,8 @@ export type ExploreStackNavigatorParamList = {
   QuotesRequest: undefined;
   RFFFilter: undefined;
   DomesticDomesticRFQDetail: {rfqItem: string};
-  StandardDomesticRFQDetail: {rfqItem: string};
-  InternationalDomesticRFQDetail: {rfqItem: string};
+  StandardRFQDetail: {rfqItem: string};
+  InternationalRFQDetail: {rfqItem: string};
   QuotesRequestDetails: {quoteItem: string};
   AgentRequestDetails: {agentItem: string};
 };
@@ -245,13 +245,13 @@ export type ReplyRFQInternationalPaymentNavigationProp =
 
 export type StandardDomesticRFQDetailNavigationProp = NativeStackNavigationProp<
   ExploreStackNavigatorParamList,
-  'StandardDomesticRFQDetail'
+  'StandardRFQDetail'
 >;
 
 export type InternationalDomesticRFQDetailNavigationProp =
   NativeStackNavigationProp<
     ExploreStackNavigatorParamList,
-    'InternationalDomesticRFQDetail'
+    'InternationalRFQDetail'
   >;
 
 export type QuotesRequestDetailsNavigationProp = NativeStackNavigationProp<
@@ -447,12 +447,12 @@ export type EditCompanyDocsRouteProp = RouteProp<
 
 export type StandardDomesticRFQDetailRouteProp = RouteProp<
   ExploreStackNavigatorParamList,
-  'StandardDomesticRFQDetail'
+  'StandardRFQDetail'
 >;
 
 export type InternationalDomesticRFQDetailRouteProp = RouteProp<
   ExploreStackNavigatorParamList,
-  'InternationalDomesticRFQDetail'
+  'InternationalRFQDetail'
 >;
 
 export type ReplySellofferDetailsRouteProp = RouteProp<

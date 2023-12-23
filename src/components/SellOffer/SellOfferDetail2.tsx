@@ -151,29 +151,34 @@ const SellOfferDetail2 = ({
       </View>
 
       {/* images */}
-      <View
-        style={{
-          marginTop: SIZES.semi_margin,
-          marginHorizontal: SIZES.margin,
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Images</Text>
-        </View>
+      {image?.length > 0 ||
+        (images?.length > 0 && (
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Images
+              </Text>
+            </View>
 
-        {image ? (
-          <SOImage image={image} containerStyle={{marginLeft: 0}} />
-        ) : (
-          <FlatList
-            data={images}
-            keyExtractor={item => `${item}`}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item, index}) => {
-              return <SOImage image={item} index={index} />;
-            }}
-          />
-        )}
-      </View>
+            {image ? (
+              <SOImage image={image} containerStyle={{marginLeft: 0}} />
+            ) : (
+              <FlatList
+                data={images}
+                keyExtractor={item => `${item}`}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item, index}) => {
+                  return <SOImage image={item} index={index} />;
+                }}
+              />
+            )}
+          </View>
+        ))}
 
       {/* Price && bTn */}
       <View

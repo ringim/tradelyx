@@ -166,7 +166,7 @@ const InternationalEngagementTerms = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
-          marginBottom: 200,
+          marginBottom: 100,
         }}>
         {/* Incoterms */}
         <Controller
@@ -256,7 +256,7 @@ const InternationalEngagementTerms = () => {
           name="address"
           control={control}
           // editable={false}
-          placeholder="Add Port Destination"
+          placeholder="Port of Origin address"
           rules={{
             required: 'Address is required',
           }}
@@ -322,7 +322,7 @@ const InternationalEngagementTerms = () => {
           name="address2"
           control={control}
           // editable={false}
-          placeholder="Add Destination "
+          placeholder="Destination port address"
           rules={{
             required: 'Destination is required',
           }}

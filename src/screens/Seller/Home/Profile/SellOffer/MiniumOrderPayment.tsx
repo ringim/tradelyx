@@ -1,4 +1,4 @@
-import {Platform, Text, View} from 'react-native';
+import {Platform, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -26,11 +26,11 @@ import {
   UpdateSellOfferMutationVariables,
 } from '../../../../../API';
 import {updateSellOffer} from '../../../../../queries/SellOfferQueries';
+import {formatNumericValue} from '../../../../../utilities/service';
 
 interface IFreight {
   moq: string;
   validity: string;
-  basePrice: number;
   qty: number;
 }
 
@@ -40,6 +40,7 @@ const MiniumOrderPayment = () => {
 
   const {control, handleSubmit}: any = useForm();
 
+  const [price, setPrice] = useState<any>('');
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -73,13 +74,22 @@ const MiniumOrderPayment = () => {
     hideDatePicker();
   };
 
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, price);
+    setPrice(formattedValue);
+  };
+
+  function isSubmit() {
+    return price !== '';
+  }
+
   // UPDATE REQUEST QUOTATION
   const [doCreateSellOffer] = useMutation<
     UpdateSellOfferMutation,
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
 
-  const onSubmit = async ({basePrice, qty}: IFreight) => {
+  const onSubmit = async ({qty}: IFreight) => {
     if (loading) {
       return;
     }
@@ -88,7 +98,7 @@ const MiniumOrderPayment = () => {
       const input: UpdateSellOfferInput = {
         id: route?.params.sellOfferID,
         SType: 'SELLOFFER',
-        basePrice,
+        basePrice: price,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
@@ -227,38 +237,61 @@ const MiniumOrderPayment = () => {
           />
         </View>
 
-        <FormInput
-          name="basePrice"
-          label="Base Price"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
+        {/* base price */}
+        <View
+          style={{
+            marginTop: SIZES.padding,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 0.95, justifyContent: 'center'}}>
+            <Text
               style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
               }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
+              Base Price (Exc. Delivery)
+            </Text>
+            <TextInput
+              autoFocus={false}
+              onChangeText={handleInputChange}
+              value={price}
+              placeholder="Ex. ₦100,000"
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.gray}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                marginTop: SIZES.base,
+                height: 50,
+                fontWeight: '500',
+                paddingHorizontal: SIZES.radius,
+                borderRadius: SIZES.base,
+                borderWidth: 0.5,
+                borderColor: COLORS.Neutral7,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              backgroundColor: COLORS.lightYellow,
+              width: 80,
+              height: 50,
+              top: 25,
+              borderRadius: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
+              }}>
+              Naira (₦)
+            </Text>
+          </View>
+        </View>
 
         {/* payment type */}
         <Controller
@@ -449,10 +482,9 @@ const MiniumOrderPayment = () => {
 
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode="datetime"
+          mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-          display="inline"
         />
 
         <Spinner
@@ -497,7 +529,12 @@ const MiniumOrderPayment = () => {
             top: Platform.OS === 'android' ? 10 : 0,
           }}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Post Sell Offer"
             labelStyle={{...FONTS.h4}}
             onPress={handleSubmit(onSubmit)}

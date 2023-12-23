@@ -99,7 +99,7 @@ const DomesticRFQDetail2 = ({
         </View>
       </View>
 
-      {/* “Product Title */}
+      {/* Product Title */}
       <View
         style={{
           marginTop: SIZES.base,
@@ -116,7 +116,7 @@ const DomesticRFQDetail2 = ({
               ...FONTS.body3,
               color: COLORS.Neutral6,
             }}>
-            “Product Title
+            Product Title
           </Text>
         </View>
         <View

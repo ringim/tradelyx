@@ -287,7 +287,7 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
           </Text>
         </View>
 
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginTop: SIZES.radius,

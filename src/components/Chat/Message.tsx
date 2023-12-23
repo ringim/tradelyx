@@ -320,9 +320,9 @@ const Message = (props: any) => {
             price={message?.requestPrice}
             messageUserID={message?.userID}
             onPress={() =>
-              navigation.navigate('ReplySellOfferPayment', {
+              navigation.navigate('ReplySellofferDetails', {
                 sellOffer: message?.requestID,
-                chatRoomID: props?.message?.chatroomID,
+                chatRoomID: message?.chatroomID,
               })
             }
           />

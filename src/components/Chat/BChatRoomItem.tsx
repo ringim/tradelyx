@@ -41,7 +41,6 @@ const BChatRoomItem = ({chatRoom}: any) => {
     MessagesByDateQueryVariables
   >(messagesByDate, {
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'MESSAGE',
       sortDirection: ModelSortDirection.DESC,
@@ -52,7 +51,10 @@ const BChatRoomItem = ({chatRoom}: any) => {
   const {data, loading} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
-  >(listUserChatRooms);
+  >(listUserChatRooms, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+  });
   const fetchedUsers = async () => {
     const userFetched: any =
       data?.listUserChatRooms?.items

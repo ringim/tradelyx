@@ -175,7 +175,7 @@ const EditProductShipment = () => {
           name="address"
           control={control}
           // editable={false}
-          placeholder="Add Place Origin"
+          placeholder="Add Port of Origin address"
           rules={{
             required: 'Place origin is required',
           }}

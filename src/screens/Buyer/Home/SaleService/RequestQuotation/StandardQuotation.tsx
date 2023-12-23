@@ -141,7 +141,7 @@ const StandardQuotation = () => {
           label="Title of Quotation"
           name="title"
           control={control}
-          placeholder="Add quotation name"
+          placeholder="Add Quotation Title"
           rules={{
             required: 'This field is required',
           }}
@@ -175,7 +175,7 @@ const StandardQuotation = () => {
                 }}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select Category"
+                placeholder="Select Category Type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"

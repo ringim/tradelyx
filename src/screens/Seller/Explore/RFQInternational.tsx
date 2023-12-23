@@ -130,7 +130,7 @@ const RFQInternational = () => {
                 item={item}
                 onCopy={copyToClipboard}
                 onPress={() =>
-                  navigation.navigate('InternationalDomesticRFQDetail', {
+                  navigation.navigate('InternationalRFQDetail', {
                     rfqItem: item,
                   })
                 }

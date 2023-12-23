@@ -151,7 +151,7 @@ const EditProductSpec = () => {
           rules={{
             required: 'Product certification is required',
           }}
-          placeholder=""
+          placeholder="Enter MOQ Quantity"
           containerStyle={{marginTop: SIZES.radius}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />

@@ -59,9 +59,6 @@ const ReplyRFQDomestic = () => {
     try {
       const pdfKey = item; // Replace with your S3 PDF file key
       const url = await Storage.get(pdfKey);
-      // console.log('file download', url);
-
-      // Open the PDF file using the device's default viewer
       Linking.openURL(url);
     } catch (error) {
       Toast.show({
@@ -318,7 +315,7 @@ const ReplyRFQDomestic = () => {
             </View>
           </View>
 
-          {/* “Product Title */}
+          {/* Product Title */}
           <View
             style={{
               marginTop: SIZES.base,
@@ -335,7 +332,7 @@ const ReplyRFQDomestic = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                “Product Title
+                Product Title
               </Text>
             </View>
             <View

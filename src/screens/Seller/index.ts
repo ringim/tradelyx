@@ -31,8 +31,8 @@ import DomesticRFQDetail from './Explore/DomesticRFQDetail';
 import RFQFilter from './Explore/RFQFilter';
 import QuotesRequestDetails from './Explore/QuotesRequestDetails';
 import AgentRequestDetails from './Explore/AgentRequestDetails';
-import StandardDomesticRFQDetail from './Explore/StandardRFQDetail';
-import InternationalDomesticRFQDetail from './Explore/InternationalRFQDetail';
+import StandardRFQDetail from './Explore/StandardRFQDetail';
+import InternationalRFQDetail from './Explore/InternationalRFQDetail';
 import RFFFilter from './Explore/RFFFilter';
 
 // Order
@@ -135,8 +135,8 @@ export {
   BusinessDetail,
   OrderDetail,
   ProgressOrderDetail,
-  StandardDomesticRFQDetail,
-  InternationalDomesticRFQDetail,
+  StandardRFQDetail,
+  InternationalRFQDetail,
   ProductSpecification,
   PackingShipment,
   AgentRequestDetails,

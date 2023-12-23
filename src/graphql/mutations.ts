@@ -780,6 +780,7 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -856,6 +857,7 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -932,6 +934,7 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -980,6 +983,7 @@ export const createSellOfferReply = /* GraphQL */ `mutation CreateSellOfferReply
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1022,6 +1026,7 @@ export const updateSellOfferReply = /* GraphQL */ `mutation UpdateSellOfferReply
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1064,6 +1069,7 @@ export const deleteSellOfferReply = /* GraphQL */ `mutation DeleteSellOfferReply
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1556,6 +1562,7 @@ export const createRFF = /* GraphQL */ `mutation CreateRFF(
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -1652,6 +1659,7 @@ export const updateRFF = /* GraphQL */ `mutation UpdateRFF(
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -1748,6 +1756,7 @@ export const deleteRFF = /* GraphQL */ `mutation DeleteRFF(
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -1808,6 +1817,7 @@ export const createRFFReply = /* GraphQL */ `mutation CreateRFFReply(
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename
@@ -1862,6 +1872,7 @@ export const updateRFFReply = /* GraphQL */ `mutation UpdateRFFReply(
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename
@@ -1916,6 +1927,7 @@ export const deleteRFFReply = /* GraphQL */ `mutation DeleteRFFReply(
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename

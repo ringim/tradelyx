@@ -32,8 +32,8 @@ import {
   ProgressOrderDetail,
   AgentRequestDetails,
   AccountAddress,
-  StandardDomesticRFQDetail,
-  InternationalDomesticRFQDetail,
+  StandardRFQDetail,
+  InternationalRFQDetail,
   AddProducts,
   EditProductImages,
   EditProductShipmentAddress,
@@ -150,13 +150,13 @@ const SellerStack = () => {
         options={() => options}
       />
       <Stack.Screen
-        name="InternationalDomesticRFQDetail"
-        component={InternationalDomesticRFQDetail}
+        name="InternationalRFQDetail"
+        component={InternationalRFQDetail}
         options={() => options}
       />
       <Stack.Screen
-        name="StandardDomesticRFQDetail"
-        component={StandardDomesticRFQDetail}
+        name="StandardRFQDetail"
+        component={StandardRFQDetail}
         options={() => options}
       />
       <Stack.Screen
@@ -182,17 +182,14 @@ const SellerStack = () => {
       <Stack.Screen
         name="SuccessService4"
         component={SuccessService4}
-        options={{presentation: 'modal'}}
       />
       <Stack.Screen
         name="SuccessService5"
         component={SuccessService5}
-        options={{presentation: 'modal'}}
       />
       <Stack.Screen
         name="SuccessService6"
         component={SuccessService6}
-        options={{presentation: 'modal'}}
       />
       <Stack.Screen
         name="ReplyPackageShipmentAddress"

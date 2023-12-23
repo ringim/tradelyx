@@ -35,7 +35,6 @@ const SChatRoomItem = ({chatRoom}: any) => {
     MessagesByDateQueryVariables
   >(messagesByDate, {
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'network-only',
     variables: {
       SType: 'MESSAGE',
       sortDirection: ModelSortDirection.DESC,
@@ -46,7 +45,7 @@ const SChatRoomItem = ({chatRoom}: any) => {
   const {data, loading} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
-  >(listUserChatRooms);
+  >(listUserChatRooms, {pollInterval: 500, fetchPolicy: 'network-only'});
   const fetchedUsers = async () => {
     const userFetched: any =
       data?.listUserChatRooms?.items
@@ -94,7 +93,7 @@ const SChatRoomItem = ({chatRoom}: any) => {
 
       <View style={styles.rightContainer}>
         <View style={styles.row}>
-        <Text style={styles.name}>{user?.title || user?.name}</Text>
+          <Text style={styles.name}>{user?.title || user?.name}</Text>
           <Text style={styles.text}>
             {dayjs(chatRoom?.lastMessage?.updatedAt).fromNow()}
           </Text>

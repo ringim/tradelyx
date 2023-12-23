@@ -272,10 +272,10 @@ const DomesticRFQDetail = () => {
           style={{marginHorizontal: 5}}
           showsVerticalScrollIndicator={false}>
           <DomesticRFQDetail1
-            placeOriginName={route?.params?.rfqItem?.placeOriginName}
+            placeOriginName={route?.params?.rfqItem?.placeOrigin}
             onCopy={onCopy}
             daysUntilExpiry={daysUntilExpiry}
-            placeDestinationFlag={route?.params?.rfqItem?.placeDestinationFlag}
+            placeOriginFlag={route?.params?.rfqItem?.placeOriginFlag}
             rfqNo={route?.params?.rfqItem?.rfqNo}
             expiryDate={route?.params?.rfqItem?.expiryDate}
           />

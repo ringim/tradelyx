@@ -783,6 +783,7 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -856,6 +857,7 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -929,6 +931,7 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -976,6 +979,7 @@ export const onCreateSellOfferReply = /* GraphQL */ `subscription OnCreateSellOf
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1017,6 +1021,7 @@ export const onUpdateSellOfferReply = /* GraphQL */ `subscription OnUpdateSellOf
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1058,6 +1063,7 @@ export const onDeleteSellOfferReply = /* GraphQL */ `subscription OnDeleteSellOf
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1529,6 +1535,7 @@ export const onCreateRFF = /* GraphQL */ `subscription OnCreateRFF($filter: Mode
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -1622,6 +1629,7 @@ export const onUpdateRFF = /* GraphQL */ `subscription OnUpdateRFF($filter: Mode
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -1715,6 +1723,7 @@ export const onDeleteRFF = /* GraphQL */ `subscription OnDeleteRFF($filter: Mode
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -1772,6 +1781,7 @@ export const onCreateRFFReply = /* GraphQL */ `subscription OnCreateRFFReply($fi
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename
@@ -1823,6 +1833,7 @@ export const onUpdateRFFReply = /* GraphQL */ `subscription OnUpdateRFFReply($fi
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename
@@ -1874,6 +1885,7 @@ export const onDeleteRFFReply = /* GraphQL */ `subscription OnDeleteRFFReply($fi
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename

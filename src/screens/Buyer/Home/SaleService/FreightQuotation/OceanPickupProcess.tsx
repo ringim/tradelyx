@@ -35,7 +35,7 @@ import {
 } from '../../../../../API';
 import {updateRFF} from '../../../../../queries/RFFQueries';
 import {useAuthContext} from '../../../../../context/AuthContext';
-import {getCountryFlag} from '../../../../../utilities/service';
+import {formatNumericValue, getCountryFlag} from '../../../../../utilities/service';
 
 const OceanPickupProcess = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -107,7 +107,7 @@ const OceanPickupProcess = () => {
         notes,
         userID,
       };
-      await doUpdateRFQ({
+      const res = await doUpdateRFQ({
         variables: {
           input,
         },
@@ -152,6 +152,11 @@ const OceanPickupProcess = () => {
   function isSubmit() {
     return address1 !== '' && address2 !== '';
   }
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, amount);
+    setAmount(formattedValue);
+  };
 
   function requestForm() {
     return (
@@ -364,7 +369,7 @@ const OceanPickupProcess = () => {
             </Text>
             <TextInput
               autoFocus={false}
-              onChangeText={setAmount}
+              onChangeText={handleInputChange}
               value={amount}
               placeholder="Invoice Amount"
               keyboardType="numeric"
@@ -386,7 +391,7 @@ const OceanPickupProcess = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 60,
+              width: 80,
               height: 50,
               top: 25,
               borderRadius: SIZES.semi_margin,
@@ -397,7 +402,7 @@ const OceanPickupProcess = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              NGN
+              Naira (₦)
             </Text>
           </View>
         </View>

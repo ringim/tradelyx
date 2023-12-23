@@ -861,6 +861,7 @@ export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
         forUserID
         userID
         statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -939,6 +940,7 @@ export const listSellOffers = /* GraphQL */ `query ListSellOffers(
           forUserID
           userID
           statusText
+          agreement
           SellOffer
           updatedAt
           __typename
@@ -1030,6 +1032,7 @@ export const sellOffersByDate = /* GraphQL */ `query SellOffersByDate(
           forUserID
           userID
           statusText
+          agreement
           SellOffer
           updatedAt
           __typename
@@ -1119,6 +1122,7 @@ export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
           forUserID
           userID
           statusText
+          agreement
           SellOffer
           updatedAt
           __typename
@@ -1167,6 +1171,7 @@ export const getSellOfferReply = /* GraphQL */ `query GetSellOfferReply($id: ID!
     forUserID
     userID
     statusText
+    agreement
     SellOffer
     updatedAt
     __typename
@@ -1211,6 +1216,7 @@ export const listSellOfferReplies = /* GraphQL */ `query ListSellOfferReplies(
       forUserID
       userID
       statusText
+      agreement
       SellOffer
       updatedAt
       __typename
@@ -1268,6 +1274,7 @@ export const sellOffersByDateRely = /* GraphQL */ `query SellOffersByDateRely(
       forUserID
       userID
       statusText
+      agreement
       SellOffer
       updatedAt
       __typename
@@ -1323,6 +1330,7 @@ export const sellOfferRepliesBySellOffer = /* GraphQL */ `query SellOfferReplies
       forUserID
       userID
       statusText
+      agreement
       SellOffer
       updatedAt
       __typename
@@ -1996,6 +2004,7 @@ export const getRFF = /* GraphQL */ `query GetRFF($id: ID!) {
         forUserID
         userID
         statusText
+        agreement
         RFF
         updatedAt
         __typename
@@ -2087,6 +2096,7 @@ export const listRFFS = /* GraphQL */ `query ListRFFS($filter: ModelRFFFilterInp
           forUserID
           userID
           statusText
+          agreement
           RFF
           updatedAt
           __typename
@@ -2195,6 +2205,7 @@ export const rffByDate = /* GraphQL */ `query RffByDate(
           forUserID
           userID
           statusText
+          agreement
           RFF
           updatedAt
           __typename
@@ -2301,6 +2312,7 @@ export const rFFSByUserID = /* GraphQL */ `query RFFSByUserID(
           forUserID
           userID
           statusText
+          agreement
           RFF
           updatedAt
           __typename
@@ -2361,6 +2373,7 @@ export const getRFFReply = /* GraphQL */ `query GetRFFReply($id: ID!) {
     forUserID
     userID
     statusText
+    agreement
     RFF
     updatedAt
     __typename
@@ -2417,6 +2430,7 @@ export const listRFFReplies = /* GraphQL */ `query ListRFFReplies(
       forUserID
       userID
       statusText
+      agreement
       RFF
       updatedAt
       __typename
@@ -2486,6 +2500,7 @@ export const rffByDateRely = /* GraphQL */ `query RffByDateRely(
       forUserID
       userID
       statusText
+      agreement
       RFF
       updatedAt
       __typename
@@ -2553,6 +2568,7 @@ export const rFFRepliesByRFF = /* GraphQL */ `query RFFRepliesByRFF(
       forUserID
       userID
       statusText
+      agreement
       RFF
       updatedAt
       __typename

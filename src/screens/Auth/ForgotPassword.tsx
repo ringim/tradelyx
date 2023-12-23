@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           />
         </View>
 
-        {/* Forgot Password */}
+        {/* Email address */}
         <FormInput
           label={'Email'}
           name="email"
@@ -71,7 +71,7 @@ const ForgotPassword = () => {
           }}
           placeholder={'Email address'}
           inputContainerStyle={{marginTop: SIZES.base}}
-          containerStyle={{marginTop: SIZES.padding *1.5}}
+          containerStyle={{marginTop: SIZES.padding * 1.5}}
         />
       </View>
     );

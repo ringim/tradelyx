@@ -129,6 +129,7 @@ const AirFreight = () => {
         style={{
           marginTop: SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100
         }}>
         {/* Category Type */}
         <Controller
@@ -215,7 +216,7 @@ const AirFreight = () => {
 
         {/* product name */}
         <FormInput
-          label="“Product Title"
+          label="Product Title"
           name="name"
           control={control}
           placeholder="Add product name"

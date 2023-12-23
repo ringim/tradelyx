@@ -139,6 +139,7 @@ const RFQReplyDetailInternational = () => {
 
             <View
               style={{
+                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -364,7 +365,7 @@ const RFQReplyDetailInternational = () => {
             </View>
           </View>
 
-          {/* “Product Title */}
+          {/* Product Title */}
           <View
             style={{
               marginTop: SIZES.base,
@@ -381,7 +382,7 @@ const RFQReplyDetailInternational = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                “Product Title
+                Product Title
               </Text>
             </View>
             <View

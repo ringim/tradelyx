@@ -101,13 +101,16 @@ const SellOfferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Shipping from
+              Request from
             </Text>
           </View>
-          <View style={{justifyContent: 'center'}}>
+          <View
+            style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
             <Text
+              numberOfLines={3}
               style={{
-                ...FONTS.h5,
+                ...FONTS.cap1,
+                fontWeight: '500',
                 color: COLORS.Neutral1,
               }}>
               {getSellOfferDetail?.placeOrigin}
@@ -118,7 +121,7 @@ const SellOfferDetails = () => {
         {/* RFQ Number */}
         <View
           style={{
-            marginTop: 4,
+            marginTop: SIZES.base,
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: SIZES.semi_margin,
@@ -295,7 +298,7 @@ const SellOfferDetails = () => {
 
         <HR containerStyle={{marginTop: SIZES.padding}} />
 
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,
@@ -352,7 +355,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-              Sell Offer Title
+               Product Title
             </Text>
           </View>
           <View
@@ -475,7 +478,8 @@ const SellOfferDetails = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                ₦{getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
+                ₦
+                {getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
               </Text>
             </View>
           </View>
@@ -677,32 +681,37 @@ const SellOfferDetails = () => {
         />
 
         {/* images */}
-        <View
-          style={{
-            marginTop: SIZES.semi_margin,
-            marginHorizontal: SIZES.margin,
-          }}>
-          <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>Images</Text>
-          </View>
+        {getSellOfferDetail?.image?.length > 0 ||
+          (getSellOfferDetail?.images?.length > 0 && (
+            <View
+              style={{
+                marginTop: SIZES.semi_margin,
+                marginHorizontal: SIZES.margin,
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                  Images
+                </Text>
+              </View>
 
-          {getSellOfferDetail?.image ? (
-            <SOImage
-              image={getSellOfferDetail?.image}
-              containerStyle={{marginLeft: 0}}
-            />
-          ) : (
-            <FlatList
-              data={getSellOfferDetail?.images}
-              keyExtractor={item => `${item}`}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return <SOImage image={item} index={index} />;
-              }}
-            />
-          )}
-        </View>
+              {getSellOfferDetail?.image ? (
+                <SOImage
+                  image={getSellOfferDetail?.image}
+                  containerStyle={{marginLeft: 0}}
+                />
+              ) : (
+                <FlatList
+                  data={getSellOfferDetail?.images}
+                  keyExtractor={item => `${item}`}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return <SOImage image={item} index={index} />;
+                  }}
+                />
+              )}
+            </View>
+          ))}
 
         {/* Price */}
         <View

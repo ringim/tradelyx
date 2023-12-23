@@ -164,7 +164,7 @@ const EditProductItem = () => {
           label="Product title"
           name="title"
           control={control}
-          placeholder="Enter product title"
+          placeholder="Enter Product Title"
           rules={{
             required: 'product title is required',
           }}

@@ -1,4 +1,10 @@
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -19,6 +25,8 @@ import {
   FormInput,
   ExpiryDate,
   SellerLocationMapHeader,
+  UploadedID,
+  UploadID,
 } from '../../../../components';
 import {
   COLORS,
@@ -48,13 +56,16 @@ import {
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
+import {
+  formatNumericValue,
+  selectFile2,
+  uploadFile2,
+} from '../../../../utilities/service';
 
 interface IFreight {
-  moq: string;
-  validity: string;
-  basePrice: number;
   qty: number;
   landmark: string;
+  file: [string];
 }
 
 const ReplySellOfferPayment = () => {
@@ -69,10 +80,12 @@ const ReplySellOfferPayment = () => {
 
   const mapRef = useRef(null);
 
+  const [price, setPrice] = useState<any>('');
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
   const [address1, setAddress1] = useState<any>('');
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [date, setDate] = useState<any>('');
   const [date2, setDate2] = useState<any>('');
 
@@ -90,6 +103,15 @@ const ReplySellOfferPayment = () => {
   const [value3, setValue3] = useState(null);
   const [type3, setType3] = useState('');
   const [jobType3, setJobType3] = useState<any>(constants.paymentType2);
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, price);
+    setPrice(formattedValue);
+  };
+
+  function isSubmit() {
+    return price !== '';
+  }
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -138,7 +160,7 @@ const ReplySellOfferPayment = () => {
   const {data, loading: onLoad} = useQuery<
     GetSellOfferQuery,
     GetSellOfferQueryVariables
-  >(getSellOffer, {variables: {id: route?.params.sellOffer}});
+  >(getSellOffer, {variables: {id: route?.params.selloffer}});
   const getSellOfferDetail: any = data?.getSellOffer;
 
   // SEND MESSAGE
@@ -159,7 +181,7 @@ const ReplySellOfferPayment = () => {
     CreateSellOfferReplyMutationVariables
   >(createSellOfferReply);
 
-  const onSubmit = async ({basePrice, landmark, qty}: IFreight) => {
+  const onSubmit = async ({landmark, file, qty}: IFreight) => {
     if (loading) {
       return;
     }
@@ -181,7 +203,8 @@ const ReplySellOfferPayment = () => {
         packageDesc: getSellOfferDetail?.packageDesc,
         packageType: getSellOfferDetail?.packageType,
         userID: getSellOfferDetail?.userID,
-        basePrice,
+        agreement: file,
+        basePrice: price,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
@@ -192,6 +215,13 @@ const ReplySellOfferPayment = () => {
         unit: type,
         SellOffer: getSellOfferDetail?.id,
       };
+
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
+        );
+        input.agreement = fileKeys;
+      }
 
       const res = await doCreateSellOfferReply({
         variables: {
@@ -208,11 +238,11 @@ const ReplySellOfferPayment = () => {
             text: "Hello, I've replied your Sell Offer request",
             sellOfferID: getSellOfferDetail?.sellOfferID,
             requestTitle: getSellOfferDetail?.title,
-            packageType: getSellOfferDetail?.packageType,
+            packageType: type,
             serviceImage: getSellOfferDetail?.sellOfferImage,
             requestID: res?.data?.createSellOfferReply?.id,
-            requestQty: getSellOfferDetail?.qtyMeasure,
-            requestPrice: getSellOfferDetail?.basePrice,
+            requestQty: qty,
+            requestPrice: price,
             serviceType: serviceType?.SELLOFFERS_REPLY,
             chatroomID: route?.params?.chatRoomID,
           },
@@ -222,7 +252,7 @@ const ReplySellOfferPayment = () => {
         await doUpdateChatRoom({
           variables: {
             input: {
-              id: route?.params?.chatroomID,
+              id: route?.params?.chatRoomID,
               SType: 'CHATROOM',
               chatRoomLastMessageId: newMessage,
             },
@@ -250,6 +280,7 @@ const ReplySellOfferPayment = () => {
       <View
         style={{
           marginHorizontal: SIZES.radius,
+          marginBottom: 100,
         }}>
         {/*  Quantity & Unit Measurement */}
         <View
@@ -355,38 +386,61 @@ const ReplySellOfferPayment = () => {
           />
         </View>
 
-        <FormInput
-          name="basePrice"
-          label="Base Price"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
+        {/* base price */}
+        <View
+          style={{
+            marginTop: SIZES.padding,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 0.95, justifyContent: 'center'}}>
+            <Text
               style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
               }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
+              Base Price (Exc. Delivery)
+            </Text>
+            <TextInput
+              autoFocus={false}
+              onChangeText={handleInputChange}
+              value={price}
+              placeholder="Ex. ₦100,000"
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.gray}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                marginTop: SIZES.base,
+                height: 50,
+                fontWeight: '500',
+                paddingHorizontal: SIZES.radius,
+                borderRadius: SIZES.base,
+                borderWidth: 0.5,
+                borderColor: COLORS.Neutral7,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              backgroundColor: COLORS.lightYellow,
+              width: 80,
+              height: 50,
+              top: 25,
+              borderRadius: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
+              }}>
+              Naira (₦)
+            </Text>
+          </View>
+        </View>
 
         {/* payment type */}
         <Controller
@@ -647,8 +701,30 @@ const ReplySellOfferPayment = () => {
           date={date2}
           onPress={showDatePicker2}
           title={'Date Available'}
-          containerStyle={{marginTop: SIZES.semi_margin, marginBottom: 150}}
+          containerStyle={{marginTop: SIZES.semi_margin}}
         />
+
+        {/* Agreement file */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Terms & Conditions'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Attach Terms & Conditions"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }
@@ -708,9 +784,11 @@ const ReplySellOfferPayment = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
+            disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: SIZES.radius,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

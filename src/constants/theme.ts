@@ -100,6 +100,7 @@ export const COLORS = {
 
   // Off Colors
   gray: '#9CA3AF',
+  lime: '#E7F5C5',
   white: '#FFFFFF',
   blueGray: '#94A3B8',
   lightYellow: '#F4F4F5',

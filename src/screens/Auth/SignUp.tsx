@@ -151,7 +151,7 @@ const SignUp = () => {
                 withDarkTheme={false}
                 withShadow={false}
                 autoFocus={false}
-                placeholder={'Mobile number'}
+                placeholder={'Enter Mobile number'}
                 codeTextStyle={{
                   right: 22,
                 }}

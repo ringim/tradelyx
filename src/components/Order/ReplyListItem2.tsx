@@ -127,7 +127,7 @@ const ReplyListItem2 = ({
       </Pressable>
 
       <View>
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginTop: SIZES.base,

@@ -368,7 +368,7 @@ const RFQReplyDetailInternational = () => {
             </View>
           </View>
 
-          {/* “Product Title */}
+          {/* Product Title */}
           <View
             style={{
               marginTop: SIZES.radius,
@@ -385,7 +385,7 @@ const RFQReplyDetailInternational = () => {
                   ...FONTS.body3,
                   color: COLORS.Neutral6,
                 }}>
-                “Product Title
+                Product Title
               </Text>
             </View>
             <View
@@ -698,6 +698,66 @@ const RFQReplyDetailInternational = () => {
             />
           </View>
 
+          {/* TOS Doc */}
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.semi_margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Agreement/TOS
+              </Text>
+            </View>
+            <FlatList
+              data={rfqDetail?.agreement}
+              keyExtractor={item => `${item}`}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={false}
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    key={index}
+                    style={{
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      marginTop: 6,
+                    }}>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          ...FONTS.cap1,
+                          color: COLORS.secondary1,
+                          fontWeight: '500',
+                        }}>
+                        {item}
+                      </Text>
+                    </View>
+                    <View style={{flex: 0, justifyContent: 'center'}}>
+                      <TextButton
+                        label={'View'}
+                        onPress={() => downloadAndOpenPdf(item)}
+                        labelStyle={{color: COLORS.primary1, ...FONTS.h5}}
+                        buttonContainerStyle={{
+                          marginTop: 0,
+                          marginLeft: SIZES.radius,
+                          alignSelf: 'flex-end',
+                          backgroundColor: COLORS.white,
+                          borderRadius: SIZES.base,
+                          borderWidth: 1,
+                          borderColor: COLORS.primary1,
+                          width: 70,
+                          height: 30,
+                        }}
+                      />
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </View>
+
           {/* Price */}
           <View
             style={{
@@ -738,7 +798,7 @@ const RFQReplyDetailInternational = () => {
             iconPosition={'LEFT'}
             icon={icons.pay}
             iconStyle={COLORS.white}
-            onPress={() => navigation.navigate('ViewAgreement')}
+            // onPress={() => navigation.navigate('ViewAgreement')}
             containerStyle={{
               marginBottom: SIZES.margin,
               marginTop: SIZES.semi_margin,

@@ -157,7 +157,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
           />
         </View>
 
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginTop: SIZES.semi_margin,

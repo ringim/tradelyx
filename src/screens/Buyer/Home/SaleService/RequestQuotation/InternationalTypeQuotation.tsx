@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -34,11 +34,11 @@ import {
 } from '../../../../../API';
 import {updateRFQ} from '../../../../../queries/RFQQueries';
 import {useAuthContext} from '../../../../../context/AuthContext';
+import { formatNumericValue } from '../../../../../utilities/service';
 
 interface IProductQuotation {
   name: string;
   qty: number;
-  budget: number;
 }
 
 const InternationalTypeQuotation = () => {
@@ -48,6 +48,7 @@ const InternationalTypeQuotation = () => {
   const {userID} = useAuthContext();
   const {control, handleSubmit}: any = useForm();
 
+  const [budget, setBudget] = useState<any>('');
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
@@ -59,6 +60,11 @@ const InternationalTypeQuotation = () => {
   const [jobType2, setJobType2] = useState<any>(constants.buyFrequency);
   const [initialTags, setInitialTags] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, budget);
+    setBudget(formattedValue);
+  };
 
   const onTagPress = (deleted: any) => {
     return deleted ? 'deleted' : 'not deleted';
@@ -78,7 +84,7 @@ const InternationalTypeQuotation = () => {
     UpdateRFQMutationVariables
   >(updateRFQ);
 
-  const onSubmit = async ({name, qty, budget}: IProductQuotation) => {
+  const onSubmit = async ({name, qty}: IProductQuotation) => {
     if (loading) {
       return;
     }
@@ -89,7 +95,7 @@ const InternationalTypeQuotation = () => {
         productName: name,
         tags: initialTags,
         qty,
-        budget: budget,
+        budget,
         unit: type,
         buyFrequency: type2,
         userID,
@@ -112,6 +118,10 @@ const InternationalTypeQuotation = () => {
     }
   };
 
+  function isSubmit() {
+    return budget !== '';
+  }
+
   function requestForm() {
     return (
       <View
@@ -120,10 +130,10 @@ const InternationalTypeQuotation = () => {
           marginBottom: 150,
         }}>
         <FormInput
-          label="“Product Title"
+          label="Product Title"
           name="name"
           control={control}
-          placeholder="Add product name"
+          placeholder="Add Product Title"
           rules={{
             required: 'Product name is required',
           }}
@@ -150,7 +160,7 @@ const InternationalTypeQuotation = () => {
             required: 'quantity is required',
           }}
           keyboardType={'numeric'}
-          placeholder="Add your quantity"
+          placeholder="Add Product Quantity"
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.radius}}
@@ -181,7 +191,7 @@ const InternationalTypeQuotation = () => {
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select Unit"
+                placeholder="Select Unit type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -264,7 +274,7 @@ const InternationalTypeQuotation = () => {
                 onChangeValue={onChange}
                 open={open2}
                 showArrowIcon={true}
-                placeholder="Select Frequency"
+                placeholder="Choose Buy Frequency"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -323,19 +333,38 @@ const InternationalTypeQuotation = () => {
         />
 
         {/* Budget */}
-        <FormInput
-          label="Budget"
-          name="budget"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Budget is required',
-          }}
-          containerStyle={{marginTop: SIZES.padding}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.radius}}
-        />
+        <View
+          style={{
+            marginTop: SIZES.padding,
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Budget
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={handleInputChange}
+            value={budget}
+            placeholder="Ex. ₦100,000"
+            keyboardType="numeric"
+            placeholderTextColor={COLORS.gray}
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              marginTop: SIZES.radius,
+              height: 50,
+              fontWeight: '500',
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -381,7 +410,12 @@ const InternationalTypeQuotation = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}
           />

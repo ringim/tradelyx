@@ -132,6 +132,7 @@ const EngagementTerms = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
+          marginBottom: 100
         }}>
         {/* delivery address */}
         <FormInput
@@ -205,7 +206,7 @@ const EngagementTerms = () => {
           rules={{
             required: 'landmark is required',
           }}
-          placeholder="Enter a Landmark or full address"
+          placeholder="Enter a Landmark"
           containerStyle={{marginTop: address ? 8 : 30}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{
@@ -221,7 +222,6 @@ const EngagementTerms = () => {
             flex: 1,
             justifyContent: 'center',
             marginTop: SIZES.base,
-            marginBottom: 150,
           }}>
           {singleFile?.length >= 1 ? (
             <FileSection

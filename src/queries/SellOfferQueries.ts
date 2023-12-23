@@ -55,6 +55,7 @@ export const getSellOffer = gql`
           fobPrice
           paymentType
           paymentMethod
+          agreement
           offerValidity
           forUserID
           userID
@@ -140,6 +141,7 @@ export const sellOffersByDate = gql`
             qtyMeasure
             basePrice
             fobPrice
+            agreement
             paymentType
             paymentMethod
             offerValidity
@@ -186,6 +188,7 @@ export const createSellOffer = gql`
       placeOrigin
       landmark
       unit
+      agreement
       deliveryDate
       qtyMeasure
       basePrice
@@ -227,6 +230,7 @@ export const updateSellOffer = gql`
       deliveryDate
       qtyMeasure
       basePrice
+      agreement
       fobPrice
       paymentType
       paymentMethod
@@ -289,6 +293,7 @@ export const sellOffersByDateRely = gql`
         landmark
         unit
         deliveryDate
+        agreement
         qtyMeasure
         basePrice
         fobPrice
@@ -336,6 +341,7 @@ export const getSellOfferReply = gql`
       paymentType
       paymentMethod
       offerValidity
+      agreement
       forUserID
       userID
       statusText
@@ -378,6 +384,7 @@ export const createSellOfferReply = gql`
       paymentMethod
       offerValidity
       forUserID
+      agreement
       userID
       statusText
       SellOffer

@@ -127,7 +127,7 @@ const ReplyListItem = ({
       </Pressable>
 
       <View>
-        {/* “Product Title */}
+        {/* Product Title */}
         <View
           style={{
             marginHorizontal: SIZES.semi_margin,

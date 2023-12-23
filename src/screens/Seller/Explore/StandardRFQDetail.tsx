@@ -42,7 +42,7 @@ import {
 } from '../../../queries/ChatQueries';
 import {getUser} from '../../../queries/UserQueries';
 
-const StandardDomesticRFQDetail = () => {
+const StandardRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<StandardDomesticRFQDetailRouteProp>();
 
@@ -140,7 +140,7 @@ const StandardDomesticRFQDetail = () => {
               rfqType: RFQTYPE.STANDARD,
               requestPrice: route?.params?.rfqItem?.budget,
               packageType: route?.params?.rfqItem?.packageType,
-              chatroomID: allChatRoomUsers?.chatRoomId,
+              chatroomID: similarChatRoomIDs[0]?.chatRoomId,
             },
           },
         });
@@ -149,7 +149,7 @@ const StandardDomesticRFQDetail = () => {
           await doUpdateChatRoom({
             variables: {
               input: {
-                id: allChatRoomUsers?.chatRoomId,
+                id: similarChatRoomIDs[0]?.chatRoomId,
                 SType: 'CHATROOM',
                 chatRoomLastMessageId: newMessage,
               },
@@ -159,7 +159,7 @@ const StandardDomesticRFQDetail = () => {
         updateLastMessage(res?.data?.createMessage?.id);
 
         navigation.navigate('Chat', {
-          id: allChatRoomUsers?.chatRoomId,
+          id: similarChatRoomIDs[0]?.chatRoomId,
         });
       } else {
         // create a new chatRoom
@@ -265,7 +265,7 @@ const StandardDomesticRFQDetail = () => {
           showsVerticalScrollIndicator={false}>
           <StandardRFQDetail1
             placeOriginFlag={route?.params?.rfqItem?.placeOriginFlag}
-            placeOriginName={route?.params?.rfqItem?.placeOriginName}
+            placeOriginName={route?.params?.rfqItem?.placeOrigin}
             rfqNo={route?.params?.rfqItem?.rfqNo}
             description={route?.params?.rfqItem?.description}
             title={route?.params?.rfqItem?.title}
@@ -282,4 +282,4 @@ const StandardDomesticRFQDetail = () => {
   );
 };
 
-export default StandardDomesticRFQDetail;
+export default StandardRFQDetail;

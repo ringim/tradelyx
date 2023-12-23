@@ -107,7 +107,7 @@ const AirFreightPackage = () => {
               name="weight"
               control={control}
               keyboardType={'numeric'}
-              placeholder="Add nominal"
+              placeholder="Add weight"
               rules={{
                 required: 'weight is required',
               }}
@@ -145,7 +145,7 @@ const AirFreightPackage = () => {
             required: 'quantity is required',
           }}
           keyboardType={'numeric'}
-          placeholder="Add your quantity"
+          placeholder="Add quantity"
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base}}
@@ -178,7 +178,7 @@ const AirFreightPackage = () => {
                 onChangeValue={onChange}
                 open={open}
                 showArrowIcon={true}
-                placeholder="Select"
+                placeholder="Select package type"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"

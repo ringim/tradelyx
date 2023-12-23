@@ -122,6 +122,7 @@ export const rffByDate = gql`
             placeOrigin
             placeOriginFlag
             placeOriginName
+            agreement
             placeOriginCountry
             placeDestinationName
             placeDestinationFlag
@@ -268,6 +269,7 @@ export const getRFF = gql`
           placeDestinationFlag
           paymentType
           paymentMethod
+          agreement
           destinationCountry
           placeDestination
           relatedServices
@@ -335,6 +337,7 @@ export const getRFFReply = gql`
       placeOriginName
       placeOriginCountry
       placeDestinationName
+      agreement
       placeDestinationFlag
       paymentType
       paymentMethod
@@ -409,6 +412,7 @@ export const rffByDateRely = gql`
         document
         notes
         unit
+        agreement
         containerDetails
         containerSize
         containerType
@@ -466,6 +470,7 @@ export const createRFFReply = gql`
       notes
       unit
       containerDetails
+      agreement
       containerSize
       containerType
       requestType
@@ -509,6 +514,7 @@ export const updateRFFReply = gql`
       placeOriginName
       placeOriginCountry
       placeDestinationName
+      agreement
       placeDestinationFlag
       paymentType
       paymentMethod

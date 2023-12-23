@@ -145,7 +145,6 @@ const Explore = () => {
               <SearchItem
                 key={index}
                 item={item}
-                item_image={item?.image}
                 item_image2={item?.sellOfferImage}
                 onPress={() =>
                   navigation.navigate('CompanyDetail', {

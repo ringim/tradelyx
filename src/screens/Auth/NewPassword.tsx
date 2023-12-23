@@ -55,7 +55,7 @@ const NewPassword = () => {
           containerStyle={{marginTop: SIZES.margin}}
         />
 
-        {/* Password */}
+        {/* confirmation code */}
         <FormInput
           label={'Confirmation Code'}
           autoCompleteType="number"

@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, Pressable} from 'react-native';
-import {useQuery} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
@@ -8,22 +8,27 @@ import {Storage} from 'aws-amplify';
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
 import {DEFAULT_PROFILE_IMAGE, DUMMY_IMAGE} from '../../utilities/Utils';
-import {GetUserQuery, GetUserQueryVariables, SellOffer} from '../../API';
+import {
+  DeleteSellOfferMutation,
+  DeleteSellOfferMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
+  SellOffer,
+} from '../../API';
 import {getUser} from '../../queries/UserQueries';
+import {deleteSellOffer} from '../../queries/SellOfferQueries';
 
 interface IItem {
   item: SellOffer | any;
   onPress: any;
   onView?: any;
   containerStyle?: any;
-  item_image: any;
   item_image2: any;
 }
 
 const SearchItem = ({
   containerStyle,
   onView,
-  item_image,
   item,
   onPress,
   item_image2,
@@ -37,8 +42,36 @@ const SearchItem = ({
   const userInfo: any = data?.getUser;
 
   const [imageUri2, setImageUri2] = useState<string | null>(null);
-  const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri3, setImageUri3] = useState<string | null>(null);
+
+  const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
+  const expiryDate = currentDate >= item?.offerValidity ? true : false;
+
+  const [doDeleteSellOffer] = useMutation<
+    DeleteSellOfferMutation,
+    DeleteSellOfferMutationVariables
+  >(deleteSellOffer, {
+    variables: {
+      input: {
+        id: item.id,
+      },
+    },
+  });
+
+  useEffect(() => {
+    const startDelete = async () => {
+      try {
+        if (expiryDate === true) {
+          await doDeleteSellOffer();
+        } else {
+          return;
+        }
+      } catch (error) {
+        return error;
+      }
+    };
+    startDelete();
+  }, [item]);
 
   useEffect(() => {
     let isCurrent = true;
@@ -49,16 +82,6 @@ const SearchItem = ({
       isCurrent = false;
     };
   }, [userInfo?.logo]);
-
-  useEffect(() => {
-    let isCurrent = true;
-    if (item_image && isCurrent) {
-      Storage.get(item_image).then(setImageUri);
-    }
-    return () => {
-      isCurrent = false;
-    };
-  }, [item_image]);
 
   useEffect(() => {
     let isCurrent = true;
@@ -160,43 +183,23 @@ const SearchItem = ({
 
       {/* Product Image */}
       <View>
-        {item?.image ? (
-          <View
+        <View
+          style={{
+            alignSelf: 'center',
+          }}>
+          <FastImage
+            resizeMode={FastImage.resizeMode.cover}
+            source={{
+              uri: imageUri3 || DUMMY_IMAGE,
+              priority: FastImage.priority.high,
+            }}
             style={{
-              alignSelf: 'center',
-            }}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.cover}
-              source={{
-                uri: imageUri || DUMMY_IMAGE,
-                priority: FastImage.priority.high,
-              }}
-              style={{
-                width: 330,
-                height: 120,
-                borderRadius: SIZES.base,
-              }}
-            />
-          </View>
-        ) : (
-          <View
-            style={{
-              alignSelf: 'center',
-            }}>
-            <FastImage
-              resizeMode={FastImage.resizeMode.cover}
-              source={{
-                uri: imageUri3 || DUMMY_IMAGE,
-                priority: FastImage.priority.high,
-              }}
-              style={{
-                width: 330,
-                height: 120,
-                borderRadius: SIZES.base,
-              }}
-            />
-          </View>
-        )}
+              width: SIZES.height > 700 ? 380 : 320,
+              height: 150,
+              borderRadius: SIZES.base,
+            }}
+          />
+        </View>
 
         {/* Product title */}
         <View

@@ -35,7 +35,10 @@ import {
   UpdateRFFMutationVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
-import {getCountryFlag} from '../../../../../utilities/service';
+import {
+  formatNumericValue,
+  getCountryFlag,
+} from '../../../../../utilities/service';
 
 const LandPickupProcess = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -60,6 +63,11 @@ const LandPickupProcess = () => {
   const [cCity2, setCCity2] = useState<any>('');
 
   const {location} = address1;
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, amount);
+    setAmount(formattedValue);
+  };
 
   const selectedProp = selectedCategories?.map(
     (obj: {label: any}) => obj?.label,
@@ -160,6 +168,7 @@ const LandPickupProcess = () => {
         style={{
           marginTop: SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
+          marginBottom: 100,
         }}>
         <View
           style={{
@@ -174,7 +183,7 @@ const LandPickupProcess = () => {
             name="address1"
             control={control}
             // editable={false}
-            placeholder="Add origin"
+            placeholder="Add port of Origin address"
             rules={{
               required: 'Address is required',
             }}
@@ -238,9 +247,9 @@ const LandPickupProcess = () => {
             name="address2"
             control={control}
             // editable={false}
-            placeholder="Add destination"
+            placeholder="Add Destination address"
             rules={{
-              required: 'Destination is required',
+              required: 'Destination address is required',
             }}
             labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
             inputContainerStyle={{marginTop: SIZES.radius, height: 50}}
@@ -366,7 +375,7 @@ const LandPickupProcess = () => {
             </Text>
             <TextInput
               autoFocus={false}
-              onChangeText={setAmount}
+              onChangeText={handleInputChange}
               value={amount}
               placeholder="Invoice Amount"
               keyboardType="numeric"
@@ -388,7 +397,7 @@ const LandPickupProcess = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 60,
+              width: 80,
               height: 50,
               top: 25,
               borderRadius: SIZES.semi_margin,
@@ -399,7 +408,7 @@ const LandPickupProcess = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              NGN
+              Naira (₦)
             </Text>
           </View>
         </View>

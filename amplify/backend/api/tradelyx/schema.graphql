@@ -47,7 +47,7 @@ type Message @model @auth(rules: [{allow: public}]) {
   requestQty: Int
   packageType: String
   serviceType: serviceType
-  requestPrice: Float
+  requestPrice: String
   serviceImage: String
   requestFrom: String
   requestFromImg: String
@@ -151,8 +151,8 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
   unit: String
   deliveryDate: AWSDate
   qtyMeasure: Int
-  basePrice: Float
-  fobPrice: Float
+  basePrice: String
+  fobPrice: String
   paymentType: String
   paymentMethod: String
   offerValidity: AWSDate
@@ -188,14 +188,15 @@ type SellOfferReply @model @auth(rules: [{allow: public}]) {
   unit: String
   deliveryDate: AWSDate
   qtyMeasure: Int
-  basePrice: Float
-  fobPrice: Float
+  basePrice: String
+  fobPrice: String
   paymentType: String
   paymentMethod: String
   offerValidity: AWSDate
   forUserID: String
   userID: String
   statusText: String
+  agreement: [String]
 
   SellOffer: ID! @index(name: "bySellOffer")
 }
@@ -219,7 +220,7 @@ type RFQ @model @auth(rules: [{allow: public}]) {
   tags: [String]
   qty: Int
   buyFrequency: String
-  budget: Float
+  budget: String
   placeOrigin: String
   placeOriginFlag: String
   placeOriginName: String
@@ -259,8 +260,8 @@ type RFQReply @model @auth(rules: [{allow: public}]) {
   tags: [String]
   qty: Int
   buyFrequency: String
-  budget: Float
-  price: Float
+  budget: String
+  price: String
   placeOrigin: String
   placeOriginFlag: String
   placeOriginName: String
@@ -279,7 +280,7 @@ type RFQReply @model @auth(rules: [{allow: public}]) {
   forUserID: String
   userID: String
   statusText: String
-  agreement: String
+  agreement: [String]
 
   RFQ: ID! @index(name: "byRFQ")
 }
@@ -305,7 +306,7 @@ type RFF @model @auth(rules: [{allow: public}]) {
   rffRequestType: String
   productName: String
   handling: String
-  budget: Float
+  budget: String
   loadDate: AWSDate
   weight: Float
   qty: Int
@@ -349,8 +350,8 @@ type RFFReply @model @auth(rules: [{allow: public}]) {
   rffRequestType: String
   productName: String
   handling: String
-  budget: Float
-  price: Float
+  budget: String
+  price: String
   loadDate: AWSDate
   weight: Float
   qty: Int
@@ -379,6 +380,7 @@ type RFFReply @model @auth(rules: [{allow: public}]) {
   forUserID: String
   userID: String
   statusText: String
+  agreement: [String]
 
   RFF: ID! @index(name: "byRFF")
 }
@@ -535,7 +537,7 @@ type Wishlist @model @auth(rules: [{allow: public}]) {
   serviceType: serviceType
   supplyCapacity: String
   minOrderQty: String
-  fobPrice: Float
+  fobPrice: String
   productID: String
 
   userID: ID! @index(name: "byUser")

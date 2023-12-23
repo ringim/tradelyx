@@ -1,4 +1,4 @@
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ActivityIndicator, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -19,7 +19,7 @@ import {
   FormInput,
   ExpiryDate,
   UploadedID,
-  UploadID
+  UploadID,
 } from '../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
 import {
@@ -39,12 +39,12 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
-import { selectFile2 } from '../../../../utilities/service';
+import {formatNumericValue, selectFile2, uploadFile2} from '../../../../utilities/service';
 
 interface IFreight {
-  basePrice: number;
   qty: number;
   landmark: string;
+  file: [string];
 }
 
 const ReplyRFQDomesticPayment = () => {
@@ -59,6 +59,7 @@ const ReplyRFQDomesticPayment = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
+  const [price, setPrice] = useState<any>('');
 
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
@@ -113,7 +114,7 @@ const ReplyRFQDomesticPayment = () => {
     CreateRFQReplyMutationVariables
   >(createRFQReply);
 
-  const onSubmit = async ({basePrice, qty}: IFreight) => {
+  const onSubmit = async ({qty, file}: IFreight) => {
     if (isSubmitting) {
       return;
     }
@@ -139,14 +140,22 @@ const ReplyRFQDomesticPayment = () => {
         userID: rfqDetails?.userID,
         forUserID: authUser?.attributes?.sub,
         RFQ: rfqDetails?.id,
-        price: basePrice,
+        price: price,
         paymentType: type3,
+        agreement: file,
         paymentMethod: type2,
         expiryDate: date,
         statusText: 'RFQ Replies Sent',
         qty: qty,
         unit: type,
       };
+
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
+        );
+        input.agreement = fileKeys;
+      }
 
       const res = await doCreateRFQReply({
         variables: {
@@ -166,7 +175,7 @@ const ReplyRFQDomesticPayment = () => {
             requestID: res?.data?.createRFQReply?.id,
             packageType: type,
             requestQty: qty,
-            requestPrice: basePrice,
+            requestPrice: price,
             rfqType: RFQTYPE?.DOMESTIC,
             serviceType: serviceType?.RFQ_REPLY,
             chatroomID: route?.params?.chatroomID,
@@ -201,11 +210,21 @@ const ReplyRFQDomesticPayment = () => {
     }
   };
 
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, price);
+    setPrice(formattedValue);
+  };
+
+  function isSubmit() {
+    return price !== '';
+  }
+
   function requestForm() {
     return (
       <View
         style={{
           marginHorizontal: SIZES.radius,
+          marginBottom: 100,
         }}>
         {/*  Quantity & Unit Measurement */}
         <View
@@ -311,38 +330,61 @@ const ReplyRFQDomesticPayment = () => {
           />
         </View>
 
-        <FormInput
-          name="basePrice"
-          label="Base Price (Exc. Delivery)"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
+        {/* base price */}
+        <View
+          style={{
+            marginTop: SIZES.padding,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 0.95, justifyContent: 'center'}}>
+            <Text
               style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
               }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
+              Base Price (Exc. Delivery)
+            </Text>
+            <TextInput
+              autoFocus={false}
+              onChangeText={handleInputChange}
+              value={price}
+              placeholder="Ex. ₦100,000"
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.gray}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                marginTop: SIZES.base,
+                height: 50,
+                fontWeight: '500',
+                paddingHorizontal: SIZES.radius,
+                borderRadius: SIZES.base,
+                borderWidth: 0.5,
+                borderColor: COLORS.Neutral7,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              backgroundColor: COLORS.lightYellow,
+              width: 80,
+              height: 50,
+              top: 25,
+              borderRadius: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
+              }}>
+              Naira (₦)
+            </Text>
+          </View>
+        </View>
 
         {/* payment type */}
         <Controller
@@ -591,9 +633,11 @@ const ReplyRFQDomesticPayment = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
+            disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: SIZES.radius,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

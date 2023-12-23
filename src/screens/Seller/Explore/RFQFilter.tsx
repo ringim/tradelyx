@@ -201,7 +201,7 @@ const RFQFilter = () => {
                 onChangeValue={onChange}
                 open={open2}
                 showArrowIcon={true}
-                placeholder="Select unit"
+                placeholder="Select Unit"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"

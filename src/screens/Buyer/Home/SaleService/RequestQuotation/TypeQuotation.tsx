@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -33,10 +33,10 @@ import {
   UpdateRFQMutationVariables,
 } from '../../../../../API';
 import {updateRFQ} from '../../../../../queries/RFQQueries';
+import { formatNumericValue } from '../../../../../utilities/service';
 
 interface IProductQuotation {
   name: string;
-  budget: number;
   qty: number;
 }
 
@@ -46,6 +46,7 @@ const TypeQuotation = () => {
 
   const {control, handleSubmit}: any = useForm();
 
+  const [budget, setBudget] = useState<any>('');
   const [open, setOpen] = useState(false);
   const [value1, setValue1] = useState(null);
   const [type, setType] = useState('');
@@ -57,6 +58,11 @@ const TypeQuotation = () => {
   const [jobType2, setJobType2] = useState<any>(constants.buyFrequency);
   const [initialTags, setInitialTags] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, budget);
+    setBudget(formattedValue);
+  };
 
   const onTagPress = (deleted: any) => {
     return deleted ? 'deleted' : 'not deleted';
@@ -70,13 +76,17 @@ const TypeQuotation = () => {
     return <RenderTags key={index} tag={tag} onPress={onPress} />;
   };
 
+  function isSubmit() {
+    return budget !== '';
+  }
+
   // UPDATE REQUEST QUOTATION
   const [doUpdateRFQ] = useMutation<
     UpdateRFQMutation,
     UpdateRFQMutationVariables
   >(updateRFQ);
 
-  const onSubmit = async ({name, qty, budget}: IProductQuotation) => {
+  const onSubmit = async ({name, qty}: IProductQuotation) => {
     if (loading) {
       return;
     }
@@ -87,7 +97,7 @@ const TypeQuotation = () => {
         productName: name,
         tags: initialTags,
         qty: qty,
-        budget: budget,
+        budget,
         unit: type,
         buyFrequency: type2,
       };
@@ -115,14 +125,14 @@ const TypeQuotation = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
-          marginBottom: 150
+          marginBottom: 150,
         }}>
         {/* product info */}
         <FormInput
-          label="Product Information"
+          label="Product Title"
           name="name"
           control={control}
-          placeholder="Add product name"
+          placeholder="Add Product Title"
           rules={{
             required: 'Product name is required',
           }}
@@ -149,7 +159,7 @@ const TypeQuotation = () => {
             required: 'quantity is required',
           }}
           keyboardType={'numeric'}
-          placeholder="Add your quantity"
+          placeholder="Add Product quantity"
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.radius}}
@@ -263,7 +273,7 @@ const TypeQuotation = () => {
                 onChangeValue={onChange}
                 open={open2}
                 showArrowIcon={true}
-                placeholder="Select Frequency"
+                placeholder="Select Buying Frequency"
                 showTickIcon={true}
                 dropDownDirection="AUTO"
                 listMode="MODAL"
@@ -322,19 +332,38 @@ const TypeQuotation = () => {
         />
 
         {/* Budget */}
-        <FormInput
-          label="Budget"
-          name="budget"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Budget is required',
-          }}
-          containerStyle={{marginTop: SIZES.padding}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.radius}}
-        />
+        <View
+          style={{
+            marginTop: SIZES.padding,
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral1,
+            }}>
+            Budget
+          </Text>
+          <TextInput
+            autoFocus={false}
+            onChangeText={handleInputChange}
+            value={budget}
+            placeholder="Ex. ₦100,000"
+            keyboardType="numeric"
+            placeholderTextColor={COLORS.gray}
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              marginTop: SIZES.radius,
+              height: 50,
+              fontWeight: '500',
+              paddingHorizontal: SIZES.radius,
+              borderRadius: SIZES.base,
+              borderWidth: 0.5,
+              borderColor: COLORS.Neutral7,
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -380,7 +409,12 @@ const TypeQuotation = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            buttonContainerStyle={{marginBottom: SIZES.padding, marginTop: 0}}
+            disabled={isSubmit() ? false : true}
+            buttonContainerStyle={{
+              marginBottom: SIZES.padding,
+              marginTop: 0,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+            }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}
           />

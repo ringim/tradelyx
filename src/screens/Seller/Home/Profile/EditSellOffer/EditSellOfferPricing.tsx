@@ -1,4 +1,4 @@
-import {Platform, Text, View} from 'react-native';
+import {Platform, Text, TextInput, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -26,11 +26,11 @@ import {
   UpdateSellOfferMutationVariables,
 } from '../../../../../API';
 import {updateSellOffer} from '../../../../../queries/SellOfferQueries';
+import {formatNumericValue} from '../../../../../utilities/service';
 
 interface IFreight {
   moq: string;
   paymentMethod: string;
-  basePrice: number;
   qty: number;
   paymentType: string;
 }
@@ -43,6 +43,7 @@ const EditSellOfferPricing = () => {
 
   const sellOfferDetails = route?.params?.sellOffer;
 
+  const [price, setPrice] = useState<any>('');
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<any>('');
@@ -62,8 +63,13 @@ const EditSellOfferPricing = () => {
   const [type3, setType3] = useState(sellOfferDetails?.paymentType);
   const [jobType3, setJobType3] = useState<any>(constants.paymentType);
 
+  const handleInputChange = (input: any) => {
+    const formattedValue = formatNumericValue(input, price);
+    setPrice(formattedValue);
+  };
+
   function isSubmit() {
-    return date !== '';
+    return date !== '' && price !== '';
   }
 
   const showDatePicker = () => {
@@ -86,7 +92,7 @@ const EditSellOfferPricing = () => {
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
 
-  const onSubmit = async ({basePrice, qty}: IFreight) => {
+  const onSubmit = async ({qty}: IFreight) => {
     if (loading) {
       return;
     }
@@ -94,7 +100,7 @@ const EditSellOfferPricing = () => {
     try {
       const input: UpdateSellOfferInput = {
         id: sellOfferDetails.id,
-        basePrice,
+        basePrice: price,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
@@ -247,71 +253,61 @@ const EditSellOfferPricing = () => {
           />
         </View>
 
-        <FormInput
-          name="basePrice"
-          label="Base Price (Exc. Delivery)"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'Base price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
+        {/* base price */}
+        <View
+          style={{
+            marginTop: SIZES.padding,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+          }}>
+          <View style={{flex: 0.95, justifyContent: 'center'}}>
+            <Text
               style={{
-                paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
+                ...FONTS.body3,
+                fontWeight: '500',
+                color: COLORS.Neutral1,
               }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
-
-        <FormInput
-          name="basePrice"
-          label="Base Price (Inc. Delivery)"
-          control={control}
-          keyboardType={'numeric'}
-          placeholder="Ex. ₦100,000"
-          rules={{
-            required: 'FOB price is required',
-          }}
-          containerStyle={{marginTop: SIZES.semi_margin}}
-          labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
-          inputContainerStyle={{marginTop: SIZES.base, height: 50}}
-          appendComponent={
-            <View
+              Base Price (Exc. Delivery)
+            </Text>
+            <TextInput
+              autoFocus={false}
+              onChangeText={handleInputChange}
+              value={price}
+              placeholder="Ex. ₦100,000"
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.gray}
               style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+                marginTop: SIZES.base,
+                height: 50,
+                fontWeight: '500',
                 paddingHorizontal: SIZES.radius,
-                borderRadius: SIZES.radius,
-                backgroundColor: COLORS.lightYellow,
-                justifyContent: 'center',
-                left: 12,
+                borderRadius: SIZES.base,
+                borderWidth: 0.5,
+                borderColor: COLORS.Neutral7,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              backgroundColor: COLORS.lightYellow,
+              width: 80,
+              height: 50,
+              top: 25,
+              borderRadius: SIZES.semi_margin,
+            }}>
+            <Text
+              style={{
+                ...FONTS.h5,
+                color: COLORS.Neutral6,
+                textAlign: 'center',
               }}>
-              <Text
-                style={{
-                  ...FONTS.h5,
-                  color: COLORS.Neutral6,
-                  textAlign: 'center',
-                }}>
-                Naira (₦)
-              </Text>
-            </View>
-          }
-        />
+              Naira (₦)
+            </Text>
+          </View>
+        </View>
 
         {/* payment type */}
         <Controller

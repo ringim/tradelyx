@@ -885,6 +885,44 @@ const storeProducts = [
   },
 ];
 
+const onboarding = [
+  {
+    id: '1',
+    title: 'Welcome to TradelyX!',
+    description:
+      'Discover endless possibilities in Export Business. Buy, sell, and connect with businesses across Africa.',
+    image: require('./../assets/images/image1.png'),
+  },
+  {
+    id: '2',
+    title: 'Trade Your Way',
+    description:
+      "Customize your trade experience. Set preferences and receive tailored RFQ's or Sell Offers from verified users.",
+    image: require('./../assets/images/image2.png'),
+  },
+  {
+    id: '3',
+    title: 'Grow Your Business',
+    description:
+      'Sellers, showcase your products to a vast audience. Buyers, find the best deals for your business needs.',
+    image: require('./../assets/images/image3.png'),
+  },
+  {
+    id: '4',
+    title: 'Real-time Chat',
+    description:
+      'Communicate directly with sellers and buyers through our chat feature. Ask questions and negotiate effortlessly.',
+    image: require('./../assets/images/image4.png'),
+  },
+  {
+    id: '5',
+    title: 'Pay with Confidence',
+    description:
+      'Trust our escrow service for secure transactions. Your payments are protected until you confirm satisfaction.',
+    image: require('./../assets/images/image5.png'),
+  },
+];
+
 export default {
   freightType,
   OrderTabItem,
@@ -913,6 +951,7 @@ export default {
   paymentType,
   incoterms,
   filterUnit,
+  onboarding,
   allCategories,
   paymentMethod,
   signUp,

@@ -72,17 +72,18 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
 
         <View
           style={{
+            flex: 2,
             justifyContent: 'center',
             padding: SIZES.base,
-            alignItems: 'flex-end',
           }}>
           <Text
+            numberOfLines={1}
             style={{
               ...FONTS.cap1,
               fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
-            {item?.placeOriginName}
+            {item?.placeOrigin}
           </Text>
         </View>
       </View>
@@ -155,7 +156,7 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         </Text>
       </View>
 
-      {/* “Product Title */}
+      {/* Product Title */}
       <View
         style={{
           marginTop: SIZES.radius,
@@ -168,7 +169,7 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-            “Product Title
+            Product Title
           </Text>
         </View>
         <View

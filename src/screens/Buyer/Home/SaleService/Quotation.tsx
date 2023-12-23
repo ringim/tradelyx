@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import {COLORS, FONTS, SIZES, constants} from '../../../../constants';
 import {QuoteTab, TextButton} from '../../../../components';
-import { HomeStackNavigatorParamList } from '../../../../components/navigation/SellerNav/type/navigation';
+import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 
 const Quotation = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
