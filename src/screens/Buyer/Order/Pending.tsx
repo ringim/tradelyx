@@ -1,5 +1,5 @@
 import {View, Text, FlatList, ActivityIndicator} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
 
@@ -9,6 +9,7 @@ import {
   RFFOrderItem,
   LoadingIndicator,
   RFQOrderItem,
+  SellOfferOrderItem,
 } from '../../../components';
 import {
   ModelSortDirection,
@@ -20,15 +21,22 @@ import {
   RfqByDateReplyQueryVariables,
   RffByDateRelyQuery,
   RffByDateRelyQueryVariables,
+  SellOffersByDateQuery,
+  SellOffersByDateQueryVariables,
 } from '../../../API';
 import {rffByDate, rffByDateRely} from '../../../queries/RFFQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {rfqByDate, rfqByDateReply} from '../../../queries/RFQQueries';
 import {OrderStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
+import {sellOffersByDate} from '../../../queries/SellOfferQueries';
 
 const Pending = () => {
   const {userID} = useAuthContext();
   const navigation = useNavigation<OrderStackNavigatorParamList>();
+
+  const [RFFs, setRFFs] = useState<any>([]);
+  const [RFQs, setRFQs] = useState<any>([]);
+  const [sellOffers, setSellOffers] = useState<any>([]);
 
   // LIST RFQs
   const {
@@ -43,32 +51,6 @@ const Pending = () => {
       SType: 'RFQ',
       sortDirection: ModelSortDirection.DESC,
       limit: 10,
-    },
-  });
-  const allRFQs: any =
-    data?.rfqByDate?.items
-      ?.filter(usrId => usrId?.userID === userID)
-      .filter((item: any) => !item?._deleted) || [];
-
-  // LIST RFQs ByDateRely
-  const {data: onData, loading: onLoad} = useQuery<
-    RfqByDateReplyQuery,
-    RfqByDateReplyQueryVariables
-  >(rfqByDateReply, {
-    variables: {
-      SType: 'RFQREFPLY',
-      sortDirection: ModelSortDirection.DESC,
-    },
-  });
-
-  // LIST RFFs ByDateRely
-  const {data: softData, loading: softLoad} = useQuery<
-    RffByDateRelyQuery,
-    RffByDateRelyQueryVariables
-  >(rffByDateRely, {
-    variables: {
-      SType: 'RFFREFPLY',
-      sortDirection: ModelSortDirection.DESC,
     },
   });
 
@@ -87,10 +69,25 @@ const Pending = () => {
       limit: 10,
     },
   });
-  const allRFFs: any =
-    newData?.rffByDate?.items
-      ?.filter(usrId => usrId?.userID === userID)
-      .filter((item: any) => !item?._deleted) || [];
+
+  // LIST SELL OFFERS
+  const {
+    data: sellOfferData,
+    loading: sellOfferLoad,
+    refetch: sellOfferRefetch,
+    fetchMore: sellOfferFetchMore,
+  } = useQuery<SellOffersByDateQuery, SellOffersByDateQueryVariables>(
+    sellOffersByDate,
+    {
+      pollInterval: 500,
+      fetchPolicy: 'network-only',
+      variables: {
+        SType: 'SELLOFFER',
+        sortDirection: ModelSortDirection.DESC,
+        limit: 10,
+      },
+    },
+  );
 
   const [selectedOption, setSelectedOptions] = useState(true);
   const [fetchingMore, setFetchingMore] = useState<any>(false);
@@ -98,6 +95,7 @@ const Pending = () => {
 
   const nextToken = newData?.rffByDate?.nextToken;
   const nextToken2 = data?.rfqByDate?.nextToken;
+  const nextToken3 = sellOfferData?.sellOffersByDate?.nextToken;
 
   const loadMoreItem = async () => {
     if (!nextToken || fetchingMore) {
@@ -117,7 +115,66 @@ const Pending = () => {
     setFetchingMore(false);
   };
 
-  if (loading || newLoad || onLoad || softLoad) {
+  const loadMoreItem3 = async () => {
+    if (!nextToken3 || fetchingMore) {
+      return;
+    }
+    setFetchingMore(true);
+    await sellOfferFetchMore({variables: {nextToken: nextToken3}});
+    setFetchingMore(false);
+  };
+
+  // LIST RFQs ByDateRely
+  const {data: onData, loading: onLoad} = useQuery<
+    RfqByDateReplyQuery,
+    RfqByDateReplyQueryVariables
+  >(rfqByDateReply, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      SType: 'RFQREFPLY',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
+  // LIST RFFs ByDateRely
+  const {data: softData, loading: softLoad} = useQuery<
+    RffByDateRelyQuery,
+    RffByDateRelyQueryVariables
+  >(rffByDateRely, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      SType: 'RFFREFPLY',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
+  useEffect(() => {
+    const allRFQs: any =
+      data?.rfqByDate?.items
+        ?.filter(usrId => usrId?.userID === userID)
+        .filter((item: any) => !item?._deleted) || [];
+    setRFQs(allRFQs);
+  }, [data, loading]);
+
+  useEffect(() => {
+    const allRFFs: any =
+      newData?.rffByDate?.items
+        ?.filter(usrId => usrId?.userID === userID)
+        .filter((item: any) => !item?._deleted) || [];
+    setRFFs(allRFFs);
+  }, [newData, newLoad]);
+
+  useEffect(() => {
+    const sellOffers: any =
+      sellOfferData?.sellOffersByDate?.items.filter(
+        (item: any) => !item?._deleted,
+      ) || [];
+    setSellOffers(sellOffers);
+  }, [sellOfferData, sellOfferLoad]);
+
+  if (loading || newLoad || onLoad || softLoad || sellOfferLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -164,7 +221,7 @@ const Pending = () => {
       <View>
         {itemSelected === 'RFQ' ? (
           <FlatList
-            data={allRFQs}
+            data={RFQs}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.id}
             renderItem={({item, index}) => {
@@ -173,7 +230,6 @@ const Pending = () => {
                   ?.filter(rfqID => rfqID?.RFQ === item?.id)
                   ?.filter(usrID => usrID?.userID === userID)
                   .filter((item: any) => !item?._deleted) || [];
-
               return (
                 <RFQOrderItem
                   key={index}
@@ -201,16 +257,16 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allRFQs?.length - 1 ? 300 : 300,
+                  marginBottom: RFQs?.length - 1 ? 300 : 300,
                 }}>
                 {newLoad && <LoadingIndicator />}
               </View>
             }
             onEndReached={() => loadMoreItem2()}
           />
-        ) : (
+        ) : itemSelected === 'RFF' ? (
           <FlatList
-            data={allRFFs}
+            data={RFFs}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item?.id}
             renderItem={({item, index}) => {
@@ -247,11 +303,42 @@ const Pending = () => {
             ListFooterComponent={
               <View
                 style={{
-                  marginBottom: allRFFs?.length - 1 ? 300 : 300,
+                  marginBottom: RFFs?.length - 1 ? 300 : 300,
                 }}
               />
             }
             onEndReached={() => loadMoreItem()}
+          />
+        ) : (
+          <FlatList
+            data={sellOffers}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => `${item?.id}`}
+            renderItem={({item, index}) => {
+              return (
+                <SellOfferOrderItem
+                  key={index}
+                  item={item}
+                  btn={false}
+                  status={true}
+                  showHR={true}
+                  statusColor={COLORS.Yellow5}
+                  onView={() =>
+                    navigation.navigate('OfferDetail', {detail: item})
+                  }
+                />
+              );
+            }}
+            refreshing={sellOfferLoad}
+            onRefresh={() => sellOfferRefetch()}
+            ListFooterComponent={
+              <View
+                style={{
+                  marginBottom: sellOffers?.length - 1 ? 300 : 300,
+                }}
+              />
+            }
+            onEndReached={() => loadMoreItem3()}
           />
         )}
       </View>

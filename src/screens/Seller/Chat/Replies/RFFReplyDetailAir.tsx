@@ -17,6 +17,7 @@ import {ChatRouteProp} from '../../../../components/navigation/SellerNav/type/na
 import {GetRFFReplyQuery, GetRFFReplyQueryVariables} from '../../../../API';
 import {getRFFReply} from '../../../../queries/RFFQueries';
 import ReplyStyles from './ReplyStyles';
+import { formatNumberWithCommas } from '../../../../utilities/service';
 
 const RFFReplyDetailAir = () => {
   const route: any = useRoute<ChatRouteProp>();
@@ -26,12 +27,6 @@ const RFFReplyDetailAir = () => {
     {variables: {id: route?.params?.rff}},
   );
   const rffDetails: any = data?.getRFFReply;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   const onCopy = () => {
     Clipboard.setString(rffDetails?.rffNo);
@@ -171,7 +166,7 @@ const RFFReplyDetailAir = () => {
                 Base Price (Exc. Delivery)
               </Text>
               <Text style={ReplyStyles?.text2}>
-                ₦{rffDetails?.price?.toLocaleString('en-US', options)}
+                ₦{formatNumberWithCommas(rffDetails?.price)}
               </Text>
             </View>
           </View>

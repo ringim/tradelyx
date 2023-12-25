@@ -98,7 +98,7 @@ const RFQReplyList = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <Header title={'All RFQ Reply'} tintColor={COLORS.Neutral1} />
+      <Header title={'All RFQ Replies'} tintColor={COLORS.Neutral1} />
 
       <RFQOrderItem
         desc={true}

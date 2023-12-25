@@ -8,6 +8,7 @@ import {
   OrderTabItem,
   RFFReplyOrderItem,
   RFQReplyOrderItem,
+  SellOfferOrderItem,
 } from '../../../components';
 import {
   ModelSortDirection,
@@ -15,15 +16,44 @@ import {
   RffByDateRelyQueryVariables,
   RfqByDateReplyQuery,
   RfqByDateReplyQueryVariables,
+  SellOffersByDateQuery,
+  SellOffersByDateQueryVariables,
+  SellOffersByDateRelyQuery,
+  SellOffersByDateRelyQueryVariables,
 } from '../../../API';
 import {rfqByDateReply} from '../../../queries/RFQQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {OrderStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {rffByDateRely} from '../../../queries/RFFQueries';
+import {
+  sellOffersByDate,
+  sellOffersByDateRely,
+} from '../../../queries/SellOfferQueries';
 
 const Pending = () => {
   const navigation = useNavigation<OrderStackNavigatorParamList>();
   const {userID} = useAuthContext();
+
+  const [sellOffers, setSellOffers] = useState<any>([]);
+
+  // LIST SELL OFFERS
+  const {
+    data: sellOfferData,
+    loading: sellOfferLoad,
+    refetch: sellOfferRefetch,
+    fetchMore: sellOfferFetchMore,
+  } = useQuery<SellOffersByDateQuery, SellOffersByDateQueryVariables>(
+    sellOffersByDate,
+    {
+      pollInterval: 500,
+      fetchPolicy: 'network-only',
+      variables: {
+        SType: 'SELLOFFER',
+        sortDirection: ModelSortDirection.DESC,
+        limit: 10,
+      },
+    },
+  );
 
   // LIST RFQs
   const {
@@ -53,7 +83,7 @@ const Pending = () => {
   } = useQuery<RffByDateRelyQuery, RffByDateRelyQueryVariables>(rffByDateRely, {
     pollInterval: 500,
     fetchPolicy: 'network-only',
-    variables: { 
+    variables: {
       SType: 'RFFREFPLY',
       sortDirection: ModelSortDirection.DESC,
       limit: 10,
@@ -68,6 +98,7 @@ const Pending = () => {
 
   const nextToken = newData?.rffByDateRely?.nextToken;
   const nextToken2 = data?.rfqByDateReply?.nextToken;
+  const nextToken3 = sellOfferData?.sellOffersByDate?.nextToken;
 
   const loadMoreItem = async () => {
     if (!nextToken || fetchingMore) {
@@ -87,6 +118,28 @@ const Pending = () => {
     setFetchingMore(false);
   };
 
+  const loadMoreItem3 = async () => {
+    if (!nextToken3 || fetchingMore) {
+      return;
+    }
+    setFetchingMore(true);
+    await sellOfferFetchMore({variables: {nextToken: nextToken3}});
+    setFetchingMore(false);
+  };
+
+  // SELL OFFER REPLIES
+  const {data: softData, loading: softLoad} = useQuery<
+    SellOffersByDateRelyQuery,
+    SellOffersByDateRelyQueryVariables
+  >(sellOffersByDateRely, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      SType: 'SType',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
   useEffect(() => {
     const items =
       data?.rfqByDateReply?.items
@@ -103,7 +156,15 @@ const Pending = () => {
     setRFFReply(items);
   }, [newData, newLoad]);
 
-  if (loading || newLoad) {
+  useEffect(() => {
+    const sellOffers: any =
+      sellOfferData?.sellOffersByDate?.items.filter(
+        (item: any) => !item?._deleted,
+      ) || [];
+    setSellOffers(sellOffers);
+  }, [sellOfferData, sellOfferLoad]);
+
+  if (loading || newLoad || sellOfferLoad || softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -157,6 +218,7 @@ const Pending = () => {
             renderItem={({item, index}) => {
               return (
                 <RFQReplyOrderItem
+                  key={index}
                   item={item}
                   desc={true}
                   statusColor={COLORS.Yellow5}
@@ -196,7 +258,7 @@ const Pending = () => {
             }
             onEndReached={() => loadMoreItem()}
           />
-        ) : (
+        ) : itemSelected === 'RFF' ? (
           <FlatList
             data={rffReply}
             showsVerticalScrollIndicator={false}
@@ -204,6 +266,7 @@ const Pending = () => {
             renderItem={({item, index}) => {
               return (
                 <RFFReplyOrderItem
+                  key={index}
                   item={item}
                   desc={true}
                   service={true}
@@ -243,6 +306,43 @@ const Pending = () => {
               />
             }
             onEndReached={() => loadMoreItem2()}
+          />
+        ) : (
+          <FlatList
+            data={sellOffers}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => `${item?.id}`}
+            renderItem={({item, index}) => {
+              const allSellOffersByDateReplies =
+                softData?.sellOffersByDateRely?.items
+                  ?.filter(soID => soID?.SellOffer === item?.id)
+                  ?.filter(usrID => usrID?.userID === userID)
+                  .filter((item: any) => !item?._deleted) || [];
+
+              return (
+                <SellOfferOrderItem
+                  key={index}
+                  item={item}
+                  replyNumber={allSellOffersByDateReplies?.length || 0}
+                  btn={true}
+                  onPress={() =>
+                    navigation.navigate('SellOfferReplyList', {
+                      sellOffer: item,
+                    })
+                  }
+                />
+              );
+            }}
+            refreshing={sellOfferLoad}
+            onRefresh={() => sellOfferRefetch()}
+            ListFooterComponent={
+              <View
+                style={{
+                  marginBottom: sellOffers?.length - 1 ? 300 : 300,
+                }}
+              />
+            }
+            onEndReached={() => loadMoreItem3()}
           />
         )}
       </View>

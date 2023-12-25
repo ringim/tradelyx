@@ -22,6 +22,7 @@ import {
   GetSellOfferReplyQueryVariables,
 } from '../../../../API';
 import {getSellOfferReply} from '../../../../queries/SellOfferQueries';
+import {formatNumberWithCommas} from '../../../../utilities/service';
 
 const SellOfferDetails = () => {
   const route: any = useRoute<ChatRouteProp>();
@@ -33,12 +34,6 @@ const SellOfferDetails = () => {
     GetSellOfferReplyQueryVariables
   >(getSellOfferReply, {variables: {id: route?.params?.sellOffer}});
   const getSellOfferDetail: any = data?.getSellOfferReply;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   useEffect(() => {
     if (getSellOfferDetail?.sellOfferImage) {
@@ -186,7 +181,7 @@ const SellOfferDetails = () => {
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
               {dayjs(route?.params.sellOffer?.createdAt).format(
-                'MMM DD, YYYY - HH:mm A',
+                'MMMM DD, YYYY',
               )}
             </Text>
           </View>
@@ -355,7 +350,7 @@ const SellOfferDetails = () => {
                 color: COLORS.Neutral6,
                 lineHeight: 24,
               }}>
-               Product Title
+              Product Title
             </Text>
           </View>
           <View
@@ -478,8 +473,7 @@ const SellOfferDetails = () => {
                   color: COLORS.Neutral1,
                   lineHeight: 24,
                 }}>
-                ₦
-                {getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
+                ₦ ₦{formatNumberWithCommas(getSellOfferDetail?.basePrice)}
               </Text>
             </View>
           </View>
@@ -736,7 +730,7 @@ const SellOfferDetails = () => {
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦{getSellOfferDetail?.basePrice?.toLocaleString('en-US', options)}
+              ₦{formatNumberWithCommas(getSellOfferDetail?.basePrice)}
             </Text>
           </View>
         </View>

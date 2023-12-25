@@ -69,12 +69,12 @@ const ReplyRFQDomesticPayment = () => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod);
+  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod2);
 
   const [open3, setOpen3] = useState(false);
   const [value3, setValue3] = useState(null);
   const [type3, setType3] = useState('');
-  const [jobType3, setJobType3] = useState<any>(constants.paymentType);
+  const [jobType3, setJobType3] = useState<any>(constants.paymentType2);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -196,8 +196,14 @@ const ReplyRFQDomesticPayment = () => {
       };
       updateLastMessage(res1?.data?.createMessage?.id);
 
-      navigation.navigate('SuccessService5', {
-        chatroomID: route?.params?.chatroomID,
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'SuccessService5',
+            params: {chatroomID: route?.params?.chatroomID},
+          },
+        ],
       });
     } catch (error) {
       Toast.show({

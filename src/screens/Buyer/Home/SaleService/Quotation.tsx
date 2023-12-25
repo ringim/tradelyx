@@ -58,7 +58,7 @@ const Quotation = () => {
 
       {/* Advanced RFQ */}
       {quoteItem === 'Advance RFQ' && (
-        <View style={{flex: 1}}>
+        <View style={{flex: 2.5}}>
           <View
             style={{
               marginHorizontal: SIZES.margin,

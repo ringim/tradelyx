@@ -289,7 +289,7 @@ const PackingShipment = () => {
             required: 'Landmark is required',
           }}
           containerStyle={{
-            marginTop: address1 ? -SIZES.padding * 1.3 : 0,
+            marginTop: address1 ? -SIZES.padding * 1.3 : SIZES.padding,
           }}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}

@@ -349,7 +349,7 @@ const InternationalTypeQuotation = () => {
             autoFocus={false}
             onChangeText={handleInputChange}
             value={budget}
-            placeholder="Ex. ₦100,000"
+            placeholder="Ex. $10,000"
             keyboardType="numeric"
             placeholderTextColor={COLORS.gray}
             style={{

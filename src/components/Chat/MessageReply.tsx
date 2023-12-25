@@ -27,6 +27,7 @@ import {
 } from '../../API';
 import {getUser} from '../../queries/UserQueries';
 import {useAuthContext} from '../../context/AuthContext';
+import { downloadAndOpenPdf } from '../../utilities/service';
 
 const MessageReply = (props: any) => {
   const {message: propMessage} = props;
@@ -72,23 +73,6 @@ const MessageReply = (props: any) => {
     };
     checkIfMe();
   }, [loading]);
-
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
 
   return (
     <Root>

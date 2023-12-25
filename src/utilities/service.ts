@@ -341,12 +341,6 @@ export const shareOptions: any = {
   // attributionURL: 'http://deep-link-to-app', //in beta
 };
 
-export const options = {
-  style: 'decimal',
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-};
-
 // DOWNLOAD & OPEN PDF FILE
 export const downloadAndOpenPdf = async (item: any) => {
   try {
@@ -403,17 +397,28 @@ export function areArraysSimilar(
 
 export const formatNumericValue = (input: any, amount: any) => {
   // Remove non-numeric characters except for decimal point
-  const cleanedValue = input.replace(/[^0-9.]/g, '');
+  const cleanedValue = input?.replace(/[^0-9.]/g, '');
 
   // Allow only one decimal point
-  const decimalCount = cleanedValue.split('.').length - 1;
+  const decimalCount = cleanedValue?.split('.')?.length - 1;
   if (decimalCount > 1) {
     return amount;
   }
 
   // Add commas for thousands separator
-  const parts = cleanedValue.split('.');
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const parts = cleanedValue?.split('.');
+  parts[0] = parts[0]?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-  return parts.join('.');
+  return parts?.join('.');
+};
+
+export const formatNumberWithCommas = (numberText: any) => {
+  const numericValue = parseFloat(numberText?.replace(/,/g, ''));
+
+  if (!isNaN(numericValue)) {
+    const numberWithCommas = numericValue.toLocaleString();
+    return numberWithCommas;
+  } else {
+    return 'Invalid number';
+  }
 };

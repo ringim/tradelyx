@@ -308,6 +308,10 @@ const OfferDetail = () => {
             basePrice={route?.params?.detail?.basePrice}
             productName={route?.params?.detail?.productName}
             qtyMeasure={route?.params?.detail?.qtyMeasure}
+            category={route?.params?.detail?.requestCategory}
+            packageType={route?.params?.detail?.packageType}
+            paymentMethod={route?.params?.detail?.paymentMethod}
+            coverage={route?.params?.detail?.rfqType}
           />
 
           <SellOfferDetail2
@@ -318,6 +322,7 @@ const OfferDetail = () => {
             onPress={onPress}
             image={image}
             images={images}
+            showBtn={true}
             createdAtd={route?.params?.detail?.createdAtd}
           />
 

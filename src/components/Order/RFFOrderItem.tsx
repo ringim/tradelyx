@@ -77,14 +77,14 @@ const RFFOrderItem = ({
               justifyContent: 'space-between',
             }}>
             {/* from location */}
-            <View style={{justifyContent: 'center'}}>
+            <View style={{flex: 0, justifyContent: 'center'}}>
               <FastImage
                 source={{uri: item?.placeOriginFlag}}
                 style={{width: 15, height: 15}}
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
-            <View style={{marginLeft: 3, justifyContent: 'center'}}>
+            <View style={{flex: 5, marginLeft: 4, justifyContent: 'center'}}>
               <Text
                 numberOfLines={1}
                 style={{
@@ -92,14 +92,16 @@ const RFFOrderItem = ({
                   fontWeight: '700',
                   color: COLORS.Neutral6,
                 }}>
-                {item?.placeOrigin}
+                {item?.placeOriginName}
               </Text>
             </View>
+
+            {/* right arrow */}
             {item?.placeDestinationFlag && (
               <View
                 style={{
                   justifyContent: 'center',
-                  marginLeft: 3,
+                  marginLeft: 10,
                 }}>
                 <FastImage
                   source={icons.right}
@@ -113,6 +115,7 @@ const RFFOrderItem = ({
             {/* to destination */}
             <View
               style={{
+                flex: 0,
                 marginLeft: SIZES.base,
                 justifyContent: 'center',
               }}>
@@ -122,7 +125,7 @@ const RFFOrderItem = ({
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
-            <View style={{marginLeft: 6, justifyContent: 'center'}}>
+            <View style={{flex: 5, marginLeft: SIZES.base, justifyContent: 'center'}}>
               <Text
                 numberOfLines={1}
                 style={{
@@ -130,7 +133,7 @@ const RFFOrderItem = ({
                   fontWeight: '700',
                   color: COLORS.Neutral6,
                 }}>
-                {item?.placeDestination}
+                {item?.placeDestinationName}
               </Text>
             </View>
           </View>

@@ -26,7 +26,6 @@ import {
   OceanFreight,
   LandFreight,
   ReplyDetailOcean,
-  Order,
   ReplyDetailAir,
   ReplyDetailLand,
   ReplyDetailStandard,
@@ -46,6 +45,7 @@ import {
   OfferDetail,
   ViewAgreement,
   Chat,
+  CustomSellOfferDetail,
   LandPickupAddress,
   LandPickupAddress2,
   OceanContainerDetails,
@@ -456,25 +456,21 @@ const BuyerStack = () => {
         component={ReplyDetailLand}
         options={() => options}
       />
-
       <Stack.Screen
         name="ReplyDetailOcean"
         component={ReplyDetailOcean}
         options={() => options}
       />
-
       <Stack.Screen
         name="ReplyDetailDomestic"
         component={ReplyDetailDomestic}
         options={() => options}
       />
-
       <Stack.Screen
         name="ReplyDetailStandard"
         component={ReplyDetailStandard}
         options={() => options}
       />
-
       <Stack.Screen
         name="Order"
         component={BBottomTabs}
@@ -483,6 +479,11 @@ const BuyerStack = () => {
       <Stack.Screen
         name="ReplyDetailInternational"
         component={ReplyDetailInternational}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="CustomSellOfferDetail"
+        component={CustomSellOfferDetail}
         options={() => options}
       />
     </Stack.Navigator>

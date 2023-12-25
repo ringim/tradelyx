@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import React, {memo} from 'react';
+import React from 'react';
 import FastImage from 'react-native-fast-image';
 
 import {SIZES, COLORS, FONTS, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
-import {options} from '../../utilities/service';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 const ServiceReplyType = ({
   requestID,
@@ -96,7 +96,7 @@ const ServiceReplyType = ({
                 fontWeight: '600',
                 color: COLORS.NeutralBlue2,
               }}>
-              ₦{price?.toLocaleString('en-US', options)}
+              ₦{formatNumberWithCommas(price)}
             </Text>
           </View>
         </View>
@@ -126,7 +126,7 @@ const ServiceReplyType = ({
   );
 };
 
-export default memo(ServiceReplyType);
+export default ServiceReplyType;
 
 const styles = StyleSheet.create({
   container: {

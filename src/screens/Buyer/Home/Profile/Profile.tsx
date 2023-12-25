@@ -20,8 +20,9 @@ const Profile = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const privacyPolicy = 'https://www.tradelyx.com/';
-  const aboutUs = 'https://www.tradelyx.com/';
+  const privacyPolicy = 'https://www.tradelyx.com/privacy-policy';
+  const aboutUs = 'https://www.tradelyx.com/about-us';
+  const contactUs = 'https://www.tradelyx.com/contact-us';
 
   // GET USER DETAILS
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
@@ -104,12 +105,12 @@ const Profile = () => {
             />
 
             {/* Contracts */}
-            <ProfileItem
+            {/* <ProfileItem
               label={'My Contracts'}
               tintColor={COLORS.primary1}
               icon={icons.contracts}
               showRight={true}
-            />
+            /> */}
 
             {/* Privacy policy */}
             <ProfileItem
@@ -126,6 +127,7 @@ const Profile = () => {
               tintColor={COLORS.primary1}
               icon={icons.support}
               showRight={true}
+              onPress={() => Linking.openURL(contactUs)}
             />
 
             {/* Refer and Earn */}

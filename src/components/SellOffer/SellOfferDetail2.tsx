@@ -5,9 +5,9 @@ import dayjs from 'dayjs';
 
 import TextIconButton from '../Button/TextIconButton';
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
-import {options} from '../../utilities/service';
 import FastImage from 'react-native-fast-image';
 import SOImage from '../Others/SOImage';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 const SellOfferDetail2 = ({
   basePrice,
@@ -18,6 +18,7 @@ const SellOfferDetail2 = ({
   packageDesc,
   image,
   images,
+  showBtn
 }: any) => {
   function renderViewMore(onPress: any) {
     return (
@@ -134,7 +135,7 @@ const SellOfferDetail2 = ({
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-            {dayjs(createdAt).format('MMM DD, YYYY - HH:mm A')}
+            {dayjs(createdAt).format('MMMM DD, YYYY')}
           </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
@@ -181,54 +182,56 @@ const SellOfferDetail2 = ({
         ))}
 
       {/* Price && bTn */}
-      <View
-        style={{
-          marginTop: SIZES.semi_margin,
-          backgroundColor: COLORS.Neutral9,
-          borderBottomLeftRadius: SIZES.radius,
-          borderBottomRightRadius: SIZES.radius,
-          padding: SIZES.radius,
-        }}>
+      {showBtn && (
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: SIZES.radius,
-          }}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
-            <Text style={{...FONTS.h3, color: COLORS.Neutral5}}>
-              Base Price
-            </Text>
-          </View>
-
-          <View style={{justifyContent: 'center'}}>
-            <Text
-              style={{
-                ...FONTS.h3,
-                color: COLORS.primary1,
-                letterSpacing: -1,
-              }}>
-              ₦{basePrice.toLocaleString('en-US', options)}
-            </Text>
-          </View>
-        </View>
-        <TextIconButton
-          label={'Chat'}
-          labelStyle={{
-            color: COLORS.white,
-            ...FONTS.h4,
-            marginLeft: SIZES.radius,
-          }}
-          iconPosition={'LEFT'}
-          icon={icons.chat}
-          iconStyle={COLORS.white}
-          onPress={onPress}
-          containerStyle={{
             marginTop: SIZES.semi_margin,
-            width: 350,
-          }}
-        />
-      </View>
+            backgroundColor: COLORS.Neutral9,
+            borderBottomLeftRadius: SIZES.radius,
+            borderBottomRightRadius: SIZES.radius,
+            padding: SIZES.radius,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingHorizontal: SIZES.radius,
+            }}>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <Text style={{...FONTS.h3, color: COLORS.Neutral5}}>
+                Base Price
+              </Text>
+            </View>
+
+            <View style={{justifyContent: 'center'}}>
+              <Text
+                style={{
+                  ...FONTS.h3,
+                  color: COLORS.primary1,
+                  letterSpacing: -1,
+                }}>
+                ₦{formatNumberWithCommas(basePrice)}
+              </Text>
+            </View>
+          </View>
+          <TextIconButton
+            label={'Chat'}
+            labelStyle={{
+              color: COLORS.white,
+              ...FONTS.h4,
+              marginLeft: SIZES.radius,
+            }}
+            iconPosition={'LEFT'}
+            icon={icons.chat}
+            iconStyle={COLORS.white}
+            onPress={onPress}
+            containerStyle={{
+              marginTop: SIZES.semi_margin,
+              width: 350,
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 };

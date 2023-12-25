@@ -11,7 +11,7 @@ import FastImage from 'react-native-fast-image';
 import {SIZES, COLORS, FONTS, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
 import {useAuthContext} from '../../context/AuthContext';
-import {options} from '../../utilities/service';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 const SellOfferReply = ({
   imageUri2,
@@ -32,7 +32,7 @@ const SellOfferReply = ({
       <View style={styles.subCont2}>
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={{uri: imageUri2, priority: FastImage.priority.normal,}}
+            source={{uri: imageUri2, priority: FastImage.priority.normal}}
             style={styles.image}
             resizeMode={FastImage.resizeMode.cover}
           />
@@ -103,9 +103,7 @@ const SellOfferReply = ({
                 paddingRight: SIZES.semi_margin,
                 justifyContent: 'center',
               }}>
-              <Text style={styles.text}>
-                ₦{price?.toLocaleString('en-US', options)}
-              </Text>
+              <Text style={styles.text}>₦{formatNumberWithCommas(price)}</Text>
             </View>
           </View>
 

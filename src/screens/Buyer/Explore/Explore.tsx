@@ -91,9 +91,9 @@ const Explore = () => {
     try {
       const items =
         (isCurrent &&
-          newData?.sellOffersByDate?.items
-            .filter(st => st?.SType === 'SELLOFFER')
-            .filter((item: any) => !item?._deleted)) ||
+          newData?.sellOffersByDate?.items.filter(
+            (item: any) => !item?._deleted,
+          )) ||
         [];
       setFilteredDataSource(items);
       setMasterDataSource(items);
@@ -162,7 +162,7 @@ const Explore = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource?.length - 1  ? 300 : 300,
+                marginBottom: filteredDataSource?.length - 1 ? 300 : 300,
               }}
             />
           }

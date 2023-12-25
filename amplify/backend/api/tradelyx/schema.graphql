@@ -156,6 +156,7 @@ type SellOffer @model @auth(rules: [{allow: public}]) {
   paymentType: String
   paymentMethod: String
   offerValidity: AWSDate
+  agreement: [String]
 
   userID: ID! @index(name: "byUser")
   SellOfferReplies: [SellOfferReply]
@@ -195,7 +196,6 @@ type SellOfferReply @model @auth(rules: [{allow: public}]) {
   offerValidity: AWSDate
   forUserID: String
   userID: String
-  statusText: String
   agreement: [String]
 
   SellOffer: ID! @index(name: "bySellOffer")
@@ -423,6 +423,7 @@ type Product @model @auth(rules: [{allow: public}]) {
   productCert: String
   landmark: String
   supplyCapacity: String
+  unit: String
   minOrderQty: String
   packageType: String
   quantity: Int
@@ -521,6 +522,8 @@ enum serviceType {
   PRODUCTS
   SELLOFFERS
   SELLOFFERS_REPLY
+  CUSTOM_SELLOFFER
+  CUSTOM_SELLOFFER_REPLY
 }
 
 type Wishlist @model @auth(rules: [{allow: public}]) {

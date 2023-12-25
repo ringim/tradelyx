@@ -2,6 +2,8 @@ import {View, Text, Platform, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {Controller, useForm} from 'react-hook-form';
+import DropDownPicker from 'react-native-dropdown-picker';
+import FastImage from 'react-native-fast-image';
 import {useMutation} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -15,7 +17,7 @@ import {
   TextButton,
   UploadDocs,
 } from '../../../../../components';
-import {COLORS, FONTS, SIZES} from '../../../../../constants';
+import {COLORS, FONTS, SIZES, icons, constants} from '../../../../../constants';
 import {updateProduct} from '../../../../../queries/ProductQueries';
 import {
   UpdateProductInput,
@@ -42,6 +44,11 @@ const ProductSpecification = () => {
   const [productSpec, setProductSpec] = useState('');
   const [singleFile, setSingleFile] = useState<any>([]);
 
+  const [open, setOpen] = useState(false);
+  const [value1, setValue1] = useState(null);
+  const [type, setType] = useState('');
+  const [jobType, setJobType] = useState<any>(constants.filterUnit);
+
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
     UpdateProductMutation,
@@ -59,6 +66,7 @@ const ProductSpecification = () => {
         minOrderQty: moq,
         supplyCapacity: supply,
         productSpec,
+        unit: type,
         productDocs: file2,
         packageType,
       };
@@ -136,7 +144,7 @@ const ProductSpecification = () => {
           label="Supply Capacity"
           name="supply"
           control={control}
-          placeholder="Add supply capacity e.g. 10 Tonnes"
+          placeholder="Add supply capacity e.g. 10"
           rules={{
             required: 'Supply capacity is required',
           }}
@@ -153,10 +161,86 @@ const ProductSpecification = () => {
           rules={{
             required: 'MOQ is required',
           }}
-          placeholder="E.g. 1 Tonne"
+          placeholder="E.g. 3"
           containerStyle={{marginTop: SIZES.semi_margin}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
+        />
+
+        {/* Quantity & Unit Measurement */}
+        <Controller
+          control={control}
+          name="unit"
+          rules={{
+            required: 'Unit is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <View style={{justifyContent: 'center', marginTop: SIZES.semi_margin}}>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'type',
+                }}
+                onChangeValue={onChange}
+                open={open}
+                showArrowIcon={true}
+                placeholder="Select Unit"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value1}
+                items={jobType}
+                setOpen={setOpen}
+                setValue={setValue1}
+                setItems={setJobType}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.radius,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                  width: 170,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select unit type"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </View>
+          )}
         />
 
         {/* Packaging Type */}

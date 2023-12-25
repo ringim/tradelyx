@@ -17,6 +17,7 @@ import {
 } from '../../API';
 import {getUser} from '../../queries/UserQueries';
 import {deleteSellOffer} from '../../queries/SellOfferQueries';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 interface IItem {
   item: SellOffer | any;
@@ -92,12 +93,6 @@ const SearchItem = ({
       isCurrent = false;
     };
   }, [item_image2]);
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   return (
     <Pressable
@@ -239,7 +234,11 @@ const SearchItem = ({
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.cap1, color: COLORS.Neutral6}}>
+              style={{
+                ...FONTS.cap1,
+                color: COLORS.Neutral5,
+                fontWeight: '600',
+              }}>
               {item?.placeOrigin}
             </Text>
           </View>
@@ -266,31 +265,6 @@ const SearchItem = ({
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral1}}>
               {item?.qtyMeasure} {item?.unit}
-            </Text>
-          </View>
-        </View>
-
-        {/* base price */}
-        <View
-          style={{
-            marginTop: 6,
-            marginHorizontal: SIZES.semi_margin,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              Base Price
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral1}}>
-              ₦{item?.basePrice?.toLocaleString('en-US', options)}
             </Text>
           </View>
         </View>
@@ -369,7 +343,7 @@ const SearchItem = ({
               letterSpacing: -1,
               paddingTop: SIZES.base,
             }}>
-            ₦{item?.basePrice.toLocaleString('en-US', options)}
+            ₦{formatNumberWithCommas(item?.basePrice)}
           </Text>
         </View>
 

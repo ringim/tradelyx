@@ -749,6 +749,7 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -826,6 +827,7 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -903,6 +905,7 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -2022,6 +2025,7 @@ export const createProduct = /* GraphQL */ `mutation CreateProduct(
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2078,6 +2082,7 @@ export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2134,6 +2139,7 @@ export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2255,6 +2261,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -2409,6 +2416,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -2651,6 +2659,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -2805,6 +2814,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -3047,6 +3057,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -3201,6 +3212,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -3606,6 +3618,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -3748,6 +3761,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename
@@ -4021,6 +4035,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -4163,6 +4178,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename
@@ -4436,6 +4452,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -4578,6 +4595,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename

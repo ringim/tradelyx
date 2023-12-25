@@ -15,6 +15,8 @@ import {
   Header,
   TextButton,
   UpdateProfilePhoto,
+  UploadID,
+  UploadedID,
 } from '../../../components';
 import {SetupNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {useAuthContext} from '../../../context/AuthContext';
@@ -26,9 +28,12 @@ import {
 } from '../../../API';
 import {updateUser} from '../../../queries/UserQueries';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
-import {onChangePhoto, uploadMedia} from '../../../utilities/service';
+import {
+  onChangePhoto,
+  selectFile2,
+  uploadMedia,
+} from '../../../utilities/service';
 import {CountryCodeList} from '../../../../types/types';
-import {DEFAULT_BANNER_IMAGE} from '../../../utilities/Utils';
 
 type CompleteAccountData = {
   phoneNumber: string;
@@ -51,6 +56,7 @@ const CompleteProfile = () => {
   const {userID} = useAuthContext();
 
   const [address, setAddress] = useState<any>('');
+  const [singleFile, setSingleFile] = useState<any>([]);
   const [uploading, setUploading] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>('');
   const [selectedPhoto1, setSelectedPhoto1] = useState<any | Asset>('');
@@ -465,6 +471,28 @@ const CompleteProfile = () => {
           name="IdNumber"
           containerStyle={{marginTop: SIZES.padding}}
         />
+
+        {/* /* Upload Identity Doc */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            marginTop:
+              singleFile?.length >= 1 ? SIZES.semi_margin : SIZES.semi_margin,
+          }}>
+          {singleFile?.length >= 1 ? (
+            <UploadedID
+              title={'Identity Documents'}
+              file={singleFile}
+              setSingleFile={setSingleFile}
+            />
+          ) : (
+            <UploadID
+              title="Upload Identity Document"
+              onScanPress={() => selectFile2(setSingleFile, singleFile)}
+            />
+          )}
+        </View>
       </View>
     );
   }

@@ -3,18 +3,13 @@ import React from 'react';
 
 import TextButton from '../Button/TextButton';
 import {COLORS, FONTS, SIZES} from '../../constants';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 const WalletHeader = ({balance, onWithdraw, onDeposit}: any) => {
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
   return (
     <View style={{margin: SIZES.margin}}>
       <Text style={{...FONTS.d1, color: COLORS.white, textAlign: 'center'}}>
-        ₦{balance.toLocaleString('en-US', options)}
+        ₦{formatNumberWithCommas(balance)}
       </Text>
       <Text
         style={{

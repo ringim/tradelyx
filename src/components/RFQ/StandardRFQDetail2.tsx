@@ -1,30 +1,17 @@
-import {View, Text, Linking, FlatList} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import React from 'react';
-import {Storage} from 'aws-amplify';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {Root} from 'react-native-alert-notification';
 
 import TextButton from '../Button/TextButton';
 import {COLORS, SIZES, FONTS} from '../../constants';
+import {downloadAndOpenPdf} from '../../utilities/service';
 
-const StandardRFQDetail2 = ({onPress, documents, requestCategory}: any) => {
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-      // console.log('file download', url);
-
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
-
+const StandardRFQDetail2 = ({
+  onPress,
+  documents,
+  coverage,
+  requestCategory,
+}: any) => {
   return (
     <Root>
       <View>
@@ -54,10 +41,44 @@ const StandardRFQDetail2 = ({onPress, documents, requestCategory}: any) => {
             }}>
             <Text
               style={{
-                ...FONTS.cap1,
+                ...FONTS.body3,
                 color: COLORS.Neutral1,
               }}>
               {requestCategory}
+            </Text>
+          </View>
+        </View>
+
+        {/* Coverage */}
+        <View
+          style={{
+            marginTop: SIZES.base,
+            flexDirection: 'row',
+            marginHorizontal: SIZES.semi_margin,
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral6,
+              }}>
+              Coverage Type
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral1,
+              }}>
+              {coverage}
             </Text>
           </View>
         </View>
@@ -100,7 +121,7 @@ const StandardRFQDetail2 = ({onPress, documents, requestCategory}: any) => {
                     <Text
                       numberOfLines={2}
                       style={{
-                        ...FONTS.cap1,
+                        ...FONTS.body3,
                         color: COLORS.secondary1,
                         fontWeight: '500',
                       }}>

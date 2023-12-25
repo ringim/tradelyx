@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useQuery} from '@apollo/client';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {FlatList} from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
@@ -16,19 +16,18 @@ import {Storage} from 'aws-amplify';
 
 import {COLORS, SIZES, icons, FONTS} from '../../../constants';
 import {Header, SOImage, TextButton, TextIconButton} from '../../../components';
-import {
-  ChatRouteProp,
-  ChatStackNavigatorParamList,
-} from '../../../components/navigation/BuyerNav/type/navigation';
+import {ChatRouteProp} from '../../../components/navigation/BuyerNav/type/navigation';
 import {
   GetSellOfferReplyQuery,
   GetSellOfferReplyQueryVariables,
 } from '../../../API';
 import {getSellOfferReply} from '../../../queries/SellOfferQueries';
-import {downloadAndOpenPdf} from '../../../utilities/service';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../../utilities/service';
 
 const SellOfferDetails = () => {
-  const navigation = useNavigation<ChatStackNavigatorParamList>();
   const route: any = useRoute<ChatRouteProp>();
 
   const [imageUri, setImageUri] = useState<string | any>(null);
@@ -38,12 +37,6 @@ const SellOfferDetails = () => {
     GetSellOfferReplyQueryVariables
   >(getSellOfferReply, {variables: {id: route?.params?.sellOffer}});
   const getSellOfferDetail: any = data?.getSellOfferReply;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   useEffect(() => {
     if (getSellOfferDetail?.sellOfferImage) {
@@ -189,7 +182,7 @@ const SellOfferDetails = () => {
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
               {dayjs(getSellOfferDetail?.createdAt).format(
-                'MMM DD, YYYY - HH:mm A',
+                'MMMM DD, YYYY',
               )}
             </Text>
           </View>
@@ -440,46 +433,6 @@ const SellOfferDetails = () => {
             </Text>
           </View>
         </View>
-        {/* Base Price */}
-        {getSellOfferDetail?.basePrice ? (
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                  lineHeight: 24,
-                }}>
-                Base Price
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral1,
-                  lineHeight: 24,
-                }}>
-                ₦
-                {getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <View />
-        )}
 
         {/* Offer Coverage */}
         <View
@@ -786,7 +739,7 @@ const SellOfferDetails = () => {
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦{getSellOfferDetail?.basePrice?.toLocaleString('en-US', options)}
+              ₦{formatNumberWithCommas(getSellOfferDetail?.basePrice)}
             </Text>
           </View>
         </View>

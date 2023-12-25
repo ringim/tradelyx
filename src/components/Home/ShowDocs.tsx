@@ -1,13 +1,13 @@
-import {View, Text, Linking} from 'react-native';
+import {View, Text, Dimensions} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {FlatList} from 'react-native-gesture-handler';
-import {Storage} from 'aws-amplify';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {Root} from 'react-native-alert-notification';
 
 import {COLORS, SIZES, FONTS, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
 import {TouchableOpacity} from 'react-native';
+import {downloadAndOpenPdf} from '../../utilities/service';
 
 const ShowDocs = ({
   file,
@@ -16,26 +16,8 @@ const ShowDocs = ({
   onPress,
   buttonStyle,
   contentStyle,
-  icon
+  icon,
 }: any) => {
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-      // console.log('file download', url);
-
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
-
   return (
     <Root>
       <View style={{marginTop: SIZES.radius, ...contentStyle}}>
@@ -66,48 +48,70 @@ const ShowDocs = ({
         <FlatList
           data={file}
           keyExtractor={item => item}
-          renderItem={({item, index}) => (
-            <View key={index} style={{marginTop: SIZES.margin}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  backgroundColor: COLORS.white,
-                  paddingHorizontal: SIZES.base,
-                  borderRadius: SIZES.base,
-                }}>
+          renderItem={({item, index}) => {
+            return (
+              <View key={index} style={{marginTop: SIZES.margin}}>
                 <View
                   style={{
-                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    backgroundColor: COLORS.white,
+                    paddingHorizontal: SIZES.base,
+                    borderRadius: SIZES.base,
                   }}>
-                  <FastImage
-                    tintColor={COLORS.secondary1}
-                    source={icons.summary}
-                    style={{width: 20, height: 20}}
-                  />
-                </View>
-
-                {/* file name and date of upload */}
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    marginLeft: SIZES.base,
-                    justifyContent: 'center',
-                  }}
-                  onPress={() => downloadAndOpenPdf(item)}>
-                  <Text
+                  <View
                     style={{
-                      ...FONTS.cap1,
-                      fontWeight: '500',
-                      color: COLORS.primary1,
-                    }}
-                    numberOfLines={2}>
-                    {item}
-                  </Text>
-                </TouchableOpacity>
+                      justifyContent: 'center',
+                    }}>
+                    <FastImage
+                      tintColor={COLORS.secondary1}
+                      source={icons.summary}
+                      style={{width: 20, height: 20}}
+                    />
+                  </View>
 
-                {/* upload file */}
-                {/* <TouchableOpacity
+                  {/* file name and date of upload */}
+                  <TouchableOpacity
+                    style={{
+                      flex: 1,
+                      marginLeft: SIZES.base,
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => downloadAndOpenPdf(item)}>
+                    <Text
+                      style={{
+                        ...FONTS.cap1,
+                        fontWeight: '500',
+                        color: COLORS.primary1,
+                      }}
+                      numberOfLines={2}>
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {/* <Pdf
+                    source={source}
+                    onLoadComplete={(numberOfPages, filePath) => {
+                      console.log(`Number of pages: ${numberOfPages}`);
+                    }}
+                    onPageChanged={(page, numberOfPages) => {
+                      console.log(`Current page: ${page}`);
+                    }}
+                    onError={error => {
+                      console.log(error);
+                    }}
+                    onPressLink={uri => {
+                      console.log(`Link pressed: ${uri}`);
+                    }}
+                    style={{
+                      flex: 1,
+                      width: Dimensions.get('window').width,
+                      height: Dimensions.get('window').height,
+                    }}
+                  /> */}
+
+                  {/* upload file */}
+                  {/* <TouchableOpacity
                 style={{
                   justifyContent: 'center',
                 }}
@@ -118,9 +122,10 @@ const ShowDocs = ({
                   style={{width: 20, height: 20}}
                 />
               </TouchableOpacity> */}
+                </View>
               </View>
-            </View>
-          )}
+            );
+          }}
         />
 
         {showEdit && (

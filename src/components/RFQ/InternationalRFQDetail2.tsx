@@ -13,6 +13,7 @@ const InternationalRFQDetail2 = ({
   paymentMethod,
   incoterms,
   unit,
+  coverage,
   requestCategory,
 }: any) => {
   function renderViewMore(onPress: any) {
@@ -46,7 +47,9 @@ const InternationalRFQDetail2 = ({
           marginHorizontal: SIZES.semi_margin,
           justifyContent: 'center',
         }}>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Request</Text>
+        <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+          Description
+        </Text>
         <ViewMoreText
           numberOfLines={5}
           renderViewMore={renderViewMore}
@@ -91,7 +94,7 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {title}
@@ -125,7 +128,7 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {productName}
@@ -159,7 +162,7 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {qty} {unit}
@@ -193,7 +196,7 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {buyFrequency}
@@ -227,7 +230,7 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {incoterms}
@@ -261,7 +264,7 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {paymentMethod}
@@ -297,10 +300,46 @@ const InternationalRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {requestCategory}
+          </Text>
+        </View>
+      </View>
+
+      {/* Coverage */}
+      <View
+        style={{
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          marginHorizontal: SIZES.semi_margin,
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral6,
+            }}>
+            Coverage Type
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+            }}>
+            {coverage}
           </Text>
         </View>
       </View>

@@ -10,6 +10,7 @@ import TextButton from '../Button/TextButton';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
 import {GetUserQuery, GetUserQueryVariables, SellOffer} from '../../API';
 import {getUser} from '../../queries/UserQueries';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 interface IItem {
   item: SellOffer | any;
@@ -19,12 +20,6 @@ interface IItem {
 }
 
 const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
   // GET USER
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
     variables: {
@@ -270,7 +265,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
             <Text
               numberOfLines={2}
               style={{...FONTS.sh3, color: COLORS.Neutral5}}>
-             {dayjs(item?.offerValidity).format('MMMM DD, YYYY')}
+              {dayjs(item?.offerValidity).format('MMMM DD, YYYY')}
             </Text>
           </View>
         </View>
@@ -290,7 +285,7 @@ const SearchItem4 = ({containerStyle, item, onPress, profile_image}: IItem) => {
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Text
             style={{...FONTS.h3, color: COLORS.primary1, letterSpacing: -1}}>
-            ₦{item?.basePrice.toLocaleString('en-US', options)}
+            ₦{formatNumberWithCommas(item?.basePrice)}
           </Text>
         </View>
 

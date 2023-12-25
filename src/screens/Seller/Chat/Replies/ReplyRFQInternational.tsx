@@ -1,26 +1,28 @@
 import {
   ActivityIndicator,
-  Linking,
   ScrollView,
   Text,
   TouchableOpacity,
+  FlatList,
   View,
 } from 'react-native';
 import React from 'react';
+import ViewMoreText from 'react-native-view-more-text';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {Storage} from 'aws-amplify';
 import {useQuery} from '@apollo/client';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {Root} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../../constants';
 import {ChatStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 import {Header, TextButton} from '../../../../components';
-import {FlatList} from 'react-native-gesture-handler';
-import ViewMoreText from 'react-native-view-more-text';
 import {GetRFQQuery, GetRFQQueryVariables} from '../../../../API';
 import {getRFQ} from '../../../../queries/RFQQueries';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../../../utilities/service';
 
 const ReplyRFQInternational = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
@@ -47,30 +49,6 @@ const ReplyRFQInternational = () => {
       </TouchableOpacity>
     );
   }
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-      // console.log('file download', url);
-
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
 
   const onCopy = () => {
     Clipboard.setString(rfqDetails?.rfqNo);
@@ -723,20 +701,9 @@ const ReplyRFQInternational = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦{rfqDetails?.budget.toLocaleString('en-US', options)}
+                ${formatNumberWithCommas(rfqDetails?.budget)}
               </Text>
             </View>
-
-            <TextButton
-              label={'Contact'}
-              onPress={onPress}
-              buttonContainerStyle={{
-                marginTop: SIZES.base,
-                borderRadius: SIZES.base,
-                width: 130,
-                height: 45,
-              }}
-            />
           </View>
         </ScrollView>
 

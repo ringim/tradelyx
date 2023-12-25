@@ -34,48 +34,6 @@ const Shipment = ({landmark, date, address}: any) => {
         </View>
       </View>
 
-      {/* landmark */}
-      <View
-        style={{
-          alignItems: 'center',
-          marginTop: SIZES.radius,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>landmark</Text>
-        </View>
-        <View style={{justifyContent: 'center'}}>
-          <Text
-            numberOfLines={2}
-            style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
-            {landmark}
-          </Text>
-        </View>
-      </View>
-
-      {/* Date Available */}
-      <View
-        style={{
-          alignItems: 'center',
-          marginTop: SIZES.radius,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <View style={{justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Date Available:
-          </Text>
-        </View>
-        <View style={{justifyContent: 'center'}}>
-          <Text
-            numberOfLines={2}
-            style={{...FONTS.body3, color: COLORS.Neutral1}}>
-            {date}
-          </Text>
-        </View>
-      </View>
-
       {/* Shipping */}
       <View
         style={{
@@ -99,6 +57,48 @@ const Shipment = ({landmark, date, address}: any) => {
             numberOfLines={3}
             style={{...FONTS.body3, color: COLORS.Neutral1}}>
             {address}
+          </Text>
+        </View>
+      </View>
+
+      {/* landmark */}
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Landmark</Text>
+        </View>
+        <View style={{justifyContent: 'center'}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.sh3, letterSpacing: -0.5, color: COLORS.Neutral1}}>
+            {landmark}
+          </Text>
+        </View>
+      </View>
+
+      {/* Date Available */}
+      <View
+        style={{
+          alignItems: 'center',
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Date Available:
+          </Text>
+        </View>
+        <View style={{justifyContent: 'center'}}>
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.body3, color: COLORS.Neutral1}}>
+            {date}
           </Text>
         </View>
       </View>

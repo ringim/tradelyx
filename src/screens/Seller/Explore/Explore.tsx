@@ -172,9 +172,9 @@ const Explore = () => {
     return (
       <View
         style={{
-          flex: 0.07,
+          flex: 0.06,
           alignItems: 'center',
-          backgroundColor: COLORS.white,
+          backgroundColor: COLORS.Neutral9,
           borderRadius: SIZES.base,
         }}>
         <Tabs scrollX={scrollX} onTabPress={onTabPress} />

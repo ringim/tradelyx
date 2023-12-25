@@ -91,10 +91,12 @@ import RFQReplyDetailDomestic from './Chat/RFQReplyDetailDomestic';
 import RFFReplyDetailOcean from './Chat/RFFReplyDetailOcean';
 import RFFReplyDetailLand from './Chat/RFFReplyDetailLand';
 import RFFReplyDetailAir from './Chat/RFFReplyDetailAir';
+import CustomSellOfferDetail from './Chat/CustomSellOfferDetail';
 
 export {
   Home,
   Account,
+  CustomSellOfferDetail,
   Quotation,
   RFQReplyList,
   Chat,

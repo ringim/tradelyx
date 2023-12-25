@@ -18,6 +18,7 @@ import {
   OrderStackNavigatorParamList,
   ReplyDetailAirRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
+import {formatNumberWithCommas} from '../../../utilities/service';
 
 const ReplyDetailAir = () => {
   const navigation = useNavigation<OrderStackNavigatorParamList>();
@@ -26,12 +27,6 @@ const ReplyDetailAir = () => {
   // console.log(route?.params?.sellerItem);
 
   const [showModal, setShowModal] = useState(false);
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   const onCopy = () => {
     Clipboard.setString(route?.params?.sellerItem?.rffNo);
@@ -268,11 +263,7 @@ const ReplyDetailAir = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦
-                {route?.params?.sellerItem?.price?.toLocaleString(
-                  'en-US',
-                  options,
-                )}
+                ₦{formatNumberWithCommas(route?.params?.sellerItem?.price)}
               </Text>
             </View>
           </View>

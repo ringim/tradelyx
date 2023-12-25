@@ -1,7 +1,6 @@
 import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
 import React, {useCallback, useEffect, useRef} from 'react';
 import {connect} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
 
 import {
@@ -17,11 +16,9 @@ import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {toggleCameraModal} from '../../../redux/modal/modalActions';
 import {GetUserQuery, GetUserQueryVariables} from '../../../API';
 import {getUser} from '../../../queries/UserQueries';
-import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {useAuthContext} from '../../../context/AuthContext';
 
 const Home = ({showCameraModal, toggleCameraModal}: any) => {
-  const navigation = useNavigation<HomeStackNavigatorParamList>();
   const {userID} = useAuthContext();
 
   const bottomSheetModalRef = useRef<any>(null);

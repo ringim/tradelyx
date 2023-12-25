@@ -113,6 +113,7 @@ export type ChatStackNavigatorParamList = {
   SuccessService4: undefined;
   SuccessService5: undefined;
   SuccessService6: undefined;
+  SuccessService7: undefined;
   SellOfferDetails: {sellOffer: string};
   ReplyRFQStandard: {rfq: string};
   ReplyRFQStandardPayment: {rfq: string};
@@ -130,6 +131,11 @@ export type ChatStackNavigatorParamList = {
   RFFReplyDetailOcean: {rff: string};
   RFFReplyDetailLand: {rff: string};
   RFFReplyDetailAir: {rff: string};
+  CustomSellOffer: undefined;
+  CustomPackingShipment: undefined;
+  CustomPackageShipmentAddress: undefined;
+  CustomMiniumOrderPayment: undefined;
+  CustomSellOfferDetail: undefined;
 };
 
 export type OrderStackNavigatorParamList = {
@@ -137,6 +143,7 @@ export type OrderStackNavigatorParamList = {
   navigate: any;
   Order: undefined;
   OrderDetail: {sellerItem: string};
+  ReplyDetailSellOffer: {sellOffer: string};
   ProgressOrderDetail: {orderItem: string};
 };
 
@@ -145,6 +152,11 @@ export type OrderStackNavigatorParamList = {
 export type RFQReplyDetailsNavigationProp = NativeStackNavigationProp<
   ChatStackNavigatorParamList,
   'RFQReplyDetailStandard'
+>;
+
+export type ReplyDetailSellOfferNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'ReplyDetailSellOffer'
 >;
 
 export type DomesticRFQDetailNavigationProp = NativeStackNavigationProp<
@@ -545,4 +557,9 @@ export type RFFReplyDetailAirRouteProp = RouteProp<
 export type RFFReplyDetailLandRouteProp = RouteProp<
   ChatStackNavigatorParamList,
   'RFFReplyDetailLand'
+>;
+
+export type ReplyDetailSellOfferRouteProp = RouteProp<
+  OrderStackNavigatorParamList,
+  'ReplyDetailSellOffer'
 >;

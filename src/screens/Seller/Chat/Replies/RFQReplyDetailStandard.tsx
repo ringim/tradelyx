@@ -3,13 +3,11 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Linking,
   ActivityIndicator,
 } from 'react-native';
 import React from 'react';
-import {Storage} from 'aws-amplify';
 import {useRoute} from '@react-navigation/native';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {Root} from 'react-native-alert-notification';
 import {useQuery} from '@apollo/client';
 import Clipboard from '@react-native-clipboard/clipboard';
 import dayjs from 'dayjs';
@@ -22,6 +20,10 @@ import {Header, TextButton} from '../../../../components';
 import {ChatRouteProp} from '../../../../components/navigation/SellerNav/type/navigation';
 import {GetRFQReplyQuery, GetRFQReplyQueryVariables} from '../../../../API';
 import {getRFQReply} from '../../../../queries/RFQQueries';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../../../utilities/service';
 
 const RFQReplyDetailStandard = () => {
   const route: any = useRoute<ChatRouteProp>();
@@ -31,12 +33,6 @@ const RFQReplyDetailStandard = () => {
     {variables: {id: route?.params?.rfq}},
   );
   const rfqDetail: any = data?.getRFQReply;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   const expiryDateString = rfqDetail?.expiryDate;
   const expiryDate = dayjs(expiryDateString);
@@ -68,24 +64,6 @@ const RFQReplyDetailStandard = () => {
       </TouchableOpacity>
     );
   }
-
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-      // console.log('file download', url);
-
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
 
   if (loading) {
     return (
@@ -523,7 +501,7 @@ const RFQReplyDetailStandard = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦{rfqDetail?.price?.toLocaleString('en-US', options)}
+                ₦{formatNumberWithCommas(rfqDetail?.price)}
               </Text>
             </View>
           </View>

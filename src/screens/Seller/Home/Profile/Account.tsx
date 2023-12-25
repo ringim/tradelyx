@@ -52,7 +52,7 @@ const Account = () => {
   const userAccount = data?.getUser;
 
   const [uploading, setUploading] = useState(false);
-  const [displayAddress, setDisplayAddress] = useState(userAccount?.address);
+  const [displayAddress, setDisplayAddress] = useState('');
   const [initialTags, setInitialTags] = useState(userAccount?.mainMarkets);
   const [initialTags2, setInitialTags2] = useState(userAccount?.languages);
   const [initialTags3, setInitialTags3] = useState<any>(
@@ -183,18 +183,14 @@ const Account = () => {
   };
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress && unmounted) {
+    if (route.params?.userAddress.description?.formatted_address) {
       setDisplayAddress(
         route.params?.userAddress.description?.formatted_address,
       );
       setValue('address', userAccount?.address);
     }
     getSellerAddress();
-    return () => {
-      unmounted = false;
-    };
-  }, [setValue, route.params?.userAddress, loading]);
+  }, [setValue, route.params?.userAddress.description?.formatted_address]);
 
   const getSellerAddress = async () => {
     await AsyncStorage.getItem('sellerAddress').then((value: any) => {
@@ -332,7 +328,7 @@ const Account = () => {
 
         {/* Company Address */}
         <AddressDetails
-          address={displayAddress}
+          address={displayAddress || userAccount?.address}
           onPress={() => navigation.navigate('AccountAddress')}
         />
 
@@ -647,7 +643,7 @@ const Account = () => {
             color: COLORS.Neutral1,
             marginBottom: 5,
           }}>
-          Identity Documents
+          Identity Document
         </Text>
 
         <FlatList
@@ -695,6 +691,7 @@ const Account = () => {
             </View>
           )}
         />
+
         <TextButton
           label={'Edit Docs'}
           labelStyle={{
@@ -761,6 +758,7 @@ const Account = () => {
                   }
                 />
                 {renderForm()}
+                {renderIdDocs()}
                 <Text
                   style={{
                     marginTop: SIZES.radius,
@@ -821,64 +819,64 @@ const Account = () => {
               </View>
             )}
             ListFooterComponent={
-              <View style={{marginBottom: 300}}>{renderIdDocs()}</View>
-            }
-          />
+              <View style={{marginBottom: 200}}>
+                <TextButton
+                  label={'Edit Docs'}
+                  labelStyle={{
+                    ...FONTS.body3,
+                    fontWeight: 'bold',
+                    color: COLORS.primary1,
+                  }}
+                  buttonContainerStyle={{
+                    alignSelf: 'flex-start',
+                    width: 120,
+                    height: 35,
+                    borderRadius: SIZES.base,
+                    borderWidth: 1,
+                    borderColor: COLORS.primary1,
+                    marginTop: SIZES.semi_margin,
+                    backgroundColor: COLORS.white,
+                    marginHorizontal: SIZES.semi_margin,
+                  }}
+                  onPress={() =>
+                    navigation.navigate('EditCompanyDocs', {
+                      idDoc: userAccount?.id,
+                    })
+                  }
+                />
 
-          <TextButton
-            label={'Edit Docs'}
-            labelStyle={{
-              ...FONTS.body3,
-              fontWeight: 'bold',
-              color: COLORS.primary1,
-            }}
-            buttonContainerStyle={{
-              alignSelf: 'flex-start',
-              width: 120,
-              height: 35,
-              borderRadius: SIZES.base,
-              borderWidth: 1,
-              borderColor: COLORS.primary1,
-              marginTop: SIZES.semi_margin,
-              backgroundColor: COLORS.white,
-            }}
-            onPress={() =>
-              navigation.navigate('EditCompanyDocs', {
-                idDoc: userAccount?.id,
-              })
+                {/* Save */}
+                <TextIconButton
+                  label={uploading ? 'Saving...' : 'Save'}
+                  labelStyle={{marginLeft: SIZES.radius}}
+                  iconPosition={'LEFT'}
+                  icon={icons.saver}
+                  iconStyle={COLORS.white}
+                  onPress={handleSubmit(storeData)}
+                  containerStyle={{
+                    marginTop: SIZES.padding * 1.5,
+                  }}
+                />
+
+                {/* delete account */}
+                <TextIconButton
+                  label={'Delete Account'}
+                  labelStyle={{marginLeft: SIZES.radius, color: COLORS.Rose4}}
+                  containerStyle={{
+                    backgroundColor: COLORS.white,
+                    borderWidth: 2,
+                    borderColor: COLORS.Rose4,
+                    marginTop: SIZES.semi_margin,
+                  }}
+                  iconPosition={'LEFT'}
+                  icon={icons.remove}
+                  iconStyle={COLORS.Rose4}
+                  onPress={confirmDelete}
+                />
+              </View>
             }
           />
         </View>
-
-        {/* Save */}
-        <TextIconButton
-          label={uploading ? 'Saving...' : 'Save'}
-          labelStyle={{marginLeft: SIZES.radius}}
-          iconPosition={'LEFT'}
-          icon={icons.saver}
-          iconStyle={COLORS.white}
-          onPress={handleSubmit(storeData)}
-          containerStyle={{
-            marginTop: SIZES.padding * 1.5,
-          }}
-        />
-
-        {/* delete account */}
-        <TextIconButton
-          label={'Delete Account'}
-          labelStyle={{marginLeft: SIZES.radius, color: COLORS.Rose4}}
-          containerStyle={{
-            backgroundColor: COLORS.white,
-            borderWidth: 2,
-            borderColor: COLORS.Rose4,
-            marginBottom: 100,
-            marginTop: SIZES.semi_margin,
-          }}
-          iconPosition={'LEFT'}
-          icon={icons.remove}
-          iconStyle={COLORS.Rose4}
-          onPress={confirmDelete}
-        />
       </View>
     </Root>
   );

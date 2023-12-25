@@ -18,6 +18,7 @@ import {
   OrderStackNavigatorParamList,
   ReplyDetailOceanRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
+import { formatNumberWithCommas } from '../../../utilities/service';
 
 const ReplyDetailOcean = () => {
   const navigation = useNavigation<OrderStackNavigatorParamList>();
@@ -268,11 +269,7 @@ const ReplyDetailOcean = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦
-                {route?.params?.sellerItem?.price?.toLocaleString(
-                  'en-US',
-                  options,
-                )}
+                ₦{formatNumberWithCommas(route?.params?.sellerItem?.price)}
               </Text>
             </View>
           </View>

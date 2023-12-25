@@ -51,8 +51,7 @@ const FinanceTabs = ({icon, text, amount}: any) => {
               top: 8,
               color: COLORS.Neutral1,
             }}>
-            {/* ₦{amount.toLocaleString('en-US', options)} */}₦
-            {amount.toLocaleString('en-US', options)}
+            ₦{amount.toLocaleString('en-US', options)}
           </Text>
         </View>
       </View>

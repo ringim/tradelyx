@@ -280,7 +280,7 @@ const DomesticRFQDetail = () => {
             expiryDate={route?.params?.rfqItem?.expiryDate}
           />
           <DomesticRFQDetail2
-            description={route?.params?.rfqItem?.documents}
+            description={route?.params?.rfqItem?.description}
             title={route?.params?.rfqItem?.title}
             qty={route?.params?.rfqItem?.qty}
             productName={route?.params?.rfqItem?.productName}
@@ -289,6 +289,7 @@ const DomesticRFQDetail = () => {
             paymentType={route?.params?.rfqItem?.paymentType}
             unit={route?.params?.rfqItem?.unit}
             requestCategory={route?.params?.rfqItem?.requestCategory}
+            coverage={route?.params?.rfqItem?.rfqType}
           />
           <DomesticRFQDetail3
             tags={route?.params?.rfqItem?.tags}

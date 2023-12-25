@@ -53,6 +53,7 @@ const CategorySection = () => {
                   }}
                 />
                 <Text
+                  numberOfLines={1}
                   style={{
                     ...FONTS.sh3,
                     color: COLORS.white,

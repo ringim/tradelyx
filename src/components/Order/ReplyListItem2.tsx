@@ -10,6 +10,7 @@ import {GetUserQuery, GetUserQueryVariables, RFFReply} from '../../API';
 import {getUser} from '../../queries/UserQueries';
 import {DEFAULT_PROFILE_IMAGE} from '../../utilities/Utils';
 import HR from '../Others/HR';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 interface IReplyListItem {
   item: RFFReply | any;
@@ -25,12 +26,6 @@ const ReplyListItem2 = ({
   onPress,
 }: IReplyListItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   // GET SELLER DETAIL
   const {data: newData} = useQuery<GetUserQuery, GetUserQueryVariables>(
@@ -226,7 +221,7 @@ const ReplyListItem2 = ({
               fontWeight: '500',
               color: COLORS.Neutral1,
             }}>
-            ₦{item?.budget?.toLocaleString('en-US', options)}
+            ₦{formatNumberWithCommas(item?.budget)}
           </Text>
         </View>
       </View>

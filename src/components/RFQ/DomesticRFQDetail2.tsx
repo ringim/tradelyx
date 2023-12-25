@@ -10,6 +10,7 @@ const DomesticRFQDetail2 = ({
   qty,
   productName,
   buyFrequency,
+  coverage,
   paymentMethod,
   paymentType,
   unit,
@@ -46,7 +47,7 @@ const DomesticRFQDetail2 = ({
           marginHorizontal: SIZES.semi_margin,
           justifyContent: 'center',
         }}>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Request</Text>
+        <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>Description</Text>
         <ViewMoreText
           numberOfLines={5}
           renderViewMore={renderViewMore}
@@ -91,7 +92,7 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {title}
@@ -128,7 +129,7 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {productName}
@@ -162,7 +163,7 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {qty} {unit}
@@ -196,7 +197,7 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {buyFrequency}
@@ -230,7 +231,7 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {paymentType}
@@ -264,7 +265,7 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {paymentMethod}
@@ -300,10 +301,44 @@ const DomesticRFQDetail2 = ({
           }}>
           <Text
             style={{
-              ...FONTS.cap1,
+              ...FONTS.body3,
               color: COLORS.Neutral1,
             }}>
             {requestCategory}
+          </Text>
+        </View>
+      </View>
+
+      {/* Coverage Type */}
+      <View
+        style={{
+          marginTop: SIZES.base,
+          flexDirection: 'row',
+          marginHorizontal: SIZES.semi_margin,
+          justifyContent: 'space-between',
+        }}>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral6,
+            }}>
+            Coverage Type
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+            }}>
+            {coverage}
           </Text>
         </View>
       </View>

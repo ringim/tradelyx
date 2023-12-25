@@ -294,6 +294,7 @@ const InternationalRFQDetail = () => {
             incoterms={route?.params?.rfqItem?.incoterms}
             unit={route?.params?.rfqItem?.unit}
             requestCategory={route?.params?.rfqItem?.requestCategory}
+            coverage={route?.params?.rfqItem?.rfqType}
           />
 
           <InternationalRFQDetail3

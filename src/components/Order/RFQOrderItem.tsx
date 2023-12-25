@@ -75,7 +75,6 @@ const RFQOrderItem = ({
             {/* from location */}
             <View
               style={{
-                flex: item?.rfqType !== 'INTERNATIONAL' ? 1 : 0,
                 justifyContent: 'center',
               }}>
               <FastImage
@@ -87,11 +86,11 @@ const RFQOrderItem = ({
             <View
               style={{
                 flex: item?.rfqType !== 'INTERNATIONAL' ? 0 : 6,
-                marginLeft: SIZES.padding,
+                marginLeft: SIZES.base,
                 justifyContent: 'center',
               }}>
               <Text
-                numberOfLines={2}
+                numberOfLines={1}
                 style={{
                   ...FONTS.cap1,
                   fontWeight: '700',
@@ -137,7 +136,7 @@ const RFQOrderItem = ({
                 justifyContent: 'center',
               }}>
               <Text
-                numberOfLines={2}
+                numberOfLines={1}
                 style={{
                   ...FONTS.cap1,
                   fontWeight: '700',

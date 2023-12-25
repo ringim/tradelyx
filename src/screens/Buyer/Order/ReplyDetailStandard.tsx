@@ -1,8 +1,7 @@
 import {View, Text, ScrollView, TouchableOpacity, Linking} from 'react-native';
 import React, {useState} from 'react';
-import {Storage} from 'aws-amplify';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {Root} from 'react-native-alert-notification';
 import Clipboard from '@react-native-clipboard/clipboard';
 import dayjs from 'dayjs';
 import FastImage from 'react-native-fast-image';
@@ -16,18 +15,16 @@ import {
   OrderStackNavigatorParamList,
   ReplyDetailStandardRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../../utilities/service';
 
 const ReplyDetailStandard = () => {
   const navigation = useNavigation<OrderStackNavigatorParamList>();
   const route: any = useRoute<ReplyDetailStandardRouteProp>();
 
   const [showModal, setShowModal] = useState(false);
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   const expiryDateString = route?.params?.sellerItem?.expiryDate;
   const expiryDate = dayjs(expiryDateString);
@@ -59,24 +56,6 @@ const ReplyDetailStandard = () => {
       </TouchableOpacity>
     );
   }
-
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-      // console.log('file download', url);
-
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
 
   return (
     <Root>
@@ -115,7 +94,9 @@ const ReplyDetailStandard = () => {
             {/* Buyer from */}
             <View
               style={{
+                flex: 1,
                 justifyContent: 'center',
+                alignItems: 'flex-end',
               }}>
               <FastImage
                 source={{uri: route?.params?.sellerItem?.placeOriginFlag}}
@@ -129,7 +110,6 @@ const ReplyDetailStandard = () => {
 
             <View
               style={{
-                flex: 2,
                 marginLeft: SIZES.radius,
                 justifyContent: 'center',
               }}>
@@ -307,6 +287,40 @@ const ReplyDetailStandard = () => {
                   color: COLORS.Neutral1,
                 }}>
                 {route?.params?.sellerItem?.title}
+              </Text>
+            </View>
+          </View>
+
+          {/* Coverage type */}
+          <View
+            style={{
+              marginTop: SIZES.base,
+              flexDirection: 'row',
+              marginHorizontal: SIZES.semi_margin,
+              justifyContent: 'space-between',
+            }}>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.body3,
+                  color: COLORS.Neutral6,
+                }}>
+                Coverage Type
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  ...FONTS.cap1,
+                  color: COLORS.Neutral1,
+                }}>
+                {route?.params?.sellerItem?.rfqType}
               </Text>
             </View>
           </View>
@@ -500,24 +514,20 @@ const ReplyDetailStandard = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦
-                {route?.params?.sellerItem?.price.toLocaleString(
-                  'en-US',
-                  options,
-                )}
+                ₦{formatNumberWithCommas(route?.params?.sellerItem?.price)}
               </Text>
             </View>
           </View>
 
           {/* button */}
-          {/* <TextButton
+          <TextButton
             label={'Accept Offer'}
-            onPress={() => navigation.navigate('ViewAgreement')}
+            // onPress={() => navigation.navigate('ViewAgreement')}
             buttonContainerStyle={{
               marginTop: SIZES.padding,
               width: 300,
             }}
-          /> */}
+          />
 
           <TextButton
             label={'Decline Offer'}

@@ -12,11 +12,12 @@ import {
   QuoteRequestItem,
   QuoteRequestItem2,
 } from '../../../../components';
-import {COLORS, SIZES, icons, FONTS} from '../../../../constants';
+import {COLORS, icons, FONTS} from '../../../../constants';
 import {ChatRouteProp} from '../../../../components/navigation/SellerNav/type/navigation';
 import {GetRFFReplyQuery, GetRFFReplyQueryVariables} from '../../../../API';
 import {getRFFReply} from '../../../../queries/RFFQueries';
 import ReplyStyles from './ReplyStyles';
+import {formatNumberWithCommas} from '../../../../utilities/service';
 
 const RFFReplyDetailLand = () => {
   const route: any = useRoute<ChatRouteProp>();
@@ -26,12 +27,6 @@ const RFFReplyDetailLand = () => {
     {variables: {id: route?.params?.rff}},
   );
   const rffDetails: any = data?.getRFFReply;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   const onCopy = () => {
     Clipboard.setString(rffDetails?.rffNo);
@@ -199,7 +194,7 @@ const RFFReplyDetailLand = () => {
                 Base Price (Exc. Delivery)
               </Text>
               <Text style={ReplyStyles?.text2}>
-                ₦{rffDetails?.price?.toLocaleString('en-US', options)}
+                ₦{formatNumberWithCommas(rffDetails?.price)}
               </Text>
             </View>
           </View>

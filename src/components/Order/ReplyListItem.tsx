@@ -26,12 +26,6 @@ const ReplyListItem = ({
 }: IReplyListItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
 
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
   // GET SELLER DETAIL
   const {data: newData} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
@@ -166,9 +160,12 @@ const ReplyListItem = ({
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {getSellerInfo?.city}
-              {', '} {getSellerInfo?.country}
+              style={{
+                ...FONTS.body3,
+                color: COLORS.Neutral5,
+                fontWeight: '500',
+              }}>
+              {item?.placeOrigin}
             </Text>
           </View>
         </View>
@@ -226,7 +223,7 @@ const ReplyListItem = ({
                 fontWeight: '500',
                 color: COLORS.Neutral1,
               }}>
-              ₦{parseFloat(item?.budget).toFixed(2)}
+              ₦{item?.budget}
             </Text>
           </View>
         </View>

@@ -21,6 +21,7 @@ import {
 import {deleteSellOffer} from '../../queries/SellOfferQueries';
 import TextButton from '../Button/TextButton';
 import OptionModal from '../Modal/OptionModal';
+import { formatNumberWithCommas } from '../../utilities/service';
 
 interface IItem {
   item: SellOffer | any;
@@ -408,7 +409,7 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦{item?.basePrice?.toLocaleString('en-US', options)}
+              ₦{formatNumberWithCommas(item?.basePrice)}
             </Text>
           </View>
 

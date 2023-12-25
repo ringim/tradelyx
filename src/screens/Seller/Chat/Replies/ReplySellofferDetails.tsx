@@ -22,6 +22,7 @@ import {
 } from '../../../../components/navigation/SellerNav/type/navigation';
 import {GetSellOfferQuery, GetSellOfferQueryVariables} from '../../../../API';
 import {getSellOffer} from '../../../../queries/SellOfferQueries';
+import {formatNumberWithCommas} from '../../../../utilities/service';
 
 const ReplySellofferDetails = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
@@ -35,12 +36,6 @@ const ReplySellofferDetails = () => {
     GetSellOfferQueryVariables
   >(getSellOffer, {variables: {id: route?.params?.sellOffer}});
   const getSellOfferDetail: any = data?.getSellOffer;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   useEffect(() => {
     if (getSellOfferDetail?.sellOfferImage) {
@@ -106,7 +101,7 @@ const ReplySellofferDetails = () => {
               Shipping from
             </Text>
           </View>
-          <View style={{justifyContent: 'center'}}>
+          <View style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
             <Text
               style={{
                 ...FONTS.h5,
@@ -185,7 +180,7 @@ const ReplySellofferDetails = () => {
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
               {dayjs(getSellOfferDetail?.createdAt).format(
-                'MMM DD, YYYY - HH:mm A',
+                'MMMM DD, YYYY',
               )}
             </Text>
           </View>
@@ -483,47 +478,6 @@ const ReplySellofferDetails = () => {
           </View>
         </View>
 
-        {/* Base Price */}
-        {getSellOfferDetail?.basePrice ? (
-          <View
-            style={{
-              marginTop: SIZES.base,
-              flexDirection: 'row',
-              marginHorizontal: SIZES.semi_margin,
-              justifyContent: 'space-between',
-            }}>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral6,
-                  lineHeight: 24,
-                }}>
-                Base Price
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  ...FONTS.body3,
-                  color: COLORS.Neutral1,
-                  lineHeight: 24,
-                }}>
-                ₦
-                {getSellOfferDetail?.basePrice.toLocaleString('en-US', options)}
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <View />
-        )}
-
         {/* Packaging */}
         <View
           style={{
@@ -737,7 +691,7 @@ const ReplySellofferDetails = () => {
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦{getSellOfferDetail?.basePrice?.toLocaleString('en-US', options)}
+              ₦{formatNumberWithCommas(getSellOfferDetail?.basePrice)}
             </Text>
           </View>
         </View>

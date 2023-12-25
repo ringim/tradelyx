@@ -98,7 +98,7 @@ const RFFReplyList = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <Header title={'All RFF Reply'} tintColor={COLORS.Neutral1} />
+      <Header title={'All RFF Replies'} tintColor={COLORS.Neutral1} />
 
       <RFFOrderItem
         desc={true}

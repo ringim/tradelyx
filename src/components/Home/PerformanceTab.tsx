@@ -21,13 +21,13 @@ const PerformanceTab = ({icon, title, content, contentStyle}: any) => {
           source={icon}
           resizeMode={FastImage.resizeMode.contain}
           style={{width: 24, height: 24}}
-          tintColor={COLORS.Neutral6}
+          tintColor={COLORS.secondary1}
         />
       </View>
 
       <View
         style={{flex: 1, marginLeft: SIZES.radius, justifyContent: 'center'}}>
-        <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>{title}</Text>
+        <Text style={{...FONTS.body3, color: COLORS.Neutral4}}>{title}</Text>
       </View>
 
       <View style={{justifyContent: 'center'}}>

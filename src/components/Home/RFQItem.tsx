@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 interface IItem {
   item: string | any;
@@ -46,7 +47,6 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer Country Name */}
         <View
           style={{
-            flex: 1,
             justifyContent: 'center',
           }}>
           <Text
@@ -58,7 +58,9 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer from */}
         <View
           style={{
+            flex: 1,
             justifyContent: 'center',
+            alignItems: 'flex-end',
           }}>
           <FastImage
             source={{uri: item?.placeOriginFlag}}
@@ -72,7 +74,6 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
 
         <View
           style={{
-            flex: 2,
             justifyContent: 'center',
             padding: SIZES.base,
           }}>
@@ -312,7 +313,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
               letterSpacing: -1,
               paddingTop: SIZES.base,
             }}>
-            ₦{item?.budget?.toLocaleString('en-US', options)}
+            ₦{formatNumberWithCommas(item?.budget)}
           </Text>
         </View>
 

@@ -25,7 +25,6 @@ const DomesticRFQDetail1 = ({
         {/* Buyer Country Name */}
         <View
           style={{
-            flex: 1,
             justifyContent: 'center',
           }}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
@@ -36,23 +35,26 @@ const DomesticRFQDetail1 = ({
         {/* Buyer from country flag */}
         <View
           style={{
+            flex: 1,
             justifyContent: 'center',
+            alignItems: 'flex-end',
           }}>
           <FastImage
             source={{uri: placeOriginFlag}}
             resizeMode={FastImage.resizeMode.contain}
             style={{
-              width: 23,
-              height: 23,
+              width: 20,
+              height: 20,
             }}
           />
         </View>
 
+        {/* Buyer from  */}
         <View
           style={{
-            flex: 2,
             marginLeft: SIZES.radius,
             justifyContent: 'center',
+            alignItems: 'flex-end',
           }}>
           <Text
             numberOfLines={3}

@@ -1,11 +1,16 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 
-import {COLORS, FONTS, SIZES, icons, images} from '../../constants';
+import {COLORS, FONTS, SIZES} from '../../constants';
 import TextButton from '../Button/TextButton';
-import {options} from '../../utilities/service';
 
 const BalanceSection = ({balance, onPress}: any) => {
+  const options = {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+
   return (
     <View
       style={{
@@ -18,7 +23,7 @@ const BalanceSection = ({balance, onPress}: any) => {
         <View style={{justifyContent: 'center'}}>
           <Text
             style={{
-              ...FONTS.h3,
+              ...FONTS.h2,
               color: COLORS.white,
               paddingTop: 4,
             }}>
@@ -28,7 +33,7 @@ const BalanceSection = ({balance, onPress}: any) => {
             style={{
               ...FONTS.body3,
               color: COLORS.white,
-              paddingTop: SIZES.radius,
+              paddingTop: 4,
             }}>
             {balance >= 20
               ? 'Available for Withdrawal'
@@ -48,7 +53,7 @@ const BalanceSection = ({balance, onPress}: any) => {
           label="Withdraw"
           labelStyle={{
             ...FONTS.h5,
-            color: balance < 20 ? COLORS.Neutral5 : COLORS.primary1,
+            color: balance < 20 ? COLORS.Neutral6 : COLORS.primary1,
           }}
           onPress={onPress}
         />

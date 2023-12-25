@@ -273,6 +273,7 @@ const StandardRFQDetail = () => {
 
           <StandardRFQDetail2
             onPress={onPress}
+            coverage={route?.params?.rfqItem?.rfqType}
             documents={route?.params?.rfqItem?.documents}
             requestCategory={route?.params?.rfqItem?.requestCategory}
           />

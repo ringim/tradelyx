@@ -105,7 +105,7 @@ import AcceptPolicy from './Others/AcceptPolicy';
 import MultipleFiles from './Others/MultipleFiles';
 import Tags from './Others/Tags';
 import UploadID from './Others/UploadID';
-import CategoryOption2 from './Others/CategoryOption2'
+import CategoryOption2 from './Others/CategoryOption2';
 
 //ORDER
 import RFFOrderItem from './Order/RFFOrderItem';
@@ -114,9 +114,11 @@ import OrderTabItem from './Order/OrderTabItem';
 import OrderDetailItem from './Order/OrderDetailItem';
 import ReplyListItem from './Order/ReplyListItem';
 import SelectLanguage from './Order/SelectLanguage';
+import SellOfferOrderItem from './Order/SellOfferOrderItem';
 import RFFReplyOrderItem from './Order/RFFReplyOrderItem';
 import RFQReplyOrderItem from './Order/RFQReplyOrderItem';
 import SOImage from './Others/SOImage';
+import SellOfferReplyListItem from './Order/SellOfferReplyListItem';
 import ViewMultipleImages from './Others/ViewMultipleImages';
 import ReplyListItem2 from './Order/ReplyListItem2';
 
@@ -160,7 +162,7 @@ import InternationalRFQDetail2 from './RFQ/InternationalRFQDetail2';
 import InternationalRFQDetail3 from './RFQ/InternationalRFQDetail3';
 import StandardRFQDetail1 from './RFQ/StandardRFQDetail1';
 import StandardRFQDetail2 from './RFQ/StandardRFQDetail2';
-import QuoteDetail from './RFF/QuoteDetail'
+import QuoteDetail from './RFF/QuoteDetail';
 import SellOfferDetail2 from './SellOffer/SellOfferDetail2';
 import SellOfferDetail1 from './SellOffer/SellOfferDetail1';
 
@@ -199,6 +201,8 @@ export {
   SellOfferReply,
   SOImage,
   ProductImage,
+  SellOfferReplyListItem,
+  SellOfferOrderItem,
   ProductItem,
   OrderItem,
   ExpiryDate,

@@ -379,12 +379,12 @@ const paymentType = [
 
 const paymentType2 = [
   {
-    id: 2,
-    type: 'Advance Payment',
-  },
-  {
     id: 3,
     type: 'Full Payment',
+  },
+  {
+    id: 2,
+    type: 'Advance Payment',
   },
 ];
 
@@ -569,6 +569,21 @@ const allCategories = [
     title: 'Fruits',
     image: require('../assets/images/fruits.png'),
   },
+  {
+    id: '11',
+    title: 'Sea Food',
+    image: require('../assets/images/seafood.png'),
+  },
+  {
+    id: '12',
+    title: 'Roots & Tuber',
+    image: require('../assets/images/yucca.png'),
+  },
+  {
+    id: '13',
+    title: 'Coffee, Tea, Mate & Spices',
+    image: require('../assets/images/leaves.png'),
+  },
 ];
 
 const contSize = [
@@ -655,6 +670,10 @@ const OrderTabItem = [
   {
     id: 2,
     label: 'RFF',
+  },
+  {
+    id: 3,
+    label: 'SELLOFFER',
   },
 ];
 
@@ -813,16 +832,12 @@ const payType = [
 
 const payType3 = [
   {
-    id: 1,
-    type: 'Full Payment',
-  },
-  {
     id: 2,
     type: 'Letter of Credit',
   },
   {
     id: 3,
-    type: 'Free on Board',
+    type: 'Escrow',
   },
 ];
 

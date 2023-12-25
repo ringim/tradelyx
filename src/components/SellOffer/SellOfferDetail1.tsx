@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import {DUMMY_IMAGE} from '../../utilities/Utils';
-import {options} from '../../utilities/service';
 import HR from '../Others/HR';
 
 const SellOfferDetail1 = ({
@@ -15,12 +14,15 @@ const SellOfferDetail1 = ({
   imageUri2,
   productName,
   userInfo,
-  basePrice,
   deliveryDate,
   placeOrigin,
   paymentType,
   unit,
+  category,
+  packageType,
   qtyMeasure,
+  paymentMethod,
+  coverage
 }: any) => {
   const element = useRef<ImageDetail>(null);
 
@@ -202,6 +204,35 @@ const SellOfferDetail1 = ({
         </View>
       </View>
 
+      {/* Offer Coverage */}
+      <View
+        style={{
+          marginTop: SIZES.base,
+          marginHorizontal: SIZES.margin,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+          Offer Coverage
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...FONTS.body3,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
+            }}>
+            {coverage}
+          </Text>
+        </View>
+      </View>
+
       {/* Qty offered */}
       <View
         style={{
@@ -231,7 +262,7 @@ const SellOfferDetail1 = ({
         </View>
       </View>
 
-      {/* base price */}
+      {/* Product Category */}
       <View
         style={{
           marginTop: SIZES.base,
@@ -241,7 +272,7 @@ const SellOfferDetail1 = ({
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-            Base Price
+            Product Category
           </Text>
         </View>
         <View
@@ -249,13 +280,40 @@ const SellOfferDetail1 = ({
             justifyContent: 'center',
           }}>
           <Text
-            numberOfLines={2}
             style={{
               ...FONTS.body3,
-              fontWeight: '600',
               color: COLORS.Neutral1,
+              fontWeight: '600',
             }}>
-            ₦{basePrice.toLocaleString('en-US', options)}
+            {category}
+          </Text>
+        </View>
+      </View>
+
+      {/* Packaging */}
+      <View
+        style={{
+          marginTop: SIZES.base,
+          marginHorizontal: SIZES.margin,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+            Packaging
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              ...FONTS.body3,
+              color: COLORS.Neutral1,
+              fontWeight: '600',
+            }}>
+            {packageType}
           </Text>
         </View>
       </View>
@@ -270,7 +328,7 @@ const SellOfferDetail1 = ({
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-            Payment Type
+            Payment Terms
           </Text>
         </View>
         <View
@@ -285,6 +343,35 @@ const SellOfferDetail1 = ({
               color: COLORS.Neutral1,
             }}>
             {paymentType}
+          </Text>
+        </View>
+      </View>
+
+      {/* payment method */}
+      <View
+        style={{
+          marginTop: SIZES.base,
+          marginHorizontal: SIZES.margin,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{justifyContent: 'center'}}>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+            Payment Method
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+          }}>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...FONTS.body3,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
+            }}>
+            {paymentMethod}
           </Text>
         </View>
       </View>

@@ -63,7 +63,7 @@ import {
 } from '../../../../utilities/service';
 
 interface IFreight {
-  qty: number;
+  qty: any;
   landmark: string;
   file: [string];
 }
@@ -84,8 +84,8 @@ const ReplySellOfferPayment = () => {
   const [loading, setLoading] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDatePickerVisible2, setDatePickerVisibility2] = useState(false);
-  const [address1, setAddress1] = useState<any>('');
   const [singleFile, setSingleFile] = useState<any>([]);
+  const [address1, setAddress1] = useState<any>('');
   const [date, setDate] = useState<any>('');
   const [date2, setDate2] = useState<any>('');
 
@@ -108,10 +108,6 @@ const ReplySellOfferPayment = () => {
     const formattedValue = formatNumericValue(input, price);
     setPrice(formattedValue);
   };
-
-  function isSubmit() {
-    return price !== '';
-  }
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -160,7 +156,7 @@ const ReplySellOfferPayment = () => {
   const {data, loading: onLoad} = useQuery<
     GetSellOfferQuery,
     GetSellOfferQueryVariables
-  >(getSellOffer, {variables: {id: route?.params.selloffer}});
+  >(getSellOffer, {variables: {id: route?.params.sellOffer}});
   const getSellOfferDetail: any = data?.getSellOffer;
 
   // SEND MESSAGE
@@ -181,7 +177,7 @@ const ReplySellOfferPayment = () => {
     CreateSellOfferReplyMutationVariables
   >(createSellOfferReply);
 
-  const onSubmit = async ({landmark, file, qty}: IFreight) => {
+  const onSubmit = async ({landmark, qty, file}: IFreight) => {
     if (loading) {
       return;
     }
@@ -203,11 +199,11 @@ const ReplySellOfferPayment = () => {
         packageDesc: getSellOfferDetail?.packageDesc,
         packageType: getSellOfferDetail?.packageType,
         userID: getSellOfferDetail?.userID,
-        agreement: file,
         basePrice: price,
         paymentType: type3,
         paymentMethod: type2,
         offerValidity: date,
+        agreement: file,
         deliveryDate: date2,
         qtyMeasure: qty,
         landmark,
@@ -261,8 +257,14 @@ const ReplySellOfferPayment = () => {
       };
       updateLastMessage(res1?.data?.createMessage?.id);
 
-      navigation.navigate('SuccessService4', {
-        chatroomID: route?.params?.chatRoomID,
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'SuccessService4',
+            params: {chatroomID: route?.params?.chatRoomID},
+          },
+        ],
       });
     } catch (error) {
       Toast.show({
@@ -309,6 +311,7 @@ const ReplySellOfferPayment = () => {
               width: 150,
             }}
           />
+
           {/* Quantity & Unit Measurement */}
           <Controller
             control={control}
@@ -632,6 +635,7 @@ const ReplySellOfferPayment = () => {
           inputContainerStyle={{marginTop: SIZES.base}}
           onPress={() => navigation.navigate('ReplyPackageShipmentAddress')}
         />
+
         {/* Map location address */}
         <SellerLocationMapHeader
           mapContStyle={{marginTop: 0}}
@@ -784,11 +788,11 @@ const ReplySellOfferPayment = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            disabled={isSubmit() ? false : true}
+            // disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: SIZES.radius,
-              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+              // backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

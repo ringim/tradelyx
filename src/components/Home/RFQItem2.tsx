@@ -46,7 +46,6 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer Country Name */}
         <View
           style={{
-            flex: 1,
             justifyContent: 'center',
           }}>
           <Text
@@ -58,7 +57,9 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer from */}
         <View
           style={{
+            flex: 1,
             justifyContent: 'center',
+            alignItems: 'flex-end',
           }}>
           <FastImage
             source={{uri: item?.placeOriginFlag}}
@@ -72,7 +73,6 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
 
         <View
           style={{
-            flex: 2,
             justifyContent: 'center',
             padding: SIZES.base,
           }}>
@@ -198,8 +198,10 @@ const RFQItem2 = ({containerStyle, item, onCopy, onPress}: IItem) => {
           style={{
             justifyContent: 'center',
           }}>
-          <Text numberOfLines={2} style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
-          Request Category
+          <Text
+            numberOfLines={2}
+            style={{...FONTS.cap1, color: COLORS.Neutral6, lineHeight: 24}}>
+            Request Category
           </Text>
         </View>
         <View

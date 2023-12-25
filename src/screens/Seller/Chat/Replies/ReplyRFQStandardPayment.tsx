@@ -39,7 +39,11 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
-import {formatNumericValue, selectFile2, uploadFile2} from '../../../../utilities/service';
+import {
+  formatNumericValue,
+  selectFile2,
+  uploadFile2,
+} from '../../../../utilities/service';
 
 interface IFreight {
   qty: number;
@@ -68,12 +72,12 @@ const ReplyRFQStandardPayment = () => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod);
+  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod2);
 
   const [open3, setOpen3] = useState(false);
   const [value3, setValue3] = useState(null);
   const [type3, setType3] = useState('');
-  const [jobType3, setJobType3] = useState<any>(constants.paymentType);
+  const [jobType3, setJobType3] = useState<any>(constants.paymentType2);
 
   function isSubmit() {
     return price !== '';
@@ -198,9 +202,16 @@ const ReplyRFQStandardPayment = () => {
       };
       updateLastMessage(res1?.data?.createMessage?.id);
 
-      navigation.navigate('SuccessService5', {
-        chatroomID: route?.params?.chatroomID,
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'SuccessService5',
+            params: {chatroomID: route?.params?.chatroomID},
+          },
+        ],
       });
+
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

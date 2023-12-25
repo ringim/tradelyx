@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 interface IItem {
   item: string | any;
@@ -14,12 +15,6 @@ interface IItem {
 }
 
 const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
   const expiryDateString = item?.expiryDate;
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
@@ -46,7 +41,6 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer Country Name */}
         <View
           style={{
-            flex: 1,
             justifyContent: 'center',
           }}>
           <Text
@@ -58,7 +52,9 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer from */}
         <View
           style={{
+            flex: 1,
             justifyContent: 'center',
+            alignItems: 'flex-end',
           }}>
           <FastImage
             source={{uri: item?.placeOriginFlag}}
@@ -72,7 +68,6 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
 
         <View
           style={{
-            flex: 2,
             justifyContent: 'center',
             padding: SIZES.base,
           }}>
@@ -101,7 +96,10 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
             flex: 1,
             justifyContent: 'center',
           }}>
-          <Text style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral6}}>RFQ No</Text>
+          <Text
+            style={{...FONTS.cap1, fontWeight: '500', color: COLORS.Neutral6}}>
+            RFQ No
+          </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
           <Text
@@ -300,7 +298,12 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Text
-            style={{...FONTS.body3, fontWeight: '500', color: COLORS.Neutral6, top: -3}}>
+            style={{
+              ...FONTS.body3,
+              fontWeight: '500',
+              color: COLORS.Neutral6,
+              top: -3,
+            }}>
             Budget
           </Text>
           <Text
@@ -309,7 +312,7 @@ const RFQItem3 = ({containerStyle, item, onCopy, onPress}: IItem) => {
               color: COLORS.primary1,
               letterSpacing: -1,
             }}>
-            ₦{item?.budget?.toLocaleString('en-US', options)}
+            ₦{formatNumberWithCommas(item?.budget)}
           </Text>
         </View>
 

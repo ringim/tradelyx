@@ -830,6 +830,7 @@ export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -909,6 +910,7 @@ export const listSellOffers = /* GraphQL */ `query ListSellOffers(
       paymentType
       paymentMethod
       offerValidity
+      agreement
       userID
       SellOfferReplies {
         items {
@@ -1001,6 +1003,7 @@ export const sellOffersByDate = /* GraphQL */ `query SellOffersByDate(
       paymentType
       paymentMethod
       offerValidity
+      agreement
       userID
       SellOfferReplies {
         items {
@@ -1091,6 +1094,7 @@ export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
       paymentType
       paymentMethod
       offerValidity
+      agreement
       userID
       SellOfferReplies {
         items {
@@ -2747,6 +2751,7 @@ export const getProduct = /* GraphQL */ `query GetProduct($id: ID!) {
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2805,6 +2810,7 @@ export const listProducts = /* GraphQL */ `query ListProducts(
       productCert
       landmark
       supplyCapacity
+      unit
       minOrderQty
       packageType
       quantity
@@ -2876,6 +2882,7 @@ export const productByDate = /* GraphQL */ `query ProductByDate(
       productCert
       landmark
       supplyCapacity
+      unit
       minOrderQty
       packageType
       quantity
@@ -2945,6 +2952,7 @@ export const productsByUserID = /* GraphQL */ `query ProductsByUserID(
       productCert
       landmark
       supplyCapacity
+      unit
       minOrderQty
       packageType
       quantity
@@ -3066,6 +3074,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -3220,6 +3229,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -3461,6 +3471,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -3603,6 +3614,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename
@@ -3995,6 +4007,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -4137,6 +4150,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename

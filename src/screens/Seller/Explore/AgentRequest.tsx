@@ -23,7 +23,7 @@ const AgentRequest = () => {
           alignItems: 'center',
         }}>
         <LottieView
-          style={{height: 300, width: 300, alignSelf: 'center', top: -15}}
+          style={{height: 300, width: 300, alignSelf: 'center', marginTop: SIZES.margin}}
           autoPlay
           speed={0.5}
           loop={true}

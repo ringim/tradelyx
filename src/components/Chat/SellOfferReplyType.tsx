@@ -10,7 +10,6 @@ import FastImage from 'react-native-fast-image';
 
 import {SIZES, COLORS, FONTS, icons} from '../../constants';
 import TextButton from '../Button/TextButton';
-import {options} from '../../utilities/service';
 
 const SellOfferReplyType = ({
   imageUri2,
@@ -18,6 +17,7 @@ const SellOfferReplyType = ({
   title,
   serviceType,
   text,
+  offer,
   price,
   onCopy,
   onPress,
@@ -29,7 +29,7 @@ const SellOfferReplyType = ({
       <View style={styles.subCont}>
         <View style={{justifyContent: 'center'}}>
           <FastImage
-            source={{uri: imageUri2, priority: FastImage.priority.normal,}}
+            source={{uri: imageUri2, priority: FastImage.priority.normal}}
             style={{width: 100, height: 100, borderRadius: SIZES.base}}
             resizeMode={FastImage.resizeMode.cover}
           />
@@ -100,9 +100,7 @@ const SellOfferReplyType = ({
                 paddingRight: SIZES.semi_margin,
                 justifyContent: 'center',
               }}>
-              <Text style={styles.text}>
-                ₦{price?.toLocaleString('en-US', options)}
-              </Text>
+              <Text style={styles.text}>₦{price}</Text>
             </View>
           </View>
 
@@ -122,7 +120,7 @@ const SellOfferReplyType = ({
                 fontWeight: '600',
                 color: COLORS.primary1,
               }}
-              label="View Custom Offer"
+              label={offer}
               onPress={onPress}
             />
           )}

@@ -3,14 +3,9 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 const TransactionItem = ({transaction}: any) => {
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
   return (
     <>
       <View
@@ -58,7 +53,7 @@ const TransactionItem = ({transaction}: any) => {
                 transaction?.status === 'DEBIT' ? COLORS.Rose5 : COLORS.Teal5,
             }}>
             {transaction?.status === 'DEBIT' ? '-' : '+'}₦
-            {transaction?.amount.toLocaleString('en-US', options)}
+            {formatNumberWithCommas(transaction?.amount)}
           </Text>
 
           <Text

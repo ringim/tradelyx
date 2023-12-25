@@ -41,7 +41,7 @@ import {
   uploadFile2,
   uploadMedia,
 } from '../../../../../utilities/service';
-import {allCategories, crateTypes} from '../../../../../../types/types';
+import {allCategories} from '../../../../../../types/types';
 
 interface IAddProduct {
   title: string;

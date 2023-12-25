@@ -422,12 +422,12 @@ export const rfqByDateReply = gql`
         price
         placeOrigin
         placeOriginFlag
-        placeOriginCountry
         placeOriginName
         landmark
         unit
         incoterms
         placeDestinationName
+        placeOriginCountry
         placeDestination
         placeDestinationFlag
         destinationCountry
@@ -437,9 +437,9 @@ export const rfqByDateReply = gql`
         paymentMethod
         forUserID
         userID
-        RFQ
         statusText
         agreement
+        RFQ
         updatedAt
         __typename
       }

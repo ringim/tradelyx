@@ -1,7 +1,7 @@
 import {View, Text, ActivityIndicator, FlatList} from 'react-native';
 import React from 'react';
 import {useQuery} from '@apollo/client';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {ScrollView} from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
@@ -18,11 +18,12 @@ import {ChatRouteProp} from '../../../components/navigation/SellerNav/type/navig
 import {GetRFFReplyQuery, GetRFFReplyQueryVariables} from '../../../API';
 import {getRFFReply} from '../../../queries/RFFQueries';
 import {TextIconButton} from '../../../components';
-import {ChatStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import { downloadAndOpenPdf } from '../../../utilities/service';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../../utilities/service';
 
 const RFFReplyDetailAir = () => {
-  const navigation = useNavigation<ChatStackNavigatorParamList>();
   const route: any = useRoute<ChatRouteProp>();
 
   const {data, loading} = useQuery<GetRFFReplyQuery, GetRFFReplyQueryVariables>(
@@ -30,12 +31,6 @@ const RFFReplyDetailAir = () => {
     {variables: {id: route?.params?.rff}},
   );
   const rffDetails: any = data?.getRFFReply;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   const onCopy = () => {
     Clipboard.setString(rffDetails?.rffNo);
@@ -303,7 +298,7 @@ const RFFReplyDetailAir = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦{rffDetails?.price?.toLocaleString('en-US', options)}
+                ₦{formatNumberWithCommas(rffDetails?.price)}
               </Text>
             </View>
           </View>

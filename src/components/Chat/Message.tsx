@@ -104,15 +104,15 @@ const Message = (props: any) => {
     Clipboard.setString(item);
   };
 
-  if (onLoad) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        size={'small'}
-        color={COLORS.primary6}
-      />
-    );
-  }
+  // if (onLoad) {
+  //   return (
+  //     <ActivityIndicator
+  //       style={{flex: 1, justifyContent: 'center'}}
+  //       size={'small'}
+  //       color={COLORS.primary6}
+  //     />
+  //   );
+  // }
 
   return (
     <>
@@ -320,9 +320,9 @@ const Message = (props: any) => {
             price={message?.requestPrice}
             messageUserID={message?.userID}
             onPress={() =>
-              navigation.navigate('ReplySellofferDetails', {
+              navigation.navigate('ReplySellOfferPayment', {
                 sellOffer: message?.requestID,
-                chatRoomID: message?.chatroomID,
+                chatRoomID: props?.message?.chatroomID,
               })
             }
           />
@@ -338,11 +338,33 @@ const Message = (props: any) => {
             price={message?.requestPrice}
             title={message?.requestTitle}
             onCopy={() => onCopy(message?.sellOfferID)}
+            offer={'View Sell Offer'}
             requestID={message?.sellOfferID}
             text={"Hello, I've replied your Sell Offer request"}
             onPress={() =>
               navigation.navigate('SellOfferDetails', {
                 sellOffer: message?.requestID,
+              })
+            }
+          />
+        )}
+
+        {/* Custom sell Offer */}
+        {message?.text === "Hello, I've sent a Custom Sell Offer" && (
+          <SellOfferReplyType
+            imageUri2={imageUri2}
+            serviceType={message?.serviceType}
+            packageType={message?.packageType}
+            qty={message?.requestQty}
+            price={message?.requestPrice}
+            title={message?.requestTitle}
+            offer={'View Custom Sell Offer'}
+            onCopy={() => onCopy(message?.sellOfferID)}
+            requestID={message?.sellOfferID}
+            text={"Hello, I've replied your Sell Offer request"}
+            onPress={() =>
+              navigation.navigate('CustomSellOfferDetail', {
+                customSellOffer: message?.requestID,
               })
             }
           />

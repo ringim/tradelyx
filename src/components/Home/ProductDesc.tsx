@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import MainMarket from './MainMarket';
+import { formatNumberWithCommas } from '../../utilities/service';
 
 const ProductDesc = ({
   productItem,
@@ -163,7 +164,7 @@ const ProductDesc = ({
                 ...FONTS.h3,
                 color: COLORS.Neutral1,
               }}>
-              ₦{sub3?.toLocaleString('en-US', options) || 0}
+              ₦{formatNumberWithCommas(sub3) || 0}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>

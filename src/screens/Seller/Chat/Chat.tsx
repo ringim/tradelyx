@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Storage} from 'aws-amplify';
 import {FlatList} from 'react-native-gesture-handler';
@@ -12,7 +12,10 @@ import {
   MessageInput,
 } from '../../../components';
 import {COLORS} from '../../../constants';
-import {ChatRouteProp} from '../../../components/navigation/SellerNav/type/navigation';
+import {
+  ChatRouteProp,
+  ChatStackNavigatorParamList,
+} from '../../../components/navigation/SellerNav/type/navigation';
 import {useAuthContext} from '../../../context/AuthContext';
 import {
   MessagesByDateQuery,
@@ -33,6 +36,7 @@ import {
 const Chat = () => {
   const {userID} = useAuthContext();
 
+  const navigation = useNavigation<ChatStackNavigatorParamList>();
   const route: any = useRoute<ChatRouteProp>();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -95,7 +99,14 @@ const Chat = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
-      <ChatHeader name={fetchUsers?.name} image={imageUri} />
+      <ChatHeader
+        name={fetchUsers?.name}
+        image={imageUri}
+        showPlus={true}
+        onPress={() =>
+          navigation.navigate('CustomSellOffer', {crID: route?.params?.id})
+        }
+      />
 
       <FlatList
         data={[...messages, ...fetchedMessages]}
@@ -106,7 +117,7 @@ const Chat = () => {
         }}
         inverted
         ListFooterComponent={
-          <View style={{marginBottom: messages?.length - 1  ? 300 : 300,}} />
+          <View style={{marginBottom: messages?.length - 1 ? 300 : 300}} />
         }
       />
       <MessageInput chatRoom={route?.params} />

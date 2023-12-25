@@ -111,13 +111,13 @@ const Packaging = ({
       <View
         style={{
           alignItems: 'center',
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Product certification:
+            Product Certification:
           </Text>
         </View>
         <View

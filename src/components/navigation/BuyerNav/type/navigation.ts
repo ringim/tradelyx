@@ -113,6 +113,7 @@ export type ChatStackNavigatorParamList = {
   RFFReplyDetailOcean: {rff: string};
   RFFReplyDetailLand: {rff: string};
   RFFReplyDetailAir: {rff: string};
+  CustomSellOfferDetail: undefined;
 };
 
 export type OrderStackNavigatorParamList = {
@@ -124,6 +125,7 @@ export type OrderStackNavigatorParamList = {
   RFQReplyList: {sellerItem: string};
   OrderDetail: {sellerItem: string};
   ProgressOrderDetail: {orderItem: string};
+  SellOfferReplyList: {sellOffer: string};
   ReplyDetailAir: {sellerItem: string};
   ReplyDetailLand: {sellerItem: string};
   ReplyDetailOcean: {sellerItem: string};
@@ -182,6 +184,11 @@ export type AllProductsNavigationProp = NativeStackNavigationProp<
 export type OfferDetailNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
   'OfferDetail'
+>;
+
+export type SellOfferReplyListNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'SellOfferReplyList'
 >;
 
 export type CompanyDetailNavigationProp = NativeStackNavigationProp<
@@ -415,4 +422,9 @@ export type RFFReplyDetailAirRouteProp = RouteProp<
 export type RFFReplyDetailLandRouteProp = RouteProp<
   ChatStackNavigatorParamList,
   'RFFReplyDetailLand'
+>;
+
+export type SellOfferReplyListRouteProp = RouteProp<
+  OrderStackNavigatorParamList,
+  'SellOfferReplyList'
 >;

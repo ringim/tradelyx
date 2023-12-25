@@ -1,11 +1,13 @@
-import {View, Text, FlatList, Linking} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import React from 'react';
-import {Storage} from 'aws-amplify';
-import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {Root} from 'react-native-alert-notification';
 
 import TextButton from '../Button/TextButton';
 import {COLORS, SIZES, FONTS} from '../../constants';
-import { options } from '../../utilities/service';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../utilities/service';
 
 const DomesticRFQDetail3 = ({
   tags,
@@ -14,22 +16,6 @@ const DomesticRFQDetail3 = ({
   onPress,
   documents,
 }: any) => {
-  // DOWNLOAD & OPEN PDF FILE
-  const downloadAndOpenPdf = async (item: any) => {
-    try {
-      const pdfKey = item; // Replace with your S3 PDF file key
-      const url = await Storage.get(pdfKey);
-      // Open the PDF file using the device's default viewer
-      Linking.openURL(url);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: 'Error downloading PDF!',
-        autoClose: 2000,
-      });
-    }
-  };
-
   return (
     <Root>
       <View>
@@ -214,7 +200,7 @@ const DomesticRFQDetail3 = ({
                 letterSpacing: -1,
                 paddingTop: SIZES.base,
               }}>
-              ₦{budget.toLocaleString('en-US', options)}
+              ₦{formatNumberWithCommas(budget)}
             </Text>
           </View>
 

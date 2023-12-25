@@ -37,7 +37,7 @@ const ImageCaption = ({rating, name, commodityCategory, banner_image}: any) => {
       <View
         style={{
           alignSelf: 'auto',
-          top: 340,
+          top: 320,
           marginLeft: SIZES.radius,
           backgroundColor: COLORS.transparentNeutral12,
           padding: SIZES.semi_margin,

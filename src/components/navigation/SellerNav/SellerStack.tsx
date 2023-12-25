@@ -42,6 +42,7 @@ import {
   RFFFilter,
   EditProductShipment,
   ProductSpecification,
+  ReplyDetailSellOffer,
   ProductShipmentAddress,
   EditProductItem,
   ProductShipment,
@@ -49,8 +50,10 @@ import {
   EditProductSpec,
   ProductItem,
   SellOfferDetail,
+  SellOfferReplyList,
   EditSellOfferItem,
   EditSellOfferImages,
+  SuccessService7,
   EditSellOfferPricing,
   SuccessService2,
   SuccessService3,
@@ -67,6 +70,7 @@ import {
   ReplyRFQInternationalPayment,
   SuccessService5,
   SuccessService6,
+  CustomSellOfferDetail,
   ReplyRFFOcean,
   ReplyRFFAir,
   ReplyRFFAirPayment,
@@ -76,6 +80,10 @@ import {
   RFFReplyDetailOcean,
   RFFReplyDetailLand,
   RFFReplyDetailAir,
+  CustomPackingShipment,
+  CustomMiniumOrderPayment,
+  CustomPackageShipmentAddress,
+  CustomSellOffer,
 } from '../../../screens/Seller';
 import SBottomTabs from './SBottomTabs';
 
@@ -179,18 +187,10 @@ const SellerStack = () => {
         component={ProductShipmentAddress}
         options={() => options}
       />
-      <Stack.Screen
-        name="SuccessService4"
-        component={SuccessService4}
-      />
-      <Stack.Screen
-        name="SuccessService5"
-        component={SuccessService5}
-      />
-      <Stack.Screen
-        name="SuccessService6"
-        component={SuccessService6}
-      />
+      <Stack.Screen name="SuccessService4" component={SuccessService4} />
+      <Stack.Screen name="SuccessService5" component={SuccessService5} />
+      <Stack.Screen name="SuccessService6" component={SuccessService6} />
+      <Stack.Screen name="SuccessService7" component={SuccessService7} />
       <Stack.Screen
         name="ReplyPackageShipmentAddress"
         component={ReplyPackageShipmentAddress}
@@ -474,6 +474,41 @@ const SellerStack = () => {
       <Stack.Screen
         name="RFFFilter"
         component={RFFFilter}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="CustomPackageShipmentAddress"
+        component={CustomPackageShipmentAddress}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="CustomPackingShipment"
+        component={CustomPackingShipment}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="CustomMiniumOrderPayment"
+        component={CustomMiniumOrderPayment}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="CustomSellOffer"
+        component={CustomSellOffer}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="CustomSellOfferDetail"
+        component={CustomSellOfferDetail}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="SellOfferReplyList"
+        component={SellOfferReplyList}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="ReplyDetailSellOffer"
+        component={ReplyDetailSellOffer}
         options={() => options}
       />
     </Stack.Navigator>

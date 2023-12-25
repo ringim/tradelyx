@@ -752,6 +752,7 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -826,6 +827,7 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -900,6 +902,7 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
     paymentType
     paymentMethod
     offerValidity
+    agreement
     userID
     SellOfferReplies {
       items {
@@ -1968,6 +1971,7 @@ export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filt
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2021,6 +2025,7 @@ export const onUpdateProduct = /* GraphQL */ `subscription OnUpdateProduct($filt
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2074,6 +2079,7 @@ export const onDeleteProduct = /* GraphQL */ `subscription OnDeleteProduct($filt
     productCert
     landmark
     supplyCapacity
+    unit
     minOrderQty
     packageType
     quantity
@@ -2192,6 +2198,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -2346,6 +2353,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -2585,6 +2593,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -2739,6 +2748,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -2978,6 +2988,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         productCert
         landmark
         supplyCapacity
+        unit
         minOrderQty
         packageType
         quantity
@@ -3132,6 +3143,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
+        agreement
         userID
         SellOfferReplies {
           nextToken
@@ -3527,6 +3539,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -3669,6 +3682,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename
@@ -3941,6 +3955,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -4083,6 +4098,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename
@@ -4355,6 +4371,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           productCert
           landmark
           supplyCapacity
+          unit
           minOrderQty
           packageType
           quantity
@@ -4497,6 +4514,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           paymentType
           paymentMethod
           offerValidity
+          agreement
           userID
           updatedAt
           __typename

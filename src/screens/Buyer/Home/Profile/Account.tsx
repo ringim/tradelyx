@@ -50,7 +50,7 @@ const Account = () => {
   const userAccount = data?.getUser;
 
   const [uploading, setUploading] = useState(false);
-  const [displayAddress, setDisplayAddress] = useState(userAccount?.address);
+  const [displayAddress, setDisplayAddress] = useState('');
 
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
@@ -159,18 +159,14 @@ const Account = () => {
   };
 
   useEffect(() => {
-    let unmounted = true;
-    if (route.params?.userAddress && unmounted) {
+    if (route.params?.userAddress.description?.formatted_address) {
       setDisplayAddress(
         route.params?.userAddress.description?.formatted_address,
       );
       setValue('address', userAccount?.address);
     }
     getHomeAddress();
-    return () => {
-      unmounted = false;
-    };
-  }, [setValue, route.params?.userAddress, loading]);
+  }, [setValue, route.params?.userAddress.description?.formatted_address]);
 
   const getHomeAddress = async () => {
     await AsyncStorage.getItem('homeAddress').then((value: any) => {
@@ -230,7 +226,7 @@ const Account = () => {
 
         {/* street Address */}
         <AddressDetails
-          address={displayAddress}
+          address={displayAddress || userAccount?.address}
           onPress={() => navigation.navigate('AccountAddress')}
         />
 

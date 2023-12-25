@@ -68,7 +68,12 @@ const ReplyRFQInternationalPayment = () => {
   const [open2, setOpen2] = useState(false);
   const [value2, setValue2] = useState(null);
   const [type2, setType2] = useState('');
-  const [jobType2, setJobType2] = useState<any>(constants.payType3);
+  const [jobType2, setJobType2] = useState<any>(constants.paymentMethod2);
+
+  const [open3, setOpen3] = useState(false);
+  const [value3, setValue3] = useState(null);
+  const [type3, setType3] = useState('');
+  const [jobType3, setJobType3] = useState<any>(constants.paymentType);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -151,7 +156,7 @@ const ReplyRFQInternationalPayment = () => {
         forUserID: authUser?.attributes?.sub,
         RFQ: rfqDetails?.id,
         price: price,
-        // paymentType: type3,
+        paymentType: type3,
         agreement: file,
         statusText: 'RFQ Replies Sent',
         paymentMethod: type2,
@@ -180,7 +185,7 @@ const ReplyRFQInternationalPayment = () => {
             SType: 'MESSAGE',
             userID: authUser?.attributes?.sub,
             status: MessageStatus.SENT,
-            text: "Hello, I've replied your RFQ (Domestic) request",
+            text: "Hello, I've replied your RFQ (International) request",
             rfqID: rfqDetails?.rfqNo,
             requestTitle: rfqDetails?.title,
             requestID: res?.data?.createRFQReply?.id,
@@ -206,8 +211,14 @@ const ReplyRFQInternationalPayment = () => {
       };
       updateLastMessage(res1?.data?.createMessage?.id);
 
-      navigation.navigate('SuccessService5', {
-        chatroomID: route?.params?.chatroomID,
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'SuccessService5',
+            params: {chatroomID: route?.params?.chatroomID},
+          },
+        ],
       });
     } catch (error) {
       Toast.show({
@@ -251,7 +262,7 @@ const ReplyRFQInternationalPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 180,
+              width: 120,
             }}
           />
           {/* Quantity & Unit Measurement */}
@@ -286,7 +297,7 @@ const ReplyRFQInternationalPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 150,
+                    width: 200,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -351,7 +362,7 @@ const ReplyRFQInternationalPayment = () => {
               autoFocus={false}
               onChangeText={handleInputChange}
               value={price}
-              placeholder="Ex. ₦100,000"
+              placeholder="Ex. $10,000"
               keyboardType="numeric"
               placeholderTextColor={COLORS.gray}
               style={{
@@ -371,7 +382,7 @@ const ReplyRFQInternationalPayment = () => {
             style={{
               justifyContent: 'center',
               backgroundColor: COLORS.lightYellow,
-              width: 80,
+              width: 100,
               height: 50,
               top: 25,
               borderRadius: SIZES.semi_margin,
@@ -382,7 +393,7 @@ const ReplyRFQInternationalPayment = () => {
                 color: COLORS.Neutral6,
                 textAlign: 'center',
               }}>
-              Naira (₦)
+              Dollar ($)
             </Text>
           </View>
         </View>
@@ -470,12 +481,95 @@ const ReplyRFQInternationalPayment = () => {
           )}
         />
 
+          {/* Payment Terms */}
+          <Controller
+          control={control}
+          name="paymentTerms"
+          rules={{
+            required: 'Payment Terms is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <>
+              <Text
+                style={{
+                  marginTop: SIZES.margin,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                }}>
+                Payment Terms
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'type',
+                }}
+                onChangeValue={onChange}
+                open={open3}
+                showArrowIcon={true}
+                placeholder="Select Payment Terms"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value3}
+                items={jobType3}
+                setOpen={setOpen3}
+                setValue={setValue3}
+                setItems={setJobType3}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.base,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 24,
+                  height: 24,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Choose Payment Terms"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType3(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </>
+          )}
+        />
+
         {/* Offer validity */}
         <ExpiryDate
           date={date}
           onPress={showDatePicker}
           title="Expiry Date"
-          containerStyle={{marginTop: SIZES.margin}}
+          containerStyle={{marginTop: SIZES.padding}}
         />
 
         {/* Upload TOS */}

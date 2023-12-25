@@ -83,7 +83,7 @@ const RFFReplyOrderItem = ({
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
-            <View style={{marginLeft: 3, justifyContent: 'center'}}>
+            <View style={{flex: 5, marginLeft: 4, justifyContent: 'center'}}>
               <Text
                 numberOfLines={1}
                 style={{
@@ -91,7 +91,7 @@ const RFFReplyOrderItem = ({
                   fontWeight: '700',
                   color: COLORS.Neutral6,
                 }}>
-                {item?.placeOrigin}
+                {item?.placeOriginName}
               </Text>
             </View>
 
@@ -99,7 +99,7 @@ const RFFReplyOrderItem = ({
               <View
                 style={{
                   justifyContent: 'center',
-                  marginLeft: 3,
+                  marginLeft: 10,
                 }}>
                 <FastImage
                   source={icons.right}
@@ -122,7 +122,7 @@ const RFFReplyOrderItem = ({
                 resizeMode={FastImage.resizeMode.contain}
               />
             </View>
-            <View style={{marginLeft: 6, justifyContent: 'center'}}>
+            <View style={{flex: 5, marginLeft: SIZES.base, justifyContent: 'center'}}>
               <Text
                 numberOfLines={1}
                 style={{
@@ -130,7 +130,7 @@ const RFFReplyOrderItem = ({
                   fontWeight: '700',
                   color: COLORS.Neutral6,
                 }}>
-                {item?.placeDestination}
+                {item?.placeDestinationName}
               </Text>
             </View>
           </View>

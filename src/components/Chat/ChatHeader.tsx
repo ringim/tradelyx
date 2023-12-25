@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
@@ -16,7 +10,7 @@ import {useAuthContext} from '../../context/AuthContext';
 import {getUser} from '../../queries/UserQueries';
 import {GetUserQuery, GetUserQueryVariables} from '../../API';
 
-const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
+const ChatHeader = ({contentStyle, image, onPress, name, showPlus}: any) => {
   const navigation = useNavigation<any>();
 
   const {userID} = useAuthContext();
@@ -145,22 +139,24 @@ const ChatHeader = ({contentStyle, image, onPress, name}: any) => {
         </View>
 
         {/* Header Title */}
-        <TouchableOpacity
-          style={{
-            justifyContent: 'center',
-            marginRight: 4,
-          }}
-          onPress={onPress}>
-          <FastImage
-            source={icons.dots}
-            tintColor={COLORS.Neutral6}
+        {showPlus && (
+          <TouchableOpacity
             style={{
-              width: 20,
-              height: 20,
+              justifyContent: 'center',
+              marginRight: 4,
+              top: -5,
             }}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-        </TouchableOpacity>
+            onPress={onPress}>
+            <FastImage
+              source={icons.plus}
+              style={{
+                width: 30,
+                height: 30,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );

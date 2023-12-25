@@ -116,7 +116,6 @@ const PaymentQuotation = () => {
     return (
       <View
         style={{
-          marginTop: -SIZES.radius,
           marginHorizontal: SIZES.semi_margin,
           marginBottom: 100,
         }}>

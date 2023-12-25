@@ -24,6 +24,7 @@ import {
   DeleteSellOfferMutationVariables,
 } from '../../../../API';
 import {deleteSellOffer} from '../../../../queries/SellOfferQueries';
+import {formatNumberWithCommas} from '../../../../utilities/service';
 
 const SellOfferDetail = () => {
   const route: any = useRoute<SellOfferDetailRouteProp>();
@@ -32,12 +33,6 @@ const SellOfferDetail = () => {
   const [imageUri, setImageUri] = useState<string | any>(null);
 
   const {offerValidity, sellOfferImage, id}: any = route?.params.sellOffer;
-
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
 
   useEffect(() => {
     if (sellOfferImage) {
@@ -147,7 +142,7 @@ const SellOfferDetail = () => {
                 Shipping from
               </Text>
             </View>
-            <View style={{flex: 2, justifyContent: 'center'}}>
+            <View style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
               <Text
                 style={{
                   ...FONTS.h5,
@@ -226,7 +221,7 @@ const SellOfferDetail = () => {
               }}>
               <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
                 {dayjs(route?.params.sellOffer?.createdAt).format(
-                  'MMM DD, YYYY - HH:mm A',
+                  'MMMM DD, YYYY',
                 )}
               </Text>
             </View>
@@ -487,50 +482,6 @@ const SellOfferDetail = () => {
             </View>
           </View>
 
-          {/* Base Price */}
-          {route?.params.sellOffer?.basePrice ? (
-            <View
-              style={{
-                marginTop: 4,
-                flexDirection: 'row',
-                marginHorizontal: SIZES.semi_margin,
-                justifyContent: 'space-between',
-              }}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{
-                    ...FONTS.body3,
-                    color: COLORS.Neutral6,
-                    lineHeight: 24,
-                  }}>
-                  Base Price
-                </Text>
-              </View>
-              <View
-                style={{
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{
-                    ...FONTS.body3,
-                    color: COLORS.Neutral1,
-                    lineHeight: 24,
-                  }}>
-                  ₦
-                  {route?.params.sellOffer?.basePrice.toLocaleString(
-                    'en-US',
-                    options,
-                  )}
-                </Text>
-              </View>
-            </View>
-          ) : (
-            <View />
-          )}
-
           {/* Packaging */}
           <View
             style={{
@@ -778,11 +729,7 @@ const SellOfferDetail = () => {
                   letterSpacing: -1,
                   paddingTop: SIZES.base,
                 }}>
-                ₦
-                {route?.params.sellOffer?.basePrice.toLocaleString(
-                  'en-US',
-                  options,
-                )}
+                ₦{formatNumberWithCommas(route?.params.sellOffer?.basePrice)}
               </Text>
             </View>
           </View>
