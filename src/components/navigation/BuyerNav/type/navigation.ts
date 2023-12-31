@@ -61,7 +61,7 @@ export type HomeStackNavigatorParamList = {
   InternationalPaymentQuotation: undefined;
   ExploreFilter: undefined;
   EngagementTermsAddress: undefined;
-  AllProducts: {items: string; loading: boolean};
+  AllProducts: undefined;
   Quotation: undefined;
   Freight: undefined;
   SuccessService: {type: string};
@@ -132,6 +132,9 @@ export type OrderStackNavigatorParamList = {
   ReplyDetailStandard: {sellerItem: string};
   ReplyDetailDomestic: {sellerItem: string};
   ReplyDetailInternational: {sellerItem: string};
+  NotificationSetting: undefined;
+  OrderNotifications: {orderItem: String};
+  PromotionNotifications: {promoItem: String};
 };
 
 // ---------NAVIGATION PROP------------
@@ -143,6 +146,21 @@ export type ProductDetailNavigationProp = NativeStackNavigationProp<
 export type RFFReplyDetailOceanNavigationProp = NativeStackNavigationProp<
   ChatStackNavigatorParamList,
   'RFFReplyDetailOcean'
+>;
+
+export type OrderNotificationsNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'OrderNotifications'
+>;
+
+export type PromotionNotificationsNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'PromotionNotifications'
+>;
+
+export type NotificationSettingNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'NotificationSetting'
 >;
 
 export type RFFReplyDetailLandNavigationProp = NativeStackNavigationProp<
@@ -382,11 +400,6 @@ export type SuccessServiceRouteProp = RouteProp<
   'SuccessService'
 >;
 
-export type AllProductsRouteProp = RouteProp<
-  HomeStackNavigatorParamList,
-  'AllProducts'
->;
-
 export type ChatRouteProp = RouteProp<ChatStackNavigatorParamList, 'Chat'>;
 
 export type SellOfferDetailsRouteProp = RouteProp<
@@ -427,4 +440,14 @@ export type RFFReplyDetailLandRouteProp = RouteProp<
 export type SellOfferReplyListRouteProp = RouteProp<
   OrderStackNavigatorParamList,
   'SellOfferReplyList'
+>;
+
+export type OrderNotificationsRouteProp = RouteProp<
+  OrderStackNavigatorParamList,
+  'OrderNotifications'
+>;
+
+export type PromotionNotificationsRouteProp = RouteProp<
+  OrderStackNavigatorParamList,
+  'PromotionNotifications'
 >;

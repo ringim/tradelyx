@@ -64,6 +64,7 @@ export type ProfileStackNavigatorParamList = {
 };
 
 export type HomeStackNavigatorParamList = {
+  popToTop(arg0: number): unknown;
   pop(arg0: number): unknown;
   replace(arg0: string, arg1: {type: string}): unknown;
   reset: any;
@@ -104,6 +105,7 @@ export type ChatStackNavigatorParamList = {
   pop: any;
   reset: any;
   navigate: any;
+  replace: any;
   goBack: any;
   ChatRooms: undefined;
   Chat: {id: string};
@@ -145,9 +147,27 @@ export type OrderStackNavigatorParamList = {
   OrderDetail: {sellerItem: string};
   ReplyDetailSellOffer: {sellOffer: string};
   ProgressOrderDetail: {orderItem: string};
+  NotificationSetting: undefined;
+  OrderNotifications: {orderItem: String};
+  PromotionNotifications: {promoItem: String};
 };
 
 // ---------NAVIGATION PROP------------
+
+export type OrderNotificationsNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'OrderNotifications'
+>;
+
+export type PromotionNotificationsNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'PromotionNotifications'
+>;
+
+export type NotificationSettingNavigationProp = NativeStackNavigationProp<
+  OrderStackNavigatorParamList,
+  'NotificationSetting'
+>;
 
 export type RFQReplyDetailsNavigationProp = NativeStackNavigationProp<
   ChatStackNavigatorParamList,
@@ -562,4 +582,14 @@ export type RFFReplyDetailLandRouteProp = RouteProp<
 export type ReplyDetailSellOfferRouteProp = RouteProp<
   OrderStackNavigatorParamList,
   'ReplyDetailSellOffer'
+>;
+
+export type OrderNotificationsRouteProp = RouteProp<
+  OrderStackNavigatorParamList,
+  'OrderNotifications'
+>;
+
+export type PromotionNotificationsRouteProp = RouteProp<
+  OrderStackNavigatorParamList,
+  'PromotionNotifications'
 >;

@@ -13,6 +13,7 @@ export const onCreateMessageByChatRoomID = /* GraphQL */ `subscription OnCreateM
     id
     text
     createdAt
+    readAt
     SType
     rffID
     rfqID
@@ -34,6 +35,7 @@ export const onCreateMessageByChatRoomID = /* GraphQL */ `subscription OnCreateM
     image
     file
     replyToMessageID
+    forUserID
     userID
     chatroomID
     updatedAt
@@ -49,13 +51,13 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
     id
     createdAt
     SType
-    newMessages
     name
     imageUri
     lastMessage {
       id
       text
       createdAt
+      readAt
       SType
       rffID
       rfqID
@@ -77,6 +79,7 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
       image
       file
       replyToMessageID
+      forUserID
       userID
       chatroomID
       updatedAt
@@ -87,6 +90,7 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -108,6 +112,7 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -125,7 +130,6 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
           id
           createdAt
           SType
-          newMessages
           name
           imageUri
           updatedAt
@@ -137,6 +141,14 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -177,6 +189,7 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
           legalRep
           overview
           activeOrder
+          fcmToken
           createdAt
           updatedAt
           __typename
@@ -202,13 +215,13 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
     id
     createdAt
     SType
-    newMessages
     name
     imageUri
     lastMessage {
       id
       text
       createdAt
+      readAt
       SType
       rffID
       rfqID
@@ -230,6 +243,7 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
       image
       file
       replyToMessageID
+      forUserID
       userID
       chatroomID
       updatedAt
@@ -240,6 +254,7 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -261,6 +276,7 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -278,7 +294,6 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
           id
           createdAt
           SType
-          newMessages
           name
           imageUri
           updatedAt
@@ -290,6 +305,14 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -330,6 +353,7 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
           legalRep
           overview
           activeOrder
+          fcmToken
           createdAt
           updatedAt
           __typename
@@ -355,13 +379,13 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
     id
     createdAt
     SType
-    newMessages
     name
     imageUri
     lastMessage {
       id
       text
       createdAt
+      readAt
       SType
       rffID
       rfqID
@@ -383,6 +407,7 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
       image
       file
       replyToMessageID
+      forUserID
       userID
       chatroomID
       updatedAt
@@ -393,6 +418,7 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -414,6 +440,7 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -431,7 +458,6 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
           id
           createdAt
           SType
-          newMessages
           name
           imageUri
           updatedAt
@@ -443,6 +469,14 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -483,6 +517,7 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
           legalRep
           overview
           activeOrder
+          fcmToken
           createdAt
           updatedAt
           __typename
@@ -508,6 +543,7 @@ export const onCreateMessage = /* GraphQL */ `subscription OnCreateMessage($filt
     id
     text
     createdAt
+    readAt
     SType
     rffID
     rfqID
@@ -529,6 +565,7 @@ export const onCreateMessage = /* GraphQL */ `subscription OnCreateMessage($filt
     image
     file
     replyToMessageID
+    forUserID
     userID
     chatroomID
     updatedAt
@@ -544,6 +581,7 @@ export const onUpdateMessage = /* GraphQL */ `subscription OnUpdateMessage($filt
     id
     text
     createdAt
+    readAt
     SType
     rffID
     rfqID
@@ -565,6 +603,7 @@ export const onUpdateMessage = /* GraphQL */ `subscription OnUpdateMessage($filt
     image
     file
     replyToMessageID
+    forUserID
     userID
     chatroomID
     updatedAt
@@ -580,6 +619,7 @@ export const onDeleteMessage = /* GraphQL */ `subscription OnDeleteMessage($filt
     id
     text
     createdAt
+    readAt
     SType
     rffID
     rfqID
@@ -601,6 +641,7 @@ export const onDeleteMessage = /* GraphQL */ `subscription OnDeleteMessage($filt
     image
     file
     replyToMessageID
+    forUserID
     userID
     chatroomID
     updatedAt
@@ -610,57 +651,6 @@ export const onDeleteMessage = /* GraphQL */ `subscription OnDeleteMessage($filt
 ` as GeneratedSubscription<
   APITypes.OnDeleteMessageSubscriptionVariables,
   APITypes.OnDeleteMessageSubscription
->;
-export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotification(
-  $filter: ModelSubscriptionNotificationFilterInput
-) {
-  onCreateNotification(filter: $filter) {
-    id
-    tile
-    description
-    userID
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreateNotificationSubscriptionVariables,
-  APITypes.OnCreateNotificationSubscription
->;
-export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotification(
-  $filter: ModelSubscriptionNotificationFilterInput
-) {
-  onUpdateNotification(filter: $filter) {
-    id
-    tile
-    description
-    userID
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateNotificationSubscriptionVariables,
-  APITypes.OnUpdateNotificationSubscription
->;
-export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotification(
-  $filter: ModelSubscriptionNotificationFilterInput
-) {
-  onDeleteNotification(filter: $filter) {
-    id
-    tile
-    description
-    userID
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeleteNotificationSubscriptionVariables,
-  APITypes.OnDeleteNotificationSubscription
 >;
 export const onCreateOrder = /* GraphQL */ `subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
   onCreateOrder(filter: $filter) {
@@ -783,7 +773,6 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
         offerValidity
         forUserID
         userID
-        statusText
         agreement
         SellOffer
         updatedAt
@@ -858,7 +847,6 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
         offerValidity
         forUserID
         userID
-        statusText
         agreement
         SellOffer
         updatedAt
@@ -933,7 +921,6 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
         offerValidity
         forUserID
         userID
-        statusText
         agreement
         SellOffer
         updatedAt
@@ -981,7 +968,6 @@ export const onCreateSellOfferReply = /* GraphQL */ `subscription OnCreateSellOf
     offerValidity
     forUserID
     userID
-    statusText
     agreement
     SellOffer
     updatedAt
@@ -1023,7 +1009,6 @@ export const onUpdateSellOfferReply = /* GraphQL */ `subscription OnUpdateSellOf
     offerValidity
     forUserID
     userID
-    statusText
     agreement
     SellOffer
     updatedAt
@@ -1065,7 +1050,6 @@ export const onDeleteSellOfferReply = /* GraphQL */ `subscription OnDeleteSellOf
     offerValidity
     forUserID
     userID
-    statusText
     agreement
     SellOffer
     updatedAt
@@ -1955,6 +1939,69 @@ export const onDeleteReview = /* GraphQL */ `subscription OnDeleteReview($filter
   APITypes.OnDeleteReviewSubscriptionVariables,
   APITypes.OnDeleteReviewSubscription
 >;
+export const onCreateWishlist = /* GraphQL */ `subscription OnCreateWishlist($filter: ModelSubscriptionWishlistFilterInput) {
+  onCreateWishlist(filter: $filter) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    serviceType
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateWishlistSubscriptionVariables,
+  APITypes.OnCreateWishlistSubscription
+>;
+export const onUpdateWishlist = /* GraphQL */ `subscription OnUpdateWishlist($filter: ModelSubscriptionWishlistFilterInput) {
+  onUpdateWishlist(filter: $filter) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    serviceType
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateWishlistSubscriptionVariables,
+  APITypes.OnUpdateWishlistSubscription
+>;
+export const onDeleteWishlist = /* GraphQL */ `subscription OnDeleteWishlist($filter: ModelSubscriptionWishlistFilterInput) {
+  onDeleteWishlist(filter: $filter) {
+    id
+    createdAt
+    SType
+    productImage
+    title
+    serviceType
+    supplyCapacity
+    minOrderQty
+    fobPrice
+    productID
+    userID
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteWishlistSubscriptionVariables,
+  APITypes.OnDeleteWishlistSubscription
+>;
 export const onCreateProduct = /* GraphQL */ `subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
   onCreateProduct(filter: $filter) {
     id
@@ -2123,6 +2170,14 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     name
     email
     phone_number
+    enableNotification
+    enableNotificationProducts
+    enableNotificationOrders
+    enableNotificationPromotions
+    enableNotificationRFF
+    enableNotificationRFQ
+    enableNotificationSellOffer
+    enableNotificationMessages
     rating
     accountType
     lastOnlineAt
@@ -2384,24 +2439,12 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
       nextToken
       __typename
     }
-    Notifications {
-      items {
-        id
-        tile
-        description
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
     Messages {
       items {
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -2423,402 +2466,8 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         image
         file
         replyToMessageID
-        userID
-        chatroomID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    ChatRooms {
-      items {
-        id
-        chatRoomId
-        userId
-        chatRoom {
-          id
-          createdAt
-          SType
-          newMessages
-          name
-          imageUri
-          updatedAt
-          chatRoomLastMessageId
-          __typename
-        }
-        user {
-          id
-          name
-          email
-          phone_number
-          rating
-          accountType
-          lastOnlineAt
-          lat
-          lng
-          ledgerBalance
-          address
-          city
-          state
-          zipCode
-          lga
-          website
-          incorporateDate
-          rcNumber
-          totalOrders
-          level
-          identification
-          identificationNumber
-          identityDocs
-          keyProduct
-          country
-          inviteCode
-          accountCategory
-          title
-          logo
-          backgroundImage
-          images
-          businessType
-          certifications
-          certsDoc
-          mainMarkets
-          memberShipType
-          sellerLevel
-          estRevenue
-          totalStaff
-          responseTime
-          languages
-          legalRep
-          overview
-          activeOrder
-          createdAt
-          updatedAt
-          __typename
-        }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreateUserSubscriptionVariables,
-  APITypes.OnCreateUserSubscription
->;
-export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-  onUpdateUser(filter: $filter) {
-    id
-    name
-    email
-    phone_number
-    rating
-    accountType
-    lastOnlineAt
-    lat
-    lng
-    ledgerBalance
-    address
-    city
-    state
-    zipCode
-    lga
-    website
-    incorporateDate
-    rcNumber
-    totalOrders
-    level
-    identification
-    identificationNumber
-    identityDocs
-    keyProduct
-    country
-    inviteCode
-    accountCategory
-    title
-    logo
-    backgroundImage
-    images
-    businessType
-    certifications
-    certsDoc
-    mainMarkets
-    memberShipType
-    sellerLevel
-    estRevenue
-    totalStaff
-    responseTime
-    languages
-    legalRep
-    overview
-    activeOrder
-    Orders {
-      items {
-        id
-        createdAt
-        SType
-        requestID
-        orderType
-        orderStatus
-        totalAmount
-        orderDate
-        paidThrough
-        paymentResponse
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        productSpec
-        rating
-        tags
-        productCert
-        landmark
-        supplyCapacity
-        unit
-        minOrderQty
-        packageType
-        quantity
-        noOfReviews
-        transportMode
-        placeOrigin
-        dateAvailable
-        productDocs
-        productCertDocs
-        category
-        commodityCategory
-        userID
-        Reviews {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Reviews {
-      items {
-        id
-        createdAt
-        SType
-        name
-        rating
-        comment
         forUserID
         userID
-        productID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFQS {
-      items {
-        id
-        createdAt
-        SType
-        rfqNo
-        rfqType
-        title
-        requestCategory
-        description
-        documents
-        productName
-        tags
-        qty
-        buyFrequency
-        budget
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeOriginCountry
-        landmark
-        unit
-        incoterms
-        placeDestinationName
-        placeDestination
-        placeDestinationFlag
-        destinationCountry
-        deliveryPeriod
-        expiryDate
-        paymentType
-        paymentMethod
-        userID
-        RFQReplies {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFFS {
-      items {
-        id
-        createdAt
-        SType
-        rffNo
-        rffType
-        deliveryPeriod
-        requestCategory
-        rffRequestType
-        productName
-        handling
-        budget
-        loadDate
-        weight
-        qty
-        length
-        width
-        height
-        packageType
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeOriginCountry
-        placeDestinationName
-        placeDestinationFlag
-        destinationCountry
-        placeDestination
-        relatedServices
-        document
-        notes
-        containerDetails
-        containerSize
-        containerType
-        requestType
-        userID
-        RFFReplies {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    SellOffers {
-      items {
-        id
-        createdAt
-        SType
-        sellOfferID
-        requestCategory
-        title
-        tags
-        productName
-        description
-        packageDesc
-        sellOfferImage
-        image
-        images
-        rfqType
-        packageType
-        placeOrigin
-        landmark
-        unit
-        deliveryDate
-        qtyMeasure
-        basePrice
-        fobPrice
-        paymentType
-        paymentMethod
-        offerValidity
-        agreement
-        userID
-        SellOfferReplies {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Wishlists {
-      items {
-        id
-        createdAt
-        SType
-        productImage
-        title
-        serviceType
-        supplyCapacity
-        minOrderQty
-        fobPrice
-        productID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Notifications {
-      items {
-        id
-        tile
-        description
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Messages {
-      items {
-        id
-        text
-        createdAt
-        SType
-        rffID
-        rfqID
-        rfqType
-        rffType
-        sellOfferID
-        requestID
-        requestTitle
-        requestQty
-        packageType
-        serviceType
-        requestPrice
-        serviceImage
-        requestFrom
-        requestFromImg
-        requestTo
-        requestToImg
-        status
-        image
-        file
-        replyToMessageID
-        userID
         chatroomID
         updatedAt
         __typename
@@ -2835,7 +2484,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           id
           createdAt
           SType
-          newMessages
           name
           imageUri
           updatedAt
@@ -2847,6 +2495,14 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -2887,6 +2543,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           legalRep
           overview
           activeOrder
+          fcmToken
           createdAt
           updatedAt
           __typename
@@ -2898,350 +2555,31 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
       nextToken
       __typename
     }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateUserSubscriptionVariables,
-  APITypes.OnUpdateUserSubscription
->;
-export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-  onDeleteUser(filter: $filter) {
-    id
-    name
-    email
-    phone_number
-    rating
-    accountType
-    lastOnlineAt
-    lat
-    lng
-    ledgerBalance
-    address
-    city
-    state
-    zipCode
-    lga
-    website
-    incorporateDate
-    rcNumber
-    totalOrders
-    level
-    identification
-    identificationNumber
-    identityDocs
-    keyProduct
-    country
-    inviteCode
-    accountCategory
-    title
-    logo
-    backgroundImage
-    images
-    businessType
-    certifications
-    certsDoc
-    mainMarkets
-    memberShipType
-    sellerLevel
-    estRevenue
-    totalStaff
-    responseTime
-    languages
-    legalRep
-    overview
-    activeOrder
-    Orders {
-      items {
-        id
-        createdAt
-        SType
-        requestID
-        orderType
-        orderStatus
-        totalAmount
-        orderDate
-        paidThrough
-        paymentResponse
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Products {
-      items {
-        id
-        createdAt
-        SType
-        title
-        productImage
-        image
-        images
-        description
-        productSpec
-        rating
-        tags
-        productCert
-        landmark
-        supplyCapacity
-        unit
-        minOrderQty
-        packageType
-        quantity
-        noOfReviews
-        transportMode
-        placeOrigin
-        dateAvailable
-        productDocs
-        productCertDocs
-        category
-        commodityCategory
-        userID
-        Reviews {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Reviews {
-      items {
-        id
-        createdAt
-        SType
-        name
-        rating
-        comment
-        forUserID
-        userID
-        productID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFQS {
-      items {
-        id
-        createdAt
-        SType
-        rfqNo
-        rfqType
-        title
-        requestCategory
-        description
-        documents
-        productName
-        tags
-        qty
-        buyFrequency
-        budget
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeOriginCountry
-        landmark
-        unit
-        incoterms
-        placeDestinationName
-        placeDestination
-        placeDestinationFlag
-        destinationCountry
-        deliveryPeriod
-        expiryDate
-        paymentType
-        paymentMethod
-        userID
-        RFQReplies {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    RFFS {
-      items {
-        id
-        createdAt
-        SType
-        rffNo
-        rffType
-        deliveryPeriod
-        requestCategory
-        rffRequestType
-        productName
-        handling
-        budget
-        loadDate
-        weight
-        qty
-        length
-        width
-        height
-        packageType
-        placeOrigin
-        placeOriginFlag
-        placeOriginName
-        placeOriginCountry
-        placeDestinationName
-        placeDestinationFlag
-        destinationCountry
-        placeDestination
-        relatedServices
-        document
-        notes
-        containerDetails
-        containerSize
-        containerType
-        requestType
-        userID
-        RFFReplies {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    SellOffers {
-      items {
-        id
-        createdAt
-        SType
-        sellOfferID
-        requestCategory
-        title
-        tags
-        productName
-        description
-        packageDesc
-        sellOfferImage
-        image
-        images
-        rfqType
-        packageType
-        placeOrigin
-        landmark
-        unit
-        deliveryDate
-        qtyMeasure
-        basePrice
-        fobPrice
-        paymentType
-        paymentMethod
-        offerValidity
-        agreement
-        userID
-        SellOfferReplies {
-          nextToken
-          __typename
-        }
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Wishlists {
-      items {
-        id
-        createdAt
-        SType
-        productImage
-        title
-        serviceType
-        supplyCapacity
-        minOrderQty
-        fobPrice
-        productID
-        userID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
+    fcmToken
     Notifications {
       items {
         id
-        tile
-        description
-        userID
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    Messages {
-      items {
-        id
-        text
         createdAt
         SType
-        rffID
-        rfqID
-        rfqType
-        rffType
-        sellOfferID
-        requestID
-        requestTitle
-        requestQty
-        packageType
-        serviceType
-        requestPrice
-        serviceImage
-        requestFrom
-        requestFromImg
-        requestTo
-        requestToImg
-        status
-        image
-        file
-        replyToMessageID
+        type
+        readAt
+        title
+        description
+        requestType
         userID
-        chatroomID
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    ChatRooms {
-      items {
-        id
-        chatRoomId
-        userId
-        chatRoom {
-          id
-          createdAt
-          SType
-          newMessages
-          name
-          imageUri
-          updatedAt
-          chatRoomLastMessageId
-          __typename
-        }
-        user {
+        User {
           id
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3282,138 +2620,327 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           legalRep
           overview
           activeOrder
+          fcmToken
           createdAt
           updatedAt
           __typename
         }
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeleteUserSubscriptionVariables,
-  APITypes.OnDeleteUserSubscription
->;
-export const onCreateWishlist = /* GraphQL */ `subscription OnCreateWishlist($filter: ModelSubscriptionWishlistFilterInput) {
-  onCreateWishlist(filter: $filter) {
-    id
-    createdAt
-    SType
-    productImage
-    title
-    serviceType
-    supplyCapacity
-    minOrderQty
-    fobPrice
-    productID
-    userID
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreateWishlistSubscriptionVariables,
-  APITypes.OnCreateWishlistSubscription
->;
-export const onUpdateWishlist = /* GraphQL */ `subscription OnUpdateWishlist($filter: ModelSubscriptionWishlistFilterInput) {
-  onUpdateWishlist(filter: $filter) {
-    id
-    createdAt
-    SType
-    productImage
-    title
-    serviceType
-    supplyCapacity
-    minOrderQty
-    fobPrice
-    productID
-    userID
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateWishlistSubscriptionVariables,
-  APITypes.OnUpdateWishlistSubscription
->;
-export const onDeleteWishlist = /* GraphQL */ `subscription OnDeleteWishlist($filter: ModelSubscriptionWishlistFilterInput) {
-  onDeleteWishlist(filter: $filter) {
-    id
-    createdAt
-    SType
-    productImage
-    title
-    serviceType
-    supplyCapacity
-    minOrderQty
-    fobPrice
-    productID
-    userID
-    updatedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeleteWishlistSubscriptionVariables,
-  APITypes.OnDeleteWishlistSubscription
->;
-export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChatRoom(
-  $filter: ModelSubscriptionUserChatRoomFilterInput
-) {
-  onCreateUserChatRoom(filter: $filter) {
-    id
-    chatRoomId
-    userId
-    chatRoom {
-      id
-      createdAt
-      SType
-      newMessages
-      name
-      imageUri
-      lastMessage {
-        id
-        text
-        createdAt
-        SType
-        rffID
-        rfqID
-        rfqType
-        rffType
-        sellOfferID
-        requestID
-        requestTitle
-        requestQty
-        packageType
-        serviceType
-        requestPrice
-        serviceImage
-        requestFrom
-        requestFromImg
-        requestTo
-        requestToImg
-        status
-        image
-        file
-        replyToMessageID
-        userID
-        chatroomID
-        updatedAt
-        __typename
-      }
-      Messages {
-        items {
+        actorID
+        Actor {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
+          createdAt
+          updatedAt
+          __typename
+        }
+        SellOffer {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        SellOfferReply {
+          id
+          createdAt
+          SType
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferID
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          forUserID
+          userID
+          agreement
+          SellOffer
+          updatedAt
+          __typename
+        }
+        RFF {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        RFFReply {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          price
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          paymentType
+          paymentMethod
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          unit
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          forUserID
+          userID
+          statusText
+          agreement
+          RFF
+          updatedAt
+          __typename
+        }
+        RFQ {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        RFQReply {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          price
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeOriginCountry
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          forUserID
+          userID
+          statusText
+          agreement
+          RFQ
+          updatedAt
+          __typename
+        }
+        Product {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        Message {
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -3435,35 +2962,1766 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
           __typename
         }
-        nextToken
+        chatroomID
+        Order {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        updatedAt
+        notificationSellOfferId
+        notificationSellOfferReplyId
+        notificationRFFId
+        notificationRFFReplyId
+        notificationRFQId
+        notificationRFQReplyId
+        notificationProductId
+        notificationMessageId
+        notificationOrderId
         __typename
       }
-      users {
-        items {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateUserSubscriptionVariables,
+  APITypes.OnCreateUserSubscription
+>;
+export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+  onUpdateUser(filter: $filter) {
+    id
+    name
+    email
+    phone_number
+    enableNotification
+    enableNotificationProducts
+    enableNotificationOrders
+    enableNotificationPromotions
+    enableNotificationRFF
+    enableNotificationRFQ
+    enableNotificationSellOffer
+    enableNotificationMessages
+    rating
+    accountType
+    lastOnlineAt
+    lat
+    lng
+    ledgerBalance
+    address
+    city
+    state
+    zipCode
+    lga
+    website
+    incorporateDate
+    rcNumber
+    totalOrders
+    level
+    identification
+    identificationNumber
+    identityDocs
+    keyProduct
+    country
+    inviteCode
+    accountCategory
+    title
+    logo
+    backgroundImage
+    images
+    businessType
+    certifications
+    certsDoc
+    mainMarkets
+    memberShipType
+    sellerLevel
+    estRevenue
+    totalStaff
+    responseTime
+    languages
+    legalRep
+    overview
+    activeOrder
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        requestID
+        orderType
+        orderStatus
+        totalAmount
+        orderDate
+        paidThrough
+        paymentResponse
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        productSpec
+        rating
+        tags
+        productCert
+        landmark
+        supplyCapacity
+        unit
+        minOrderQty
+        packageType
+        quantity
+        noOfReviews
+        transportMode
+        placeOrigin
+        dateAvailable
+        productDocs
+        productCertDocs
+        category
+        commodityCategory
+        userID
+        Reviews {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Reviews {
+      items {
+        id
+        createdAt
+        SType
+        name
+        rating
+        comment
+        forUserID
+        userID
+        productID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeOriginCountry
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        userID
+        RFQReplies {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        createdAt
+        SType
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        budget
+        loadDate
+        weight
+        qty
+        length
+        width
+        height
+        packageType
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeOriginCountry
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        document
+        notes
+        containerDetails
+        containerSize
+        containerType
+        requestType
+        userID
+        RFFReplies {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        packageDesc
+        sellOfferImage
+        image
+        images
+        rfqType
+        packageType
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        agreement
+        userID
+        SellOfferReplies {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        serviceType
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Messages {
+      items {
+        id
+        text
+        createdAt
+        readAt
+        SType
+        rffID
+        rfqID
+        rfqType
+        rffType
+        sellOfferID
+        requestID
+        requestTitle
+        requestQty
+        packageType
+        serviceType
+        requestPrice
+        serviceImage
+        requestFrom
+        requestFromImg
+        requestTo
+        requestToImg
+        status
+        image
+        file
+        replyToMessageID
+        forUserID
+        userID
+        chatroomID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    ChatRooms {
+      items {
+        id
+        chatRoomId
+        userId
+        chatRoom {
           id
-          chatRoomId
-          userId
+          createdAt
+          SType
+          name
+          imageUri
+          updatedAt
+          chatRoomLastMessageId
+          __typename
+        }
+        user {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
           createdAt
           updatedAt
           __typename
         }
-        nextToken
+        createdAt
+        updatedAt
         __typename
       }
-      updatedAt
-      chatRoomLastMessageId
+      nextToken
       __typename
     }
-    user {
+    fcmToken
+    Notifications {
+      items {
+        id
+        createdAt
+        SType
+        type
+        readAt
+        title
+        description
+        requestType
+        userID
+        User {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
+          createdAt
+          updatedAt
+          __typename
+        }
+        actorID
+        Actor {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
+          createdAt
+          updatedAt
+          __typename
+        }
+        SellOffer {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        SellOfferReply {
+          id
+          createdAt
+          SType
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferID
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          forUserID
+          userID
+          agreement
+          SellOffer
+          updatedAt
+          __typename
+        }
+        RFF {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        RFFReply {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          price
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          paymentType
+          paymentMethod
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          unit
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          forUserID
+          userID
+          statusText
+          agreement
+          RFF
+          updatedAt
+          __typename
+        }
+        RFQ {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        RFQReply {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          price
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeOriginCountry
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          forUserID
+          userID
+          statusText
+          agreement
+          RFQ
+          updatedAt
+          __typename
+        }
+        Product {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        Message {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        chatroomID
+        Order {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        updatedAt
+        notificationSellOfferId
+        notificationSellOfferReplyId
+        notificationRFFId
+        notificationRFFReplyId
+        notificationRFQId
+        notificationRFQReplyId
+        notificationProductId
+        notificationMessageId
+        notificationOrderId
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateUserSubscriptionVariables,
+  APITypes.OnUpdateUserSubscription
+>;
+export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+  onDeleteUser(filter: $filter) {
+    id
+    name
+    email
+    phone_number
+    enableNotification
+    enableNotificationProducts
+    enableNotificationOrders
+    enableNotificationPromotions
+    enableNotificationRFF
+    enableNotificationRFQ
+    enableNotificationSellOffer
+    enableNotificationMessages
+    rating
+    accountType
+    lastOnlineAt
+    lat
+    lng
+    ledgerBalance
+    address
+    city
+    state
+    zipCode
+    lga
+    website
+    incorporateDate
+    rcNumber
+    totalOrders
+    level
+    identification
+    identificationNumber
+    identityDocs
+    keyProduct
+    country
+    inviteCode
+    accountCategory
+    title
+    logo
+    backgroundImage
+    images
+    businessType
+    certifications
+    certsDoc
+    mainMarkets
+    memberShipType
+    sellerLevel
+    estRevenue
+    totalStaff
+    responseTime
+    languages
+    legalRep
+    overview
+    activeOrder
+    Orders {
+      items {
+        id
+        createdAt
+        SType
+        requestID
+        orderType
+        orderStatus
+        totalAmount
+        orderDate
+        paidThrough
+        paymentResponse
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Products {
+      items {
+        id
+        createdAt
+        SType
+        title
+        productImage
+        image
+        images
+        description
+        productSpec
+        rating
+        tags
+        productCert
+        landmark
+        supplyCapacity
+        unit
+        minOrderQty
+        packageType
+        quantity
+        noOfReviews
+        transportMode
+        placeOrigin
+        dateAvailable
+        productDocs
+        productCertDocs
+        category
+        commodityCategory
+        userID
+        Reviews {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Reviews {
+      items {
+        id
+        createdAt
+        SType
+        name
+        rating
+        comment
+        forUserID
+        userID
+        productID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFQS {
+      items {
+        id
+        createdAt
+        SType
+        rfqNo
+        rfqType
+        title
+        requestCategory
+        description
+        documents
+        productName
+        tags
+        qty
+        buyFrequency
+        budget
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeOriginCountry
+        landmark
+        unit
+        incoterms
+        placeDestinationName
+        placeDestination
+        placeDestinationFlag
+        destinationCountry
+        deliveryPeriod
+        expiryDate
+        paymentType
+        paymentMethod
+        userID
+        RFQReplies {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    RFFS {
+      items {
+        id
+        createdAt
+        SType
+        rffNo
+        rffType
+        deliveryPeriod
+        requestCategory
+        rffRequestType
+        productName
+        handling
+        budget
+        loadDate
+        weight
+        qty
+        length
+        width
+        height
+        packageType
+        placeOrigin
+        placeOriginFlag
+        placeOriginName
+        placeOriginCountry
+        placeDestinationName
+        placeDestinationFlag
+        destinationCountry
+        placeDestination
+        relatedServices
+        document
+        notes
+        containerDetails
+        containerSize
+        containerType
+        requestType
+        userID
+        RFFReplies {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    SellOffers {
+      items {
+        id
+        createdAt
+        SType
+        sellOfferID
+        requestCategory
+        title
+        tags
+        productName
+        description
+        packageDesc
+        sellOfferImage
+        image
+        images
+        rfqType
+        packageType
+        placeOrigin
+        landmark
+        unit
+        deliveryDate
+        qtyMeasure
+        basePrice
+        fobPrice
+        paymentType
+        paymentMethod
+        offerValidity
+        agreement
+        userID
+        SellOfferReplies {
+          nextToken
+          __typename
+        }
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Wishlists {
+      items {
+        id
+        createdAt
+        SType
+        productImage
+        title
+        serviceType
+        supplyCapacity
+        minOrderQty
+        fobPrice
+        productID
+        userID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    Messages {
+      items {
+        id
+        text
+        createdAt
+        readAt
+        SType
+        rffID
+        rfqID
+        rfqType
+        rffType
+        sellOfferID
+        requestID
+        requestTitle
+        requestQty
+        packageType
+        serviceType
+        requestPrice
+        serviceImage
+        requestFrom
+        requestFromImg
+        requestTo
+        requestToImg
+        status
+        image
+        file
+        replyToMessageID
+        forUserID
+        userID
+        chatroomID
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    ChatRooms {
+      items {
+        id
+        chatRoomId
+        userId
+        chatRoom {
+          id
+          createdAt
+          SType
+          name
+          imageUri
+          updatedAt
+          chatRoomLastMessageId
+          __typename
+        }
+        user {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
+          createdAt
+          updatedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    fcmToken
+    Notifications {
+      items {
+        id
+        createdAt
+        SType
+        type
+        readAt
+        title
+        description
+        requestType
+        userID
+        User {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
+          createdAt
+          updatedAt
+          __typename
+        }
+        actorID
+        Actor {
+          id
+          name
+          email
+          phone_number
+          enableNotification
+          enableNotificationProducts
+          enableNotificationOrders
+          enableNotificationPromotions
+          enableNotificationRFF
+          enableNotificationRFQ
+          enableNotificationSellOffer
+          enableNotificationMessages
+          rating
+          accountType
+          lastOnlineAt
+          lat
+          lng
+          ledgerBalance
+          address
+          city
+          state
+          zipCode
+          lga
+          website
+          incorporateDate
+          rcNumber
+          totalOrders
+          level
+          identification
+          identificationNumber
+          identityDocs
+          keyProduct
+          country
+          inviteCode
+          accountCategory
+          title
+          logo
+          backgroundImage
+          images
+          businessType
+          certifications
+          certsDoc
+          mainMarkets
+          memberShipType
+          sellerLevel
+          estRevenue
+          totalStaff
+          responseTime
+          languages
+          legalRep
+          overview
+          activeOrder
+          fcmToken
+          createdAt
+          updatedAt
+          __typename
+        }
+        SellOffer {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        SellOfferReply {
+          id
+          createdAt
+          SType
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferID
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          forUserID
+          userID
+          agreement
+          SellOffer
+          updatedAt
+          __typename
+        }
+        RFF {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        RFFReply {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          price
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          paymentType
+          paymentMethod
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          unit
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          forUserID
+          userID
+          statusText
+          agreement
+          RFF
+          updatedAt
+          __typename
+        }
+        RFQ {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        RFQReply {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          price
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeOriginCountry
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          forUserID
+          userID
+          statusText
+          agreement
+          RFQ
+          updatedAt
+          __typename
+        }
+        Product {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        Message {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        chatroomID
+        Order {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        updatedAt
+        notificationSellOfferId
+        notificationSellOfferReplyId
+        notificationRFFId
+        notificationRFFReplyId
+        notificationRFQId
+        notificationRFQReplyId
+        notificationProductId
+        notificationMessageId
+        notificationOrderId
+        __typename
+      }
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteUserSubscriptionVariables,
+  APITypes.OnDeleteUserSubscription
+>;
+export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotification(
+  $filter: ModelSubscriptionNotificationFilterInput
+) {
+  onCreateNotification(filter: $filter) {
+    id
+    createdAt
+    SType
+    type
+    readAt
+    title
+    description
+    requestType
+    userID
+    User {
       id
       name
       email
       phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -3709,24 +4967,12 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
         nextToken
         __typename
       }
-      Notifications {
-        items {
-          id
-          tile
-          description
-          userID
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
       Messages {
         items {
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -3748,6 +4994,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -3763,6 +5010,3587 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           userId
           createdAt
           updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    actorID
+    Actor {
+      id
+      name
+      email
+      phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
+      rating
+      accountType
+      lastOnlineAt
+      lat
+      lng
+      ledgerBalance
+      address
+      city
+      state
+      zipCode
+      lga
+      website
+      incorporateDate
+      rcNumber
+      totalOrders
+      level
+      identification
+      identificationNumber
+      identityDocs
+      keyProduct
+      country
+      inviteCode
+      accountCategory
+      title
+      logo
+      backgroundImage
+      images
+      businessType
+      certifications
+      certsDoc
+      mainMarkets
+      memberShipType
+      sellerLevel
+      estRevenue
+      totalStaff
+      responseTime
+      languages
+      legalRep
+      overview
+      activeOrder
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Products {
+        items {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFQS {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFFS {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      SellOffers {
+        items {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Wishlists {
+        items {
+          id
+          createdAt
+          SType
+          productImage
+          title
+          serviceType
+          supplyCapacity
+          minOrderQty
+          fobPrice
+          productID
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    SellOffer {
+      id
+      createdAt
+      SType
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      packageDesc
+      sellOfferImage
+      image
+      images
+      rfqType
+      packageType
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      agreement
+      userID
+      SellOfferReplies {
+        items {
+          id
+          createdAt
+          SType
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferID
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          forUserID
+          userID
+          agreement
+          SellOffer
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    SellOfferReply {
+      id
+      createdAt
+      SType
+      requestCategory
+      title
+      tags
+      productName
+      description
+      packageDesc
+      sellOfferID
+      sellOfferImage
+      image
+      images
+      rfqType
+      packageType
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      forUserID
+      userID
+      agreement
+      SellOffer
+      updatedAt
+      __typename
+    }
+    RFF {
+      id
+      createdAt
+      SType
+      rffNo
+      rffType
+      deliveryPeriod
+      requestCategory
+      rffRequestType
+      productName
+      handling
+      budget
+      loadDate
+      weight
+      qty
+      length
+      width
+      height
+      packageType
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      placeDestinationName
+      placeDestinationFlag
+      destinationCountry
+      placeDestination
+      relatedServices
+      document
+      notes
+      containerDetails
+      containerSize
+      containerType
+      requestType
+      userID
+      RFFReplies {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          price
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          paymentType
+          paymentMethod
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          unit
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          forUserID
+          userID
+          statusText
+          agreement
+          RFF
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    RFFReply {
+      id
+      createdAt
+      SType
+      rffNo
+      rffType
+      deliveryPeriod
+      requestCategory
+      rffRequestType
+      productName
+      handling
+      budget
+      price
+      loadDate
+      weight
+      qty
+      length
+      width
+      height
+      packageType
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      placeDestinationName
+      placeDestinationFlag
+      paymentType
+      paymentMethod
+      destinationCountry
+      placeDestination
+      relatedServices
+      document
+      notes
+      unit
+      containerDetails
+      containerSize
+      containerType
+      requestType
+      forUserID
+      userID
+      statusText
+      agreement
+      RFF
+      updatedAt
+      __typename
+    }
+    RFQ {
+      id
+      createdAt
+      SType
+      rfqNo
+      rfqType
+      title
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      landmark
+      unit
+      incoterms
+      placeDestinationName
+      placeDestination
+      placeDestinationFlag
+      destinationCountry
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      userID
+      RFQReplies {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          price
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeOriginCountry
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          forUserID
+          userID
+          statusText
+          agreement
+          RFQ
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    RFQReply {
+      id
+      createdAt
+      SType
+      rfqNo
+      rfqType
+      title
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      price
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      landmark
+      unit
+      incoterms
+      placeDestinationName
+      placeOriginCountry
+      placeDestination
+      placeDestinationFlag
+      destinationCountry
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      forUserID
+      userID
+      statusText
+      agreement
+      RFQ
+      updatedAt
+      __typename
+    }
+    Product {
+      id
+      createdAt
+      SType
+      title
+      productImage
+      image
+      images
+      description
+      productSpec
+      rating
+      tags
+      productCert
+      landmark
+      supplyCapacity
+      unit
+      minOrderQty
+      packageType
+      quantity
+      noOfReviews
+      transportMode
+      placeOrigin
+      dateAvailable
+      productDocs
+      productCertDocs
+      category
+      commodityCategory
+      userID
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    Message {
+      id
+      text
+      createdAt
+      readAt
+      SType
+      rffID
+      rfqID
+      rfqType
+      rffType
+      sellOfferID
+      requestID
+      requestTitle
+      requestQty
+      packageType
+      serviceType
+      requestPrice
+      serviceImage
+      requestFrom
+      requestFromImg
+      requestTo
+      requestToImg
+      status
+      image
+      file
+      replyToMessageID
+      forUserID
+      userID
+      chatroomID
+      updatedAt
+      __typename
+    }
+    chatroomID
+    Order {
+      id
+      createdAt
+      SType
+      requestID
+      orderType
+      orderStatus
+      totalAmount
+      orderDate
+      paidThrough
+      paymentResponse
+      userID
+      updatedAt
+      __typename
+    }
+    updatedAt
+    notificationSellOfferId
+    notificationSellOfferReplyId
+    notificationRFFId
+    notificationRFFReplyId
+    notificationRFQId
+    notificationRFQReplyId
+    notificationProductId
+    notificationMessageId
+    notificationOrderId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateNotificationSubscriptionVariables,
+  APITypes.OnCreateNotificationSubscription
+>;
+export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotification(
+  $filter: ModelSubscriptionNotificationFilterInput
+) {
+  onUpdateNotification(filter: $filter) {
+    id
+    createdAt
+    SType
+    type
+    readAt
+    title
+    description
+    requestType
+    userID
+    User {
+      id
+      name
+      email
+      phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
+      rating
+      accountType
+      lastOnlineAt
+      lat
+      lng
+      ledgerBalance
+      address
+      city
+      state
+      zipCode
+      lga
+      website
+      incorporateDate
+      rcNumber
+      totalOrders
+      level
+      identification
+      identificationNumber
+      identityDocs
+      keyProduct
+      country
+      inviteCode
+      accountCategory
+      title
+      logo
+      backgroundImage
+      images
+      businessType
+      certifications
+      certsDoc
+      mainMarkets
+      memberShipType
+      sellerLevel
+      estRevenue
+      totalStaff
+      responseTime
+      languages
+      legalRep
+      overview
+      activeOrder
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Products {
+        items {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFQS {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFFS {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      SellOffers {
+        items {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Wishlists {
+        items {
+          id
+          createdAt
+          SType
+          productImage
+          title
+          serviceType
+          supplyCapacity
+          minOrderQty
+          fobPrice
+          productID
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    actorID
+    Actor {
+      id
+      name
+      email
+      phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
+      rating
+      accountType
+      lastOnlineAt
+      lat
+      lng
+      ledgerBalance
+      address
+      city
+      state
+      zipCode
+      lga
+      website
+      incorporateDate
+      rcNumber
+      totalOrders
+      level
+      identification
+      identificationNumber
+      identityDocs
+      keyProduct
+      country
+      inviteCode
+      accountCategory
+      title
+      logo
+      backgroundImage
+      images
+      businessType
+      certifications
+      certsDoc
+      mainMarkets
+      memberShipType
+      sellerLevel
+      estRevenue
+      totalStaff
+      responseTime
+      languages
+      legalRep
+      overview
+      activeOrder
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Products {
+        items {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFQS {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFFS {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      SellOffers {
+        items {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Wishlists {
+        items {
+          id
+          createdAt
+          SType
+          productImage
+          title
+          serviceType
+          supplyCapacity
+          minOrderQty
+          fobPrice
+          productID
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    SellOffer {
+      id
+      createdAt
+      SType
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      packageDesc
+      sellOfferImage
+      image
+      images
+      rfqType
+      packageType
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      agreement
+      userID
+      SellOfferReplies {
+        items {
+          id
+          createdAt
+          SType
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferID
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          forUserID
+          userID
+          agreement
+          SellOffer
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    SellOfferReply {
+      id
+      createdAt
+      SType
+      requestCategory
+      title
+      tags
+      productName
+      description
+      packageDesc
+      sellOfferID
+      sellOfferImage
+      image
+      images
+      rfqType
+      packageType
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      forUserID
+      userID
+      agreement
+      SellOffer
+      updatedAt
+      __typename
+    }
+    RFF {
+      id
+      createdAt
+      SType
+      rffNo
+      rffType
+      deliveryPeriod
+      requestCategory
+      rffRequestType
+      productName
+      handling
+      budget
+      loadDate
+      weight
+      qty
+      length
+      width
+      height
+      packageType
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      placeDestinationName
+      placeDestinationFlag
+      destinationCountry
+      placeDestination
+      relatedServices
+      document
+      notes
+      containerDetails
+      containerSize
+      containerType
+      requestType
+      userID
+      RFFReplies {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          price
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          paymentType
+          paymentMethod
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          unit
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          forUserID
+          userID
+          statusText
+          agreement
+          RFF
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    RFFReply {
+      id
+      createdAt
+      SType
+      rffNo
+      rffType
+      deliveryPeriod
+      requestCategory
+      rffRequestType
+      productName
+      handling
+      budget
+      price
+      loadDate
+      weight
+      qty
+      length
+      width
+      height
+      packageType
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      placeDestinationName
+      placeDestinationFlag
+      paymentType
+      paymentMethod
+      destinationCountry
+      placeDestination
+      relatedServices
+      document
+      notes
+      unit
+      containerDetails
+      containerSize
+      containerType
+      requestType
+      forUserID
+      userID
+      statusText
+      agreement
+      RFF
+      updatedAt
+      __typename
+    }
+    RFQ {
+      id
+      createdAt
+      SType
+      rfqNo
+      rfqType
+      title
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      landmark
+      unit
+      incoterms
+      placeDestinationName
+      placeDestination
+      placeDestinationFlag
+      destinationCountry
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      userID
+      RFQReplies {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          price
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeOriginCountry
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          forUserID
+          userID
+          statusText
+          agreement
+          RFQ
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    RFQReply {
+      id
+      createdAt
+      SType
+      rfqNo
+      rfqType
+      title
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      price
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      landmark
+      unit
+      incoterms
+      placeDestinationName
+      placeOriginCountry
+      placeDestination
+      placeDestinationFlag
+      destinationCountry
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      forUserID
+      userID
+      statusText
+      agreement
+      RFQ
+      updatedAt
+      __typename
+    }
+    Product {
+      id
+      createdAt
+      SType
+      title
+      productImage
+      image
+      images
+      description
+      productSpec
+      rating
+      tags
+      productCert
+      landmark
+      supplyCapacity
+      unit
+      minOrderQty
+      packageType
+      quantity
+      noOfReviews
+      transportMode
+      placeOrigin
+      dateAvailable
+      productDocs
+      productCertDocs
+      category
+      commodityCategory
+      userID
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    Message {
+      id
+      text
+      createdAt
+      readAt
+      SType
+      rffID
+      rfqID
+      rfqType
+      rffType
+      sellOfferID
+      requestID
+      requestTitle
+      requestQty
+      packageType
+      serviceType
+      requestPrice
+      serviceImage
+      requestFrom
+      requestFromImg
+      requestTo
+      requestToImg
+      status
+      image
+      file
+      replyToMessageID
+      forUserID
+      userID
+      chatroomID
+      updatedAt
+      __typename
+    }
+    chatroomID
+    Order {
+      id
+      createdAt
+      SType
+      requestID
+      orderType
+      orderStatus
+      totalAmount
+      orderDate
+      paidThrough
+      paymentResponse
+      userID
+      updatedAt
+      __typename
+    }
+    updatedAt
+    notificationSellOfferId
+    notificationSellOfferReplyId
+    notificationRFFId
+    notificationRFFReplyId
+    notificationRFQId
+    notificationRFQReplyId
+    notificationProductId
+    notificationMessageId
+    notificationOrderId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateNotificationSubscriptionVariables,
+  APITypes.OnUpdateNotificationSubscription
+>;
+export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotification(
+  $filter: ModelSubscriptionNotificationFilterInput
+) {
+  onDeleteNotification(filter: $filter) {
+    id
+    createdAt
+    SType
+    type
+    readAt
+    title
+    description
+    requestType
+    userID
+    User {
+      id
+      name
+      email
+      phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
+      rating
+      accountType
+      lastOnlineAt
+      lat
+      lng
+      ledgerBalance
+      address
+      city
+      state
+      zipCode
+      lga
+      website
+      incorporateDate
+      rcNumber
+      totalOrders
+      level
+      identification
+      identificationNumber
+      identityDocs
+      keyProduct
+      country
+      inviteCode
+      accountCategory
+      title
+      logo
+      backgroundImage
+      images
+      businessType
+      certifications
+      certsDoc
+      mainMarkets
+      memberShipType
+      sellerLevel
+      estRevenue
+      totalStaff
+      responseTime
+      languages
+      legalRep
+      overview
+      activeOrder
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Products {
+        items {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFQS {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFFS {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      SellOffers {
+        items {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Wishlists {
+        items {
+          id
+          createdAt
+          SType
+          productImage
+          title
+          serviceType
+          supplyCapacity
+          minOrderQty
+          fobPrice
+          productID
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    actorID
+    Actor {
+      id
+      name
+      email
+      phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
+      rating
+      accountType
+      lastOnlineAt
+      lat
+      lng
+      ledgerBalance
+      address
+      city
+      state
+      zipCode
+      lga
+      website
+      incorporateDate
+      rcNumber
+      totalOrders
+      level
+      identification
+      identificationNumber
+      identityDocs
+      keyProduct
+      country
+      inviteCode
+      accountCategory
+      title
+      logo
+      backgroundImage
+      images
+      businessType
+      certifications
+      certsDoc
+      mainMarkets
+      memberShipType
+      sellerLevel
+      estRevenue
+      totalStaff
+      responseTime
+      languages
+      legalRep
+      overview
+      activeOrder
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Products {
+        items {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFQS {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFFS {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      SellOffers {
+        items {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Wishlists {
+        items {
+          id
+          createdAt
+          SType
+          productImage
+          title
+          serviceType
+          supplyCapacity
+          minOrderQty
+          fobPrice
+          productID
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+    SellOffer {
+      id
+      createdAt
+      SType
+      sellOfferID
+      requestCategory
+      title
+      tags
+      productName
+      description
+      packageDesc
+      sellOfferImage
+      image
+      images
+      rfqType
+      packageType
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      agreement
+      userID
+      SellOfferReplies {
+        items {
+          id
+          createdAt
+          SType
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferID
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          forUserID
+          userID
+          agreement
+          SellOffer
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    SellOfferReply {
+      id
+      createdAt
+      SType
+      requestCategory
+      title
+      tags
+      productName
+      description
+      packageDesc
+      sellOfferID
+      sellOfferImage
+      image
+      images
+      rfqType
+      packageType
+      placeOrigin
+      landmark
+      unit
+      deliveryDate
+      qtyMeasure
+      basePrice
+      fobPrice
+      paymentType
+      paymentMethod
+      offerValidity
+      forUserID
+      userID
+      agreement
+      SellOffer
+      updatedAt
+      __typename
+    }
+    RFF {
+      id
+      createdAt
+      SType
+      rffNo
+      rffType
+      deliveryPeriod
+      requestCategory
+      rffRequestType
+      productName
+      handling
+      budget
+      loadDate
+      weight
+      qty
+      length
+      width
+      height
+      packageType
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      placeDestinationName
+      placeDestinationFlag
+      destinationCountry
+      placeDestination
+      relatedServices
+      document
+      notes
+      containerDetails
+      containerSize
+      containerType
+      requestType
+      userID
+      RFFReplies {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          price
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          paymentType
+          paymentMethod
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          unit
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          forUserID
+          userID
+          statusText
+          agreement
+          RFF
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    RFFReply {
+      id
+      createdAt
+      SType
+      rffNo
+      rffType
+      deliveryPeriod
+      requestCategory
+      rffRequestType
+      productName
+      handling
+      budget
+      price
+      loadDate
+      weight
+      qty
+      length
+      width
+      height
+      packageType
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      placeDestinationName
+      placeDestinationFlag
+      paymentType
+      paymentMethod
+      destinationCountry
+      placeDestination
+      relatedServices
+      document
+      notes
+      unit
+      containerDetails
+      containerSize
+      containerType
+      requestType
+      forUserID
+      userID
+      statusText
+      agreement
+      RFF
+      updatedAt
+      __typename
+    }
+    RFQ {
+      id
+      createdAt
+      SType
+      rfqNo
+      rfqType
+      title
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      placeOriginCountry
+      landmark
+      unit
+      incoterms
+      placeDestinationName
+      placeDestination
+      placeDestinationFlag
+      destinationCountry
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      userID
+      RFQReplies {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          price
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeOriginCountry
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          forUserID
+          userID
+          statusText
+          agreement
+          RFQ
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    RFQReply {
+      id
+      createdAt
+      SType
+      rfqNo
+      rfqType
+      title
+      requestCategory
+      description
+      documents
+      productName
+      tags
+      qty
+      buyFrequency
+      budget
+      price
+      placeOrigin
+      placeOriginFlag
+      placeOriginName
+      landmark
+      unit
+      incoterms
+      placeDestinationName
+      placeOriginCountry
+      placeDestination
+      placeDestinationFlag
+      destinationCountry
+      deliveryPeriod
+      expiryDate
+      paymentType
+      paymentMethod
+      forUserID
+      userID
+      statusText
+      agreement
+      RFQ
+      updatedAt
+      __typename
+    }
+    Product {
+      id
+      createdAt
+      SType
+      title
+      productImage
+      image
+      images
+      description
+      productSpec
+      rating
+      tags
+      productCert
+      landmark
+      supplyCapacity
+      unit
+      minOrderQty
+      packageType
+      quantity
+      noOfReviews
+      transportMode
+      placeOrigin
+      dateAvailable
+      productDocs
+      productCertDocs
+      category
+      commodityCategory
+      userID
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      __typename
+    }
+    Message {
+      id
+      text
+      createdAt
+      readAt
+      SType
+      rffID
+      rfqID
+      rfqType
+      rffType
+      sellOfferID
+      requestID
+      requestTitle
+      requestQty
+      packageType
+      serviceType
+      requestPrice
+      serviceImage
+      requestFrom
+      requestFromImg
+      requestTo
+      requestToImg
+      status
+      image
+      file
+      replyToMessageID
+      forUserID
+      userID
+      chatroomID
+      updatedAt
+      __typename
+    }
+    chatroomID
+    Order {
+      id
+      createdAt
+      SType
+      requestID
+      orderType
+      orderStatus
+      totalAmount
+      orderDate
+      paidThrough
+      paymentResponse
+      userID
+      updatedAt
+      __typename
+    }
+    updatedAt
+    notificationSellOfferId
+    notificationSellOfferReplyId
+    notificationRFFId
+    notificationRFFReplyId
+    notificationRFQId
+    notificationRFQReplyId
+    notificationProductId
+    notificationMessageId
+    notificationOrderId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteNotificationSubscriptionVariables,
+  APITypes.OnDeleteNotificationSubscription
+>;
+export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChatRoom(
+  $filter: ModelSubscriptionUserChatRoomFilterInput
+) {
+  onCreateUserChatRoom(filter: $filter) {
+    id
+    chatRoomId
+    userId
+    chatRoom {
+      id
+      createdAt
+      SType
+      name
+      imageUri
+      lastMessage {
+        id
+        text
+        createdAt
+        readAt
+        SType
+        rffID
+        rfqID
+        rfqType
+        rffType
+        sellOfferID
+        requestID
+        requestTitle
+        requestQty
+        packageType
+        serviceType
+        requestPrice
+        serviceImage
+        requestFrom
+        requestFromImg
+        requestTo
+        requestToImg
+        status
+        image
+        file
+        replyToMessageID
+        forUserID
+        userID
+        chatroomID
+        updatedAt
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      users {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      updatedAt
+      chatRoomLastMessageId
+      __typename
+    }
+    user {
+      id
+      name
+      email
+      phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
+      rating
+      accountType
+      lastOnlineAt
+      lat
+      lng
+      ledgerBalance
+      address
+      city
+      state
+      zipCode
+      lga
+      website
+      incorporateDate
+      rcNumber
+      totalOrders
+      level
+      identification
+      identificationNumber
+      identityDocs
+      keyProduct
+      country
+      inviteCode
+      accountCategory
+      title
+      logo
+      backgroundImage
+      images
+      businessType
+      certifications
+      certsDoc
+      mainMarkets
+      memberShipType
+      sellerLevel
+      estRevenue
+      totalStaff
+      responseTime
+      languages
+      legalRep
+      overview
+      activeOrder
+      Orders {
+        items {
+          id
+          createdAt
+          SType
+          requestID
+          orderType
+          orderStatus
+          totalAmount
+          orderDate
+          paidThrough
+          paymentResponse
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Products {
+        items {
+          id
+          createdAt
+          SType
+          title
+          productImage
+          image
+          images
+          description
+          productSpec
+          rating
+          tags
+          productCert
+          landmark
+          supplyCapacity
+          unit
+          minOrderQty
+          packageType
+          quantity
+          noOfReviews
+          transportMode
+          placeOrigin
+          dateAvailable
+          productDocs
+          productCertDocs
+          category
+          commodityCategory
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Reviews {
+        items {
+          id
+          createdAt
+          SType
+          name
+          rating
+          comment
+          forUserID
+          userID
+          productID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFQS {
+        items {
+          id
+          createdAt
+          SType
+          rfqNo
+          rfqType
+          title
+          requestCategory
+          description
+          documents
+          productName
+          tags
+          qty
+          buyFrequency
+          budget
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          landmark
+          unit
+          incoterms
+          placeDestinationName
+          placeDestination
+          placeDestinationFlag
+          destinationCountry
+          deliveryPeriod
+          expiryDate
+          paymentType
+          paymentMethod
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      RFFS {
+        items {
+          id
+          createdAt
+          SType
+          rffNo
+          rffType
+          deliveryPeriod
+          requestCategory
+          rffRequestType
+          productName
+          handling
+          budget
+          loadDate
+          weight
+          qty
+          length
+          width
+          height
+          packageType
+          placeOrigin
+          placeOriginFlag
+          placeOriginName
+          placeOriginCountry
+          placeDestinationName
+          placeDestinationFlag
+          destinationCountry
+          placeDestination
+          relatedServices
+          document
+          notes
+          containerDetails
+          containerSize
+          containerType
+          requestType
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      SellOffers {
+        items {
+          id
+          createdAt
+          SType
+          sellOfferID
+          requestCategory
+          title
+          tags
+          productName
+          description
+          packageDesc
+          sellOfferImage
+          image
+          images
+          rfqType
+          packageType
+          placeOrigin
+          landmark
+          unit
+          deliveryDate
+          qtyMeasure
+          basePrice
+          fobPrice
+          paymentType
+          paymentMethod
+          offerValidity
+          agreement
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Wishlists {
+        items {
+          id
+          createdAt
+          SType
+          productImage
+          title
+          serviceType
+          supplyCapacity
+          minOrderQty
+          fobPrice
+          productID
+          userID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      Messages {
+        items {
+          id
+          text
+          createdAt
+          readAt
+          SType
+          rffID
+          rfqID
+          rfqType
+          rffType
+          sellOfferID
+          requestID
+          requestTitle
+          requestQty
+          packageType
+          serviceType
+          requestPrice
+          serviceImage
+          requestFrom
+          requestFromImg
+          requestTo
+          requestToImg
+          status
+          image
+          file
+          replyToMessageID
+          forUserID
+          userID
+          chatroomID
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
           __typename
         }
         nextToken
@@ -3792,13 +8620,13 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
       id
       createdAt
       SType
-      newMessages
       name
       imageUri
       lastMessage {
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -3820,6 +8648,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -3830,6 +8659,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -3851,6 +8681,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -3880,6 +8711,14 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
       name
       email
       phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -4125,24 +8964,12 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
         nextToken
         __typename
       }
-      Notifications {
-        items {
-          id
-          tile
-          description
-          userID
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
       Messages {
         items {
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -4164,6 +8991,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -4179,6 +9007,35 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           userId
           createdAt
           updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
           __typename
         }
         nextToken
@@ -4208,13 +9065,13 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
       id
       createdAt
       SType
-      newMessages
       name
       imageUri
       lastMessage {
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -4236,6 +9093,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -4246,6 +9104,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -4267,6 +9126,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -4296,6 +9156,14 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
       name
       email
       phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
+      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -4541,24 +9409,12 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
         nextToken
         __typename
       }
-      Notifications {
-        items {
-          id
-          tile
-          description
-          userID
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
       Messages {
         items {
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -4580,6 +9436,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -4595,6 +9452,35 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           userId
           createdAt
           updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      fcmToken
+      Notifications {
+        items {
+          id
+          createdAt
+          SType
+          type
+          readAt
+          title
+          description
+          requestType
+          userID
+          actorID
+          chatroomID
+          updatedAt
+          notificationSellOfferId
+          notificationSellOfferReplyId
+          notificationRFFId
+          notificationRFFReplyId
+          notificationRFQId
+          notificationRFQReplyId
+          notificationProductId
+          notificationMessageId
+          notificationOrderId
           __typename
         }
         nextToken

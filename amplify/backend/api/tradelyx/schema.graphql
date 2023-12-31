@@ -7,7 +7,6 @@ type ChatRoom @model @auth(rules: [{allow: public}]) {
       queryField: "chatRoomByDate"
       sortKeyFields: ["createdAt"]
     )
-  newMessages: Int
   name: String
   imageUri: String
   lastMessage: Message @hasOne
@@ -31,6 +30,7 @@ type Message @model @auth(rules: [{allow: public}]) {
   id: ID!
   text: String
   createdAt: AWSDateTime!
+  readAt: AWSTimestamp
   SType: String!
     @index(
       name: "messagesByDate"
@@ -58,15 +58,9 @@ type Message @model @auth(rules: [{allow: public}]) {
   file: String
   replyToMessageID: ID
 
+  forUserID: ID
   userID: ID! @index(name: "byUser")
   chatroomID: ID! @index(name: "byChatRoom")
-}
-
-type Notification @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  tile: String!
-  description: String!
-  userID: ID! @index(name: "byUser")
 }
 
 enum OrderStatus {
@@ -403,6 +397,38 @@ type Review @model @auth(rules: [{allow: public}]) {
   productID: ID! @index(name: "byProduct")
 }
 
+enum serviceType {
+  RFF
+  RFF_REPLY
+  RFQ
+  RFQ_REPLY
+  PRODUCTS
+  SELLOFFERS
+  SELLOFFERS_REPLY
+  CUSTOM_SELLOFFER
+  CUSTOM_SELLOFFER_REPLY
+}
+
+type Wishlist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "WishlistByDate"
+      queryField: "WishlistByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  productImage: String
+  title: String
+  serviceType: serviceType
+  supplyCapacity: String
+  minOrderQty: String
+  fobPrice: String
+  productID: String
+
+  userID: ID! @index(name: "byUser")
+}
+
 type Product @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime!
@@ -462,6 +488,14 @@ type User @model @auth(rules: [{allow: public}]) {
   name: String!
   email: String!
   phone_number: String
+  enableNotification: Boolean
+  enableNotificationProducts: Boolean
+  enableNotificationOrders: Boolean
+  enableNotificationPromotions: Boolean
+  enableNotificationRFF: Boolean
+  enableNotificationRFQ: Boolean
+  enableNotificationSellOffer: Boolean
+  enableNotificationMessages: Boolean
   rating: Float
   accountType: String
   lastOnlineAt: AWSTimestamp
@@ -509,41 +543,60 @@ type User @model @auth(rules: [{allow: public}]) {
   RFFS: [RFF] @hasMany(indexName: "byUser", fields: ["id"])
   SellOffers: [SellOffer] @hasMany(indexName: "byUser", fields: ["id"])
   Wishlists: [Wishlist] @hasMany(indexName: "byUser", fields: ["id"])
-  Notifications: [Notification] @hasMany(indexName: "byUser", fields: ["id"])
   Messages: [Message] @hasMany(indexName: "byUser", fields: ["id"])
   ChatRooms: [ChatRoom] @manyToMany(relationName: "UserChatRoom")
+
+  fcmToken: String
+  Notifications: [Notification] @hasMany(indexName: "byUser", fields: ["id"])
 }
 
-enum serviceType {
+enum NotificationType {
+  PRODUCT
+  SELLOFFER
+  SELLOFFERS_REPLY
+  CUSTOM_SELLOFFER
   RFF
   RFF_REPLY
   RFQ
   RFQ_REPLY
-  PRODUCTS
-  SELLOFFERS
-  SELLOFFERS_REPLY
-  CUSTOM_SELLOFFER
-  CUSTOM_SELLOFFER_REPLY
+  MESSAGE
+  ORDER
+  PROMOTIONS
 }
 
-type Wishlist @model @auth(rules: [{allow: public}]) {
+type Notification @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime!
   SType: String
     @index(
-      name: "WishlistByDate"
-      queryField: "WishlistByDate"
+      name: "notificationsByDate"
+      queryField: "notificationsByDate"
       sortKeyFields: ["createdAt"]
     )
-  productImage: String
+  type: NotificationType!
+  readAt: AWSTimestamp!
   title: String
-  serviceType: serviceType
-  supplyCapacity: String
-  minOrderQty: String
-  fobPrice: String
-  productID: String
+  description: String
+  requestType: String
+  chatroomID: String
 
-  userID: ID! @index(name: "byUser")
+  # The user we have to notify
+  userID: ID @index(name: "byUser")
+  User: User @belongsTo(fields: ["userID"])
+
+  # The user who triggered the notification
+  actorID: ID!
+  Actor: User @belongsTo(fields: ["actorID"])
+
+  SellOffer: SellOffer @hasOne
+  SellOfferReply: SellOfferReply @hasOne
+  RFF: RFF @hasOne
+  RFFReply: RFFReply @hasOne
+  RFQ: RFQ @hasOne
+  RFQReply: RFQReply @hasOne
+  Product: Product @hasOne
+  Message: Message @hasOne
+  Order: Order @hasOne
 }
 
 type Subscription {

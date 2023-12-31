@@ -21,6 +21,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "TradelyXMessagingFunction": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "tradelyxPostConfirmation": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

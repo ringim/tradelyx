@@ -89,6 +89,14 @@ exports.handler = async (event, context) => {
     memberShipType: 'Bronze',
     lat: 0,
     lng: 0,
+    enableNotification: false,
+    enableNotificationOrders: true,
+    enableNotificationPromotions: false,
+    enableNotificationRFF: true,
+    enableNotificationRFQ: true,
+    enableNotificationSellOffer: true,
+    enableNotificationMessages: true,
+    enableNotificationProducts: false
   };
 
   console.log('NEW USER', newUser);

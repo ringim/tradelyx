@@ -18,7 +18,8 @@ const SellOfferDetail2 = ({
   packageDesc,
   image,
   images,
-  showBtn
+  showBtn,
+  containerStyle
 }: any) => {
   function renderViewMore(onPress: any) {
     return (
@@ -43,7 +44,7 @@ const SellOfferDetail2 = ({
   }
 
   return (
-    <View>
+    <View style={{...containerStyle}}>
       {/* Horizontal Rule */}
       <View
         style={{

@@ -3,7 +3,7 @@ import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Storage} from 'aws-amplify';
 import {FlatList} from 'react-native-gesture-handler';
-import {useQuery, useSubscription} from '@apollo/client';
+import {useQuery, useMutation, useSubscription} from '@apollo/client';
 
 import {
   ChatHeader,
@@ -23,10 +23,13 @@ import {
   ListUserChatRoomsQueryVariables,
   OnCreateMessageByChatRoomIDSubscription,
   OnCreateMessageByChatRoomIDSubscriptionVariables,
+  UpdateMessageMutation,
+  UpdateMessageMutationVariables,
 } from '../../../API';
 import {
   listUserChatRooms,
   messagesByDate,
+  updateMessage,
   onCreateMessageByChatRoomID,
 } from '../../../queries/ChatQueries';
 
@@ -36,7 +39,7 @@ const Chat = () => {
   const route: any = useRoute<ChatRouteProp>();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
-  const [messages, setMessages] = useState<MessageModel[]>([]);
+  const [messages, setMessages] = useState<MessageModel[] | any>([]);
 
   // FETCH CHAT ROOM ID FILTER BY CHATROOM ID TO FIND USERS NAME & IMAGE IN THAT CHATROOM
   const {data: newData} = useQuery<
@@ -73,12 +76,43 @@ const Chat = () => {
       ?.filter((msg: any) => msg?.chatroomID === route?.params?.id)
       .filter((item: any) => !item?._deleted) || [];
 
+  // UPDATE NOTIFICATION
+  const [doUpdateMessage] = useMutation<
+    UpdateMessageMutation,
+    UpdateMessageMutationVariables
+  >(updateMessage);
+
+  useEffect(() => {
+    const readMessages = async () => {
+      const unreadMessages = fetchedMessages?.filter(
+        (n: {readAt: any}) => !n?.readAt,
+      );
+
+      await Promise.all(
+        unreadMessages.map(
+          (message: {id: any}) =>
+            message &&
+            doUpdateMessage({
+              variables: {
+                input: {
+                  id: message?.id,
+                  readAt: new Date().getTime(),
+                },
+              },
+            }),
+        ),
+      );
+    };
+
+    readMessages();
+  }, [fetchedMessages]);
+
   // RENDER CREATE MESSAGE SUBSCRIPTION UPDATE
   useEffect(() => {
     if (data?.onCreateMessageByChatRoomID) {
-      setMessages((existingMessage: any) => [
+      setMessages((existingMessages: MessageModel[]) => [
         data?.onCreateMessageByChatRoomID,
-        ...existingMessage,
+        ...existingMessages,
       ]);
     }
   }, [data]);
@@ -106,7 +140,7 @@ const Chat = () => {
         }}
         inverted
         ListFooterComponent={
-          <View style={{marginBottom: messages?.length - 1  ? 300 : 300,}} />
+          <View style={{marginBottom: messages?.length - 1 ? 300 : 300}} />
         }
       />
       <MessageInput chatRoom={route?.params} />

@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Pressable,
-} from 'react-native';
+import {View, Text, TouchableOpacity, Pressable} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
@@ -45,23 +39,12 @@ const PopularItem = ({
   }, [store_image]);
 
   // GET USER
-  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {
-        id: item?.userID,
-      },
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {
+      id: item?.userID,
     },
-  );
+  });
   const userInfo: any = data?.getUser;
-
-  if (loading) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="small" color={COLORS.primary6} />
-      </View>
-    );
-  }
 
   return (
     <Pressable

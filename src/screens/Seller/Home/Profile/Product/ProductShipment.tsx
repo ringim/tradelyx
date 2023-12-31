@@ -1,16 +1,16 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {v4 as uuidV4} from 'uuid';
 import FastImage from 'react-native-fast-image';
-import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import dayjs from 'dayjs';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 
 import {
   FormInput,
@@ -19,16 +19,30 @@ import {
   TextButton,
   SellerLocationMapHeader,
   ExpiryDate,
+  LoadingIndicator,
 } from '../../../../../components';
 import {
   UpdateProductInput,
   UpdateProductMutation,
   UpdateProductMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  GetProductQuery,
+  GetProductQueryVariables,
+  CreateNotificationInput,
+  NotificationType,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../../../../API';
-import {updateProduct} from '../../../../../queries/ProductQueries';
+import {getProduct, updateProduct} from '../../../../../queries/ProductQueries';
 import {COLORS, FONTS, images, SIZES, icons} from '../../../../../constants';
+import {createNotification} from '../../../../../queries/NotificationQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
+import {getUser} from '../../../../../queries/UserQueries';
 
 const InternationalEngagementTerms = () => {
+  const {userID} = useAuthContext();
+
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
 
@@ -54,6 +68,24 @@ const InternationalEngagementTerms = () => {
     setDate(selectedDate);
     hideDatePicker();
   };
+
+  // GET USER
+  const {data: newData, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+  const userInfo: any = newData?.getUser?.title;
+
+  // GET PRODUCT DETAIL
+  const {data, loading: onLoad} = useQuery<
+    GetProductQuery,
+    GetProductQueryVariables
+  >(getProduct, {variables: {id: route?.params.productID}});
+  const ProductDetail = data?.getProduct?.title;
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateProduct] = useMutation<
@@ -95,6 +127,37 @@ const InternationalEngagementTerms = () => {
     }
   };
 
+  // CREATE AIR RFF NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF,
+        readAt: 0,
+        actorID: userID,
+        requestType: 'PRODUCT',
+        notificationProductId: route?.params.productID,
+        description: `${userInfo} posted a new Item - ${ProductDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
+    }
+  };
+
   useEffect(() => {
     let unmounted = true;
     if (route.params?.userAddress) {
@@ -115,7 +178,7 @@ const InternationalEngagementTerms = () => {
       <View
         style={{
           marginHorizontal: SIZES.margin,
-          marginBottom: 100
+          marginBottom: 100,
         }}>
         {/* port of loading */}
         <FormInput
@@ -207,6 +270,10 @@ const InternationalEngagementTerms = () => {
         />
       </View>
     );
+  }
+
+  if (onLoad || newLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

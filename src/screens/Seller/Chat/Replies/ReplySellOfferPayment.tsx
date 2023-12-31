@@ -74,7 +74,7 @@ const ReplySellOfferPayment = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
   const route: any = useRoute<any>();
 
-  // console.log(route?.params?.chatRoomID);
+  // console.log(route?.params?.forUserID);
 
   const {control, setValue, handleSubmit}: any = useForm();
 
@@ -103,6 +103,11 @@ const ReplySellOfferPayment = () => {
   const [value3, setValue3] = useState(null);
   const [type3, setType3] = useState('');
   const [jobType3, setJobType3] = useState<any>(constants.paymentType2);
+
+  const [open4, setOpen4] = useState(false);
+  const [value4, setValue4] = useState(null);
+  const [type4, setType4] = useState('');
+  const [jobType4, setJobType4] = useState<any>(constants.packageType);
 
   const handleInputChange = (input: any) => {
     const formattedValue = formatNumericValue(input, price);
@@ -197,7 +202,7 @@ const ReplySellOfferPayment = () => {
         description: getSellOfferDetail?.description,
         rfqType: getSellOfferDetail?.rfqType,
         packageDesc: getSellOfferDetail?.packageDesc,
-        packageType: getSellOfferDetail?.packageType,
+        packageType: type4,
         userID: getSellOfferDetail?.userID,
         basePrice: price,
         paymentType: type3,
@@ -208,6 +213,7 @@ const ReplySellOfferPayment = () => {
         qtyMeasure: qty,
         landmark,
         placeOrigin: address1?.description?.formatted_address,
+        forUserID: route?.params?.forUserID,
         unit: type,
         SellOffer: getSellOfferDetail?.id,
       };
@@ -277,6 +283,10 @@ const ReplySellOfferPayment = () => {
     }
   };
 
+  function isSubmit() {
+    return price !== '' && singleFile?.length !== 0;
+  }
+
   function requestForm() {
     return (
       <View
@@ -320,7 +330,12 @@ const ReplySellOfferPayment = () => {
               required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
-              <View style={{justifyContent: 'center', marginTop: 30}}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: 30,
+                  marginStart: -SIZES.padding * 2,
+                }}>
                 <DropDownPicker
                   schema={{
                     label: 'type',
@@ -388,6 +403,92 @@ const ReplySellOfferPayment = () => {
             )}
           />
         </View>
+
+        {/* Package Type */}
+        <Controller
+          control={control}
+          name="packageType"
+          rules={{
+            required: 'Package type is required',
+          }}
+          render={({field: {value, onChange}, fieldState: {error}}: any) => (
+            <>
+              <Text
+                style={{
+                  marginTop: SIZES.radius,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                }}>
+                Package Type:
+              </Text>
+              <DropDownPicker
+                schema={{
+                  label: 'type',
+                  value: 'type',
+                  icon: 'icon',
+                }}
+                onChangeValue={onChange}
+                open={open4}
+                showArrowIcon={true}
+                placeholder="Select Package Type"
+                showTickIcon={true}
+                dropDownDirection="AUTO"
+                listMode="MODAL"
+                value={value4}
+                items={jobType4}
+                setOpen={setOpen4}
+                setValue={setValue4}
+                setItems={setJobType4}
+                style={{
+                  borderRadius: SIZES.base,
+                  height: 40,
+                  marginTop: SIZES.radius,
+                  borderColor: COLORS.Neutral7,
+                  borderWidth: 0.5,
+                  ...FONTS.body2,
+                }}
+                placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
+                textStyle={{color: COLORS.Neutral1}}
+                closeIconStyle={{
+                  width: 25,
+                  height: 25,
+                }}
+                modalProps={{
+                  animationType: 'fade',
+                }}
+                ArrowDownIconComponent={({style}) => (
+                  <FastImage
+                    source={icons.down}
+                    style={{width: 15, height: 15}}
+                  />
+                )}
+                modalContentContainerStyle={{
+                  paddingHorizontal: SIZES.padding * 3,
+                }}
+                modalTitle="Select"
+                modalTitleStyle={{
+                  fontWeight: '600',
+                }}
+                onSelectItem={(value: any) => {
+                  setType4(value?.type);
+                }}
+              />
+              {error && (
+                <Text
+                  style={{
+                    ...FONTS.cap1,
+                    color: COLORS.Rose4,
+                    top: 14,
+                    left: 5,
+                    marginBottom: 2,
+                  }}>
+                  This field is required.
+                </Text>
+              )}
+            </>
+          )}
+        />
 
         {/* base price */}
         <View
@@ -788,11 +889,11 @@ const ReplySellOfferPayment = () => {
 
         <View style={{justifyContent: 'flex-end'}}>
           <TextButton
-            // disabled={isSubmit() ? false : true}
+            disabled={isSubmit() ? false : true}
             buttonContainerStyle={{
               marginBottom: SIZES.padding,
               marginTop: SIZES.radius,
-              // backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
+              backgroundColor: isSubmit() ? COLORS.primary1 : COLORS.Neutral7,
             }}
             label="Continue"
             onPress={handleSubmit(onSubmit)}

@@ -305,7 +305,7 @@ const CustomPackingShipment = () => {
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
         <Header
-          title={'Create Sell Offer'}
+          title={'Create Custom Sell Offer'}
           contentStyle={{marginBottom: 0}}
           tintColor={COLORS.Neutral1}
         />

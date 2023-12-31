@@ -1,4 +1,4 @@
-import {View, Text, Platform} from 'react-native';
+import {View, Text, TouchableOpacity, Platform} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -18,7 +18,6 @@ import {
   Header,
   ImageUpload,
   QuotationProgress2,
-  SingleImage,
   TextButton,
   Tags as RenderTags,
   RequestTags,
@@ -334,11 +333,37 @@ const SellOffer = () => {
               }
             />
           ) : selectedPhoto ? (
-            <SingleImage
-              showEdit={true}
-              product={selectedPhoto}
-              onPress={setSelectedPhoto}
-            />
+            <View style={{marginTop: SIZES.padding}}>
+              <FastImage
+                source={{
+                  uri: selectedPhoto,
+                  priority: FastImage.priority.high,
+                }}
+                style={{
+                  height: 100,
+                  width: 100,
+                  overflow: 'hidden',
+                  borderRadius: SIZES.radius,
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => setSelectedPhoto(null)}
+                style={{
+                  padding: SIZES.base,
+                  top: -18,
+                  left: 90,
+                  borderRadius: SIZES.margin,
+                  backgroundColor: COLORS.NeutralBlue10,
+                  position: 'absolute',
+                }}>
+                <FastImage
+                  source={icons.remove}
+                  style={{width: 20, height: 20}}
+                  tintColor={COLORS.Rose5}
+                  resizeMode={FastImage.resizeMode.contain}
+                />
+              </TouchableOpacity>
+            </View>
           ) : (
             <MultipleImages
               selectedPhotos={selectedPhotos}

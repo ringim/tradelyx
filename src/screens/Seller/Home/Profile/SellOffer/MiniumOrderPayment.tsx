@@ -3,11 +3,12 @@ import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {v4 as uuidV4} from 'uuid';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
@@ -17,16 +18,31 @@ import {
   QuotationProgress2,
   FormInput,
   ExpiryDate,
+  LoadingIndicator,
 } from '../../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {
+  CreateNotificationInput,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  GetSellOfferQuery,
+  GetSellOfferQueryVariables,
+  NotificationType,
   UpdateSellOfferInput,
   UpdateSellOfferMutation,
   UpdateSellOfferMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables
 } from '../../../../../API';
-import {updateSellOffer} from '../../../../../queries/SellOfferQueries';
+import {
+  getSellOffer,
+  updateSellOffer,
+} from '../../../../../queries/SellOfferQueries';
 import {formatNumericValue} from '../../../../../utilities/service';
+import {createNotification} from '../../../../../queries/NotificationQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
+import { getUser } from '../../../../../queries/UserQueries';
 
 interface IFreight {
   moq: string;
@@ -35,6 +51,8 @@ interface IFreight {
 }
 
 const MiniumOrderPayment = () => {
+  const {userID} = useAuthContext();
+
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
 
@@ -83,8 +101,30 @@ const MiniumOrderPayment = () => {
     return price !== '';
   }
 
+    // GET USER
+    const {data: newData, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+  const userInfo: any = newData?.getUser?.title;
+
+  // GET SELL OFFER DETAIL
+  const {data, loading: onLoad} = useQuery<
+    GetSellOfferQuery,
+    GetSellOfferQueryVariables
+  >(getSellOffer, {
+    variables: {
+      id: route?.params.sellOfferID,
+    },
+  });
+  const sellOfferDetail = data?.getSellOffer?.title;
+
   // UPDATE REQUEST QUOTATION
-  const [doCreateSellOffer] = useMutation<
+  const [doUpdateSellOffer] = useMutation<
     UpdateSellOfferMutation,
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
@@ -105,13 +145,12 @@ const MiniumOrderPayment = () => {
         qtyMeasure: qty,
         unit: type,
       };
-
-      await doCreateSellOffer({
+      await doUpdateSellOffer({
         variables: {
           input,
         },
       });
-      // console.log('job data', input);
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService3'}],
@@ -124,6 +163,37 @@ const MiniumOrderPayment = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CREATE SELL OFFER NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.SELLOFFER,
+        readAt: 0,
+        requestType: 'SELL OFFER',
+        actorID: userID,
+        notificationSellOfferId: route?.params.sellOfferID,
+        description: `${userInfo} posted a Sell Offer - ${sellOfferDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -157,7 +227,7 @@ const MiniumOrderPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 180,
+              width: 150,
             }}
           />
           {/* Quantity & Unit Measurement */}
@@ -168,7 +238,12 @@ const MiniumOrderPayment = () => {
               required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
-              <View style={{justifyContent: 'center', marginTop: 30}}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: 30,
+                  marginStart: -SIZES.padding * 2,
+                }}>
                 <DropDownPicker
                   schema={{
                     label: 'type',
@@ -192,7 +267,7 @@ const MiniumOrderPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 150,
+                    width: 200,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -469,6 +544,10 @@ const MiniumOrderPayment = () => {
         />
       </View>
     );
+  }
+
+  if (onLoad ||newLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

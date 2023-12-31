@@ -1,27 +1,5 @@
 import {gql} from '@apollo/client';
 
-export const listChatRoom = gql`
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      ChatRooms {
-        items {
-          chatRoom {
-            id
-            users {
-              items {
-                user {
-                  id
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 export const getUser = gql`
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -69,78 +47,7 @@ export const getUser = gql`
       legalRep
       overview
       activeOrder
-      ChatRooms {
-        items {
-          id
-          chatRoomId
-          userId
-          chatRoom {
-            id
-            createdAt
-            SType
-            newMessages
-            name
-            imageUri
-            updatedAt
-            chatRoomLastMessageId
-            __typename
-          }
-          user {
-            id
-            name
-            email
-            phone_number
-            rating
-            accountType
-            lastOnlineAt
-            lat
-            lng
-            ledgerBalance
-            address
-            city
-            state
-            zipCode
-            lga
-            website
-            incorporateDate
-            rcNumber
-            totalOrders
-            level
-            identification
-            identificationNumber
-            identityDocs
-            keyProduct
-            country
-            inviteCode
-            accountCategory
-            title
-            logo
-            backgroundImage
-            images
-            businessType
-            certifications
-            certsDoc
-            mainMarkets
-            memberShipType
-            sellerLevel
-            estRevenue
-            totalStaff
-            responseTime
-            languages
-            legalRep
-            overview
-            activeOrder
-            createdAt
-            updatedAt
-            __typename
-          }
-          createdAt
-          updatedAt
-          __typename
-        }
-        nextToken
-        __typename
-      }
+      fcmToken
       createdAt
       updatedAt
       __typename
@@ -205,64 +112,6 @@ export const listUsers = gql`
             id
             chatRoomId
             userId
-            chatRoom {
-              id
-              newMessages
-              imageUri
-              createdAt
-              updatedAt
-              chatRoomLastMessageId
-              __typename
-            }
-            user {
-              id
-              name
-              email
-              phone_number
-              rating
-              accountType
-              lastOnlineAt
-              lat
-              lng
-              ledgerBalance
-              address
-              city
-              state
-              zipCode
-              lga
-              website
-              incorporateDate
-              rcNumber
-              totalOrders
-              level
-              identification
-              identificationNumber
-              identityDocs
-              keyProduct
-              country
-              inviteCode
-              accountCategory
-              title
-              logo
-              backgroundImage
-              images
-              businessType
-              certifications
-              certsDoc
-              mainMarkets
-              memberShipType
-              sellerLevel
-              estRevenue
-              totalStaff
-              responseTime
-              languages
-              legalRep
-              overview
-              activeOrder
-              createdAt
-              updatedAt
-              __typename
-            }
             createdAt
             updatedAt
             __typename
@@ -270,6 +119,7 @@ export const listUsers = gql`
           nextToken
           __typename
         }
+        fcmToken
         createdAt
         updatedAt
         __typename
@@ -330,6 +180,7 @@ export const updateUser = gql`
       legalRep
       overview
       activeOrder
+      fcmToken
     }
   }
 `;

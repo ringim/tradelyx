@@ -135,7 +135,7 @@ const Pending = () => {
     pollInterval: 500,
     fetchPolicy: 'network-only',
     variables: {
-      SType: 'SType',
+      SType: 'SELLOFFERREPLY',
       sortDirection: ModelSortDirection.DESC,
     },
   });
@@ -158,9 +158,9 @@ const Pending = () => {
 
   useEffect(() => {
     const sellOffers: any =
-      sellOfferData?.sellOffersByDate?.items.filter(
-        (item: any) => !item?._deleted,
-      ) || [];
+      sellOfferData?.sellOffersByDate?.items
+        ?.filter(usrId => usrId?.userID === userID)
+        .filter((item: any) => !item?._deleted) || [];
     setSellOffers(sellOffers);
   }, [sellOfferData, sellOfferLoad]);
 

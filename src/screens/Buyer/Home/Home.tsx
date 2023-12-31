@@ -1,4 +1,4 @@
-import {View, Platform} from 'react-native';
+import {View, Platform, ActivityIndicator} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
@@ -157,6 +157,18 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
     );
   }
 
+  if (loading || newLoad) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator
+          style={{justifyContent: 'center'}}
+          size={'large'}
+          color={COLORS.primary6}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral10}}>
       <TabHeader
@@ -222,7 +234,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
               marginBottom: products?.length - 1 ? 150 : 150,
               backgroundColor: COLORS.white,
             }}>
-            <SeeAll onPress={() => navigation.navigate('Search')} />
+            <SeeAll onPress={() => navigation.navigate('AllProducts')} />
             {/* Recommended sellers */}
             {renderRecommended()}
           </View>

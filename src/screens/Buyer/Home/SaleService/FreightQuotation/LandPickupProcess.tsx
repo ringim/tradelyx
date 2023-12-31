@@ -3,12 +3,13 @@ import React, {useState, useRef, useEffect} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+import {v4 as uuidV4} from 'uuid';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import FastImage from 'react-native-fast-image';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 
 import {
   FormInput,
@@ -18,6 +19,7 @@ import {
   TextButton,
   QuotationProgress2,
   RelatedService,
+  LoadingIndicator,
 } from '../../../../../components';
 import {
   COLORS,
@@ -28,17 +30,25 @@ import {
   images,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
-import {updateRFF} from '../../../../../queries/RFFQueries';
+import {getRFF, updateRFF} from '../../../../../queries/RFFQueries';
 import {
+  CreateNotificationInput,
+  RFFTYPE,
   UpdateRFFInput,
   UpdateRFFMutation,
   UpdateRFFMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
+  GetRFFQuery,
+  GetRFFQueryVariables,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
 import {
   formatNumericValue,
   getCountryFlag,
 } from '../../../../../utilities/service';
+import {createNotification} from '../../../../../queries/NotificationQueries';
 
 const LandPickupProcess = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -87,8 +97,15 @@ const LandPickupProcess = () => {
     );
   }, [address2]);
 
+  // GET RFF DETAIL
+  const {data, loading: onLoad} = useQuery<GetRFFQuery, GetRFFQueryVariables>(
+    getRFF,
+    {variables: {id: route?.params.rffID}},
+  );
+  const rffDetail = data?.getRFF?.productName;
+
   // CREATE UPDATE RFF
-  const [doUpdateRFQ] = useMutation<
+  const [doUpdateRFF] = useMutation<
     UpdateRFFMutation,
     UpdateRFFMutationVariables
   >(updateRFF);
@@ -115,11 +132,12 @@ const LandPickupProcess = () => {
         notes,
         userID,
       };
-      await doUpdateRFQ({
+      await doUpdateRFF({
         variables: {
           input,
         },
       });
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService', params: {type: 'Land Request'}}],
@@ -133,6 +151,37 @@ const LandPickupProcess = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CREATE LAND RFF NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF,
+        readAt: 0,
+        actorID: userID,
+        requestType: RFFTYPE?.LAND,
+        notificationRFFId: route?.params.rffID,
+        description: `Buyer's request - ${rffDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -450,6 +499,10 @@ const LandPickupProcess = () => {
         </View>
       </View>
     );
+  }
+
+  if (onLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

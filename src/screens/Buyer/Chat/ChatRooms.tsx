@@ -1,7 +1,7 @@
 import {View, ActivityIndicator, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useQuery} from '@apollo/client';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useMutation, useQuery} from '@apollo/client';
 
 import {BChatRoomItem, HR, SearchBox2, TabHeader} from '../../../components';
 import {COLORS, SIZES} from '../../../constants';
@@ -12,9 +12,19 @@ import {
   GetUserQueryVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
+  UpdateNotificationMutation,
+  UpdateNotificationMutationVariables,
+  NotificationsByDateQuery,
+  NotificationsByDateQueryVariables,
+  ModelSortDirection,
+  NotificationType,
 } from '../../../API';
 import {ChatStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
 import {listUserChatRooms} from '../../../queries/ChatQueries';
+import {
+  notificationsByDate,
+  updateNotification,
+} from '../../../queries/NotificationQueries';
 
 const ChatRooms = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
@@ -38,7 +48,6 @@ const ChatRooms = () => {
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms, {
-    pollInterval: 500,
     fetchPolicy: 'network-only',
   });
 
@@ -58,26 +67,88 @@ const ChatRooms = () => {
     }
   };
 
+  // LIST NOTIFICATIONS
+  const {data: onData, loading: onLoad} = useQuery<
+    NotificationsByDateQuery,
+    NotificationsByDateQueryVariables
+  >(notificationsByDate, {
+    variables: {
+      SType: 'NOTIFICATION',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allNotifee =
+    onData?.notificationsByDate?.items
+      ?.filter(ty => ty?.type === NotificationType?.MESSAGE)
+      ?.filter(usrID => usrID?.userID !== userID)
+      ?.filter(msg => msg?.Message)
+      ?.filter((item: any) => !item?._deleted && !item?.readAt) || [];
+
+  // UPDATE NOTIFICATION
+  const [doUpdateNotification] = useMutation<
+    UpdateNotificationMutation,
+    UpdateNotificationMutationVariables
+  >(updateNotification);
+
+  useFocusEffect(
+    useCallback(() => {
+      const readNotifications = async () => {
+        const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
+        // const first = unreadNotifee[0]
+
+        await Promise.all(
+          unreadNotifee.map(
+            notification =>
+              notification &&
+              doUpdateNotification({
+                variables: {
+                  input: {
+                    id: notification?.id,
+                    readAt: new Date().getTime(),
+                  },
+                },
+              }),
+          ),
+        );
+      };
+      // await doUpdateNotification({
+      //   variables: {
+      //     input: {
+      //       id: '',
+      //       readAt: new Date().getTime()
+      //     }
+      //   }
+      // })
+      readNotifications();
+    }, [allNotifee]),
+  );
+
   useEffect(() => {
     let isCurrent = true;
-    const items =
-      isCurrent &&
-      data?.listUserChatRooms?.items
-        ?.filter(cru => cru?.userId === userID)
-        .map(chatRoomUser => chatRoomUser?.chatRoom);
 
-    const sortedRooms = items?.sort(
-      (r1, r2) => new Date(r2.updatedAt) - new Date(r1.updatedAt),
+    if (!data?.listUserChatRooms?.items || !userID) {
+      return;
+    }
+
+    const items = data.listUserChatRooms.items
+      .filter(cru => cru?.userId === userID)
+      .map(chatRoomUser => chatRoomUser?.chatRoom);
+
+    const sortedRooms = items.sort(
+      (r1: any, r2: any) => +new Date(r2?.updatedAt) - +new Date(r1?.updatedAt),
     );
-    setFilteredDataSource(sortedRooms);
-    setMasterDataSource(sortedRooms);
+
+    if (isCurrent) {
+      setFilteredDataSource(sortedRooms);
+      setMasterDataSource(sortedRooms);
+    }
 
     return () => {
       isCurrent = false;
     };
-  }, [data]);
+  }, [data, userID]);
 
-  if (loading || newLoad) {
+  if (loading || newLoad || onLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size={'large'} color={COLORS.primary6} />

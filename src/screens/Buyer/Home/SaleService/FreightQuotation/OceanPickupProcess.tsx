@@ -8,7 +8,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
-import {useMutation} from '@apollo/client';
+import {v4 as uuidV4} from 'uuid';
+import {useMutation, useQuery} from '@apollo/client';
 
 import {
   FormInput,
@@ -18,6 +19,7 @@ import {
   QuotationProgress2,
   SellerLocationMapHeader,
   RelatedService,
+  LoadingIndicator,
 } from '../../../../../components';
 import {
   COLORS,
@@ -32,10 +34,21 @@ import {
   UpdateRFFInput,
   UpdateRFFMutation,
   UpdateRFFMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
+  CreateNotificationInput,
+  GetRFFQuery,
+  GetRFFQueryVariables,
+  RFFTYPE,
 } from '../../../../../API';
-import {updateRFF} from '../../../../../queries/RFFQueries';
+import {getRFF, updateRFF} from '../../../../../queries/RFFQueries';
 import {useAuthContext} from '../../../../../context/AuthContext';
-import {formatNumericValue, getCountryFlag} from '../../../../../utilities/service';
+import {
+  formatNumericValue,
+  getCountryFlag,
+} from '../../../../../utilities/service';
+import {createNotification} from '../../../../../queries/NotificationQueries';
 
 const OceanPickupProcess = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -80,8 +93,15 @@ const OceanPickupProcess = () => {
 
   // console.log(value);
 
+  // GET RFF DETAIL
+  const {data, loading: onLoad} = useQuery<GetRFFQuery, GetRFFQueryVariables>(
+    getRFF,
+    {variables: {id: route?.params.rffID}},
+  );
+  const rffDetail = data?.getRFF?.productName;
+
   // CREATE UPDATE RFF
-  const [doUpdateRFQ] = useMutation<
+  const [doUpdateRFF] = useMutation<
     UpdateRFFMutation,
     UpdateRFFMutationVariables
   >(updateRFF);
@@ -107,11 +127,12 @@ const OceanPickupProcess = () => {
         notes,
         userID,
       };
-      const res = await doUpdateRFQ({
+      const res = await doUpdateRFF({
         variables: {
           input,
         },
       });
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService', params: {type: 'Ocean Request'}}],
@@ -124,6 +145,37 @@ const OceanPickupProcess = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CREATE LAND RFF NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF,
+        readAt: 0,
+        actorID: userID,
+        requestType: RFFTYPE?.OCEAN,
+        notificationRFFId: route?.params.rffID,
+        description: `Buyer's request - ${rffDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -444,6 +496,10 @@ const OceanPickupProcess = () => {
         </View>
       </View>
     );
+  }
+
+  if (onLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

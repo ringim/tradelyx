@@ -39,6 +39,7 @@ import {
   selectFile2,
   uploadFile2,
 } from '../../../../../utilities/service';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 interface IProductQuotation {
   files: any;
@@ -122,7 +123,6 @@ const InternationalEngagementTerms = () => {
           input,
         },
       });
-      // console.log('job data', input);
       navigation.navigate('InternationalPaymentQuotation', {rfqID: input.id});
     } catch (error) {
       Toast.show({

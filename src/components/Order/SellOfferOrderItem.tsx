@@ -209,7 +209,7 @@ const SellOfferOrderItem = ({
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.h5, color: statusColor}}>
-              Sell Offer Reply Sent
+              Sell Offer Replied
             </Text>
           </View>
           <View

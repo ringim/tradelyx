@@ -318,6 +318,8 @@ const SellOfferDetails = () => {
           </View>
           <View
             style={{
+              flex: 3,
+              alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
             <Text

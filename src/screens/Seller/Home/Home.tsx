@@ -9,7 +9,7 @@ import {
   PerformanceTab,
   OrderTab,
   ServiceModal2,
-  TabHeader,
+  TabHeader2,
   PromoSection,
 } from '../../../components';
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
@@ -17,6 +17,7 @@ import {toggleCameraModal} from '../../../redux/modal/modalActions';
 import {GetUserQuery, GetUserQueryVariables} from '../../../API';
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
+import {notificationsByDate} from '../../../queries/NotificationQueries';
 
 const Home = ({showCameraModal, toggleCameraModal}: any) => {
   const {userID} = useAuthContext();
@@ -67,7 +68,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <TabHeader userImage={user?.logo} />
+      <TabHeader2 userImage={user?.logo} />
 
       {/* Modal */}
       <ServiceModal2

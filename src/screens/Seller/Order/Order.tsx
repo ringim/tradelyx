@@ -9,7 +9,7 @@ import React, {useState, useCallback, useRef} from 'react';
 import {useQuery} from '@apollo/client';
 
 import {COLORS, SIZES, constants, FONTS, images} from '../../../constants';
-import {TabHeader} from '../../../components';
+import {TabHeader2} from '../../../components';
 import Pending from './Pending';
 import InProgress from './InProgress';
 import Complete from './Complete';
@@ -114,9 +114,10 @@ const Tabs = ({scrollX, onTabPress}: any) => {
           <TouchableOpacity
             key={index}
             style={{
-              paddingHorizontal: SIZES.radius,
+              paddingHorizontal: SIZES.margin,
               justifyContent: 'center',
-              width: 140,
+              marginHorizontal: -SIZES.base,
+              width: 150,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View
@@ -124,6 +125,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
                 backgroundColor: bgColor,
                 paddingVertical: SIZES.height > 700 ? SIZES.radius : SIZES.base,
                 borderRadius: SIZES.margin,
+                marginBottom: 5
               }}>
               <Animated.Text
                 style={{
@@ -164,7 +166,6 @@ const Order = () => {
     return (
       <View
         style={{
-          flex: 0.07,
           alignItems: 'center',
           backgroundColor: COLORS.white,
           borderRadius: SIZES.base,
@@ -229,7 +230,7 @@ const Order = () => {
   }
   return (
     <View style={{flex: 1, backgroundColor: COLORS.Neutral9}}>
-      <TabHeader
+      <TabHeader2
         userImage={user?.logo}
         containerStyle={{
           paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,

@@ -3,11 +3,12 @@ import {FlatList} from 'react-native-gesture-handler';
 import React, {useState, useRef, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useForm} from 'react-hook-form';
+import {v4 as uuidV4} from 'uuid';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import Geocoder from 'react-native-geocoding';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
@@ -19,6 +20,7 @@ import {
   SellerLocationMapHeader,
   QuotationProgress2,
   RelatedService,
+  LoadingIndicator,
 } from '../../../../../components';
 import {
   COLORS,
@@ -29,18 +31,31 @@ import {
   icons,
 } from '../../../../../constants';
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
-import {updateRFF} from '../../../../../queries/RFFQueries';
+import {getRFF, updateRFF} from '../../../../../queries/RFFQueries';
 import {
   UpdateRFFInput,
   UpdateRFFMutation,
   UpdateRFFMutationVariables,
+  CreateNotificationInput,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
+  RFFTYPE,
+  GetRFFQuery,
+  GetRFFQueryVariables,
 } from '../../../../../API';
 import {GOOGLE_MAPS_APIKEY} from '../../../../../utilities/Utils';
-import {formatNumericValue, getCountryFlag} from '../../../../../utilities/service';
+import {
+  formatNumericValue,
+  getCountryFlag,
+} from '../../../../../utilities/service';
+import {createNotification} from '../../../../../queries/NotificationQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 const AirPickupProcess = () => {
   Geocoder.init(GOOGLE_MAPS_APIKEY, {language: 'en'});
 
+  const {userID} = useAuthContext();
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
 
@@ -85,8 +100,15 @@ const AirPickupProcess = () => {
     );
   }, [address2]);
 
+  // GET RFF DETAIL
+  const {data, loading: onLoad} = useQuery<GetRFFQuery, GetRFFQueryVariables>(
+    getRFF,
+    {variables: {id: route?.params.rffID}},
+  );
+  const rffDetail = data?.getRFF?.productName;
+
   // CREATE UPDATE RFF
-  const [doUpdateRFQ] = useMutation<
+  const [doUpdateRFF] = useMutation<
     UpdateRFFMutation,
     UpdateRFFMutationVariables
   >(updateRFF);
@@ -100,7 +122,6 @@ const AirPickupProcess = () => {
       const input: UpdateRFFInput = {
         id: route?.params.rffID,
         SType: 'RFF',
-        // city: cCity, //city
         placeOriginName: address1?.description?.formatted_address, // address
         placeOrigin: cCity, //city
         placeOriginCountry: cName, // country
@@ -113,12 +134,12 @@ const AirPickupProcess = () => {
         budget: amount,
         notes,
       };
-      await doUpdateRFQ({
+      await doUpdateRFF({
         variables: {
           input,
         },
       });
-      // console.log('job data', input);
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService', params: {type: 'Air Request'}}],
@@ -131,6 +152,37 @@ const AirPickupProcess = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CREATE AIR RFF NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF,
+        readAt: 0,
+        actorID: userID,
+        requestType: RFFTYPE?.AIR,
+        notificationRFFId: route?.params.rffID,
+        description: `Buyer's request - ${rffDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -452,6 +504,10 @@ const AirPickupProcess = () => {
         </View>
       </View>
     );
+  }
+
+  if (onLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

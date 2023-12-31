@@ -39,7 +39,11 @@ import {
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
-import {formatNumericValue, selectFile2, uploadFile2} from '../../../../utilities/service';
+import {
+  formatNumericValue,
+  selectFile2,
+  uploadFile2,
+} from '../../../../utilities/service';
 
 interface IFreight {
   qty: number;
@@ -256,7 +260,7 @@ const ReplyRFQDomesticPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 180,
+              width: 150,
             }}
           />
           {/* Quantity & Unit Measurement */}
@@ -267,7 +271,12 @@ const ReplyRFQDomesticPayment = () => {
               required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
-              <View style={{justifyContent: 'center', marginTop: 30}}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: 30,
+                  marginStart: -SIZES.padding * 2,
+                }}>
                 <DropDownPicker
                   schema={{
                     label: 'type',

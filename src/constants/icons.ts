@@ -31,6 +31,7 @@ const brochure = require('../assets/icons/brochure.png');
 const right_arrow = require('../assets/icons/arrow_right.png');
 const backward = require('../assets/icons/backward.png');
 const save = require('../assets/icons/saved.png');
+const clipboard = require('../assets/icons/clipboard.png');
 const share = require('../assets/icons/share.png');
 const right = require('../assets/icons/right.png');
 const star = require('../assets/icons/star.png');
@@ -53,6 +54,7 @@ const checkCircle = require('../assets/icons/select.png');
 const down = require('../assets/icons/down.png');
 const calender = require('../assets/icons/calender.png');
 const category = require('../assets/icons/category.png');
+const config = require('../assets/icons/gear.png');
 const info = require('../assets/icons/info.png');
 const currency = require('../assets/icons/currency.png');
 const rating = require('../assets/icons/rating.png');
@@ -112,6 +114,7 @@ export default {
   sent,
   tick,
   pricing,
+  config,
   dots,
   backward,
   onlineIcon,
@@ -194,6 +197,7 @@ export default {
   eye,
   eye_close,
   back,
+  clipboard,
   arrow_down_fill,
   password,
   search,

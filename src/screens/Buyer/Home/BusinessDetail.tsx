@@ -80,7 +80,7 @@ const BusinessDetail = () => {
       <FlatList
         data={allReview}
         showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item}
         ListHeaderComponent={
           <>
             {/* Store Detail */}
@@ -175,7 +175,7 @@ const BusinessDetail = () => {
           return <ReviewItem key={index} item={item} />;
         }}
         ListFooterComponent={
-          <View style={{marginBottom: reviews?.length - 1 ? 300 : 300}} />
+          <View style={{marginBottom: reviews?.length - 1 ? 100 : 100}} />
         }
       />
     </View>

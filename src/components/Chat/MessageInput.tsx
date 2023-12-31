@@ -13,17 +13,23 @@ import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {Storage} from 'aws-amplify';
 import FastImage from 'react-native-fast-image';
 import path from 'path';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import {v4 as uuidV4} from 'uuid';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
-import {createMessage, updateChatRoom} from '../../queries/ChatQueries';
+import {
+  createMessage,
+  updateChatRoom,
+  listUserChatRooms,
+} from '../../queries/ChatQueries';
 import {
   CreateMessageMutation,
   CreateMessageMutationVariables,
   MessageStatus,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  ListUserChatRoomsQuery,
+  ListUserChatRoomsQueryVariables,
 } from '../../API';
 import {useAuthContext} from '../../context/AuthContext';
 import ChatStyles from './ChatStyles';
@@ -36,6 +42,17 @@ const MessageInput = ({chatRoom}: any) => {
   const [singleFile, setSingleFile] = useState<any>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>(null);
   const [progress, setProgress] = useState(0);
+
+  // FETCH CHAT ROOM ID FILTER BY CHATROOM ID TO FIND USERS NAME & IMAGE IN THAT CHATROOM
+  const {data: newData, loading: newLoad} = useQuery<
+    ListUserChatRoomsQuery,
+    ListUserChatRoomsQueryVariables
+  >(listUserChatRooms);
+  const fetchUsers: any =
+    newData?.listUserChatRooms?.items
+      .filter(cru => cru?.chatRoomId === chatRoom?.id)
+      .map(chatRoomUser => chatRoomUser?.user)
+      .find(authUsr => authUsr?.id !== userID) || null;
 
   // SEND MESSAGE
   const [doCreateMessage, {loading}] = useMutation<
@@ -50,8 +67,10 @@ const MessageInput = ({chatRoom}: any) => {
             SType: 'MESSAGE',
             text: message,
             userID: userID,
+            forUserID: fetchUsers?.id,
             chatroomID: chatRoom.id,
             status: MessageStatus?.SENT,
+            readAt: 0
             // replyToMessageID: messageReplyTo?.id,
           },
         },
@@ -115,9 +134,11 @@ const MessageInput = ({chatRoom}: any) => {
             SType: 'MESSAGE',
             text: message,
             userID: userID,
+            forUserID: fetchUsers?.id,
             image: key,
             status: MessageStatus?.SENT,
             chatroomID: chatRoom.id,
+            readAt: 0
             // replyToMessageID: messageReplyTo?.id,
           },
         },
@@ -155,9 +176,11 @@ const MessageInput = ({chatRoom}: any) => {
             SType: 'MESSAGE',
             text: message,
             userID: userID,
+            forUserID: fetchUsers?.id,
             file: key,
             status: MessageStatus?.SENT,
             chatroomID: chatRoom.id,
+            readAt: 0
             // replyToMessageID: messageReplyTo?.id,
           },
         },
@@ -219,10 +242,10 @@ const MessageInput = ({chatRoom}: any) => {
     }
   };
 
-  if (loading) {
+  if (loading || newLoad) {
     return (
       <ActivityIndicator
-        style={{flex: 1,justifyContent: 'center', top: -50}}
+        style={{flex: 1, justifyContent: 'center', top: -50}}
         size={'small'}
         color={COLORS.primary6}
       />

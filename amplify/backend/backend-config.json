@@ -1,12 +1,26 @@
 {
   "api": {
     "tradelyx": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "tradelyx"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AWS_IAM"
+            },
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authtradelyx"
+              }
             }
           ],
           "defaultAuthentication": {
@@ -67,6 +81,30 @@
     }
   },
   "function": {
+    "TradelyXMessagingFunction": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "tradelyx"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "tradelyx"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "tradelyxPostConfirmation": {
       "build": true,
       "dependsOn": [
@@ -85,6 +123,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_TradelyXMessagingFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "TradelyXMessagingFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_TradelyXMessagingFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "TradelyXMessagingFunction"
+        }
+      ]
+    },
     "AMPLIFY_function_tradelyxPostConfirmation_deploymentBucketName": {
       "usedBy": [
         {

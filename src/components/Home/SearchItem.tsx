@@ -189,7 +189,7 @@ const SearchItem = ({
               priority: FastImage.priority.high,
             }}
             style={{
-              width: SIZES.height > 700 ? 380 : 320,
+              width: SIZES.height > 700 ? 350 : 300,
               height: 150,
               borderRadius: SIZES.base,
             }}

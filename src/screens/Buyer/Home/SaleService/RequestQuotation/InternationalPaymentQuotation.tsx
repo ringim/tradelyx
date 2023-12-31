@@ -1,5 +1,6 @@
 import {Text, View} from 'react-native';
 import React, {useState} from 'react';
+import {v4 as uuidV4} from 'uuid';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
@@ -7,12 +8,13 @@ import FastImage from 'react-native-fast-image';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
-import {useMutation} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {
   ExpiryDate,
   Header,
+  LoadingIndicator,
   QuotationProgress,
   QuoteType,
   TextButton,
@@ -28,11 +30,19 @@ import {
 import {HomeStackNavigatorParamList} from '../../../../../components/navigation/SellerNav/type/navigation';
 import {useAuthContext} from '../../../../../context/AuthContext';
 import {
+  NotificationType,
+  RFQTYPE,
   UpdateRFQInput,
   UpdateRFQMutation,
   UpdateRFQMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  CreateNotificationInput,
+  GetRFQQuery,
+  GetRFQQueryVariables,
 } from '../../../../../API';
-import {updateRFQ} from '../../../../../queries/RFQQueries';
+import {getRFQ, updateRFQ} from '../../../../../queries/RFQQueries';
+import {createNotification} from '../../../../../queries/NotificationQueries';
 
 const InternationalPaymentQuotation = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
@@ -58,10 +68,17 @@ const InternationalPaymentQuotation = () => {
   };
 
   const handleConfirm = (date: any) => {
-    const selectedDate = dayjs(date).format(('YYYY-MM-DD'));
+    const selectedDate = dayjs(date).format('YYYY-MM-DD');
     setDate(selectedDate);
     hideDatePicker();
   };
+
+  // GET RFQ DETAIL
+  const {data, loading: onLoad} = useQuery<GetRFQQuery, GetRFQQueryVariables>(
+    getRFQ,
+    {variables: {id: route?.params.rfqID}},
+  );
+  const rfqDetail = data?.getRFQ?.title;
 
   // UPDATE REQUEST QUOTATION
   const [doUpdateRFQ] = useMutation<
@@ -89,6 +106,7 @@ const InternationalPaymentQuotation = () => {
         },
       });
       // console.log('job data', input);
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [
@@ -106,13 +124,44 @@ const InternationalPaymentQuotation = () => {
     }
   };
 
+  // CREATE INTERNATIONAL RFQ NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFQ,
+        readAt: 0,
+        actorID: userID,
+        requestType: RFQTYPE?.INTERNATIONAL,
+        notificationRFQId: route?.params.rfqID,
+        description: `Buyer's Order - ${rfqDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
+    }
+  };
+
   function requestForm() {
     return (
       <View
         style={{
           marginTop: -SIZES.semi_margin,
           marginHorizontal: SIZES.semi_margin,
-          marginBottom: 100
+          marginBottom: 100,
         }}>
         {/* Date Select */}
         <ExpiryDate date={date} onPress={showDatePicker} title={'RFQ Expiry'} />
@@ -215,6 +264,10 @@ const InternationalPaymentQuotation = () => {
         />
       </View>
     );
+  }
+
+  if (onLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

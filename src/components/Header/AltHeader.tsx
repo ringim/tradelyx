@@ -23,8 +23,8 @@ const AltHeader = ({
   return (
     <View
       style={{
-        paddingTop: Platform.OS == 'ios' ? 60 : SIZES.radius,
-        height: Platform.OS === 'android' ? 70 : 115,
+        paddingTop: SIZES.height > 700 ? 60 : 30,
+        height: SIZES.height > 700 ? 100 : 70,
         backgroundColor: COLORS.white,
         ...contentStyle,
       }}>

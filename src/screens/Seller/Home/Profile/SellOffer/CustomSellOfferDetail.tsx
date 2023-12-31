@@ -34,7 +34,7 @@ const CustomSellOfferDetail = () => {
     GetSellOfferQueryVariables
   >(getSellOffer, {variables: {id: route?.params?.customSellOffer}});
   const getSellOfferDetail: any = data?.getSellOffer;
-  
+
   useEffect(() => {
     if (getSellOfferDetail?.sellOfferImage) {
       Storage.get(getSellOfferDetail?.sellOfferImage).then(setImageUri);
@@ -355,6 +355,8 @@ const CustomSellOfferDetail = () => {
           </View>
           <View
             style={{
+              flex: 3,
+              alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
             <Text

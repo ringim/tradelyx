@@ -177,7 +177,6 @@ const InternationalRFQDetail = () => {
         const chatRoom: any = await doCreateChatRoom({
           variables: {
             input: {
-              newMessages: 0,
               SType: 'CHATROOM',
               name: userInfo?.id,
             },

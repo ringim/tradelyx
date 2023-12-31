@@ -656,33 +656,33 @@ const notifications = [
     title: 'New Year Eve',
     description:
       'choose anything you want to return from your favorite stores.',
-    time: '2023/01/15, 20:00',
+    time: '2023-01-15',
   },
   {
     id: '2',
     title: 'Order Completed',
     description: 'Check your recent orders.',
-    time: '2023/02/20, 16:42',
+    time: '2023-02-20',
   },
   {
     id: '3',
     title: 'Maintenance Update',
     description:
       'Have someone do you you the honor of returning you your precious items more important money with a click of a button.',
-    time: '2023/02/25, 13:12',
+    time: '2023-02-25',
   },
   {
     id: '4',
     title: 'Return it Day! 👏',
     description:
       'payment made easy through debit card, credit card & more way to reimburse you.',
-    time: '2023/03/07, 14:05',
+    time: '2023-03-07',
   },
   {
     id: '5',
     title: 'Trade Alerts',
     description: 'Tomato King is looking for posted RFQ...',
-    time: '2023/04/11, 09:18',
+    time: '2023-04-11',
   },
 ];
 

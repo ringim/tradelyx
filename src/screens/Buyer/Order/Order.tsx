@@ -116,7 +116,8 @@ const Tabs = ({scrollX, onTabPress}: any) => {
             style={{
               paddingHorizontal: SIZES.radius,
               justifyContent: 'center',
-              width: 130,
+              width: 150,
+              marginHorizontal: -SIZES.base,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View
@@ -124,6 +125,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
                 backgroundColor: bgColor,
                 paddingVertical: SIZES.height > 700 ? SIZES.radius : SIZES.base,
                 borderRadius: SIZES.margin,
+                marginBottom: 5
               }}>
               <Animated.Text
                 style={{
@@ -164,8 +166,8 @@ const Order = () => {
     return (
       <View
         style={{
-          flex: 0.07,
           alignItems: 'center',
+          backgroundColor: COLORS.white,
           borderRadius: SIZES.base,
         }}>
         <Tabs scrollX={scrollX} onTabPress={onTabPress} />

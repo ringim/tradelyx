@@ -21,14 +21,14 @@ import {
   RfqByDateReplyQueryVariables,
   RffByDateRelyQuery,
   RffByDateRelyQueryVariables,
-  SellOffersByDateQuery,
-  SellOffersByDateQueryVariables,
+  SellOffersByDateRelyQuery,
+  SellOffersByDateRelyQueryVariables,
 } from '../../../API';
 import {rffByDate, rffByDateRely} from '../../../queries/RFFQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {rfqByDate, rfqByDateReply} from '../../../queries/RFQQueries';
 import {OrderStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
-import {sellOffersByDate} from '../../../queries/SellOfferQueries';
+import {sellOffersByDateRely} from '../../../queries/SellOfferQueries';
 
 const Pending = () => {
   const {userID} = useAuthContext();
@@ -76,13 +76,13 @@ const Pending = () => {
     loading: sellOfferLoad,
     refetch: sellOfferRefetch,
     fetchMore: sellOfferFetchMore,
-  } = useQuery<SellOffersByDateQuery, SellOffersByDateQueryVariables>(
-    sellOffersByDate,
+  } = useQuery<SellOffersByDateRelyQuery, SellOffersByDateRelyQueryVariables>(
+    sellOffersByDateRely,
     {
       pollInterval: 500,
       fetchPolicy: 'network-only',
       variables: {
-        SType: 'SELLOFFER',
+        SType: 'SELLOFFERREPLY',
         sortDirection: ModelSortDirection.DESC,
         limit: 10,
       },
@@ -95,7 +95,7 @@ const Pending = () => {
 
   const nextToken = newData?.rffByDate?.nextToken;
   const nextToken2 = data?.rfqByDate?.nextToken;
-  const nextToken3 = sellOfferData?.sellOffersByDate?.nextToken;
+  const nextToken3 = sellOfferData?.sellOffersByDateRely?.nextToken;
 
   const loadMoreItem = async () => {
     if (!nextToken || fetchingMore) {
@@ -168,9 +168,9 @@ const Pending = () => {
 
   useEffect(() => {
     const sellOffers: any =
-      sellOfferData?.sellOffersByDate?.items.filter(
-        (item: any) => !item?._deleted,
-      ) || [];
+      sellOfferData?.sellOffersByDateRely?.items
+        ?.filter(uID => uID?.forUserID === userID)
+        ?.filter((item: any) => !item?._deleted) || [];
     setSellOffers(sellOffers);
   }, [sellOfferData, sellOfferLoad]);
 

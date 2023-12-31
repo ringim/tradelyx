@@ -22,7 +22,7 @@ const SellOfferDetail1 = ({
   packageType,
   qtyMeasure,
   paymentMethod,
-  coverage
+  coverage,
 }: any) => {
   const element = useRef<ImageDetail>(null);
 
@@ -183,13 +183,15 @@ const SellOfferDetail1 = ({
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
             Product Title
           </Text>
         </View>
         <View
           style={{
+            flex: 3,
+            alignItems: 'flex-end',
             justifyContent: 'center',
           }}>
           <Text
@@ -214,7 +216,7 @@ const SellOfferDetail1 = ({
         }}>
         <View style={{justifyContent: 'center'}}>
           <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-          Offer Coverage
+            Offer Coverage
           </Text>
         </View>
         <View

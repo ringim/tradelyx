@@ -2,7 +2,6 @@ import React from 'react';
 import {Easing} from 'react-native';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
-import IBottomTabs from './BBottomTabs';
 import {
   AllCategories,
   ProductDetail,
@@ -45,6 +44,9 @@ import {
   OfferDetail,
   ViewAgreement,
   Chat,
+  NotificationSetting,
+  OrderNotifications,
+  PromotionNotifications,
   CustomSellOfferDetail,
   LandPickupAddress,
   LandPickupAddress2,
@@ -484,6 +486,21 @@ const BuyerStack = () => {
       <Stack.Screen
         name="CustomSellOfferDetail"
         component={CustomSellOfferDetail}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="OrderNotifications"
+        component={OrderNotifications}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="PromotionNotifications"
+        component={PromotionNotifications}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="NotificationSetting"
+        component={NotificationSetting}
         options={() => options}
       />
     </Stack.Navigator>

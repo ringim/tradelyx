@@ -35,13 +35,13 @@ export const getSellOffer = gql`
           id
           createdAt
           SType
-          sellOfferID
           requestCategory
           title
           tags
           productName
           description
           packageDesc
+          sellOfferID
           sellOfferImage
           image
           images
@@ -56,11 +56,10 @@ export const getSellOffer = gql`
           fobPrice
           paymentType
           paymentMethod
-          agreement
           offerValidity
           forUserID
           userID
-          statusText
+          agreement
           SellOffer
           updatedAt
           __typename
@@ -124,13 +123,13 @@ export const sellOffersByDate = gql`
             id
             createdAt
             SType
-            sellOfferID
             requestCategory
             title
             tags
             productName
             description
             packageDesc
+            sellOfferID
             sellOfferImage
             image
             images
@@ -143,13 +142,12 @@ export const sellOffersByDate = gql`
             qtyMeasure
             basePrice
             fobPrice
-            agreement
             paymentType
             paymentMethod
             offerValidity
             forUserID
             userID
-            statusText
+            agreement
             SellOffer
             updatedAt
             __typename
@@ -279,13 +277,13 @@ export const sellOffersByDateRely = gql`
         id
         createdAt
         SType
-        sellOfferID
         requestCategory
         title
         tags
         productName
         description
         packageDesc
+        sellOfferID
         sellOfferImage
         image
         images
@@ -295,7 +293,6 @@ export const sellOffersByDateRely = gql`
         landmark
         unit
         deliveryDate
-        agreement
         qtyMeasure
         basePrice
         fobPrice
@@ -304,7 +301,7 @@ export const sellOffersByDateRely = gql`
         offerValidity
         forUserID
         userID
-        statusText
+        agreement
         SellOffer
         updatedAt
         __typename
@@ -321,13 +318,13 @@ export const getSellOfferReply = gql`
       id
       createdAt
       SType
-      sellOfferID
       requestCategory
       title
       tags
       productName
       description
       packageDesc
+      sellOfferID
       sellOfferImage
       image
       images
@@ -343,10 +340,9 @@ export const getSellOfferReply = gql`
       paymentType
       paymentMethod
       offerValidity
-      agreement
       forUserID
       userID
-      statusText
+      agreement
       SellOffer
       updatedAt
       __typename

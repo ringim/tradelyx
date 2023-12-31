@@ -46,7 +46,7 @@ const AllCategories = () => {
         autoClose: 1500,
       });
     }
-    return () => {
+    return () => { 
       isCurrent = false;
     };
   }, []);

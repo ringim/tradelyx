@@ -2,6 +2,7 @@ import {Text, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {Controller, useForm} from 'react-hook-form';
+import {v4 as uuidV4} from 'uuid';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FastImage from 'react-native-fast-image';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -23,6 +24,10 @@ import {
   CreateRFQInput,
   CreateRFQMutation,
   CreateRFQMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  CreateNotificationInput,
+  NotificationType,
   RFQTYPE,
 } from '../../../../../API';
 import {useAuthContext} from '../../../../../context/AuthContext';
@@ -34,6 +39,7 @@ import {
 } from '../../../../../utilities/service';
 import {crateTypes} from '../../../../../../types/types';
 import {createRFQ} from '../../../../../queries/RFQQueries';
+import {createNotification} from '../../../../../queries/NotificationQueries';
 
 interface IRequestQuotation {
   title: string;
@@ -110,11 +116,12 @@ const StandardQuotation = () => {
         input.documents = fileKeys;
       }
 
-      await doCreateRFQ({
+      const res = await doCreateRFQ({
         variables: {
           input,
         },
       });
+      await createNotify(res?.data?.createRFQ?.id, title);
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService', params: {type: 'Standard Request'}}],
@@ -127,6 +134,37 @@ const StandardQuotation = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CREATE STANDARD RFQ NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async (requestID: any, title: any) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFQ,
+        readAt: 0,
+        requestType: RFQTYPE?.STANDARD,
+        actorID: userID,
+        notificationRFQId: requestID,
+        description: `Buyer's Order - ${title}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 

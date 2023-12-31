@@ -142,7 +142,12 @@ const SellOfferDetail = () => {
                 Shipping from
               </Text>
             </View>
-            <View style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
+            <View
+              style={{
+                flex: 2,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}>
               <Text
                 style={{
                   ...FONTS.h5,
@@ -396,6 +401,8 @@ const SellOfferDetail = () => {
             </View>
             <View
               style={{
+                flex: 3,
+                alignItems: 'flex-end',
                 justifyContent: 'center',
               }}>
               <Text

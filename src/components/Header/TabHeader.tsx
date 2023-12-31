@@ -1,16 +1,82 @@
 import React, {useEffect, useState} from 'react';
-import {View, Platform, TouchableOpacity, Pressable} from 'react-native';
+import {View, TouchableOpacity, Pressable, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
+import {useQuery, useMutation} from '@apollo/client';
 
-import {SIZES, COLORS, images, icons} from '../../constants';
+import {SIZES, COLORS, images, icons, FONTS} from '../../constants';
 import {DEFAULT_PROFILE_IMAGE} from '../../utilities/Utils';
+import {
+  ModelSortDirection,
+  NotificationsByDateQuery,
+  NotificationsByDateQueryVariables,
+  NotificationType,
+  UpdateNotificationMutation,
+  UpdateNotificationMutationVariables,
+} from '../../API';
+import {
+  notificationsByDate,
+  updateNotification,
+} from '../../queries/NotificationQueries';
+import {useAuthContext} from '../../context/AuthContext';
 
-const TabHeader = ({userImage, containerStyle}: any) => {
+const TabHeader = ({userImage, containerStyle, qty}: any) => {
+  const {userID} = useAuthContext();
+
   const navigation = useNavigation<any>();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
+
+  // LIST NOTIFICATIONS
+  const {data} = useQuery<
+    NotificationsByDateQuery,
+    NotificationsByDateQueryVariables
+  >(notificationsByDate, {
+    variables: {
+      SType: 'NOTIFICATION',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allNotifee =
+    data?.notificationsByDate?.items
+      ?.filter(
+        type =>
+          type?.type !== NotificationType?.RFF &&
+          type?.type !== NotificationType?.RFQ &&
+          type?.type !== NotificationType?.MESSAGE,
+      )
+      ?.filter(usrID => usrID?.actorID !== userID)
+      ?.filter((item: any) => !item?._deleted && !item?.readAt) || [];
+  const messageLength = allNotifee?.length || undefined;
+
+  // UPDATE NOTIFICATION
+  const [doUpdateNotification] = useMutation<
+    UpdateNotificationMutation,
+    UpdateNotificationMutationVariables
+  >(updateNotification);
+
+  useEffect(() => {
+    const readNotifications = async () => {
+      const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
+
+      await Promise.all(
+        unreadNotifee.map(
+          notification =>
+            notification &&
+            doUpdateNotification({
+              variables: {
+                input: {
+                  id: notification?.id,
+                  readAt: new Date().getTime(),
+                },
+              },
+            }),
+        ),
+      );
+    };
+    readNotifications();
+  }, [allNotifee]);
 
   useEffect(() => {
     let unmounted = true;
@@ -29,7 +95,7 @@ const TabHeader = ({userImage, containerStyle}: any) => {
         height: SIZES.height > 700 ? 100 : 70,
         marginBottom: SIZES.margin,
         backgroundColor: COLORS.white,
-        ...containerStyle
+        ...containerStyle,
       }}>
       <View
         style={{
@@ -82,6 +148,31 @@ const TabHeader = ({userImage, containerStyle}: any) => {
             style={{width: 24, height: 24}}
             tintColor={COLORS.Neutral1}
           />
+
+          {messageLength && (
+            <View
+              style={{
+                position: 'absolute',
+                backgroundColor: COLORS.Rose5,
+                borderRadius: 50 / 2,
+                height: 19,
+                width: 19,
+                justifyContent: 'center',
+                bottom: 23,
+                left: 10,
+              }}>
+              <Text
+                style={{
+                  color: COLORS.white,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                  ...FONTS.cap1,
+                  fontWeight: 'bold',
+                }}>
+                {messageLength}
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
     </View>

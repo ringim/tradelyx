@@ -1,25 +1,50 @@
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
+import {useQuery} from '@apollo/client';
 
-import {
-  AllProductsRouteProp,
-  HomeStackNavigatorParamList,
-} from '../../../components/navigation/BuyerNav/type/navigation';
+import {HomeStackNavigatorParamList} from '../../../components/navigation/BuyerNav/type/navigation';
 import {COLORS, SIZES} from '../../../constants';
 import {AltHeader, SearchBox2, SearchItem2} from '../../../components';
-import {FlatList} from 'react-native-gesture-handler';
+import {
+  ModelSortDirection,
+  ProductByDateQuery,
+  ProductByDateQueryVariables,
+} from '../../../API';
+import {productByDate} from '../../../queries/ProductQueries';
 
 const AllProducts = () => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
-  const route = useRoute<AllProductsRouteProp>();
-
-  const {loading, items} = route?.params;
 
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any>([]);
   const [masterDataSource, setMasterDataSource] = useState<any>([]);
+  const [fetchingMore, setFetchingMore] = useState<any>(false);
+
+  // list of Products
+  const {data, loading, refetch, fetchMore} = useQuery<
+    ProductByDateQuery,
+    ProductByDateQueryVariables
+  >(productByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      SType: 'JOB',
+      sortDirection: ModelSortDirection.DESC,
+      limit: 10,
+    },
+  });
+  const nextToken = data?.productByDate?.nextToken;
+
+  const loadMoreItem = async () => {
+    if (!nextToken || fetchingMore) {
+      return;
+    }
+    setFetchingMore(true);
+    await fetchMore({variables: {nextToken: nextToken}});
+    setFetchingMore(false);
+  };
 
   // SEARCH FILTER
   const searchFilterFunction = (text: any) => {
@@ -41,21 +66,32 @@ const AllProducts = () => {
 
   useEffect(() => {
     let isCurrent = true;
-    try {
-      const filteredItems = items;
-      setFilteredDataSource(items);
-      setMasterDataSource(filteredItems);
-    } catch (error) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: `${(error as Error).message}`,
-        autoClose: 1500,
-      });
+
+    const handleFiltering = () => {
+      try {
+        const filteredItems: any =
+          data?.productByDate?.items?.filter(item => !item?._deleted) || [];
+
+        setFilteredDataSource(filteredItems);
+        setMasterDataSource(filteredItems);
+      } catch (error) {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          textBody: `${(error as Error).message}`,
+          autoClose: 1500,
+        });
+      }
+    };
+
+    if (isCurrent) {
+      handleFiltering();
     }
+
+    // Cleanup function
     return () => {
       isCurrent = false;
     };
-  }, [loading]);
+  }, [loading, data]);
 
   if (loading) {
     return (
@@ -99,11 +135,14 @@ const AllProducts = () => {
               />
             );
           }}
+          refreshing={loading}
+          onRefresh={() => refetch()}
           ListFooterComponent={
             <View
               style={{marginBottom: filteredDataSource?.length - 1 ? 300 : 300}}
             />
           }
+          onEndReached={() => loadMoreItem()}
         />
       </View>
     </Root>

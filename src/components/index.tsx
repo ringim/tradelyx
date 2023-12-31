@@ -1,6 +1,7 @@
 // Header
 import Header from './Header/Header';
 import TabHeader from './Header/TabHeader';
+import TabHeader2 from './Header/TabHeader2';
 import AltHeader from './Header/AltHeader';
 
 // BUTTON
@@ -15,6 +16,7 @@ import OptionButton from './Button/OptionButton';
 import BusinessDesc from './Home/BusinessDesc';
 import SearchItem2 from './Home/SearchItem2';
 import QuoteType from './Home/QuoteType';
+import NotifySwitch from './Home/NotifySwitch';
 import GalleryItem from './Home/GalleryItem';
 import StoreBannerInfo from './Home/StoreBannerInfo';
 import RFFQuoteItem from './Home/RFFQuoteItem';
@@ -41,7 +43,6 @@ import SellerItem from './Home/SellerItem';
 import PopularProducts from './Home/PopularProducts';
 import PopularItem from './Home/PopularItem';
 import VendorItem from './Home/VendorItem';
-import NotificationTab from './Home/NotificationTab';
 import ProductItem from './Home/ProductItem';
 import SearchItem from './Home/SearchItem';
 import ViewProductImageEdit from './Home/ViewProductImageEdit';
@@ -285,6 +286,7 @@ export {
   OriginDestinationDetails,
   PriceQty,
   FreightTab,
+  NotifySwitch,
   PopularItem,
   SearchItem,
   PromoSection,
@@ -299,7 +301,6 @@ export {
   PopularProducts,
   LanguageSpoken,
   ServiceModal,
-  NotificationTab,
   JobTypeOption,
   TextIconButton,
   HorizontalItem,
@@ -314,6 +315,7 @@ export {
   MultipleFiles,
   OptionButton,
   CheckBox,
+  TabHeader2,
   CountryDropDown,
   NoItem,
 };

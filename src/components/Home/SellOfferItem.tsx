@@ -21,7 +21,7 @@ import {
 import {deleteSellOffer} from '../../queries/SellOfferQueries';
 import TextButton from '../Button/TextButton';
 import OptionModal from '../Modal/OptionModal';
-import { formatNumberWithCommas } from '../../utilities/service';
+import {formatNumberWithCommas} from '../../utilities/service';
 
 interface IItem {
   item: SellOffer | any;
@@ -307,6 +307,8 @@ const SellOfferItem = ({containerStyle, item, title, onPress}: IItem) => {
           </View>
           <View
             style={{
+              flex: 3,
+              alignItems: 'flex-end',
               justifyContent: 'center',
             }}>
             <Text

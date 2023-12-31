@@ -1,9 +1,13 @@
 import {View} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Storage} from 'aws-amplify';
 import {FlatList} from 'react-native-gesture-handler';
-import {useQuery, useSubscription} from '@apollo/client';
+import {useQuery, useMutation, useSubscription} from '@apollo/client';
 
 import {
   ChatHeader,
@@ -26,11 +30,14 @@ import {
   ListUserChatRoomsQueryVariables,
   OnCreateMessageByChatRoomIDSubscription,
   OnCreateMessageByChatRoomIDSubscriptionVariables,
+  UpdateMessageMutation,
+  UpdateMessageMutationVariables,
 } from '../../../API';
 import {
   listUserChatRooms,
   messagesByDate,
   onCreateMessageByChatRoomID,
+  updateMessage,
 } from '../../../queries/ChatQueries';
 
 const Chat = () => {
@@ -77,12 +84,43 @@ const Chat = () => {
       ?.filter((msg: any) => msg?.chatroomID === route?.params?.id)
       .filter((item: any) => !item?._deleted) || [];
 
+  // UPDATE NOTIFICATION
+  const [doUpdateMessage] = useMutation<
+    UpdateMessageMutation,
+    UpdateMessageMutationVariables
+  >(updateMessage);
+
+  useEffect(() => {
+    const readMessages = async () => {
+      const unreadMessages = fetchedMessages?.filter(
+        (n: {readAt: any}) => !n?.readAt,
+      );
+
+      await Promise.all(
+        unreadMessages.map(
+          (message: {id: any}) =>
+            message &&
+            doUpdateMessage({
+              variables: {
+                input: {
+                  id: message?.id,
+                  readAt: new Date().getTime(),
+                },
+              },
+            }),
+        ),
+      );
+    };
+
+    readMessages();
+  }, [fetchedMessages]);
+
   // RENDER CREATE MESSAGE SUBSCRIPTION UPDATE
   useEffect(() => {
     if (data?.onCreateMessageByChatRoomID) {
-      setMessages((existingMessage: any) => [
+      setMessages((existingMessages: MessageModel[]) => [
         data?.onCreateMessageByChatRoomID,
-        ...existingMessage,
+        ...existingMessages,
       ]);
     }
   }, [data]);

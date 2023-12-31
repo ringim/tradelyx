@@ -27,6 +27,13 @@ const SuccessService7 = () => {
         </Text>
       </View>
 
+      <View style={{marginTop: SIZES.padding}}>
+        <Text style={styles.text}>
+          Please wait for your Custom Sell Offer to be accepted by the buyer.
+          The buyer will review your offer
+        </Text>
+      </View>
+
       <TextButton
         buttonContainerStyle={{
           backgroundColor: COLORS.white,
@@ -36,11 +43,11 @@ const SuccessService7 = () => {
           borderWidth: 1,
           borderColor: COLORS.primary1,
         }}
-        label="Return to Chat"
+        label="Continue"
         labelStyle={{...FONTS.h4, color: COLORS.primary1}}
         onPress={() => {
-          navigation.pop(2);
-          navigation.navigate('Chat', {id: route?.params?.chatroomID});
+          navigation.replace('Home', {screen: 'Chat'});
+          // navigation.navigate('Chat', {id: route?.params?.chatroomID});
         }}
       />
     </View>

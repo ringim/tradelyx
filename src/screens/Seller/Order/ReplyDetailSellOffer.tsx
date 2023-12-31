@@ -24,14 +24,14 @@ import {useAuthContext} from '../../../context/AuthContext';
 const ReplyDetailSellOffer = () => {
   const navigation = useNavigation<ReplyDetailSellOfferNavigationProp>();
   const route: any = useRoute<ReplyDetailSellOfferRouteProp>();
-  const {image, images, sellOfferImage}: any = route?.params?.sellOffer;
+  // const {sellOfferImage}: any = route?.params?.sellOffer;
 
   const {userID}: any = useAuthContext();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
 
-  const expiryDateString = route?.params?.detail?.offerValidity;
+  const expiryDateString = route?.params?.sellerOffer?.offerValidity;
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
@@ -41,7 +41,7 @@ const ReplyDetailSellOffer = () => {
     getUser,
     {
       variables: {
-        id: userID,
+        id: route?.params?.sellerOffer?.userID,
       },
     },
   );
@@ -59,13 +59,13 @@ const ReplyDetailSellOffer = () => {
 
   useEffect(() => {
     let isCurrent = true;
-    if (sellOfferImage && isCurrent) {
-      Storage.get(sellOfferImage).then(setImageUri2);
+    if (route?.params?.sellOffer?.sellOfferImage && isCurrent) {
+      Storage.get(route?.params?.sellOffer?.sellOfferImage).then(setImageUri2);
     }
     return () => {
       isCurrent = false;
     };
-  }, [sellOfferImage]);
+  }, [route?.params?.sellOffer?.sellOfferImage]);
 
   if (loading) {
     return (
@@ -84,47 +84,29 @@ const ReplyDetailSellOffer = () => {
           userInfo={userInfo}
           imageUri={imageUri}
           imageUri2={imageUri2}
-          placeOrigin={route?.params?.detail?.placeOrigin}
-          title={route?.params?.detail?.title}
-          unit={route?.params?.detail?.unit}
-          deliveryDate={route?.params?.detail?.offerValidity}
-          paymentType={route?.params?.detail?.paymentType}
-          basePrice={route?.params?.detail?.basePrice}
-          productName={route?.params?.detail?.productName}
-          qtyMeasure={route?.params?.detail?.qtyMeasure}
-          category={route?.params?.detail?.requestCategory}
-          packageType={route?.params?.detail?.packageType}
-          paymentMethod={route?.params?.detail?.paymentMethod}
-          coverage={route?.params?.detail?.rfqType}
+          placeOrigin={route?.params?.sellerOffer?.placeOrigin}
+          title={route?.params?.sellerOffer?.title}
+          unit={route?.params?.sellerOffer?.unit}
+          deliveryDate={route?.params?.sellerOffer?.offerValidity}
+          paymentType={route?.params?.sellerOffer?.paymentType}
+          basePrice={route?.params?.sellerOffer?.basePrice}
+          productName={route?.params?.sellerOffer?.productName}
+          qtyMeasure={route?.params?.sellerOffer?.qtyMeasure}
+          category={route?.params?.sellerOffer?.requestCategory}
+          packageType={route?.params?.sellerOffer?.packageType}
+          paymentMethod={route?.params?.sellerOffer?.paymentMethod}
+          coverage={route?.params?.sellerOffer?.rfqType}
         />
 
         <SellOfferDetail2
-          basePrice={route?.params?.detail?.basePrice}
+          basePrice={route?.params?.sellerOffer?.basePrice}
           daysUntilExpiry={daysUntilExpiry}
-          packageDesc={route?.params?.detail?.packageDesc}
-          description={route?.params?.detail?.description}
-          image={image}
-          images={images}
-          createdAtd={route?.params?.detail?.createdAtd}
-        />
-
-        <TextIconButton
-          label={'Buy'}
-          labelStyle={{
-            color: COLORS.primary1,
-            ...FONTS.h4,
-            marginLeft: SIZES.radius,
-          }}
-          iconPosition={'LEFT'}
-          icon={icons.pay}
-          iconStyle={COLORS.primary1}
-          // onPress={() => navigation.navigate('ViewAgreement')}
-          containerStyle={{
-            marginBottom: SIZES.padding * 2.5,
-            backgroundColor: COLORS.white,
-            marginTop: SIZES.radius,
-            width: 350,
-          }}
+          packageDesc={route?.params?.sellerOffer?.packageDesc}
+          description={route?.params?.sellerOffer?.description}
+          image={route?.params?.sellerOffer?.image}
+          images={route?.params?.sellerOffer?.images}
+          createdAtd={route?.params?.sellerOffer?.createdAtd}
+          containerStyle={{marginBottom: 100}}
         />
       </ScrollView>
     </View>

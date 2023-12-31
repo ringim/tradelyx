@@ -48,7 +48,7 @@ const SellOfferReplyList = () => {
   });
   const allRfqByDateReplies =
     data?.sellOffersByDateRely?.items
-      ?.filter(soID => soID?.SellOffer === route?.params?.sellOffer)
+      ?.filter(soID => soID?.SellOffer === route?.params?.sellOffer?.id)
       ?.filter(usrID => usrID?.userID === userID)
       .filter((item: any) => !item?._deleted) || [];
 
@@ -126,9 +126,6 @@ const SellOfferReplyList = () => {
               containerStyle={{marginTop: SIZES.radius}}
               key={index}
               item={item}
-              onPress2={() =>
-                navigation.navigate('CompanyDetail', {sellerItem: item})
-              }
               onPress={() =>
                 navigation.navigate('ReplyDetailSellOffer', {sellerOffer: item})
               }

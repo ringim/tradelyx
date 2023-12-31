@@ -264,7 +264,7 @@ const ReplyRFFAirPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 180,
+              width: 150,
             }}
           />
           {/* Quantity & Unit Measurement */}
@@ -275,7 +275,12 @@ const ReplyRFFAirPayment = () => {
               required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
-              <View style={{justifyContent: 'center', marginTop: 30}}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: 30,
+                  marginStart: -SIZES.padding * 2,
+                }}>
                 <DropDownPicker
                   schema={{
                     label: 'type',

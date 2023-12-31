@@ -21,7 +21,6 @@ interface IReplyListItem {
 const SellOfferReplyListItem = ({
   containerStyle,
   item,
-  onPress2,
   onPress,
 }: IReplyListItem) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -29,7 +28,7 @@ const SellOfferReplyListItem = ({
   // GET SELLER DETAIL
   const {data: newData} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
-    {variables: {id: item?.forUserID}},
+    {variables: {id: item?.userID}},
   );
   const getSellerInfo: any = newData?.getUser;
 
@@ -50,13 +49,12 @@ const SellOfferReplyListItem = ({
         borderColor: COLORS.Neutral8,
         ...containerStyle,
       }}>
-      <Pressable
+      <View
         style={{
           margin: SIZES.radius,
           flexDirection: 'row',
           justifyContent: 'space-between',
-        }}
-        onPress={onPress2}>
+        }}>
         {/* Supplier image */}
         <View
           style={{
@@ -118,7 +116,7 @@ const SellOfferReplyListItem = ({
             </View>
           </View>
         </View>
-      </Pressable>
+      </View>
 
       <View>
         {/* Product Title */}
@@ -161,7 +159,7 @@ const SellOfferReplyListItem = ({
             <Text
               numberOfLines={2}
               style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              {getSellerInfo?.placeOrigin}
+              {item?.placeOrigin}
             </Text>
           </View>
         </View>

@@ -7,13 +7,18 @@ import Home from './Home/Home';
 import AllCategories from './Home/AllCategories';
 import AllProducts from './Home/AllProducts';
 import ProductDetail from './Home/ProductDetail';
-import Notifications from './Home/Notifications';
 import Profile from './Home/Profile/Profile';
 import Search from './Home/Search';
 import CompanyDetail from './Home/CompanyDetail';
 import BusinessDetail from './Home/BusinessDetail';
 import CategoryItemList from './Home/CategoryItemList';
 import SearchFilter from './Home/SearchFilter';
+
+//NOTIFICATIONS
+import Notifications from './Home/Notification/Notifications';
+import NotificationSetting from './Home/Notification/NotificationSetting';
+import OrderNotifications from './Home/Notification/OrderNotifications';
+import PromotionNotifications from './Home/Notification/PromotionNotifications';
 
 // SERVICE
 import ChooseService from './Home/SaleService/ChooseService';
@@ -95,6 +100,9 @@ import CustomSellOfferDetail from './Chat/CustomSellOfferDetail';
 
 export {
   Home,
+  NotificationSetting,
+  OrderNotifications,
+  PromotionNotifications,
   Account,
   CustomSellOfferDetail,
   Quotation,

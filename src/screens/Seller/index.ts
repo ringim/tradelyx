@@ -5,7 +5,6 @@ import BusinessDetail from '../Auth/SellerAuth/BusinessDetail';
 
 // Home
 import Home from './Home/Home';
-import Notifications from './Home/Notifications';
 import SellOffer from './Home/Profile/SellOffer/SellOffer';
 import StoreProduct from './Home/Profile/StoreProduct';
 import PackingShipment from './Home/Profile/SellOffer/PackingShipment';
@@ -24,6 +23,12 @@ import EditProductShipment from './Home/Profile/EditProduct/EditProductShipment'
 import EditProductShipmentAddress from './Home/Profile/EditProduct/EditProductShipmentAddress';
 import SuccessService2 from './Home/SuccessService2';
 import SuccessService3 from './Home/SuccessService3';
+
+//NOTIFICATIONS
+import Notifications from './Home/Notification/Notifications';
+import NotificationSetting from './Home/Notification/NotificationSetting';
+import OrderNotifications from './Home/Notification/OrderNotifications';
+import PromotionNotifications from './Home/Notification/PromotionNotifications';
 
 // Explore
 import Explore from './Explore/Explore';
@@ -101,6 +106,9 @@ import SuccessService7 from './Chat/Replies/SuccessService7';
 export {
   Home,
   Explore,
+  NotificationSetting,
+  OrderNotifications,
+  PromotionNotifications,
   ProductItem,
   RFQReplyDetailStandard,
   Chat,

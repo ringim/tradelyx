@@ -8,7 +8,8 @@ import FastImage from 'react-native-fast-image';
 import Spinner from 'react-native-loading-spinner-overlay';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
-import {useMutation} from '@apollo/client';
+import {v4 as uuidV4} from 'uuid';
+import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
 import {
@@ -17,6 +18,7 @@ import {
   QuotationProgress,
   QuoteType,
   TextButton,
+  LoadingIndicator,
 } from '../../../../../components';
 import {
   COLORS,
@@ -31,10 +33,21 @@ import {
   UpdateRFQInput,
   UpdateRFQMutation,
   UpdateRFQMutationVariables,
+  CreateNotificationInput,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
+  RFQTYPE,
+  GetRFQQuery,
+  GetRFQQueryVariables,
 } from '../../../../../API';
-import {updateRFQ} from '../../../../../queries/RFQQueries';
+import {getRFQ, updateRFQ} from '../../../../../queries/RFQQueries';
+import {createNotification} from '../../../../../queries/NotificationQueries';
+import {useAuthContext} from '../../../../../context/AuthContext';
 
 const PaymentQuotation = () => {
+  const {userID} = useAuthContext();
+
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route = useRoute<any>();
   const {control, handleSubmit}: any = useForm();
@@ -67,6 +80,13 @@ const PaymentQuotation = () => {
     hideDatePicker();
   };
 
+  // GET RFQ DETAIL
+  const {data, loading: onLoad} = useQuery<GetRFQQuery, GetRFQQueryVariables>(
+    getRFQ,
+    {variables: {id: route?.params.rfqID}},
+  );
+  const rfqDetail = data?.getRFQ?.title;
+
   // UPDATE REQUEST QUOTATION
   const [doUpdateRFQ] = useMutation<
     UpdateRFQMutation,
@@ -93,6 +113,7 @@ const PaymentQuotation = () => {
         },
       });
       // console.log('job data', input);
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService', params: {type: 'Domestic Request'}}],
@@ -105,6 +126,37 @@ const PaymentQuotation = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // CREATE DOMESTIC RFQ NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFQ,
+        readAt: 0,
+        requestType: RFQTYPE?.DOMESTIC,
+        actorID: userID,
+        notificationRFQId: route?.params.rfqID,
+        description: `Buyer's Order - ${rfqDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -303,6 +355,10 @@ const PaymentQuotation = () => {
         />
       </View>
     );
+  }
+
+  if (onLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

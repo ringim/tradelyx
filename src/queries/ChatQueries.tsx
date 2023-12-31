@@ -6,13 +6,13 @@ export const getChatRoom = gql`
       id
       createdAt
       SType
-      newMessages
       name
       imageUri
       lastMessage {
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -34,6 +34,7 @@ export const getChatRoom = gql`
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -44,6 +45,7 @@ export const getChatRoom = gql`
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -65,6 +67,7 @@ export const getChatRoom = gql`
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -82,7 +85,6 @@ export const getChatRoom = gql`
             id
             createdAt
             SType
-            newMessages
             name
             imageUri
             updatedAt
@@ -163,13 +165,13 @@ export const listChatRooms = gql`
         id
         createdAt
         SType
-        newMessages
         name
         imageUri
         lastMessage {
           id
           text
           createdAt
+          readAt
           SType
           rffID
           rfqID
@@ -191,6 +193,7 @@ export const listChatRooms = gql`
           image
           file
           replyToMessageID
+          forUserID
           userID
           chatroomID
           updatedAt
@@ -201,6 +204,7 @@ export const listChatRooms = gql`
             id
             text
             createdAt
+            readAt
             SType
             rffID
             rfqID
@@ -222,6 +226,7 @@ export const listChatRooms = gql`
             image
             file
             replyToMessageID
+            forUserID
             userID
             chatroomID
             updatedAt
@@ -261,7 +266,6 @@ export const createChatRoom = gql`
       id
       createdAt
       SType
-      newMessages
       name
       imageUri
       updatedAt
@@ -281,7 +285,6 @@ export const updateChatRoom = gql`
       createdAt
       SType
       name
-      newMessages
       imageUri
       updatedAt
       chatRoomLastMessageId
@@ -359,13 +362,13 @@ export const listUserChatRooms = gql`
           id
           createdAt
           SType
-          newMessages
           name
           imageUri
           lastMessage {
             id
             text
             createdAt
+            readAt
             SType
             rffID
             rfqID
@@ -387,6 +390,7 @@ export const listUserChatRooms = gql`
             image
             file
             replyToMessageID
+            forUserID
             userID
             chatroomID
             updatedAt
@@ -476,6 +480,7 @@ export const messagesByDate = gql`
         id
         text
         createdAt
+        readAt
         SType
         rffID
         rfqID
@@ -497,6 +502,7 @@ export const messagesByDate = gql`
         image
         file
         replyToMessageID
+        forUserID
         userID
         chatroomID
         updatedAt
@@ -517,6 +523,7 @@ export const createMessage = gql`
       id
       text
       createdAt
+      readAt
       SType
       rffID
       rfqID
@@ -538,6 +545,7 @@ export const createMessage = gql`
       image
       file
       replyToMessageID
+      forUserID
       userID
       chatroomID
       updatedAt
@@ -555,6 +563,7 @@ export const updateMessage = gql`
       id
       text
       createdAt
+      readAt
       SType
       rffID
       rfqID
@@ -576,6 +585,7 @@ export const updateMessage = gql`
       image
       file
       replyToMessageID
+      forUserID
       userID
       chatroomID
       updatedAt
@@ -602,6 +612,7 @@ export const onCreateMessageByChatRoomID = gql`
       id
       text
       createdAt
+      readAt
       SType
       rffID
       rfqID
@@ -623,6 +634,7 @@ export const onCreateMessageByChatRoomID = gql`
       image
       file
       replyToMessageID
+      forUserID
       userID
       chatroomID
       updatedAt

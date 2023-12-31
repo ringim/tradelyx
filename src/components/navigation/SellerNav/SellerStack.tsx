@@ -62,6 +62,9 @@ import {
   EditSellOfferShipmentAddress,
   EditAccountImage,
   EditAccountBGImage,
+  NotificationSetting,
+  OrderNotifications,
+  PromotionNotifications,
   EditIdentityDoc,
   ReplyRFQDomestic,
   ReplyRFQDomesticPayment,
@@ -509,6 +512,21 @@ const SellerStack = () => {
       <Stack.Screen
         name="ReplyDetailSellOffer"
         component={ReplyDetailSellOffer}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="OrderNotifications"
+        component={OrderNotifications}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="PromotionNotifications"
+        component={PromotionNotifications}
+        options={() => options}
+      />
+      <Stack.Screen
+        name="NotificationSetting"
+        component={NotificationSetting}
         options={() => options}
       />
     </Stack.Navigator>

@@ -43,8 +43,6 @@ import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 
 interface IFreight {
-  moq: string;
-  validity: string;
   qty: number;
   file: [string];
 }
@@ -96,10 +94,6 @@ const CustomMiniumOrderPayment = () => {
     setPrice(formattedValue);
   };
 
-  function isSubmit() {
-    return price !== '';
-  }
-
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
     CreateMessageMutation,
@@ -113,7 +107,7 @@ const CustomMiniumOrderPayment = () => {
   >(updateChatRoom);
 
   // UPDATE REQUEST QUOTATION
-  const [doCreateSellOffer] = useMutation<
+  const [doUpdateSellOffer] = useMutation<
     UpdateSellOfferMutation,
     UpdateSellOfferMutationVariables
   >(updateSellOffer);
@@ -143,7 +137,7 @@ const CustomMiniumOrderPayment = () => {
         input.agreement = fileKeys;
       }
 
-      const res = await doCreateSellOffer({
+      const res = await doUpdateSellOffer({
         variables: {
           input,
         },
@@ -182,8 +176,11 @@ const CustomMiniumOrderPayment = () => {
       };
       updateLastMessage(res1?.data?.createMessage?.id);
 
-      navigation.reset('SuccessService7', {
-        chatroomID: route?.params?.crID,
+      navigation.reset({
+        index: 0,
+        routes: [
+          {name: 'SuccessService7', params: {chatroomID: route?.params?.crID}},
+        ],
       });
     } catch (error) {
       Toast.show({
@@ -195,6 +192,10 @@ const CustomMiniumOrderPayment = () => {
       setLoading(false);
     }
   };
+
+  function isSubmit() {
+    return price !== '' && singleFile?.length !== 0;
+  }
 
   function requestForm() {
     return (
@@ -227,9 +228,10 @@ const CustomMiniumOrderPayment = () => {
             inputContainerStyle={{
               marginTop: SIZES.base,
               height: 47,
-              width: 180,
+              width: 150,
             }}
           />
+
           {/* Quantity & Unit Measurement */}
           <Controller
             control={control}
@@ -238,7 +240,12 @@ const CustomMiniumOrderPayment = () => {
               required: 'Unit is required',
             }}
             render={({field: {value, onChange}, fieldState: {error}}: any) => (
-              <View style={{justifyContent: 'center', marginTop: 30}}>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  marginTop: 30,
+                  marginStart: -SIZES.padding * 2,
+                }}>
                 <DropDownPicker
                   schema={{
                     label: 'type',
@@ -262,7 +269,7 @@ const CustomMiniumOrderPayment = () => {
                     marginTop: SIZES.radius,
                     borderColor: COLORS.Neutral7,
                     borderWidth: 0.5,
-                    width: 150,
+                    width: 200,
                   }}
                   placeholderStyle={{color: COLORS.Neutral6, ...FONTS.body3}}
                   textStyle={{color: COLORS.Neutral1}}
@@ -567,7 +574,7 @@ const CustomMiniumOrderPayment = () => {
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
         <Header
-          title={'Create Sell Offer'}
+          title={'Create Custom Sell Offer'}
           contentStyle={{marginBottom: 0}}
           tintColor={COLORS.Neutral1}
         />

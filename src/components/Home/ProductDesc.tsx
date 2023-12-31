@@ -1,10 +1,11 @@
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 
 import {COLORS, FONTS, SIZES, icons} from '../../constants';
 import MainMarket from './MainMarket';
-import { formatNumberWithCommas } from '../../utilities/service';
+import {formatNumberWithCommas} from '../../utilities/service';
+import LanguageSpoken from './LanguageSpoken';
 
 const ProductDesc = ({
   productItem,
@@ -86,16 +87,34 @@ const ProductDesc = ({
           justifyContent: 'space-between',
         }}>
         <View style={{justifyContent: 'center'}}>
-          <Text
-            numberOfLines={2}
-            style={{
-              ...FONTS.h5,
-              color: COLORS.Neutral1,
-            }}>
-            {sub1}
-          </Text>
+          <FlatList
+            data={sub1}
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={false}
+            renderItem={({item, index}) => (
+              <View
+                key={index}
+                style={{
+                  backgroundColor: COLORS.white,
+                  paddingBottom: 2,
+                }}>
+                <View style={{justifyContent: 'center'}}>
+                  <Text
+                    numberOfLines={2}
+                    style={{
+                      ...FONTS.body3,
+                      fontWeight: 'bold',
+                      color: COLORS.Neutral1,
+                    }}>
+                    ·{' '} {item}
+                  </Text>
+                </View>
+              </View>
+            )}
+          />
         </View>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{justifyContent: 'flex-start'}}>
           <Text
             numberOfLines={2}
             style={{
@@ -164,7 +183,7 @@ const ProductDesc = ({
                 ...FONTS.h3,
                 color: COLORS.Neutral1,
               }}>
-              ₦{formatNumberWithCommas(sub3) || 0}
+              ₦{sub3 || 0}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -251,7 +270,7 @@ const ProductDesc = ({
       </View>
 
       {/* Languages spoken */}
-     {children}
+      {children}
     </View>
   );
 };

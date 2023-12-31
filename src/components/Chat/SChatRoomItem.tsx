@@ -41,6 +41,13 @@ const SChatRoomItem = ({chatRoom}: any) => {
     },
   });
 
+  const msgNotifee =
+    onData?.messagesByDate?.items
+      ?.filter(usrID => usrID?.forUserID === userID)
+      ?.filter(crID => crID?.chatroomID === chatRoom?.id)
+      ?.filter(item => item?.readAt === 0) || [];
+  const messageLength = msgNotifee?.length || undefined;
+
   // FETCH CHAT ROOM FILTER BY CHATROOM ID AND FIND USERS IN THAT CHATROOM
   const {data, loading} = useQuery<
     ListUserChatRoomsQuery,
@@ -87,9 +94,11 @@ const SChatRoomItem = ({chatRoom}: any) => {
         resizeMode={FastImage.resizeMode.cover}
       />
 
-      {/* <View style={styles.badgeContainer}>
-        <Text style={styles.badgeText}>{chatRoom?.newMessages}</Text>
-      </View> */}
+      {messageLength && (
+        <View style={styles.badgeContainer}>
+          <Text style={styles.badgeText}>{messageLength}</Text>
+        </View>
+      )}
 
       <View style={styles.rightContainer}>
         <View style={styles.row}>

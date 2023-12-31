@@ -119,7 +119,7 @@ const Welcome = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     width,
-                    height: SIZES.height > 700 ? 300 : 200,
+                    height: SIZES.height > 700 ? 250 : 200,
                   }}
                 />
 

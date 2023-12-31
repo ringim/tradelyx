@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
@@ -47,7 +41,14 @@ const BChatRoomItem = ({chatRoom}: any) => {
     },
   });
 
-  // FETCH CHAT ROOM FILTER BY CHATROOM ID AND FIND USERS IN THAT CHATROOM
+  const msgNotifee =
+    onData?.messagesByDate?.items
+      ?.filter(usrID => usrID?.forUserID === userID)
+      ?.filter(crID => crID?.chatroomID === chatRoom?.id)
+      ?.filter(item => item?.readAt === 0) || [];
+  const messageLength = msgNotifee?.length || undefined;
+
+  // FETCH CHAT ROOM FILTER BY CHATROOM ID AND FIND A USER IN THAT CHATROOM
   const {data, loading} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
@@ -88,14 +89,6 @@ const BChatRoomItem = ({chatRoom}: any) => {
     setLastMessage(getLM);
   }, [lastMessage, onLoad]);
 
-  if (loading) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size={'large'} color={COLORS.primary6} />
-      </View>
-    );
-  }
-
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <FastImage
@@ -104,9 +97,11 @@ const BChatRoomItem = ({chatRoom}: any) => {
         resizeMode={FastImage.resizeMode.cover}
       />
 
-      {/* <View style={styles.badgeContainer}>
-        <Text style={styles.badgeText}>{chatRoom?.newMessages}</Text>
-      </View> */}
+      {messageLength && (
+        <View style={styles.badgeContainer}>
+          <Text style={styles.badgeText}>{messageLength}</Text>
+        </View>
+      )}
 
       <View style={styles.rightContainer}>
         <View style={styles.row}>

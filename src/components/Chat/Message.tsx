@@ -323,6 +323,7 @@ const Message = (props: any) => {
               navigation.navigate('ReplySellOfferPayment', {
                 sellOffer: message?.requestID,
                 chatRoomID: props?.message?.chatroomID,
+                forUserID: userInfo?.id
               })
             }
           />

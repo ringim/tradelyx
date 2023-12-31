@@ -938,7 +938,25 @@ const onboarding = [
   },
 ];
 
+const notifyTypes = [
+  {
+    id: '1',
+    type: 'ORDER',
+    title: 'Orders',
+    text: 'Order status, tracking updates, disputes, etc',
+    icon: require('../assets/icons/order.png'),
+  },
+  {
+    id: '2',
+    type: 'PROMOTIONS',
+    title: 'Promotions',
+    text: 'Discounts, sales announcements, price alerts',
+    icon: require('../assets/icons/promo.png'),
+  },
+];
+
 export default {
+  notifyTypes,
   freightType,
   OrderTabItem,
   requestType,
