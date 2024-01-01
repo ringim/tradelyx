@@ -61,42 +61,50 @@ const typePolicies: TypePolicies = {
   },
   Query: {
     fields: {
-      // sellOffersByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // productByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // rffByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // rfqByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // ordersByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // reviewByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // WishlistByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // notificationByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
-      // messagesByDate: {
-      //   keyArgs: ['SType', 'createdAt', 'sortDirection', 'filter'],
-      //   merge: mergeList,
-      // },
+      SellOffer: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      SellOfferReply: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      Product: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      RFF: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      RFFReply: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      RFQ: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      RFQReply: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      Order: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      Wishlist: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      Notification: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
+      Message: {
+        keyArgs: ['id', 'filter'],
+        merge: mergeList,
+      },
     },
   },
 };

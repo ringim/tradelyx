@@ -7,6 +7,13 @@ export const getUser = gql`
       name
       email
       phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
       rating
       accountType
       lastOnlineAt
@@ -47,6 +54,85 @@ export const getUser = gql`
       legalRep
       overview
       activeOrder
+      ChatRooms {
+        items {
+          id
+          chatRoomId
+          userId
+          chatRoom {
+            id
+            createdAt
+            SType
+            name
+            imageUri
+            updatedAt
+            chatRoomLastMessageId
+            __typename
+          }
+          user {
+            id
+            name
+            email
+            phone_number
+            enableNotification
+            enableNotificationProducts
+            enableNotificationOrders
+            enableNotificationPromotions
+            enableNotificationRFF
+            enableNotificationRFQ
+            enableNotificationSellOffer
+            rating
+            accountType
+            lastOnlineAt
+            lat
+            lng
+            ledgerBalance
+            address
+            city
+            state
+            zipCode
+            lga
+            website
+            incorporateDate
+            rcNumber
+            totalOrders
+            level
+            identification
+            identificationNumber
+            identityDocs
+            keyProduct
+            country
+            inviteCode
+            accountCategory
+            title
+            logo
+            backgroundImage
+            images
+            businessType
+            certifications
+            certsDoc
+            mainMarkets
+            memberShipType
+            sellerLevel
+            estRevenue
+            totalStaff
+            responseTime
+            languages
+            legalRep
+            overview
+            activeOrder
+            fcmToken
+            createdAt
+            updatedAt
+            __typename
+          }
+          createdAt
+          updatedAt
+          __typename
+        }
+        nextToken
+        __typename
+      }
       fcmToken
       createdAt
       updatedAt
@@ -67,6 +153,13 @@ export const listUsers = gql`
         name
         email
         phone_number
+        enableNotification
+        enableNotificationProducts
+        enableNotificationOrders
+        enableNotificationPromotions
+        enableNotificationRFF
+        enableNotificationRFQ
+        enableNotificationSellOffer
         rating
         accountType
         lastOnlineAt
@@ -140,6 +233,13 @@ export const updateUser = gql`
       name
       email
       phone_number
+      enableNotification
+      enableNotificationProducts
+      enableNotificationOrders
+      enableNotificationPromotions
+      enableNotificationRFF
+      enableNotificationRFQ
+      enableNotificationSellOffer
       rating
       accountType
       lastOnlineAt
@@ -181,6 +281,9 @@ export const updateUser = gql`
       overview
       activeOrder
       fcmToken
+      createdAt
+      updatedAt
+      __typename
     }
   }
 `;

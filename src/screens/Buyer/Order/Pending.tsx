@@ -1,4 +1,4 @@
-import {View, Text, FlatList, ActivityIndicator} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
@@ -10,6 +10,7 @@ import {
   LoadingIndicator,
   RFQOrderItem,
   SellOfferOrderItem,
+  NoItem,
 } from '../../../components';
 import {
   ModelSortDirection,
@@ -70,7 +71,7 @@ const Pending = () => {
     },
   });
 
-  // LIST SELL OFFERS
+  // LIST SELL OFFERS REPLIES
   const {
     data: sellOfferData,
     loading: sellOfferLoad,
@@ -124,7 +125,7 @@ const Pending = () => {
     setFetchingMore(false);
   };
 
-  // LIST RFQs ByDateRely
+  // LIST RFQs REPLIES
   const {data: onData, loading: onLoad} = useQuery<
     RfqByDateReplyQuery,
     RfqByDateReplyQueryVariables
@@ -137,7 +138,7 @@ const Pending = () => {
     },
   });
 
-  // LIST RFFs ByDateRely
+  // LIST RFFs REPLIES
   const {data: softData, loading: softLoad} = useQuery<
     RffByDateRelyQuery,
     RffByDateRelyQueryVariables
@@ -175,13 +176,7 @@ const Pending = () => {
   }, [sellOfferData, sellOfferLoad]);
 
   if (loading || newLoad || onLoad || softLoad || sellOfferLoad) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        color={COLORS.primary6}
-        size="large"
-      />
-    );
+    return <LoadingIndicator />;
   }
 
   return (
@@ -259,7 +254,7 @@ const Pending = () => {
                 style={{
                   marginBottom: RFQs?.length - 1 ? 300 : 300,
                 }}>
-                {newLoad && <LoadingIndicator />}
+                {RFQs?.length === 0 && <NoItem contentStyle={{flex: 1}} />}
               </View>
             }
             onEndReached={() => loadMoreItem2()}
@@ -304,8 +299,9 @@ const Pending = () => {
               <View
                 style={{
                   marginBottom: RFFs?.length - 1 ? 300 : 300,
-                }}
-              />
+                }}>
+                {RFFs?.length === 0 && <NoItem contentStyle={{flex: 1}} />}
+              </View>
             }
             onEndReached={() => loadMoreItem()}
           />
@@ -335,8 +331,11 @@ const Pending = () => {
               <View
                 style={{
                   marginBottom: sellOffers?.length - 1 ? 300 : 300,
-                }}
-              />
+                }}>
+                {sellOffers?.length === 0 && (
+                  <NoItem contentStyle={{flex: 1}} />
+                )}
+              </View>
             }
             onEndReached={() => loadMoreItem3()}
           />

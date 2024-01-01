@@ -80,7 +80,7 @@ const CustomSellOfferDetail = () => {
       <Header title={'Sell Offer Details'} tintColor={COLORS.Neutral1} />
 
       <ScrollView
-        style={{marginHorizontal: 5,}}
+        style={{marginHorizontal: 5}}
         showsVerticalScrollIndicator={false}>
         {/* shipping from  */}
         <View
@@ -619,37 +619,47 @@ const CustomSellOfferDetail = () => {
           }}
         />
         {/* images */}
-        {getSellOfferDetail?.image?.length > 0 ||
-          (getSellOfferDetail?.images?.length > 0 && (
-            <View
-              style={{
-                marginTop: SIZES.semi_margin,
-                marginHorizontal: SIZES.margin,
-              }}>
-              <View style={{justifyContent: 'center'}}>
-                <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-                  Images
-                </Text>
-              </View>
-
-              {getSellOfferDetail?.image ? (
-                <SOImage
-                  image={getSellOfferDetail?.image}
-                  containerStyle={{marginLeft: 0}}
-                />
-              ) : (
-                <FlatList
-                  data={getSellOfferDetail?.images}
-                  keyExtractor={item => `${item}`}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({item, index}) => {
-                    return <SOImage image={item} index={index} />;
-                  }}
-                />
-              )}
+        {getSellOfferDetail?.image?.length > 0 ? (
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Images
+              </Text>
+              <SOImage
+                image={getSellOfferDetail?.image}
+                containerStyle={{marginLeft: 0}}
+              />
             </View>
-          ))}
+          </View>
+        ) : getSellOfferDetail?.images?.length > 0 ? (
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Images
+              </Text>
+            </View>
+
+            <FlatList
+              data={getSellOfferDetail?.images}
+              keyExtractor={item => `${item}`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return <SOImage image={item} index={index} />;
+              }}
+            />
+          </View>
+        ) : (
+          <View />
+        )}
 
         {/* TOS Doc */}
         <View
@@ -721,7 +731,7 @@ const CustomSellOfferDetail = () => {
             backgroundColor: COLORS.Neutral10,
             borderRadius: SIZES.radius,
             padding: SIZES.semi_margin,
-            marginBottom: 100
+            marginBottom: 100,
           }}>
           <View style={{flex: 1, justifyContent: 'center'}}>
             <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>

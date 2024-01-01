@@ -319,7 +319,6 @@ const AddProducts = () => {
               ...FONTS.body3,
               color: COLORS.Neutral1,
               marginTop: SIZES.base,
-              paddingTop: SIZES.base,
               height: 50,
               fontWeight: '500',
               paddingHorizontal: SIZES.radius,

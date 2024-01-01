@@ -175,7 +175,16 @@ const ProductSpecification = () => {
             required: 'Unit is required',
           }}
           render={({field: {value, onChange}, fieldState: {error}}: any) => (
-            <View style={{justifyContent: 'center', marginTop: SIZES.semi_margin}}>
+            <View style={{justifyContent: 'center', marginTop: 4}}>
+              <Text
+                style={{
+                  marginTop: SIZES.radius,
+                  color: COLORS.Neutral1,
+                  ...FONTS.body3,
+                  fontWeight: '500',
+                }}>
+                Unit
+              </Text>
               <DropDownPicker
                 schema={{
                   label: 'type',
@@ -196,7 +205,7 @@ const ProductSpecification = () => {
                 style={{
                   borderRadius: SIZES.base,
                   height: 40,
-                  marginTop: SIZES.radius,
+                  marginTop: SIZES.base,
                   borderColor: COLORS.Neutral7,
                   borderWidth: 0.5,
                   width: 170,
@@ -252,7 +261,7 @@ const ProductSpecification = () => {
             required: 'Packaging is required',
           }}
           placeholder="e.g Bags, Crate e.t.c."
-          containerStyle={{marginTop: SIZES.semi_margin}}
+          containerStyle={{marginTop: SIZES.padding}}
           labelStyle={{...FONTS.body3, color: COLORS.Neutral1}}
           inputContainerStyle={{marginTop: SIZES.base, height: 50}}
         />

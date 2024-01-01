@@ -169,6 +169,7 @@ const AirPickupProcess = () => {
         actorID: userID,
         requestType: RFFTYPE?.AIR,
         notificationRFFId: route?.params.rffID,
+        SType: 'NOTIFICATION',
         description: `Buyer's request - ${rffDetail}`,
       };
       const res = await doCreateNotification({

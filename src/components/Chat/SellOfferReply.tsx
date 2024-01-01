@@ -29,8 +29,30 @@ const SellOfferReply = ({
 
   return (
     <Pressable style={styles.container}>
+      {/* request number */}
+      <View style={styles.container2}>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral5}}>
+            {serviceType} No:
+          </Text>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            marginRight: SIZES.base,
+          }}>
+          <Text style={styles.text}>{requestID}</Text>
+        </View>
+        <TouchableOpacity style={{justifyContent: 'center'}} onPress={onCopy}>
+          <FastImage
+            source={icons.copy}
+            style={styles.icon}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        </TouchableOpacity>
+      </View>
       <View style={styles.subCont2}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{justifyContent: 'center', marginTop: SIZES.radius}}>
           <FastImage
             source={{uri: imageUri2, priority: FastImage.priority.normal}}
             style={styles.image}
@@ -38,32 +60,7 @@ const SellOfferReply = ({
           />
         </View>
 
-        {/* request number */}
         <View style={styles.subCont}>
-          <View style={styles.container2}>
-            <View style={{flex: 1, justifyContent: 'center'}}>
-              <Text style={{...FONTS.cap1, color: COLORS.Neutral5}}>
-                {serviceType} No:
-              </Text>
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                marginRight: SIZES.base,
-              }}>
-              <Text style={styles.text}>{requestID}</Text>
-            </View>
-            <TouchableOpacity
-              style={{justifyContent: 'center'}}
-              onPress={onCopy}>
-              <FastImage
-                source={icons.copy}
-                style={styles.icon}
-                resizeMode={FastImage.resizeMode.contain}
-              />
-            </TouchableOpacity>
-          </View>
-
           {/* title */}
           <Text numberOfLines={2} style={styles.text2}>
             {title}

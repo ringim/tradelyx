@@ -30,14 +30,20 @@ import {
   ListUserChatRoomsQueryVariables,
   OnCreateMessageByChatRoomIDSubscription,
   OnCreateMessageByChatRoomIDSubscriptionVariables,
-  UpdateMessageMutation,
-  UpdateMessageMutationVariables,
+  UpdateNotificationMutation,
+  UpdateNotificationMutationVariables,
+  NotificationsByDateQuery,
+  NotificationsByDateQueryVariables,
+  NotificationType,
 } from '../../../API';
+import {
+  notificationsByDate,
+  updateNotification,
+} from '../../../queries/NotificationQueries';
 import {
   listUserChatRooms,
   messagesByDate,
   onCreateMessageByChatRoomID,
-  updateMessage,
 } from '../../../queries/ChatQueries';
 
 const Chat = () => {
@@ -84,36 +90,54 @@ const Chat = () => {
       ?.filter((msg: any) => msg?.chatroomID === route?.params?.id)
       .filter((item: any) => !item?._deleted) || [];
 
+  // LIST NOTIFICATIONS
+  const {data: softData} = useQuery<
+    NotificationsByDateQuery,
+    NotificationsByDateQueryVariables
+  >(notificationsByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      SType: 'NOTIFICATION',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allNotifee =
+    softData?.notificationsByDate?.items
+      ?.filter(type => type?.type === NotificationType?.MESSAGE)
+      ?.filter(usrID => usrID?.userID !== userID)
+      ?.filter(crID => crID?.Message?.chatroomID === route?.params?.id)
+      ?.filter(item => !item?.readAt) || [];
+
   // UPDATE NOTIFICATION
-  const [doUpdateMessage] = useMutation<
-    UpdateMessageMutation,
-    UpdateMessageMutationVariables
-  >(updateMessage);
+  const [doUpdateNotification] = useMutation<
+    UpdateNotificationMutation,
+    UpdateNotificationMutationVariables
+  >(updateNotification);
 
-  useEffect(() => {
-    const readMessages = async () => {
-      const unreadMessages = fetchedMessages?.filter(
-        (n: {readAt: any}) => !n?.readAt,
-      );
+  useFocusEffect(
+    useCallback(() => {
+      const readNotifications = async () => {
+        const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
 
-      await Promise.all(
-        unreadMessages.map(
-          (message: {id: any}) =>
-            message &&
-            doUpdateMessage({
-              variables: {
-                input: {
-                  id: message?.id,
-                  readAt: new Date().getTime(),
+        await Promise.all(
+          unreadNotifee.map(
+            notification =>
+              notification &&
+              doUpdateNotification({
+                variables: {
+                  input: {
+                    id: notification?.id,
+                    readAt: new Date().getTime(),
+                  },
                 },
-              },
-            }),
-        ),
-      );
-    };
-
-    readMessages();
-  }, [fetchedMessages]);
+              }),
+          ),
+        );
+      };
+      readNotifications();
+    }, [allNotifee]),
+  );
 
   // RENDER CREATE MESSAGE SUBSCRIPTION UPDATE
   useEffect(() => {

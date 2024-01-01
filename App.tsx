@@ -9,6 +9,7 @@ import {Alert} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {Amplify} from 'aws-amplify';
+import {loadErrorMessages, loadDevMessages} from '@apollo/client/dev';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
@@ -37,6 +38,14 @@ Amplify.configure(updateConfig);
 
 const App = () => {
   const [onBoarded, setOnBoarded] = useState(null);
+
+  if (__DEV__) {
+    // Adds messages only in a dev environment
+
+    loadDevMessages();
+
+    loadErrorMessages();
+  }
 
   // HIDE SPLASH SCREEN && LOCK ORIENTATION
   useEffect(() => {

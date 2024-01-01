@@ -5,6 +5,7 @@ import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {ScrollView} from 'react-native-gesture-handler';
+import {v4 as uuidV4} from 'uuid';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import {
@@ -35,6 +36,10 @@ import {
   serviceType,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  CreateNotificationInput,
+  NotificationType,
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -45,6 +50,7 @@ import {
 } from '../../../queries/ChatQueries';
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
+import {createNotification} from '../../../queries/NotificationQueries';
 
 const QuotesRequestDetails = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
@@ -97,6 +103,12 @@ const QuotesRequestDetails = () => {
     chatRoomId: item.chatRoomId,
     userId: item.userId,
   }));
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -165,6 +177,7 @@ const QuotesRequestDetails = () => {
           });
         };
         updateLastMessage(res?.data?.createMessage?.id);
+        await createNotify(similarChatRoomIDs[0]?.chatRoomId?.id);
         navigation.navigate('Chat', {
           id: similarChatRoomIDs[0]?.chatRoomId,
         });
@@ -229,7 +242,7 @@ const QuotesRequestDetails = () => {
           });
         };
         updateLastMessage(res?.data?.createMessage?.id);
-
+        await createNotify(newChatRoom?.id);
         // navigate to the newly created chatRoom
         navigation.navigate('Chat', {
           id: newChatRoom?.id,
@@ -243,6 +256,35 @@ const QuotesRequestDetails = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // CREATE NOTIFICATION FUNCTION
+  const createNotify = async (chatroomID: string) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF_REPLY,
+        readAt: 0,
+        requestType: route?.params?.quoteItem?.rffType,
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationSellOfferId: route?.params?.quoteItem?.id,
+        chatroomID,
+        description: `${softData?.getUser?.title} will respond to your request for ${route?.params?.quoteItem?.productName}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 

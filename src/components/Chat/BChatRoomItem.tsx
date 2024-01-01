@@ -17,8 +17,12 @@ import {
   User,
   Message,
   ModelSortDirection,
+  NotificationsByDateQuery,
+  NotificationsByDateQueryVariables,
+  NotificationType,
 } from '../../API';
 import {listUserChatRooms, messagesByDate} from '../../queries/ChatQueries';
+import {notificationsByDate} from '../../queries/NotificationQueries';
 
 const BChatRoomItem = ({chatRoom}: any) => {
   const navigation = useNavigation<any>();
@@ -28,9 +32,10 @@ const BChatRoomItem = ({chatRoom}: any) => {
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null); // the display user
   const [lastMessage, setLastMessage] = useState<Message | undefined>();
+  const [msgLength, setMsgLength] = useState<any>('');
 
   // FETCH LAST MESSAGES & FILTER BY MESSAGE ID == chatRoomLastMessageId
-  const {data: onData, loading: onLoad} = useQuery<
+  const {data: onData} = useQuery<
     MessagesByDateQuery,
     MessagesByDateQueryVariables
   >(messagesByDate, {
@@ -41,21 +46,11 @@ const BChatRoomItem = ({chatRoom}: any) => {
     },
   });
 
-  const msgNotifee =
-    onData?.messagesByDate?.items
-      ?.filter(usrID => usrID?.forUserID === userID)
-      ?.filter(crID => crID?.chatroomID === chatRoom?.id)
-      ?.filter(item => item?.readAt === 0) || [];
-  const messageLength = msgNotifee?.length || undefined;
-
   // FETCH CHAT ROOM FILTER BY CHATROOM ID AND FIND A USER IN THAT CHATROOM
   const {data, loading} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
-  >(listUserChatRooms, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
-  });
+  >(listUserChatRooms, {pollInterval: 500, fetchPolicy: 'network-only'});
   const fetchedUsers = async () => {
     const userFetched: any =
       data?.listUserChatRooms?.items
@@ -65,9 +60,44 @@ const BChatRoomItem = ({chatRoom}: any) => {
     setUser(userFetched);
   };
 
+  // LIST NOTIFICATIONS
+  const {data: newData} = useQuery<
+    NotificationsByDateQuery,
+    NotificationsByDateQueryVariables
+  >(notificationsByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'network-only',
+    variables: {
+      SType: 'NOTIFICATION',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+
+  const getAllNotifications = () => {
+    const allNotifee =
+      newData?.notificationsByDate?.items
+        ?.filter(type => type?.type === NotificationType?.MESSAGE)
+        ?.filter(usrID => usrID?.userID !== userID)
+        ?.filter(crID => crID?.Message?.chatroomID === chatRoom?.id)
+        ?.filter(item => !item?.readAt) || [];
+
+    const number = allNotifee?.length;
+
+    if (isNaN(number)) {
+      return undefined;
+    } else {
+      setMsgLength(number > 99 ? '100+' : `${number}`);
+    }
+  };
+
   const onPress = () => {
     navigation.navigate('Chat', {id: chatRoom?.id});
   };
+
+  useEffect(() => {
+    getAllNotifications();
+  }, [lastMessage, newData]);
 
   useEffect(() => {
     fetchedUsers();
@@ -87,7 +117,7 @@ const BChatRoomItem = ({chatRoom}: any) => {
       lm => lm?.id === chatRoom?.chatRoomLastMessageId,
     );
     setLastMessage(getLM);
-  }, [lastMessage, onLoad]);
+  }, [lastMessage]);
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
@@ -97,13 +127,17 @@ const BChatRoomItem = ({chatRoom}: any) => {
         resizeMode={FastImage.resizeMode.cover}
       />
 
-      {messageLength && (
+      {msgLength > 0 && (
         <View style={styles.badgeContainer}>
-          <Text style={styles.badgeText}>{messageLength}</Text>
+          <Text style={styles.badgeText}>{msgLength}</Text>
         </View>
       )}
 
-      <View style={styles.rightContainer}>
+      <View
+        style={[
+          styles.rightContainer,
+          {marginLeft: msgLength > 99 ? SIZES.semi_margin : SIZES.base},
+        ]}>
         <View style={styles.row}>
           <Text style={styles.name}>{user?.title || user?.name}</Text>
           <Text style={styles.text}>
@@ -138,9 +172,8 @@ const styles = StyleSheet.create({
   },
   badgeContainer: {
     backgroundColor: COLORS.secondary1,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    padding: 5,
+    borderRadius: 50,
     borderWidth: 1,
     borderColor: 'white',
     justifyContent: 'center',
@@ -151,12 +184,13 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: COLORS.white,
+    textAlign: 'center',
+    fontWeight: '600',
     ...FONTS.body3,
   },
   rightContainer: {
     flex: 1,
     justifyContent: 'center',
-    marginLeft: SIZES.base,
   },
   row: {
     flexDirection: 'row',
@@ -172,7 +206,7 @@ const styles = StyleSheet.create({
     ...FONTS.cap1,
   },
   text1: {
-    color: COLORS.gray,
+    color: COLORS.Neutral5,
     ...FONTS.cap1,
     paddingTop: 4,
   },

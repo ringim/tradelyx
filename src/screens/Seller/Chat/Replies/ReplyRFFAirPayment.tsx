@@ -36,9 +36,17 @@ import {
   CreateRFFReplyMutation,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  NotificationType,
+  CreateNotificationInput,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../../../API';
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
+import {getUser} from '../../../../queries/UserQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
+import {createNotification} from '../../../../queries/NotificationQueries';
 import {createRFFReply, getRFF} from '../../../../queries/RFFQueries';
 import {
   formatNumericValue,
@@ -103,6 +111,24 @@ const ReplyRFFAirPayment = () => {
     setDate(selectedDate);
     hideDatePicker();
   };
+
+  // GET USER 1
+  const {data: softData, loading: softLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // GET RFF DETAILS
   const {data, loading} = useQuery<GetRFFQuery, GetRFFQueryVariables>(getRFF, {
@@ -216,6 +242,10 @@ const ReplyRFFAirPayment = () => {
         });
       };
       updateLastMessage(res1?.data?.createMessage?.id);
+      await createNotify(
+        res?.data?.createRFFReply?.id,
+        route?.params?.chatroomID,
+      );
       navigation.navigate('SuccessService6', {
         chatroomID: route?.params?.chatroomID,
       });
@@ -227,6 +257,34 @@ const ReplyRFFAirPayment = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const createNotify = async (id: any, chatroomID: any) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF_REPLY,
+        readAt: 0,
+        requestType: `${RFFTYPE.AIR} Reply`,
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationRFFReplyId: id,
+        chatroomID,
+        description: `${softData?.getUser?.title} has replied your RFF request`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -691,7 +749,7 @@ const ReplyRFFAirPayment = () => {
     );
   }
 
-  if (loading) {
+  if (loading || softLoad) {
     return <LoadingIndicator />;
   }
 

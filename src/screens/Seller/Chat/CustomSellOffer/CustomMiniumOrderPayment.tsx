@@ -7,7 +7,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dayjs from 'dayjs';
-import {useMutation} from '@apollo/client';
+import {v4 as uuidV4} from 'uuid';
+import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import FastImage from 'react-native-fast-image';
 
@@ -19,6 +20,7 @@ import {
   ExpiryDate,
   UploadedID,
   UploadID,
+  LoadingIndicator,
 } from '../../../../components';
 import {COLORS, FONTS, SIZES, constants, icons} from '../../../../constants';
 import {ChatStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
@@ -32,8 +34,19 @@ import {
   UpdateChatRoomMutationVariables,
   MessageStatus,
   serviceType,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  CreateNotificationInput,
+  NotificationType,
+  GetUserQuery,
+  GetUserQueryVariables,
+  GetSellOfferQuery,
+  GetSellOfferQueryVariables,
 } from '../../../../API';
-import {updateSellOffer} from '../../../../queries/SellOfferQueries';
+import {
+  getSellOffer,
+  updateSellOffer,
+} from '../../../../queries/SellOfferQueries';
 import {
   formatNumericValue,
   selectFile2,
@@ -41,6 +54,8 @@ import {
 } from '../../../../utilities/service';
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
+import {createNotification} from '../../../../queries/NotificationQueries';
+import {getUser} from '../../../../queries/UserQueries';
 
 interface IFreight {
   qty: number;
@@ -93,6 +108,28 @@ const CustomMiniumOrderPayment = () => {
     const formattedValue = formatNumericValue(input, price);
     setPrice(formattedValue);
   };
+
+  // GET USER
+  const {data: newData, loading: newLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+  const userInfo: any = newData?.getUser?.title;
+
+  // GET SELL OFFER DETAIL
+  const {data, loading: onLoad} = useQuery<
+    GetSellOfferQuery,
+    GetSellOfferQueryVariables
+  >(getSellOffer, {
+    variables: {
+      id: route?.params.sellOfferID,
+    },
+  });
+  const sellOfferDetail = data?.getSellOffer?.title;
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -151,7 +188,7 @@ const CustomMiniumOrderPayment = () => {
             userID: userID,
             status: MessageStatus.SENT,
             text: "Hello, I've sent a Custom Sell Offer",
-            sellOfferID: input?.id,
+            sellOfferID: input?.sellOfferID,
             requestTitle: input?.title,
             packageType: type,
             serviceImage: input?.sellOfferImage,
@@ -175,7 +212,7 @@ const CustomMiniumOrderPayment = () => {
         });
       };
       updateLastMessage(res1?.data?.createMessage?.id);
-
+      await createNotify();
       navigation.reset({
         index: 0,
         routes: [
@@ -196,6 +233,38 @@ const CustomMiniumOrderPayment = () => {
   function isSubmit() {
     return price !== '' && singleFile?.length !== 0;
   }
+
+  // CREATE SELL OFFER NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async () => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.CUSTOM_SELLOFFER,
+        readAt: 0,
+        requestType: 'Sell Offer',
+        actorID: userID,
+        SType: 'NOTIFICATION',
+        notificationSellOfferId: route?.params.sellOfferID,
+        description: `${userInfo} sent you a Custom Sell Offer - ${sellOfferDetail}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
+    }
+  };
 
   function requestForm() {
     return (
@@ -568,6 +637,10 @@ const CustomMiniumOrderPayment = () => {
         </View>
       </View>
     );
+  }
+
+  if (newLoad || onLoad) {
+    return <LoadingIndicator />;
   }
 
   return (

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, TouchableOpacity, Pressable, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
-import {useQuery, useMutation} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 import {Storage} from 'aws-amplify';
 
 import {SIZES, COLORS, images, icons, FONTS} from '../../constants';
@@ -12,22 +12,18 @@ import {
   NotificationsByDateQuery,
   NotificationsByDateQueryVariables,
   NotificationType,
-  UpdateNotificationMutation,
-  UpdateNotificationMutationVariables,
 } from '../../API';
-import {
-  notificationsByDate,
-  updateNotification,
-} from '../../queries/NotificationQueries';
+import {notificationsByDate} from '../../queries/NotificationQueries';
 import {useAuthContext} from '../../context/AuthContext';
 
-const TabHeader2 = ({userImage, containerStyle, qty}: any) => {
+const TabHeader2 = ({userImage, containerStyle}: any) => {
   const {userID} = useAuthContext();
 
   const navigation = useNavigation<any>();
 
   const [imageUri, setImageUri] = useState<string | null>(null);
 
+  // LIST NOTIFICATIONS
   const {data} = useQuery<
     NotificationsByDateQuery,
     NotificationsByDateQueryVariables
@@ -43,41 +39,12 @@ const TabHeader2 = ({userImage, containerStyle, qty}: any) => {
     data?.notificationsByDate?.items
       ?.filter(
         type =>
-          type?.type !== NotificationType?.SELLOFFER &&
           type?.type !== NotificationType?.PRODUCT &&
           type?.type !== NotificationType?.MESSAGE,
       )
       ?.filter(usrID => usrID?.actorID !== userID)
       ?.filter((item: any) => !item?._deleted && !item?.readAt) || [];
   const messageLength = allNotifee?.length || undefined;
-
-  // UPDATE NOTIFICATION
-  const [doUpdateNotification] = useMutation<
-    UpdateNotificationMutation,
-    UpdateNotificationMutationVariables
-  >(updateNotification);
-
-  useEffect(() => {
-    const readNotifications = async () => {
-      const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
-
-      await Promise.all(
-        unreadNotifee.map(
-          notification =>
-            notification &&
-            doUpdateNotification({
-              variables: {
-                input: {
-                  id: notification?.id,
-                  readAt: new Date().getTime(),
-                },
-              },
-            }),
-        ),
-      );
-    };
-    readNotifications();
-  }, [allNotifee]);
 
   useEffect(() => {
     let unmounted = true;

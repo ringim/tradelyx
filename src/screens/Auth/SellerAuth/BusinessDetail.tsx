@@ -127,6 +127,8 @@ const BusinessDetail = () => {
         mainMarkets: initialTags,
         languages: initialTags2,
         accountType: 'SELLER',
+        enableNotificationRFF: true,
+        enableNotificationRFQ: true,
       };
       if (singleFile) {
         const fileKeys = await Promise.all(

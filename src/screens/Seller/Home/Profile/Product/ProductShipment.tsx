@@ -112,6 +112,7 @@ const InternationalEngagementTerms = () => {
         },
       });
       // console.log('product shipment', input);
+      await createNotify()
       navigation.reset({
         index: 0,
         routes: [{name: 'SuccessService2'}],
@@ -136,12 +137,13 @@ const InternationalEngagementTerms = () => {
     try {
       const input: CreateNotificationInput = {
         id: uuidV4(),
-        type: NotificationType?.RFF,
         readAt: 0,
         actorID: userID,
-        requestType: 'PRODUCT',
+        requestType: 'Product',
+        type: NotificationType?.PRODUCT,
+        SType: 'NOTIFICATION',
         notificationProductId: route?.params.productID,
-        description: `${userInfo} posted a new Item - ${ProductDetail}`,
+        description: `${userInfo} posted a new product - ${ProductDetail}`,
       };
       const res = await doCreateNotification({
         variables: {

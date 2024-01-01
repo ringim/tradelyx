@@ -1,12 +1,17 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
+import LottieView from 'lottie-react-native';
+import {Header} from '../../../../components';
+import {COLORS, SIZES, FONTS} from '../../../../constants';
 
 const OrderNotifications = () => {
   return (
-    <View>
-      <Text>OrderNotifications</Text>
-    </View>
-  )
-}
+    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+      <Header title={'Orders'} tintColor={COLORS.Neutral1} />
 
-export default OrderNotifications
+
+    </View>
+  );
+};
+
+export default OrderNotifications;

@@ -35,6 +35,12 @@ import {
   CreateRFQReplyInput,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  NotificationType,
+  CreateNotificationInput,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../../../API';
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
@@ -44,6 +50,8 @@ import {
   selectFile2,
   uploadFile2,
 } from '../../../../utilities/service';
+import {createNotification} from '../../../../queries/NotificationQueries';
+import {getUser} from '../../../../queries/UserQueries';
 
 interface IFreight {
   qty: number;
@@ -101,6 +109,24 @@ const ReplyRFQStandardPayment = () => {
     setDate(selectedDate);
     hideDatePicker();
   };
+
+  // GET USER 1
+  const {data: softData, loading: softLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // GET RFQ DETAILS
   const {data, loading} = useQuery<GetRFQQuery, GetRFQQueryVariables>(getRFQ, {
@@ -202,6 +228,11 @@ const ReplyRFQStandardPayment = () => {
       };
       updateLastMessage(res1?.data?.createMessage?.id);
 
+      await createNotify(
+        res?.data?.createRFQReply?.id,
+        route?.params?.chatroomID,
+      );
+
       navigation.reset({
         index: 0,
         routes: [
@@ -219,6 +250,34 @@ const ReplyRFQStandardPayment = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const createNotify = async (id: any, chatroomID: any) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFQ_REPLY,
+        readAt: 0,
+        requestType: 'Standard Reply',
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationRFQReplyId: id,
+        chatroomID,
+        description: `${softData?.getUser?.title} has replied your RFQ request`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -594,7 +653,7 @@ const ReplyRFQStandardPayment = () => {
     );
   }
 
-  if (loading) {
+  if (loading || softLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />

@@ -15,12 +15,6 @@ interface IItem {
 }
 
 const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
-  const options = {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
   const expiryDateString = item?.expiryDate;
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
@@ -47,6 +41,7 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer Country Name */}
         <View
           style={{
+            flex: 1,
             justifyContent: 'center',
           }}>
           <Text
@@ -58,34 +53,45 @@ const RFQItem = ({containerStyle, item, onCopy, onPress}: IItem) => {
         {/* Buyer from */}
         <View
           style={{
-            flex: 1,
+            flex: 1.5,
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <FastImage
-            source={{uri: item?.placeOriginFlag}}
-            resizeMode={FastImage.resizeMode.contain}
+          <View
             style={{
-              width: 17,
-              height: 17,
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            justifyContent: 'center',
-            padding: SIZES.base,
-          }}>
-          <Text
-            numberOfLines={1}
-            style={{
-              ...FONTS.cap1,
-              fontWeight: '600',
-              color: COLORS.Neutral1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}>
-            {item?.placeOrigin}
-          </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                paddingRight: SIZES.base,
+              }}>
+              <FastImage
+                source={{uri: item?.placeOriginFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                {item?.placeOrigin}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
 

@@ -37,33 +37,45 @@ const InternationalRFQDetail1 = ({
         {/* Buyer from */}
         <View
           style={{
-            flex: 1,
+            flex: 1.5,
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <FastImage
-            source={{uri: placeOriginFlag}}
-            resizeMode={FastImage.resizeMode.contain}
+          <View
             style={{
-              width: 20,
-              height: 20,
-            }}
-          />
-        </View>
-        <View
-          style={{
-            marginLeft: SIZES.base,
-            justifyContent: 'center',
-          }}>
-          <Text
-            numberOfLines={3}
-            style={{
-              ...FONTS.cap1,
-              fontWeight: '500',
-              color: COLORS.Neutral1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}>
-            {placeOriginName}
-          </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                paddingRight: SIZES.base,
+              }}>
+              <FastImage
+                source={{uri: placeOriginFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                {placeOriginName}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
 
@@ -86,35 +98,45 @@ const InternationalRFQDetail1 = ({
         </View>
         <View
           style={{
-            flex: 1,
+            flex: 1.5,
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <FastImage
-            source={{uri: placeDestinationFlag}}
-            resizeMode={FastImage.resizeMode.contain}
+          <View
             style={{
-              width: 20,
-              height: 20,
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            marginLeft: SIZES.radius,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-          }}>
-          <Text
-            numberOfLines={3}
-            style={{
-              ...FONTS.cap1,
-              fontWeight: '500',
-              color: COLORS.Neutral1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}>
-            {placeDestination}
-          </Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                paddingRight: SIZES.base,
+              }}>
+              <FastImage
+                source={{uri: placeDestinationFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                justifyContent: 'center',
+              }}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
+                }}>
+                {placeDestination}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
 

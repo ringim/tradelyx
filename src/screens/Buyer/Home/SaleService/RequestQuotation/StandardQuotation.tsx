@@ -150,6 +150,7 @@ const StandardQuotation = () => {
         readAt: 0,
         requestType: RFQTYPE?.STANDARD,
         actorID: userID,
+        SType: 'NOTIFICATION',
         notificationRFQId: requestID,
         description: `Buyer's Order - ${title}`,
       };
@@ -158,7 +159,6 @@ const StandardQuotation = () => {
           input,
         },
       });
-      console.log('notification created', res);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

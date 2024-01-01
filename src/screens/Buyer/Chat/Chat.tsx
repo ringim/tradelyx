@@ -1,6 +1,6 @@
 import {View} from 'react-native';
-import {useRoute} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import {useRoute, useFocusEffect} from '@react-navigation/native';
+import React, {useEffect, useCallback, useState} from 'react';
 import {Storage} from 'aws-amplify';
 import {FlatList} from 'react-native-gesture-handler';
 import {useQuery, useMutation, useSubscription} from '@apollo/client';
@@ -23,15 +23,21 @@ import {
   ListUserChatRoomsQueryVariables,
   OnCreateMessageByChatRoomIDSubscription,
   OnCreateMessageByChatRoomIDSubscriptionVariables,
-  UpdateMessageMutation,
-  UpdateMessageMutationVariables,
+  UpdateNotificationMutation,
+  UpdateNotificationMutationVariables,
+  NotificationsByDateQuery,
+  NotificationsByDateQueryVariables,
+  NotificationType,
 } from '../../../API';
 import {
   listUserChatRooms,
   messagesByDate,
-  updateMessage,
   onCreateMessageByChatRoomID,
 } from '../../../queries/ChatQueries';
+import {
+  notificationsByDate,
+  updateNotification,
+} from '../../../queries/NotificationQueries';
 
 const Chat = () => {
   const {userID} = useAuthContext();
@@ -76,36 +82,30 @@ const Chat = () => {
       ?.filter((msg: any) => msg?.chatroomID === route?.params?.id)
       .filter((item: any) => !item?._deleted) || [];
 
+  // LIST NOTIFICATIONS
+  const {data: softData} = useQuery<
+    NotificationsByDateQuery,
+    NotificationsByDateQueryVariables
+  >(notificationsByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      SType: 'NOTIFICATION',
+      sortDirection: ModelSortDirection.DESC,
+    },
+  });
+  const allNotifee =
+    softData?.notificationsByDate?.items
+      ?.filter(type => type?.type === NotificationType?.MESSAGE)
+      ?.filter(usrID => usrID?.userID !== userID)
+      ?.filter(crID => crID?.Message?.chatroomID === route?.params?.id)
+      ?.filter(item => !item?.readAt) || [];
+
   // UPDATE NOTIFICATION
-  const [doUpdateMessage] = useMutation<
-    UpdateMessageMutation,
-    UpdateMessageMutationVariables
-  >(updateMessage);
-
-  useEffect(() => {
-    const readMessages = async () => {
-      const unreadMessages = fetchedMessages?.filter(
-        (n: {readAt: any}) => !n?.readAt,
-      );
-
-      await Promise.all(
-        unreadMessages.map(
-          (message: {id: any}) =>
-            message &&
-            doUpdateMessage({
-              variables: {
-                input: {
-                  id: message?.id,
-                  readAt: new Date().getTime(),
-                },
-              },
-            }),
-        ),
-      );
-    };
-
-    readMessages();
-  }, [fetchedMessages]);
+  const [doUpdateNotification] = useMutation<
+    UpdateNotificationMutation,
+    UpdateNotificationMutationVariables
+  >(updateNotification);
 
   // RENDER CREATE MESSAGE SUBSCRIPTION UPDATE
   useEffect(() => {
@@ -122,6 +122,30 @@ const Chat = () => {
       Storage.get(fetchUsers?.logo).then(setImageUri);
     }
   }, [fetchUsers?.logo]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const readNotifications = async () => {
+        const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
+
+        await Promise.all(
+          unreadNotifee.map(
+            notification =>
+              notification &&
+              doUpdateNotification({
+                variables: {
+                  input: {
+                    id: notification?.id,
+                    readAt: new Date().getTime(),
+                  },
+                },
+              }),
+          ),
+        );
+      };
+      readNotifications();
+    }, [allNotifee]),
+  );
 
   if (onLoad) {
     return <LoadingIndicator />;

@@ -33,7 +33,7 @@ import {
   UpdateSellOfferMutation,
   UpdateSellOfferMutationVariables,
   GetUserQuery,
-  GetUserQueryVariables
+  GetUserQueryVariables,
 } from '../../../../../API';
 import {
   getSellOffer,
@@ -42,7 +42,7 @@ import {
 import {formatNumericValue} from '../../../../../utilities/service';
 import {createNotification} from '../../../../../queries/NotificationQueries';
 import {useAuthContext} from '../../../../../context/AuthContext';
-import { getUser } from '../../../../../queries/UserQueries';
+import {getUser} from '../../../../../queries/UserQueries';
 
 interface IFreight {
   moq: string;
@@ -101,8 +101,8 @@ const MiniumOrderPayment = () => {
     return price !== '';
   }
 
-    // GET USER
-    const {data: newData, loading: newLoad} = useQuery<
+  // GET USER
+  const {data: newData, loading: newLoad} = useQuery<
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
@@ -177,8 +177,9 @@ const MiniumOrderPayment = () => {
         id: uuidV4(),
         type: NotificationType?.SELLOFFER,
         readAt: 0,
-        requestType: 'SELL OFFER',
+        requestType: 'Sell Offer',
         actorID: userID,
+        SType: 'NOTIFICATION',
         notificationSellOfferId: route?.params.sellOfferID,
         description: `${userInfo} posted a Sell Offer - ${sellOfferDetail}`,
       };
@@ -546,7 +547,7 @@ const MiniumOrderPayment = () => {
     );
   }
 
-  if (onLoad ||newLoad) {
+  if (onLoad || newLoad) {
     return <LoadingIndicator />;
   }
 

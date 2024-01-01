@@ -48,6 +48,12 @@ import {
   serviceType,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
+  NotificationType,
+  CreateNotificationInput,
 } from '../../../../API';
 import {
   createSellOfferReply,
@@ -61,6 +67,8 @@ import {
   selectFile2,
   uploadFile2,
 } from '../../../../utilities/service';
+import {createNotification} from '../../../../queries/NotificationQueries';
+import {getUser} from '../../../../queries/UserQueries';
 
 interface IFreight {
   qty: any;
@@ -156,6 +164,24 @@ const ReplySellOfferPayment = () => {
     setValue,
     address1?.description?.formatted_address,
   ]);
+
+  // GET USER 1
+  const {data: softData, loading: softLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // GET SELL OFFER ID
   const {data, loading: onLoad} = useQuery<
@@ -261,8 +287,11 @@ const ReplySellOfferPayment = () => {
           },
         });
       };
-      updateLastMessage(res1?.data?.createMessage?.id);
-
+      await updateLastMessage(res1?.data?.createMessage?.id);
+      createNotify(
+        res?.data?.createSellOfferReply?.id,
+        route?.params?.chatRoomID,
+      );
       navigation.reset({
         index: 0,
         routes: [
@@ -280,6 +309,34 @@ const ReplySellOfferPayment = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const createNotify = async (id: any, chatroomID: any) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.SELLOFFERS_REPLY,
+        readAt: 0,
+        requestType: 'Sell Offer',
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationSellOfferReplyId: id,
+        chatroomID,
+        description: `${softData?.getUser?.title} has replied your Sell Offer request`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -834,7 +891,7 @@ const ReplySellOfferPayment = () => {
     );
   }
 
-  if (onLoad) {
+  if (onLoad || softLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />

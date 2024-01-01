@@ -83,9 +83,9 @@ export const rffByDate = gql`
         height
         packageType
         placeOrigin
-        placeOriginCountry
         placeOriginFlag
         placeOriginName
+        placeOriginCountry
         placeDestinationName
         placeDestinationFlag
         destinationCountry
@@ -122,7 +122,6 @@ export const rffByDate = gql`
             placeOrigin
             placeOriginFlag
             placeOriginName
-            agreement
             placeOriginCountry
             placeDestinationName
             placeDestinationFlag
@@ -140,8 +139,9 @@ export const rffByDate = gql`
             requestType
             forUserID
             userID
-            RFF
             statusText
+            agreement
+            RFF
             updatedAt
             __typename
           }
@@ -226,8 +226,8 @@ export const getRFF = gql`
       packageType
       placeOrigin
       placeOriginFlag
-      placeOriginCountry
       placeOriginName
+      placeOriginCountry
       placeDestinationName
       placeDestinationFlag
       destinationCountry
@@ -269,7 +269,6 @@ export const getRFF = gql`
           placeDestinationFlag
           paymentType
           paymentMethod
-          agreement
           destinationCountry
           placeDestination
           relatedServices
@@ -282,8 +281,9 @@ export const getRFF = gql`
           requestType
           forUserID
           userID
-          RFF
           statusText
+          agreement
+          RFF
           updatedAt
           __typename
         }
@@ -337,7 +337,6 @@ export const getRFFReply = gql`
       placeOriginName
       placeOriginCountry
       placeDestinationName
-      agreement
       placeDestinationFlag
       paymentType
       paymentMethod
@@ -353,8 +352,9 @@ export const getRFFReply = gql`
       requestType
       forUserID
       userID
-      RFF
       statusText
+      agreement
+      RFF
       updatedAt
       __typename
     }
@@ -412,15 +412,15 @@ export const rffByDateRely = gql`
         document
         notes
         unit
-        agreement
         containerDetails
         containerSize
         containerType
         requestType
         forUserID
         userID
-        RFF
         statusText
+        agreement
+        RFF
         updatedAt
         __typename
       }
@@ -470,13 +470,13 @@ export const createRFFReply = gql`
       notes
       unit
       containerDetails
-      agreement
       containerSize
       containerType
       requestType
       forUserID
       userID
       statusText
+      agreement
       RFF
       updatedAt
       __typename
@@ -514,7 +514,6 @@ export const updateRFFReply = gql`
       placeOriginName
       placeOriginCountry
       placeDestinationName
-      agreement
       placeDestinationFlag
       paymentType
       paymentMethod
@@ -531,6 +530,7 @@ export const updateRFFReply = gql`
       forUserID
       userID
       statusText
+      agreement
       RFF
       updatedAt
       __typename

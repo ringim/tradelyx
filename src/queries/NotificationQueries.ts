@@ -26,18 +26,20 @@ export const notificationsByDate = gql`
         title
         description
         requestType
+        chatroomID
         userID
         User {
           id
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -89,12 +91,13 @@ export const notificationsByDate = gql`
           name
           email
           phone_number
+          enableNotification
+          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt

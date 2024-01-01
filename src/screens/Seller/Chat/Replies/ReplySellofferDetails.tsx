@@ -101,7 +101,8 @@ const ReplySellofferDetails = () => {
               Shipping from
             </Text>
           </View>
-          <View style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
+          <View
+            style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
             <Text
               style={{
                 ...FONTS.h5,
@@ -179,9 +180,7 @@ const ReplySellofferDetails = () => {
               justifyContent: 'center',
             }}>
             <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
-              {dayjs(getSellOfferDetail?.createdAt).format(
-                'MMMM DD, YYYY',
-              )}
+              {dayjs(getSellOfferDetail?.createdAt).format('MMMM DD, YYYY')}
             </Text>
           </View>
           <View style={{justifyContent: 'center'}}>
@@ -636,37 +635,47 @@ const ReplySellofferDetails = () => {
         />
 
         {/* images */}
-        {getSellOfferDetail?.image?.length > 0 ||
-          (getSellOfferDetail?.images?.length > 0 && (
-            <View
-              style={{
-                marginTop: SIZES.semi_margin,
-                marginHorizontal: SIZES.margin,
-              }}>
-              <View style={{justifyContent: 'center'}}>
-                <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
-                  Images
-                </Text>
-              </View>
-
-              {getSellOfferDetail?.image ? (
-                <SOImage
-                  image={getSellOfferDetail?.image}
-                  containerStyle={{marginLeft: 0}}
-                />
-              ) : (
-                <FlatList
-                  data={getSellOfferDetail?.images}
-                  keyExtractor={item => `${item}`}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({item, index}) => {
-                    return <SOImage image={item} index={index} />;
-                  }}
-                />
-              )}
+        {getSellOfferDetail?.image?.length > 0 ? (
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Images
+              </Text>
+              <SOImage
+                image={getSellOfferDetail?.image}
+                containerStyle={{marginLeft: 0}}
+              />
             </View>
-          ))}
+          </View>
+        ) : getSellOfferDetail?.images?.length > 0 ? (
+          <View
+            style={{
+              marginTop: SIZES.semi_margin,
+              marginHorizontal: SIZES.margin,
+            }}>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral5}}>
+                Images
+              </Text>
+            </View>
+
+            <FlatList
+              data={getSellOfferDetail?.images}
+              keyExtractor={item => `${item}`}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return <SOImage image={item} index={index} />;
+              }}
+            />
+          </View>
+        ) : (
+          <View />
+        )}
 
         {/* Price */}
         <View

@@ -2,6 +2,7 @@ import {View, ScrollView, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import dayjs from 'dayjs';
+import {v4 as uuidV4} from 'uuid';
 import {useMutation, useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -34,6 +35,10 @@ import {
   RFQTYPE,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
+  CreateNotificationInput,
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -44,6 +49,7 @@ import {
 } from '../../../queries/ChatQueries';
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
+import {createNotification} from '../../../queries/NotificationQueries';
 
 const InternationalRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
@@ -100,6 +106,12 @@ const InternationalRFQDetail = () => {
     chatRoomId: item.chatRoomId,
     userId: item.userId,
   }));
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -168,7 +180,7 @@ const InternationalRFQDetail = () => {
           });
         };
         updateLastMessage(res?.data?.createMessage?.id);
-
+        await createNotify(similarChatRoomIDs[0]?.chatRoomId?.id);
         navigation.navigate('Chat', {
           id: similarChatRoomIDs[0]?.chatRoomId,
         });
@@ -233,8 +245,7 @@ const InternationalRFQDetail = () => {
           });
         };
         updateLastMessage(res?.data?.createMessage?.id);
-
-        // navigate to the newly created chatRoom
+        await createNotify(newChatRoom?.id);
         navigation.navigate('Chat', {id: newChatRoom?.id});
       }
     } catch (error) {
@@ -245,6 +256,35 @@ const InternationalRFQDetail = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // CREATE NOTIFICATION FUNCTION
+  const createNotify = async (chatroomID: string) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFQ_REPLY,
+        readAt: 0,
+        requestType: RFQTYPE?.INTERNATIONAL,
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationRFQId: route?.params?.rfqItem?.id,
+        chatroomID,
+        description: `${softData?.getUser?.title}will respond to your request for ${route?.params?.rfqItem?.title}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 

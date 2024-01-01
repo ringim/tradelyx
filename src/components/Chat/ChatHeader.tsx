@@ -18,6 +18,8 @@ const ChatHeader = ({contentStyle, image, onPress, name, showPlus}: any) => {
   const [onlineStatus, setOnlineStatus] = useState(false);
 
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       id: userID,
     },

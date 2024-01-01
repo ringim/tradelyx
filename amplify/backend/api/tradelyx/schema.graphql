@@ -495,7 +495,6 @@ type User @model @auth(rules: [{allow: public}]) {
   enableNotificationRFF: Boolean
   enableNotificationRFQ: Boolean
   enableNotificationSellOffer: Boolean
-  enableNotificationMessages: Boolean
   rating: Float
   accountType: String
   lastOnlineAt: AWSTimestamp

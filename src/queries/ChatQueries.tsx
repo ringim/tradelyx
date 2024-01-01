@@ -642,3 +642,40 @@ export const onCreateMessageByChatRoomID = gql`
     }
   }
 `;
+
+export const onCreateMessage = gql`
+  subscription OnCreateMessage($filter: ModelSubscriptionMessageFilterInput) {
+    onCreateMessage(filter: $filter) {
+      id
+      text
+      createdAt
+      readAt
+      SType
+      rffID
+      rfqID
+      rfqType
+      rffType
+      sellOfferID
+      requestID
+      requestTitle
+      requestQty
+      packageType
+      serviceType
+      requestPrice
+      serviceImage
+      requestFrom
+      requestFromImg
+      requestTo
+      requestToImg
+      status
+      image
+      file
+      replyToMessageID
+      forUserID
+      userID
+      chatroomID
+      updatedAt
+      __typename
+    }
+  }
+`;

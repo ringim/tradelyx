@@ -5,6 +5,8 @@ import {useQuery} from '@apollo/client';
 
 import {COLORS, FONTS, SIZES, constants} from '../../../constants';
 import {
+  LoadingIndicator,
+  NoItem,
   OrderTabItem,
   RFFReplyOrderItem,
   RFQReplyOrderItem,
@@ -55,7 +57,7 @@ const Pending = () => {
     },
   );
 
-  // LIST RFQs
+  // LIST RFQs REPLIES
   const {
     data,
     loading,
@@ -74,7 +76,7 @@ const Pending = () => {
     },
   );
 
-  // LIST RFFs
+  // LIST RFFs REPLIES
   const {
     data: newData,
     loading: newLoad,
@@ -165,13 +167,7 @@ const Pending = () => {
   }, [sellOfferData, sellOfferLoad]);
 
   if (loading || newLoad || sellOfferLoad || softLoad) {
-    return (
-      <ActivityIndicator
-        style={{flex: 1, justifyContent: 'center'}}
-        color={COLORS.primary6}
-        size="large"
-      />
-    );
+    return <LoadingIndicator />;
   }
 
   return (
@@ -253,8 +249,9 @@ const Pending = () => {
               <View
                 style={{
                   marginBottom: rfqReply?.length - 1 ? 300 : 300,
-                }}
-              />
+                }}>
+                {rfqReply?.length === 0 && <NoItem contentStyle={{flex: 1}} />}
+              </View>
             }
             onEndReached={() => loadMoreItem()}
           />
@@ -302,8 +299,9 @@ const Pending = () => {
               <View
                 style={{
                   marginBottom: rffReply?.length - 1 ? 300 : 300,
-                }}
-              />
+                }}>
+                {rffReply?.length === 0 && <NoItem contentStyle={{flex: 1}} />}
+              </View>
             }
             onEndReached={() => loadMoreItem2()}
           />
@@ -339,8 +337,11 @@ const Pending = () => {
               <View
                 style={{
                   marginBottom: sellOffers?.length - 1 ? 300 : 300,
-                }}
-              />
+                }}>
+                {sellOffers?.length === 0 && (
+                  <NoItem contentStyle={{flex: 1}} />
+                )}
+              </View>
             }
             onEndReached={() => loadMoreItem3()}
           />

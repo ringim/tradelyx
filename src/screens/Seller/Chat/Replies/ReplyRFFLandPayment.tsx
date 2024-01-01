@@ -35,9 +35,17 @@ import {
   CreateRFFReplyMutation,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  NotificationType,
+  CreateNotificationInput,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  GetUserQuery,
+  GetUserQueryVariables,
 } from '../../../../API';
 import {createMessage, updateChatRoom} from '../../../../queries/ChatQueries';
+import {createNotification} from '../../../../queries/NotificationQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
+import {getUser} from '../../../../queries/UserQueries';
 import {createRFFReply, getRFF} from '../../../../queries/RFFQueries';
 import {
   formatNumericValue,
@@ -108,6 +116,24 @@ const ReplyRFFLandPayment = () => {
     variables: {id: route?.params?.rffID},
   });
   const rffDetails: any = data?.getRFF;
+
+  // GET USER 1
+  const {data: softData, loading: softLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
+    variables: {
+      id: authUser?.attributes?.sub,
+    },
+  });
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -211,7 +237,10 @@ const ReplyRFFLandPayment = () => {
         });
       };
       updateLastMessage(res1?.data?.createMessage?.id);
-
+      await createNotify(
+        res?.data?.createRFFReply?.id,
+        route?.params?.chatroomID,
+      );
       navigation.navigate('SuccessService6', {
         chatroomID: route?.params?.chatroomID,
       });
@@ -223,6 +252,34 @@ const ReplyRFFLandPayment = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const createNotify = async (id: any, chatroomID: any) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFF_REPLY,
+        readAt: 0,
+        requestType: `${RFFTYPE.LAND} Reply`,
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationRFFReplyId: id,
+        chatroomID,
+        description: `${softData?.getUser?.title} has replied your RFF request`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
@@ -687,7 +744,7 @@ const ReplyRFFLandPayment = () => {
     );
   }
 
-  if (loading) {
+  if (loading || softLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />

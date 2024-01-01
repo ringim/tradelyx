@@ -143,6 +143,7 @@ const PaymentQuotation = () => {
         requestType: RFQTYPE?.DOMESTIC,
         actorID: userID,
         notificationRFQId: route?.params.rfqID,
+        SType: 'NOTIFICATION',
         description: `Buyer's Order - ${rfqDetail}`,
       };
       const res = await doCreateNotification({

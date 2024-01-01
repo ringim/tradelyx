@@ -303,12 +303,12 @@ export const createRFQReply = gql`
       price
       placeOrigin
       placeOriginFlag
-      placeOriginCountry
       placeOriginName
       landmark
       unit
       incoterms
       placeDestinationName
+      placeOriginCountry
       placeDestination
       placeDestinationFlag
       destinationCountry
@@ -318,9 +318,9 @@ export const createRFQReply = gql`
       paymentMethod
       forUserID
       userID
-      RFQ
       statusText
       agreement
+      RFQ
       updatedAt
       __typename
     }
@@ -349,13 +349,13 @@ export const updateRFQReply = gql`
       budget
       price
       placeOrigin
-      placeOriginCountry
       placeOriginFlag
       placeOriginName
       landmark
       unit
       incoterms
       placeDestinationName
+      placeOriginCountry
       placeDestination
       placeDestinationFlag
       destinationCountry
@@ -365,9 +365,9 @@ export const updateRFQReply = gql`
       paymentMethod
       forUserID
       userID
-      RFQ
       statusText
       agreement
+      RFQ
       updatedAt
       __typename
     }
@@ -469,12 +469,12 @@ export const getRFQReply = gql`
       price
       placeOrigin
       placeOriginFlag
-      placeOriginCountry
       placeOriginName
       landmark
       unit
       incoterms
       placeDestinationName
+      placeOriginCountry
       placeDestination
       placeDestinationFlag
       destinationCountry
@@ -484,9 +484,9 @@ export const getRFQReply = gql`
       paymentMethod
       forUserID
       userID
-      RFQ
       statusText
       agreement
+      RFQ
       updatedAt
       __typename
     }

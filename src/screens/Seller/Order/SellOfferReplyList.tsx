@@ -1,4 +1,5 @@
 import {View, FlatList} from 'react-native';
+import {useQuery} from '@apollo/client';
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
@@ -8,13 +9,13 @@ import {
   SellOfferReplyListItem,
   SearchBox2,
   SellOfferOrderItem,
+  NoItem,
 } from '../../../components';
-import {COLORS, SIZES, dummyData} from '../../../constants';
+import {COLORS, SIZES} from '../../../constants';
 import {
   OrderStackNavigatorParamList,
   SellOfferReplyListRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
-import {useQuery} from '@apollo/client';
 import {
   ModelSortDirection,
   SellOffersByDateRelyQuery,
@@ -137,9 +138,12 @@ const SellOfferReplyList = () => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: dummyData?.replyList?.length - 1 ? 300 : 300,
-            }}
-          />
+              marginBottom: filteredDataSource?.length - 1 ? 300 : 300,
+            }}>
+            {filteredDataSource?.length === 0 && (
+              <NoItem contentStyle={{flex: 1}} />
+            )}
+          </View>
         }
         onEndReached={() => loadMoreItem()}
       />

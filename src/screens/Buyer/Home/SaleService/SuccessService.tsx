@@ -63,10 +63,7 @@ const SuccessService = () => {
         label="Go to Orders"
         labelStyle={{...FONTS.h4}}
         onPress={() => {
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'Order'}],
-          });
+          navigation.replace('Home', {screen: 'Order'});
         }}
       />
 

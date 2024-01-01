@@ -4,7 +4,6 @@ import {
   useWindowDimensions,
   Platform,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import React, {memo, useEffect, useRef, useState} from 'react';
 import {useQuery} from '@apollo/client';
@@ -323,7 +322,7 @@ const Message = (props: any) => {
               navigation.navigate('ReplySellOfferPayment', {
                 sellOffer: message?.requestID,
                 chatRoomID: props?.message?.chatroomID,
-                forUserID: userInfo?.id
+                forUserID: userInfo?.id,
               })
             }
           />
@@ -339,6 +338,7 @@ const Message = (props: any) => {
             price={message?.requestPrice}
             title={message?.requestTitle}
             onCopy={() => onCopy(message?.sellOfferID)}
+            sellOfferID={message?.sellOfferID}
             offer={'View Sell Offer'}
             requestID={message?.sellOfferID}
             text={"Hello, I've replied your Sell Offer request"}
@@ -360,6 +360,7 @@ const Message = (props: any) => {
             price={message?.requestPrice}
             title={message?.requestTitle}
             offer={'View Custom Sell Offer'}
+            sellOfferID={message?.sellOfferID}
             onCopy={() => onCopy(message?.sellOfferID)}
             requestID={message?.sellOfferID}
             text={"Hello, I've replied your Sell Offer request"}

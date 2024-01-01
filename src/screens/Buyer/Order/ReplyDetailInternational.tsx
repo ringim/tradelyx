@@ -94,34 +94,45 @@ const ReplyDetailInternational = () => {
             {/* Buyer from */}
             <View
               style={{
-                flex: 1,
+                flex: 1.5,
                 justifyContent: 'center',
                 alignItems: 'flex-end',
               }}>
-              <FastImage
-                source={{uri: route?.params?.sellerItem?.placeOriginFlag}}
-                resizeMode={FastImage.resizeMode.contain}
+              <View
                 style={{
-                  width: 23,
-                  height: 23,
-                }}
-              />
-            </View>
-
-            <View
-              style={{
-                marginLeft: SIZES.radius,
-                justifyContent: 'center',
-              }}>
-              <Text
-                numberOfLines={3}
-                style={{
-                  ...FONTS.cap1,
-                  fontWeight: '600',
-                  color: COLORS.Neutral1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                 }}>
-                {route?.params?.sellerItem?.placeOrigin}
-              </Text>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    paddingRight: SIZES.base,
+                  }}>
+                  <FastImage
+                    source={{uri: route?.params?.sellerItem?.placeOriginFlag}}
+                    resizeMode={FastImage.resizeMode.contain}
+                    style={{
+                      width: 17,
+                      height: 17,
+                    }}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      ...FONTS.cap1,
+                      fontWeight: '600',
+                      color: COLORS.Neutral1,
+                    }}>
+                    {route?.params?.sellerItem?.placeOrigin}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
 

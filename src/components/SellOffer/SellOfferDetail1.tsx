@@ -108,7 +108,7 @@ const SellOfferDetail1 = ({
               swipeToDismiss={false}
               modalRef={element}
               style={{
-                width: SIZES.height > 700 ? 380 : 350,
+                width: SIZES.height > 700 ? 350 : 300,
                 height: 180,
                 borderRadius: SIZES.radius,
               }}

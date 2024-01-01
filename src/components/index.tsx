@@ -120,6 +120,7 @@ import RFFReplyOrderItem from './Order/RFFReplyOrderItem';
 import RFQReplyOrderItem from './Order/RFQReplyOrderItem';
 import SOImage from './Others/SOImage';
 import SellOfferReplyListItem from './Order/SellOfferReplyListItem';
+import OrderNotificationTab from './Order/OrderNotificationTab';
 import ViewMultipleImages from './Others/ViewMultipleImages';
 import ReplyListItem2 from './Order/ReplyListItem2';
 
@@ -311,6 +312,7 @@ export {
   CategoryOption,
   IconButton,
   Paginator,
+  OrderNotificationTab,
   SearchBox,
   MultipleFiles,
   OptionButton,

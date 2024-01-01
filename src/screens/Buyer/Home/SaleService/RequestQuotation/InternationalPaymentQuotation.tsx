@@ -137,6 +137,7 @@ const InternationalPaymentQuotation = () => {
         readAt: 0,
         actorID: userID,
         requestType: RFQTYPE?.INTERNATIONAL,
+        SType: 'NOTIFICATION',
         notificationRFQId: route?.params.rfqID,
         description: `Buyer's Order - ${rfqDetail}`,
       };

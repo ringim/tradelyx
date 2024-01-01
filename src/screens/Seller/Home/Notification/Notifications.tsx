@@ -1,29 +1,24 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import dayjs from 'dayjs';
-import {useQuery} from '@apollo/client';
+import {useQuery, useMutation} from '@apollo/client';
 import FastImage from 'react-native-fast-image';
 
 import {SIZES, FONTS, COLORS, icons, constants} from '../../../../constants';
-import {AltHeader} from '../../../../components';
+import {AltHeader, LoadingIndicator} from '../../../../components';
 import {
   ModelSortDirection,
   NotificationsByDateQueryVariables,
   NotificationsByDateQuery,
   NotificationType,
+  UpdateNotificationMutation,
+  UpdateNotificationMutationVariables,
 } from '../../../../API';
 import {HomeStackNavigatorParamList} from '../../../../components/navigation/SellerNav/type/navigation';
 import {
   notificationsByDate,
-  onCreateNotification,
+  updateNotification,
 } from '../../../../queries/NotificationQueries';
 import {useAuthContext} from '../../../../context/AuthContext';
 
@@ -35,7 +30,8 @@ const Notifications = () => {
 
   const [fetchingMore, setFetchingMore] = useState<any>(false);
 
-  const {loading, data, refetch, fetchMore, subscribeToMore} = useQuery<
+  // LIST NOTIFICATIONS
+  const {loading, data, refetch, fetchMore} = useQuery<
     NotificationsByDateQuery,
     NotificationsByDateQueryVariables
   >(notificationsByDate, {
@@ -50,13 +46,21 @@ const Notifications = () => {
     data?.notificationsByDate?.items
       ?.filter(
         type =>
-          type?.type !== NotificationType?.SELLOFFER &&
           type?.type !== NotificationType?.PRODUCT &&
           type?.type !== NotificationType?.MESSAGE,
       )
       ?.filter(usrID => usrID?.actorID !== userID)
       ?.filter((item: any) => !item?._deleted) || [];
 
+  const showNotifications =
+    data?.notificationsByDate?.items
+      ?.filter(
+        type =>
+          type?.type !== NotificationType?.PRODUCT &&
+          type?.type !== NotificationType?.MESSAGE,
+      )
+      ?.filter(usrID => usrID?.actorID !== userID)
+      ?.filter((item: any) => !item?._deleted) || [];
   const nextToken = data?.notificationsByDate?.nextToken;
 
   const loadMoreItem = async () => {
@@ -68,50 +72,45 @@ const Notifications = () => {
     setFetchingMore(false);
   };
 
-  useEffect(() => {
-    if (!subscribeToMore || !userID) {
-      return;
-    }
-    subscribeToMore({
-      document: onCreateNotification,
-      variables: {filter: {userID: {eq: userID}}},
-      updateQuery: (prev: any, next: any) => {
-        console.log('prev');
-        console.log(JSON.stringify(prev, null, 2));
-        console.log('next');
-        console.log(JSON.stringify(next, null, 2));
-        return {
-          ...prev,
-          notificationsByDate: {
-            ...prev?.notificationsByDate,
-            items: [
-              ...(prev?.notificationsByDate?.items || []),
-              next?.subscriptionData?.data?.notificationsByDate,
-            ],
-          },
-        };
-      },
-    });
-  }, [subscribeToMore, userID]);
+  // UPDATE NOTIFICATION
+  const [doUpdateNotification] = useMutation<
+    UpdateNotificationMutation,
+    UpdateNotificationMutationVariables
+  >(updateNotification);
+
+  useFocusEffect(
+    useCallback(() => {
+      const readNotifications = async () => {
+        const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
+
+        await Promise.all(
+          unreadNotifee.map(
+            notification =>
+              notification &&
+              doUpdateNotification({
+                variables: {
+                  input: {
+                    id: notification?.id,
+                    readAt: new Date().getTime(),
+                  },
+                },
+              }),
+          ),
+        );
+      };
+      readNotifications();
+    }, [allNotifee]),
+  );
 
   if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <ActivityIndicator size="small" color={COLORS.primary6} />
-      </View>
-    );
+    return <LoadingIndicator />;
   }
 
   // ALL SUPPLIERS
   function renderRecommended() {
     return (
       <FlatList
-        data={allNotifee}
+        data={showNotifications}
         keyExtractor={item => `${item?.id}`}
         showsVerticalScrollIndicator={false}
         renderItem={({item, index}) => (
@@ -138,21 +137,16 @@ const Notifications = () => {
                 ? navigation.navigate('QuotesRequestDetails', {
                     quoteItem: item?.RFF,
                   })
-                : navigation.navigate('QuotesRequestDetails', {
+                : item?.requestType === 'OCEAN'
+                ? navigation.navigate('QuotesRequestDetails', {
                     quoteItem: item?.RFF,
+                  })
+                : navigation.navigate('Chat', {
+                    id: item?.chatroomID,
                   });
             }}>
             <View style={styles.container}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: SIZES.semi_margin,
-                  width: 26,
-                  height: 26,
-                  borderRadius: 30,
-                  backgroundColor: COLORS.primary1,
-                }}>
+              <View style={styles.subCont}>
                 <FastImage
                   source={icons.bell2}
                   style={styles.logoImg}
@@ -167,7 +161,9 @@ const Notifications = () => {
                     color: COLORS.Neutral1,
                     textTransform: 'capitalize',
                   }}>
-                  {item?.requestType} Quotation
+                  {item?.type === 'SELLOFFER'
+                    ? 'Sell Offer Request'
+                    : `${item?.requestType} Quotation`}
                 </Text>
 
                 {/* description */}
@@ -223,7 +219,13 @@ const Notifications = () => {
         keyExtractor={item => `${item?.id}`}
         renderItem={({item, index}) => {
           return (
-            <TouchableOpacity key={index}>
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                item?.type === 'ORDER'
+                  ? navigation.navigate('OrderNotifications')
+                  : navigation.navigate('PromotionNotifications');
+              }}>
               <View style={styles.container}>
                 <View
                   style={[
@@ -273,17 +275,18 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: SIZES.margin,
+    paddingVertical: SIZES.semi_margin,
     marginHorizontal: SIZES.radius,
     borderRadius: SIZES.radius,
   },
   subCont: {
     justifyContent: 'center',
     alignItems: 'center',
-    padding: SIZES.semi_margin,
-    width: 26,
-    height: 26,
+    padding: SIZES.radius,
+    width: 25,
+    height: 25,
     borderRadius: 30,
+    backgroundColor: COLORS.primary1,
   },
   logoImg: {
     width: 15,
@@ -291,7 +294,7 @@ const styles = StyleSheet.create({
   },
   cont2: {
     flex: 1,
-    marginLeft: SIZES.radius,
+    marginLeft: SIZES.base,
     justifyContent: 'center',
     marginRight: SIZES.margin,
   },
@@ -299,12 +302,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text1: {
-    ...FONTS.h5,
+    ...FONTS.sh3,
+    fontWeight: '700',
     color: COLORS.Neutral1,
   },
   text2: {
     paddingTop: 4,
-    ...FONTS.cap1,
+    ...FONTS.cap2,
     color: COLORS.Neutral5,
   },
   hr: {

@@ -194,8 +194,8 @@ export const createSellOffer = gql`
       fobPrice
       paymentType
       paymentMethod
-      agreement
       offerValidity
+      agreement
       userID
       updatedAt
       __typename
@@ -383,7 +383,6 @@ export const createSellOfferReply = gql`
       offerValidity
       forUserID
       userID
-      statusText
       agreement
       SellOffer
       updatedAt

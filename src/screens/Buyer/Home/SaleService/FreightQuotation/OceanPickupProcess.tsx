@@ -162,6 +162,7 @@ const OceanPickupProcess = () => {
         actorID: userID,
         requestType: RFFTYPE?.OCEAN,
         notificationRFFId: route?.params.rffID,
+        SType: 'NOTIFICATION',
         description: `Buyer's request - ${rffDetail}`,
       };
       const res = await doCreateNotification({
@@ -169,7 +170,6 @@ const OceanPickupProcess = () => {
           input,
         },
       });
-      console.log('notification created', res);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

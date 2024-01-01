@@ -89,7 +89,8 @@ const Tabs = ({scrollX, onTabPress}: any) => {
       style={{
         flexDirection: 'row',
         backgroundColor: COLORS.Neutral9,
-        top: -2
+        top: -2,
+        // width: '100%'
       }}>
       {/* Tab Indicator */}
       {measureLayout.length > 0 && (
@@ -114,10 +115,9 @@ const Tabs = ({scrollX, onTabPress}: any) => {
           <TouchableOpacity
             key={index}
             style={{
-              paddingHorizontal: SIZES.radius,
+              paddingHorizontal: SIZES.margin,
               justifyContent: 'center',
               width: 150,
-              marginHorizontal: -SIZES.base,
             }}
             onPress={() => onTabPress(index)}>
             <Animated.View

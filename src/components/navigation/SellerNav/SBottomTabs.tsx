@@ -3,20 +3,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, StyleSheet, Text, TouchableOpacity, Platform} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {connect} from 'react-redux';
-import {useQuery} from '@apollo/client';
 
 import {COLORS, FONTS, SIZES, icons} from '../../../constants';
 import {BottomTabNavigatorParamList} from './type/navigation';
 import {toggleCameraModal} from '../../../redux/modal/modalActions';
 import {Home, ChatRooms, Order, Explore} from '../../../screens/Seller';
-import {
-  ModelSortDirection,
-  NotificationsByDateQueryVariables,
-  NotificationsByDateQuery,
-  NotificationType,
-} from '../../../API';
-import {notificationsByDate} from '../../../queries/NotificationQueries';
-import {useAuthContext} from '../../../context/AuthContext';
 
 const Tabs = createBottomTabNavigator<BottomTabNavigatorParamList | any>();
 
@@ -38,27 +29,6 @@ const TabBarCustomButton = ({children, onPress}: any) => {
 };
 
 const SBottomTabs = ({toggleCameraModal, showCameraModal}: any) => {
-  const {userID} = useAuthContext();
-
-  // LIST NOTIFICATIONS
-  const {data} = useQuery<
-    NotificationsByDateQuery,
-    NotificationsByDateQueryVariables
-  >(notificationsByDate, {
-    pollInterval: 500,
-    variables: {
-      SType: 'NOTIFICATION',
-      sortDirection: ModelSortDirection.DESC,
-    },
-  });
-
-  const allNotifee =
-    data?.notificationsByDate?.items
-      ?.filter(ty => ty?.type === NotificationType?.MESSAGE)
-      ?.filter(usrID => usrID?.userID !== userID)
-      ?.filter(msg => msg?.Message)
-      ?.filter((item: any) => !item?._deleted && !item?.readAt) || [];
-
   return (
     <Tabs.Navigator
       screenOptions={{
@@ -239,7 +209,6 @@ const SBottomTabs = ({toggleCameraModal, showCameraModal}: any) => {
               </View>
             );
           },
-          tabBarBadge: allNotifee?.length || undefined,
         }}
       />
     </Tabs.Navigator>

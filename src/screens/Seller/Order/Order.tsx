@@ -89,7 +89,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
       style={{
         flexDirection: 'row',
         backgroundColor: COLORS.Neutral9,
-        top: -2
+        top: -2,
       }}>
       {/* Tab Indicator */}
       {measureLayout.length > 0 && (

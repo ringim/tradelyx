@@ -26,8 +26,32 @@ const SellOfferReplyType = ({
 }: any) => {
   return (
     <Pressable style={styles.container}>
+      {/* request number */}
+      <View style={styles.container2}>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral5}}>
+            {serviceType} No:
+          </Text>
+        </View>
+        <View
+          style={{
+            paddingRight: SIZES.base,
+            justifyContent: 'center',
+          }}>
+          <Text style={styles.text2}>{sellOfferID}</Text>
+        </View>
+        <TouchableOpacity
+          style={{justifyContent: 'center'}}
+          onPress={() => onCopy(sellOfferID)}>
+          <FastImage
+            source={icons.copy}
+            style={styles.icon}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        </TouchableOpacity>
+      </View>
       <View style={styles.subCont}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{justifyContent: 'center', marginTop: SIZES.radius}}>
           <FastImage
             source={{uri: imageUri2, priority: FastImage.priority.normal}}
             style={{width: 100, height: 100, borderRadius: SIZES.base}}
@@ -35,32 +59,7 @@ const SellOfferReplyType = ({
           />
         </View>
 
-        {/* request number */}
         <View style={styles.subCont2}>
-          <View style={styles.container2}>
-            <View style={{flex: 1, justifyContent: 'center'}}>
-              <Text style={{...FONTS.cap1, color: COLORS.Neutral5}}>
-                {serviceType} No:
-              </Text>
-            </View>
-            <View
-              style={{
-                paddingRight: SIZES.base,
-                justifyContent: 'center',
-              }}>
-              <Text style={styles.text2}>{sellOfferID}</Text>
-            </View>
-            <TouchableOpacity
-              style={{justifyContent: 'center'}}
-              onPress={() => onCopy(sellOfferID)}>
-              <FastImage
-                source={icons.copy}
-                style={styles.icon}
-                resizeMode={FastImage.resizeMode.contain}
-              />
-            </TouchableOpacity>
-          </View>
-
           {/* title */}
           <Text numberOfLines={2} style={styles.text2}>
             {title}
@@ -160,10 +159,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   text2: {
-    fontWeight: '500',
+    fontWeight: '600',
     ...FONTS.cap1,
     color: COLORS.NeutralBlue2,
-    paddingTop: SIZES.base,
   },
   subCont: {
     flexDirection: 'row',

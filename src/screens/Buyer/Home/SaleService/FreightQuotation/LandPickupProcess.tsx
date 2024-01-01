@@ -168,6 +168,7 @@ const LandPickupProcess = () => {
         actorID: userID,
         requestType: RFFTYPE?.LAND,
         notificationRFFId: route?.params.rffID,
+        SType: 'NOTIFICATION',
         description: `Buyer's request - ${rffDetail}`,
       };
       const res = await doCreateNotification({

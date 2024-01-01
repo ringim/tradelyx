@@ -44,9 +44,13 @@ const SuccessService5 = () => {
         }}
         label="Close"
         labelStyle={{...FONTS.h4, color: COLORS.primary1}}
+        // onPress={() => {
+        //   navigation.pop(2);
+        //   navigation.navigate('Chat', {id: route?.params?.chatroomID});
+        // }}
         onPress={() => {
-          navigation.pop(2);
-          navigation.navigate('Chat', {id: route?.params?.chatroomID});
+          navigation.replace('Home', {screen: 'Chat'});
+          // navigation.navigate('Chat', {id: route?.params?.chatroomID});
         }}
       />
     </View>

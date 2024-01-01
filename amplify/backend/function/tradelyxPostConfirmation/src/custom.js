@@ -92,11 +92,6 @@ exports.handler = async (event, context) => {
     enableNotification: false,
     enableNotificationOrders: true,
     enableNotificationPromotions: false,
-    enableNotificationRFF: true,
-    enableNotificationRFQ: true,
-    enableNotificationSellOffer: true,
-    enableNotificationMessages: true,
-    enableNotificationProducts: false
   };
 
   console.log('NEW USER', newUser);

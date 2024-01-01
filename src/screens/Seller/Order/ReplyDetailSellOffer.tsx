@@ -1,32 +1,20 @@
 import {View, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useQuery} from '@apollo/client';
 import dayjs from 'dayjs';
 import {Storage} from 'aws-amplify';
 
-import {COLORS, FONTS, SIZES, icons} from '../../../constants';
-import {
-  Header,
-  SellOfferDetail1,
-  TextIconButton,
-  SellOfferDetail2,
-} from '../../../components';
-import {
-  ReplyDetailSellOfferNavigationProp,
-  ReplyDetailSellOfferRouteProp,
-} from '../../../components/navigation/SellerNav/type/navigation';
+import {COLORS} from '../../../constants';
+import {Header, SellOfferDetail1, SellOfferDetail2} from '../../../components';
+import {ReplyDetailSellOfferRouteProp} from '../../../components/navigation/SellerNav/type/navigation';
 import {GetUserQuery, GetUserQueryVariables} from '../../../API';
 import {getUser} from '../../../queries/UserQueries';
-import {useAuthContext} from '../../../context/AuthContext';
 
 const ReplyDetailSellOffer = () => {
-  const navigation = useNavigation<ReplyDetailSellOfferNavigationProp>();
   const route: any = useRoute<ReplyDetailSellOfferRouteProp>();
-  // const {sellOfferImage}: any = route?.params?.sellOffer;
-
-  const {userID}: any = useAuthContext();
+  const {sellOfferImage}: any = route?.params?.sellerOffer;
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
@@ -59,13 +47,13 @@ const ReplyDetailSellOffer = () => {
 
   useEffect(() => {
     let isCurrent = true;
-    if (route?.params?.sellOffer?.sellOfferImage && isCurrent) {
-      Storage.get(route?.params?.sellOffer?.sellOfferImage).then(setImageUri2);
+    if (sellOfferImage && isCurrent) {
+      Storage.get(sellOfferImage).then(setImageUri2);
     }
     return () => {
       isCurrent = false;
     };
-  }, [route?.params?.sellOffer?.sellOfferImage]);
+  }, [sellOfferImage]);
 
   if (loading) {
     return (

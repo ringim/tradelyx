@@ -1,20 +1,21 @@
 import {View, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {useQuery} from '@apollo/client';
 
 import {
   Header,
   LoadingIndicator,
+  NoItem,
   RFQOrderItem,
   ReplyListItem,
   SearchBox2,
 } from '../../../components';
-import {COLORS, SIZES, dummyData} from '../../../constants';
+import {COLORS, SIZES} from '../../../constants';
 import {
   OrderStackNavigatorParamList,
   ReplyListRFQRouteProp,
 } from '../../../components/navigation/BuyerNav/type/navigation';
-import {useQuery} from '@apollo/client';
 import {
   ModelSortDirection,
   RfqByDateReplyQuery,
@@ -158,9 +159,12 @@ const RFQReplyList = () => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: dummyData?.replyList?.length - 1  ? 300 : 300,
-            }}
-          />
+              marginBottom: filteredDataSource?.length - 1 ? 300 : 300,
+            }}>
+            {filteredDataSource?.length === 0 && (
+              <NoItem contentStyle={{flex: 1}} />
+            )}
+          </View>
         }
         onEndReached={() => loadMoreItem()}
       />

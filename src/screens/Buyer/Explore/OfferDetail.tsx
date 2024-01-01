@@ -4,6 +4,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Storage} from 'aws-amplify';
 import dayjs from 'dayjs';
+import {v4 as uuidV4} from 'uuid';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import {useMutation, useQuery} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -35,6 +36,10 @@ import {
   serviceType,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  CreateNotificationInput,
+  NotificationType,
 } from '../../../API';
 import {
   createChatRoom,
@@ -44,13 +49,14 @@ import {
   updateChatRoom,
 } from '../../../queries/ChatQueries';
 import {useAuthContext} from '../../../context/AuthContext';
+import {createNotification} from '../../../queries/NotificationQueries';
 
 const OfferDetail = () => {
   const {authUser}: any = useAuthContext();
 
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<OfferDetailRouteProp>();
-  const {image, images, userID, id, sellOfferImage}: any =
+  const {image, images, userID, id, sellOfferImage, productName}: any =
     route?.params?.detail;
 
   const [imageUri, setImageUri] = useState<string | null>(null);
@@ -91,6 +97,8 @@ const OfferDetail = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -100,6 +108,12 @@ const OfferDetail = () => {
     chatRoomId: item.chatRoomId,
     userId: item.userId,
   }));
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -169,6 +183,7 @@ const OfferDetail = () => {
           });
         };
         updateLastMessage(res?.data?.createMessage?.id);
+        await createNotify(similarChatRoomIDs[0]?.chatRoomId);
         navigation.navigate('Chat', {
           id: similarChatRoomIDs[0]?.chatRoomId,
         });
@@ -239,6 +254,8 @@ const OfferDetail = () => {
         };
         updateLastMessage(res?.data?.createMessage?.id);
 
+        await createNotify(newChatRoom.id);
+
         // navigate to the newly created chatRoom
         navigation.navigate('Chat', {
           id: newChatRoom?.id,
@@ -252,6 +269,35 @@ const OfferDetail = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // CREATE NOTIFICATION FUNCTION
+  const createNotify = async (chatroomID: string) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.SELLOFFER,
+        readAt: 0,
+        requestType: 'Sell Offer',
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationSellOfferId: id,
+        chatroomID,
+        description: `${softData?.getUser?.name} has requested about ${productName} Sell Offer`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 

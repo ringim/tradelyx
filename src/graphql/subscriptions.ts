@@ -148,7 +148,6 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -312,7 +311,6 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -476,7 +474,6 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -2177,7 +2174,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     enableNotificationRFF
     enableNotificationRFQ
     enableNotificationSellOffer
-    enableNotificationMessages
     rating
     accountType
     lastOnlineAt
@@ -2502,7 +2498,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -2566,6 +2561,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         title
         description
         requestType
+        chatroomID
         userID
         User {
           id
@@ -2579,7 +2575,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -2638,7 +2633,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -2968,7 +2962,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           updatedAt
           __typename
         }
-        chatroomID
         Order {
           id
           createdAt
@@ -3021,7 +3014,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     enableNotificationRFF
     enableNotificationRFQ
     enableNotificationSellOffer
-    enableNotificationMessages
     rating
     accountType
     lastOnlineAt
@@ -3346,7 +3338,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3410,6 +3401,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         title
         description
         requestType
+        chatroomID
         userID
         User {
           id
@@ -3423,7 +3415,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3482,7 +3473,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3812,7 +3802,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           updatedAt
           __typename
         }
-        chatroomID
         Order {
           id
           createdAt
@@ -3865,7 +3854,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     enableNotificationRFF
     enableNotificationRFQ
     enableNotificationSellOffer
-    enableNotificationMessages
     rating
     accountType
     lastOnlineAt
@@ -4190,7 +4178,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -4254,6 +4241,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         title
         description
         requestType
+        chatroomID
         userID
         User {
           id
@@ -4267,7 +4255,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -4326,7 +4313,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -4656,7 +4642,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           updatedAt
           __typename
         }
-        chatroomID
         Order {
           id
           createdAt
@@ -4708,6 +4693,7 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
     title
     description
     requestType
+    chatroomID
     userID
     User {
       id
@@ -4721,7 +4707,6 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -5026,9 +5011,9 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -5061,7 +5046,6 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -5366,9 +5350,9 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -5819,7 +5803,6 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       updatedAt
       __typename
     }
-    chatroomID
     Order {
       id
       createdAt
@@ -5864,6 +5847,7 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
     title
     description
     requestType
+    chatroomID
     userID
     User {
       id
@@ -5877,7 +5861,6 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -6182,9 +6165,9 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -6217,7 +6200,6 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -6522,9 +6504,9 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -6975,7 +6957,6 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       updatedAt
       __typename
     }
-    chatroomID
     Order {
       id
       createdAt
@@ -7020,6 +7001,7 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
     title
     description
     requestType
+    chatroomID
     userID
     User {
       id
@@ -7033,7 +7015,6 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -7338,9 +7319,9 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -7373,7 +7354,6 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -7678,9 +7658,9 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -8131,7 +8111,6 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       updatedAt
       __typename
     }
-    chatroomID
     Order {
       id
       createdAt
@@ -8273,7 +8252,6 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -8578,9 +8556,9 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -8718,7 +8696,6 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -9023,9 +9000,9 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -9163,7 +9140,6 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -9468,9 +9444,9 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId

@@ -110,7 +110,6 @@ export const getChatRoom = /* GraphQL */ `query GetChatRoom($id: ID!) {
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3082,7 +3081,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     enableNotificationRFF
     enableNotificationRFQ
     enableNotificationSellOffer
-    enableNotificationMessages
     rating
     accountType
     lastOnlineAt
@@ -3407,7 +3405,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3471,6 +3468,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         title
         description
         requestType
+        chatroomID
         userID
         User {
           id
@@ -3484,7 +3482,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3543,7 +3540,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           enableNotificationRFF
           enableNotificationRFQ
           enableNotificationSellOffer
-          enableNotificationMessages
           rating
           accountType
           lastOnlineAt
@@ -3873,7 +3869,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           updatedAt
           __typename
         }
-        chatroomID
         Order {
           id
           createdAt
@@ -3928,7 +3923,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -4233,9 +4227,9 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -4270,6 +4264,7 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
     title
     description
     requestType
+    chatroomID
     userID
     User {
       id
@@ -4283,7 +4278,6 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -4588,9 +4582,9 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -4623,7 +4617,6 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -4928,9 +4921,9 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -5381,7 +5374,6 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       updatedAt
       __typename
     }
-    chatroomID
     Order {
       id
       createdAt
@@ -5429,6 +5421,7 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
       title
       description
       requestType
+      chatroomID
       userID
       User {
         id
@@ -5442,7 +5435,6 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -5541,7 +5533,6 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -5927,7 +5918,6 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         updatedAt
         __typename
       }
-      chatroomID
       Order {
         id
         createdAt
@@ -5988,6 +5978,7 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
       title
       description
       requestType
+      chatroomID
       userID
       User {
         id
@@ -6001,7 +5992,6 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -6100,7 +6090,6 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -6486,7 +6475,6 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         updatedAt
         __typename
       }
-      chatroomID
       Order {
         id
         createdAt
@@ -6545,6 +6533,7 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
       title
       description
       requestType
+      chatroomID
       userID
       User {
         id
@@ -6558,7 +6547,6 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -6657,7 +6645,6 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -7043,7 +7030,6 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         updatedAt
         __typename
       }
-      chatroomID
       Order {
         id
         createdAt
@@ -7186,7 +7172,6 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
       enableNotificationRFF
       enableNotificationRFQ
       enableNotificationSellOffer
-      enableNotificationMessages
       rating
       accountType
       lastOnlineAt
@@ -7491,9 +7476,9 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           title
           description
           requestType
+          chatroomID
           userID
           actorID
-          chatroomID
           updatedAt
           notificationSellOfferId
           notificationSellOfferReplyId
@@ -7594,7 +7579,6 @@ export const listUserChatRooms = /* GraphQL */ `query ListUserChatRooms(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -7772,7 +7756,6 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `query UserChatRoomsByCha
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt
@@ -7950,7 +7933,6 @@ export const userChatRoomsByUserId = /* GraphQL */ `query UserChatRoomsByUserId(
         enableNotificationRFF
         enableNotificationRFQ
         enableNotificationSellOffer
-        enableNotificationMessages
         rating
         accountType
         lastOnlineAt

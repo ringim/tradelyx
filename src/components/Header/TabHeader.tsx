@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Pressable, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {Storage} from 'aws-amplify';
-import {useQuery, useMutation} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 
 import {SIZES, COLORS, images, icons, FONTS} from '../../constants';
 import {DEFAULT_PROFILE_IMAGE} from '../../utilities/Utils';
@@ -12,16 +12,11 @@ import {
   NotificationsByDateQuery,
   NotificationsByDateQueryVariables,
   NotificationType,
-  UpdateNotificationMutation,
-  UpdateNotificationMutationVariables,
 } from '../../API';
-import {
-  notificationsByDate,
-  updateNotification,
-} from '../../queries/NotificationQueries';
+import {notificationsByDate} from '../../queries/NotificationQueries';
 import {useAuthContext} from '../../context/AuthContext';
 
-const TabHeader = ({userImage, containerStyle, qty}: any) => {
+const TabHeader = ({userImage, containerStyle}: any) => {
   const {userID} = useAuthContext();
 
   const navigation = useNavigation<any>();
@@ -33,6 +28,8 @@ const TabHeader = ({userImage, containerStyle, qty}: any) => {
     NotificationsByDateQuery,
     NotificationsByDateQueryVariables
   >(notificationsByDate, {
+    pollInterval: 500,
+    fetchPolicy: 'network-only',
     variables: {
       SType: 'NOTIFICATION',
       sortDirection: ModelSortDirection.DESC,
@@ -49,34 +46,6 @@ const TabHeader = ({userImage, containerStyle, qty}: any) => {
       ?.filter(usrID => usrID?.actorID !== userID)
       ?.filter((item: any) => !item?._deleted && !item?.readAt) || [];
   const messageLength = allNotifee?.length || undefined;
-
-  // UPDATE NOTIFICATION
-  const [doUpdateNotification] = useMutation<
-    UpdateNotificationMutation,
-    UpdateNotificationMutationVariables
-  >(updateNotification);
-
-  useEffect(() => {
-    const readNotifications = async () => {
-      const unreadNotifee = allNotifee?.filter(n => !n?.readAt);
-
-      await Promise.all(
-        unreadNotifee.map(
-          notification =>
-            notification &&
-            doUpdateNotification({
-              variables: {
-                input: {
-                  id: notification?.id,
-                  readAt: new Date().getTime(),
-                },
-              },
-            }),
-        ),
-      );
-    };
-    readNotifications();
-  }, [allNotifee]);
 
   useEffect(() => {
     let unmounted = true;

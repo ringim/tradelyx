@@ -85,6 +85,8 @@ const CompleteProfile = () => {
         accountType: 'BUYER',
         city,
         zipCode,
+        enableNotificationSellOffer: true,
+        enableNotificationProducts: false,
       };
       if (selectedPhoto?.uri) {
         input.logo = await uploadMedia(selectedPhoto.uri);

@@ -19,7 +19,10 @@ import {ChatStackNavigatorParamList} from '../../../../components/navigation/Sel
 import {Header, TextButton} from '../../../../components';
 import {GetRFQQuery, GetRFQQueryVariables} from '../../../../API';
 import {getRFQ} from '../../../../queries/RFQQueries';
-import {downloadAndOpenPdf, formatNumberWithCommas} from '../../../../utilities/service';
+import {
+  downloadAndOpenPdf,
+  formatNumberWithCommas,
+} from '../../../../utilities/service';
 
 const ReplyRFQDomestic = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
@@ -105,33 +108,45 @@ const ReplyRFQDomestic = () => {
             {/* Buyer from */}
             <View
               style={{
+                flex: 1.5,
                 justifyContent: 'center',
+                alignItems: 'flex-end',
               }}>
-              <FastImage
-                source={{uri: rfqDetails?.placeOriginFlag}}
-                resizeMode={FastImage.resizeMode.contain}
+              <View
                 style={{
-                  width: 23,
-                  height: 23,
-                }}
-              />
-            </View>
-
-            <View
-              style={{
-                flex: 2,
-                marginLeft: SIZES.radius,
-                justifyContent: 'center',
-              }}>
-              <Text
-                numberOfLines={3}
-                style={{
-                  ...FONTS.cap1,
-                  fontWeight: '600',
-                  color: COLORS.Neutral1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                 }}>
-                {rfqDetails?.placeOrigin}
-              </Text>
+                <View
+                  style={{
+                    justifyContent: 'center',
+                    paddingRight: SIZES.base,
+                  }}>
+                  <FastImage
+                    source={{uri: rfqDetails?.placeOriginFlag}}
+                    resizeMode={FastImage.resizeMode.contain}
+                    style={{
+                      width: 17,
+                      height: 17,
+                    }}
+                  />
+                </View>
+
+                <View
+                  style={{
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      ...FONTS.cap1,
+                      fontWeight: '600',
+                      color: COLORS.Neutral1,
+                    }}>
+                    {rfqDetails?.placeOrigin}
+                  </Text>
+                </View>
+              </View>
             </View>
           </View>
 

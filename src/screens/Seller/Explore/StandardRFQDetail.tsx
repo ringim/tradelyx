@@ -1,4 +1,5 @@
 import {View, ScrollView, ActivityIndicator} from 'react-native';
+import {v4 as uuidV4} from 'uuid';
 import React, {useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useMutation, useQuery} from '@apollo/client';
@@ -30,8 +31,12 @@ import {
   MessageStatus,
   serviceType,
   RFQTYPE,
+  CreateNotificationInput,
   UpdateChatRoomMutation,
   UpdateChatRoomMutationVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -41,6 +46,7 @@ import {
   updateChatRoom,
 } from '../../../queries/ChatQueries';
 import {getUser} from '../../../queries/UserQueries';
+import {createNotification} from '../../../queries/NotificationQueries';
 
 const StandardRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
@@ -89,6 +95,12 @@ const StandardRFQDetail = () => {
     chatRoomId: item.chatRoomId,
     userId: item.userId,
   }));
+
+  // CREATE NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -158,6 +170,8 @@ const StandardRFQDetail = () => {
         };
         updateLastMessage(res?.data?.createMessage?.id);
 
+        await createNotify(similarChatRoomIDs[0]?.chatRoomId);
+
         navigation.navigate('Chat', {
           id: similarChatRoomIDs[0]?.chatRoomId,
         });
@@ -224,6 +238,8 @@ const StandardRFQDetail = () => {
         };
         updateLastMessage(res?.data?.createMessage?.id);
 
+        await createNotify(newChatRoom?.id);
+
         // navigate to the newly created chatRoom
         navigation.navigate('Chat', {id: newChatRoom?.id});
       }
@@ -235,6 +251,35 @@ const StandardRFQDetail = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // CREATE NOTIFICATION FUNCTION
+  const createNotify = async (chatroomID: string) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.RFQ_REPLY,
+        readAt: 0,
+        requestType: RFQTYPE?.STANDARD,
+        actorID: authUser?.attributes?.sub,
+        SType: 'NOTIFICATION',
+        notificationRFQId: route?.params?.rfqItem?.id,
+        chatroomID,
+        description: `${softData?.getUser?.title} will respond to your request for ${route?.params?.rfqItem?.title}`,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
     }
   };
 
