@@ -90,58 +90,42 @@ const ReplyRFQStandard = () => {
               marginHorizontal: SIZES.semi_margin,
             }}>
             {/* Buyer Country Name */}
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-              }}>
+            <View>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
                 Buyer from
               </Text>
             </View>
 
-            {/* Buyer from */}
+            {/* Buyer from country flag */}
             <View
               style={{
-                flex: 1.5,
-                justifyContent: 'center',
+                flex: 1,
+                marginLeft: SIZES.radius,
+              }}>
+              <FastImage
+                source={{uri: rfqDetails?.placeOriginFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                flex: 4,
                 alignItems: 'flex-end',
               }}>
-              <View
+              <Text
+                numberOfLines={3}
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
                 }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    paddingRight: SIZES.base,
-                  }}>
-                  <FastImage
-                    source={{uri: rfqDetails?.placeOriginFlag}}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{
-                      width: 17,
-                      height: 17,
-                    }}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      ...FONTS.cap1,
-                      fontWeight: '600',
-                      color: COLORS.Neutral1,
-                    }}>
-                    {rfqDetails?.placeOrigin}
-                  </Text>
-                </View>
-              </View>
+                {rfqDetails?.placeOrigin}
+              </Text>
             </View>
           </View>
 

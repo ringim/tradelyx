@@ -1,8 +1,8 @@
-// #import <Firebase.h>
 #import "AppDelegate.h"
 #import "Orientation.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import "RNBootSplash.h" 
+#import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 
@@ -10,7 +10,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  // [FIRApp configure];
+  [FIRApp configure];
   self.moduleName = @"Tradely";
   [GMSServices provideAPIKey:@"AIzaSyALS8aQiGBvny1Zg-pBqvPyptOzvDcPRyg"];
     // You can add your custom initial props in the dictionary below.

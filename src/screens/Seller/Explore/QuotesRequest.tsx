@@ -99,14 +99,14 @@ const QuotesRequest = () => {
       <View
         style={{
           flex: 1,
-          marginTop: SIZES.radius,
           backgroundColor: COLORS.white,
         }}>
         {/* Search Box */}
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          containerStyle={{margin: SIZES.semi_margin}}
+          containerStyle={{marginTop: SIZES.radius}}
+          contentStyle={{marginHorizontal: SIZES.radius}}
         />
 
         <FlatList
@@ -122,7 +122,7 @@ const QuotesRequest = () => {
                 item={item}
                 onPress={() =>
                   navigation.navigate('QuotesRequestDetails', {
-                    quoteItem: item,
+                    rffID: item?.id,
                   })
                 }
               />

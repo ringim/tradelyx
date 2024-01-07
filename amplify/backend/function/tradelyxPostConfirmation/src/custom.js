@@ -58,6 +58,7 @@ const saveUser = async user => {
     await docClient.put(params).promise();
   } catch (error) {
     console.log(error);
+    return error
   }
 };
 
@@ -89,9 +90,9 @@ exports.handler = async (event, context) => {
     memberShipType: 'Bronze',
     lat: 0,
     lng: 0,
-    enableNotification: false,
     enableNotificationOrders: true,
-    enableNotificationPromotions: false,
+    enableNotificationPromotions: true,
+    enableNotificationSellOffer: true
   };
 
   console.log('NEW USER', newUser);

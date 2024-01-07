@@ -103,8 +103,6 @@ export const getChatRoom = /* GraphQL */ `query GetChatRoom($id: ID!) {
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -787,6 +785,7 @@ export const getSellOffer = /* GraphQL */ `query GetSellOffer($id: ID!) {
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -866,6 +865,7 @@ export const listSellOffers = /* GraphQL */ `query ListSellOffers(
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -958,6 +958,7 @@ export const sellOffersByDate = /* GraphQL */ `query SellOffersByDate(
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -1048,6 +1049,7 @@ export const sellOffersByUserID = /* GraphQL */ `query SellOffersByUserID(
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -3074,8 +3076,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -3311,6 +3311,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -3398,8 +3399,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3475,8 +3474,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3533,8 +3530,6 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3611,6 +3606,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -3916,8 +3912,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4141,6 +4135,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -4271,8 +4266,6 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4496,6 +4489,7 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -4610,8 +4604,6 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4835,6 +4827,7 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -4969,6 +4962,7 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -5428,8 +5422,6 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -5526,8 +5518,6 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -5644,6 +5634,7 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -5985,8 +5976,6 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6083,8 +6072,6 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6201,6 +6188,7 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -6540,8 +6528,6 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6638,8 +6624,6 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6756,6 +6740,7 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -7165,8 +7150,6 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7390,6 +7373,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -7572,8 +7556,6 @@ export const listUserChatRooms = /* GraphQL */ `query ListUserChatRooms(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -7749,8 +7731,6 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `query UserChatRoomsByCha
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -7926,8 +7906,6 @@ export const userChatRoomsByUserId = /* GraphQL */ `query UserChatRoomsByUserId(
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF

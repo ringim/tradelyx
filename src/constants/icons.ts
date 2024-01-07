@@ -37,6 +37,7 @@ const right = require('../assets/icons/right.png');
 const star = require('../assets/icons/star.png');
 const store = require('../assets/icons/store.png');
 const dot = require('../assets/icons/dot.png');
+const up = require('../assets/icons/up-arrow.png');
 const call = require('../assets/icons/call.png');
 const logOut = require('../assets/icons/logOut.png');
 const cert = require('../assets/icons/cert.png');
@@ -146,6 +147,7 @@ export default {
   forward,
   brochure,
   editDoc,
+  up,
   saver,
   phone,
   businessType,

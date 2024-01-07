@@ -1,10 +1,10 @@
-import {View, FlatList, ActivityIndicator} from 'react-native';
+import {View, FlatList, Platform, Text, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 
-import {COLORS, SIZES} from '../../../constants';
+import {COLORS, FONTS, SIZES} from '../../../constants';
 import {HomeStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import {
   GetUserQuery,
@@ -120,26 +120,42 @@ const Explore = () => {
   return (
     <Root>
       <View style={{flex: 1, backgroundColor: COLORS.white}}>
-        <TabHeader userImage={user?.logo} />
+        <TabHeader
+          userImage={user?.logo}
+          containerStyle={{
+            paddingTop:
+              Platform.OS === 'android'
+                ? SIZES.height > 700
+                  ? 10
+                  : SIZES.base
+                : 50,
+            height: Platform.OS == 'ios' ? '14%' : '8%',
+            marginBottom: SIZES.base,
+          }}
+        />
 
         {/* Search Box */}
         <SearchBox2
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
-          containerStyle={{margin: SIZES.semi_margin}}
-        />
+          containerStyle={{margin: SIZES.radius}}>
+          <Text
+            style={{
+              ...FONTS.h5,
+              textAlign: 'left',
+              alignSelf: 'flex-start',
+              color: COLORS.Neutral1,
+              marginBottom: 4
+            }}>
+            Latest Sell Offers
+          </Text>
+        </SearchBox2>
 
         {/* all items */}
         <FlatList
           data={filteredDataSource}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => `${item?.id}`}
-          ListHeaderComponent={() => (
-            <PopularProducts
-              title={'Latest Sell Offers'}
-              containerStyle={{marginTop: SIZES.base}}
-            />
-          )}
           renderItem={({item, index}) => {
             return (
               <SearchItem
@@ -152,7 +168,7 @@ const Explore = () => {
                   })
                 }
                 onView={() =>
-                  navigation.navigate('OfferDetail', {detail: item})
+                  navigation.navigate('OfferDetail', {sellOfferID: item})
                 }
               />
             );

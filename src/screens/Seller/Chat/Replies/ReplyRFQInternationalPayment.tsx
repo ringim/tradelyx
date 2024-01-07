@@ -47,7 +47,7 @@ import {useAuthContext} from '../../../../context/AuthContext';
 import {createRFQReply, getRFQ} from '../../../../queries/RFQQueries';
 import {selectFile2, uploadFile2} from '../../../../utilities/service';
 import {getUser} from '../../../../queries/UserQueries';
-import { createNotification } from '../../../../queries/NotificationQueries';
+import {createNotification} from '../../../../queries/NotificationQueries';
 
 interface IFreight {
   qty: number;
@@ -119,8 +119,6 @@ const ReplyRFQInternationalPayment = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -270,9 +268,11 @@ const ReplyRFQInternationalPayment = () => {
         readAt: 0,
         requestType: 'International Reply',
         actorID: authUser?.attributes?.sub,
+        userID: rfqDetails?.userID,
         SType: 'NOTIFICATION',
         notificationRFQReplyId: id,
         chatroomID,
+        title: 'International RFQ Reply',
         description: `${softData?.getUser?.title} has replied your RFQ request`,
       };
       const res = await doCreateNotification({

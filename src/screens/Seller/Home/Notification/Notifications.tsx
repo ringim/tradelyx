@@ -119,27 +119,27 @@ const Notifications = () => {
             onPress={() => {
               item?.requestType === 'STANDARD'
                 ? navigation.navigate('StandardRFQDetail', {
-                    rfqItem: item?.RFQ,
+                    rfqID: item?.RFQ?.id,
                   })
                 : item?.requestType === 'DOMESTIC'
                 ? navigation.navigate('DomesticRFQDetail', {
-                    rfqItem: item?.RFQ,
+                    rfqID: item?.RFQ?.id,
                   })
                 : item?.requestType === 'INTERNATIONAL'
                 ? navigation.navigate('InternationalRFQDetail', {
-                    rfqItem: item?.RFQ,
+                    rfqID: item?.RFQ?.id,
                   })
                 : item?.requestType === 'LAND'
                 ? navigation.navigate('QuotesRequestDetails', {
-                    quoteItem: item?.RFF,
+                    rffID: item?.RFF?.id,
                   })
                 : item?.requestType === 'OCEAN'
                 ? navigation.navigate('QuotesRequestDetails', {
-                    quoteItem: item?.RFF,
+                    rffID: item?.RFF?.id,
                   })
                 : item?.requestType === 'OCEAN'
                 ? navigation.navigate('QuotesRequestDetails', {
-                    quoteItem: item?.RFF,
+                    rffID: item?.RFF?.id,
                   })
                 : navigation.navigate('Chat', {
                     id: item?.chatroomID,

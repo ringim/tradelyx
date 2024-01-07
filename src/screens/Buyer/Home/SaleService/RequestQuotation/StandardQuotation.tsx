@@ -152,6 +152,7 @@ const StandardQuotation = () => {
         actorID: userID,
         SType: 'NOTIFICATION',
         notificationRFQId: requestID,
+        title: 'Standard Quotation Request',
         description: `Buyer's Order - ${title}`,
       };
       const res = await doCreateNotification({

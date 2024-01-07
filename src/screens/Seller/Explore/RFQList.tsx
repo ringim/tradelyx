@@ -2,14 +2,15 @@ import {View, Text, Animated, TouchableOpacity} from 'react-native';
 import React, {useCallback, useRef, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
-import {COLORS, FONTS, SIZES, constants} from '../../../constants';
+import {COLORS, FONTS, SIZES, constants, icons} from '../../../constants';
 import {ExploreStackNavigatorParamList} from '../../../components/navigation/SellerNav/type/navigation';
 import RFQStandard from './RFQStandard';
 import RFQDomestic from './RFQDomestic';
 import RFQInternational from './RFQInternational';
 
-const scheduleTabs = constants.RFFType.map(bottom_tab => ({
+const scheduleTabs = constants.RFQType.map(bottom_tab => ({
   ...bottom_tab,
   ref: React.createRef(),
 }));
@@ -182,7 +183,7 @@ const RFFList = () => {
           decelerationRate="fast"
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
-          data={constants.RFFType}
+          data={constants.RFQType}
           keyExtractor={item => `${item?.id}`}
           onScroll={Animated.event(
             [{nativeEvent: {contentOffset: {x: scrollX}}}],
@@ -215,27 +216,24 @@ const RFFList = () => {
         flex: 1,
         backgroundColor: COLORS.white,
       }}>
+      {/* header title */}
+      <View style={{marginTop: SIZES.base}}>
+        <View
+          style={{
+            marginHorizontal: SIZES.margin,
+            marginBottom: SIZES.base,
+          }}>
+          <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>Latest RFQs</Text>
+        </View>
+      </View>
       <FlatList
         data={[]}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <View style={{marginTop: SIZES.margin}}>
-            <View
-              style={{
-                marginHorizontal: SIZES.margin,
-                marginBottom: 5,
-              }}>
-              <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
-                Latest RFQs
-              </Text>
-            </View>
-          </View>
-        }
         renderItem={() => <View />}
         ListFooterComponent={
           <View
             style={{
-              marginBottom: 200,
+              marginBottom: constants.RFQType?.length - 1 && 200,
             }}>
             {renderTopTabBar()}
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, TouchableOpacity, Pressable, Text} from 'react-native';
+import {View, TouchableOpacity, Platform, Pressable, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {useQuery} from '@apollo/client';
@@ -59,8 +59,14 @@ const TabHeader2 = ({userImage, containerStyle}: any) => {
   return (
     <View
       style={{
-        paddingTop: SIZES.height > 700 ? 55 : SIZES.semi_margin,
-        height: SIZES.height > 700 ? 100 : 70,
+        paddingTop:
+          Platform.OS === 'android'
+            ? SIZES.height > 700
+              ? 15
+              : SIZES.radius
+            : 55,
+        height:
+          Platform.OS === 'android' ? (SIZES.height > 700 ? 60 : 70) : 100,
         marginBottom: SIZES.margin,
         backgroundColor: COLORS.white,
         ...containerStyle,

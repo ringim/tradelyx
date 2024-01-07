@@ -88,7 +88,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
       style={{
         flexDirection: 'row',
         backgroundColor: COLORS.Neutral9,
-        top: -2
+        top: -2,
       }}>
       {/* Tab Indicator */}
       {measureLayout.length > 0 ? (
@@ -232,7 +232,12 @@ const Explore = () => {
       <TabHeader
         userImage={user?.logo}
         containerStyle={{
-          paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,
+          paddingTop:
+            Platform.OS === 'android'
+              ? SIZES.height > 700
+                ? 10
+                : SIZES.radius
+              : 50,
           height: Platform.OS == 'ios' ? '14%' : '10%',
           marginBottom: SIZES.base,
         }}

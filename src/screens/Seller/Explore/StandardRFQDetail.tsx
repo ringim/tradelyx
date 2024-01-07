@@ -37,6 +37,8 @@ import {
   CreateNotificationMutation,
   CreateNotificationMutationVariables,
   NotificationType,
+  GetRFQQuery,
+  GetRFQQueryVariables,
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -47,6 +49,7 @@ import {
 } from '../../../queries/ChatQueries';
 import {getUser} from '../../../queries/UserQueries';
 import {createNotification} from '../../../queries/NotificationQueries';
+import {getRFQ} from '../../../queries/RFQQueries';
 
 const StandardRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
@@ -55,14 +58,19 @@ const StandardRFQDetail = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {authUser}: any = useAuthContext();
 
-  const {userID}: any = route?.params?.rfqItem;
+  // RFQ DETAILS
+  const {loading: nowLoad, data: nowData} = useQuery<
+    GetRFQQuery,
+    GetRFQQueryVariables
+  >(getRFQ, {variables: {id: route?.params?.rfqID}});
+  const rfqItem: any = nowData?.getRFQ;
 
   // GET USER
   const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
     getUser,
     {
       variables: {
-        id: userID,
+        id: rfqItem?.userID,
       },
     },
   );
@@ -74,7 +82,7 @@ const StandardRFQDetail = () => {
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
-    usrID => usrID?.userId === userID,
+    usrID => usrID?.userId === rfqItem?.userID,
   );
   const newArray = allChatRoomUsers?.map((item: any) => ({
     chatRoomId: item.chatRoomId,
@@ -145,13 +153,13 @@ const StandardRFQDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFQ request soon",
-              rfqID: route?.params?.rfqItem?.rfqNo,
-              requestTitle: route?.params?.rfqItem?.title,
-              requestID: route?.params?.rfqItem?.id,
+              rfqID: rfqItem?.rfqNo,
+              requestTitle: rfqItem?.title,
+              requestID: rfqItem?.id,
               serviceType: serviceType?.RFQ,
               rfqType: RFQTYPE.STANDARD,
-              requestPrice: route?.params?.rfqItem?.budget,
-              packageType: route?.params?.rfqItem?.packageType,
+              requestPrice: rfqItem?.budget,
+              packageType: rfqItem?.packageType,
               chatroomID: similarChatRoomIDs[0]?.chatRoomId,
             },
           },
@@ -192,7 +200,7 @@ const StandardRFQDetail = () => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: userID,
+              userId: rfqItem?.userID,
             },
           },
         });
@@ -215,9 +223,9 @@ const StandardRFQDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFQ request soon",
-              rfqID: route?.params?.rfqItem?.rfqNo,
-              requestTitle: route?.params?.rfqItem?.title,
-              requestID: route?.params?.rfqItem?.id,
+              rfqID: rfqItem?.rfqNo,
+              requestTitle: rfqItem?.title,
+              requestID: rfqItem?.id,
               serviceType: serviceType?.RFQ,
               chatroomID: newChatRoom.id,
             },
@@ -264,9 +272,10 @@ const StandardRFQDetail = () => {
         requestType: RFQTYPE?.STANDARD,
         actorID: authUser?.attributes?.sub,
         SType: 'NOTIFICATION',
-        notificationRFQId: route?.params?.rfqItem?.id,
+        notificationRFQId: rfqItem?.id,
         chatroomID,
-        description: `${softData?.getUser?.title} will respond to your request for ${route?.params?.rfqItem?.title}`,
+        title: 'Standard RFQ Request',
+        description: `${softData?.getUser?.title} will respond to your request for ${rfqItem?.title}`,
       };
       const res = await doCreateNotification({
         variables: {
@@ -283,7 +292,7 @@ const StandardRFQDetail = () => {
     }
   };
 
-  if (loading || newLoad || softLoad) {
+  if (loading || nowLoad || newLoad || softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -308,18 +317,18 @@ const StandardRFQDetail = () => {
           style={{marginHorizontal: 5}}
           showsVerticalScrollIndicator={false}>
           <StandardRFQDetail1
-            placeOriginFlag={route?.params?.rfqItem?.placeOriginFlag}
-            placeOriginName={route?.params?.rfqItem?.placeOrigin}
-            rfqNo={route?.params?.rfqItem?.rfqNo}
-            description={route?.params?.rfqItem?.description}
-            title={route?.params?.rfqItem?.title}
+            placeOriginFlag={rfqItem?.placeOriginFlag}
+            placeOriginName={rfqItem?.placeOrigin}
+            rfqNo={rfqItem?.rfqNo}
+            description={rfqItem?.description}
+            title={rfqItem?.title}
           />
 
           <StandardRFQDetail2
             onPress={onPress}
-            coverage={route?.params?.rfqItem?.rfqType}
-            documents={route?.params?.rfqItem?.documents}
-            requestCategory={route?.params?.rfqItem?.requestCategory}
+            coverage={rfqItem?.rfqType}
+            documents={rfqItem?.documents}
+            requestCategory={rfqItem?.requestCategory}
           />
         </ScrollView>
       </View>

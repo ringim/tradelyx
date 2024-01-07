@@ -46,6 +46,8 @@ import {
   GetUserQueryVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
+  GetProductQuery,
+  GetProductQueryVariables,
 } from '../../../API';
 import {getUser, reviewByDate} from '../../../queries/UserQueries';
 import {shareOptions} from '../../../utilities/service';
@@ -56,18 +58,11 @@ import {
   createUserChatRoom,
   listUserChatRooms,
 } from '../../../queries/ChatQueries';
+import {getProduct} from '../../../queries/ProductQueries';
 
 const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<ProductDetailRouteProp>();
-
-  const {authUser}: any = useAuthContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const {storeProductId, savedProductItem, removeProductItem}: any =
-    useProductContext();
-
-  const {title, userID, id}: any = route?.params.productItem;
 
   const bottomSheetModalRef = useRef<any>(null);
 
@@ -86,23 +81,35 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     navigation.navigate('ScanProduct');
   }, []);
 
+  const scrollX = useSharedValue(0);
+  const onScroll = useAnimatedScrollHandler(event => {
+    scrollX.value = event.contentOffset.x;
+  });
+
   useEffect(() => {
     if (showCameraModal) {
       showModal();
     }
   }, [showCameraModal]);
 
-  const productItem: any = route?.params.productItem;
+  const {authUser}: any = useAuthContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const scrollX = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(event => {
-    scrollX.value = event.contentOffset.x;
-  });
+  const {storeProductId, savedProductItem, removeProductItem}: any =
+    useProductContext();
+
+  // PRODUCT DETAILS
+  const {loading: nowLoad, data: nowData} = useQuery<
+    GetProductQuery,
+    GetProductQueryVariables
+  >(getProduct, {variables: {id: route?.params?.productID}});
+
+  const productItem: any = nowData?.getProduct;
 
   const checkSavedItem = () =>
-    savedProductItem.some((itemIdValue: any) => itemIdValue?.title === title);
-
-  // console.log(savedProductItem);
+    savedProductItem.some(
+      (itemIdValue: any) => itemIdValue?.title === productItem?.title,
+    );
 
   const onSelect = () => {
     if (checkSavedItem()) {
@@ -111,19 +118,8 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     return storeProductId(productItem);
   };
 
-  // GET USER
-  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
-    getUser,
-    {
-      variables: {
-        id: route?.params.productItem?.userID,
-      },
-    },
-  );
-  const userInfo: any = data?.getUser;
-
   // LIST REVIEWS
-  const {data: softData, loading: newLoad} = useQuery<
+  const {data: softData, loading: softLoad} = useQuery<
     ReviewByDateQuery,
     ReviewByDateQueryVariables
   >(reviewByDate, {
@@ -136,12 +132,24 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
   const allReview: any =
     softData?.reviewByDate?.items.filter((item: any) => !item?._deleted) || [];
 
-  const {data: newData} = useQuery<
+  // GET USER
+  const {data, loading} = useQuery<GetUserQuery, GetUserQueryVariables>(
+    getUser,
+    {
+      variables: {
+        id: productItem?.userID,
+      },
+    },
+  );
+  const userInfo: any = data?.getUser;
+
+  // LIST CHAT ROOM USERS
+  const {data: newData, loading: newLoad} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
-    usrID => usrID?.userId === userID,
+    usrID => usrID?.userId === productItem?.userID,
   );
   const newArray = allChatRoomUsers?.map((item: any) => ({
     chatRoomId: item.chatRoomId,
@@ -207,7 +215,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: userID,
+              userId: productItem?.userID,
             },
           },
         });
@@ -252,7 +260,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           hideModalWithNavigation={hideModalWithNavigation}
         />
 
-        {route?.params.productItem?.images.map((item: any, index: number) => {
+        {productItem?.images.map((item: any, index: number) => {
           const dotOpacityAnimatedStyle = useAnimatedStyle(() => {
             return {
               opacity: interpolate(
@@ -292,16 +300,16 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
           borderRadius: SIZES.padding,
           marginTop: SIZES.margin,
         }}>
-        {route?.params.productItem?.image ? (
+        {productItem?.image ? (
           <ImageCaption
-            productItem={route?.params.productItem?.productItem}
-            item={route?.params.productItem?.image}
-            rating={route?.params.productItem?.rating}
-            name={route?.params.productItem?.title}
-            supplierName={route?.params.productItem?.storeName}
-            commodityCategory={route?.params.productItem?.category}
-            category={route?.params.productItem?.category}
-            banner_image={route?.params.productItem?.image}
+            productItem={productItem?.productItem}
+            item={productItem?.image}
+            rating={productItem?.rating}
+            name={productItem?.title}
+            supplierName={productItem?.storeName}
+            commodityCategory={productItem?.category}
+            category={productItem?.category}
+            banner_image={productItem?.image}
           />
         ) : (
           <>
@@ -313,19 +321,19 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
               snapToInterval={SIZES.width}
               scrollEventThrottle={16}
               onScroll={onScroll}
-              data={route?.params.productItem?.images}
+              data={productItem?.images}
               keyExtractor={item => `${item}`}
               renderItem={({item, index}: any) => {
                 return (
                   <ImageCaption
                     key={index}
-                    productItem={route?.params.productItem?.productItem}
+                    productItem={productItem?.productItem}
                     item={item}
-                    name={route?.params.productItem?.title}
-                    rating={route?.params.productItem?.rating}
-                    supplierName={route?.params.productItem?.storeName}
-                    commodityCategory={route?.params.productItem?.category}
-                    category={route?.params.productItem?.category}
+                    name={productItem?.title}
+                    rating={productItem?.rating}
+                    supplierName={productItem?.storeName}
+                    commodityCategory={productItem?.category}
+                    category={productItem?.category}
                     banner_image={item}
                   />
                 );
@@ -347,7 +355,7 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
     }
   };
 
-  if (loading || newLoad || onLoad) {
+  if (loading || nowLoad || newLoad || softLoad || onLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />
@@ -395,13 +403,13 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
               />
               {/* Product Description */}
               <BusinessDesc
-                productItem={route?.params.productItem?.description}
+                productItem={productItem?.description}
                 title={'Description'}
               />
 
               {/* Product Specification */}
               <ProductSpec
-                spec={route?.params.productItem?.productSpec}
+                spec={productItem?.productSpec}
                 title="Product Specification"
                 icon={icons.info}
               />
@@ -409,20 +417,20 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
               {/* Product Packaging */}
               <PriceQty
                 title={'Product Packaging'}
-                packageType={route?.params.productItem?.packageType}
+                packageType={productItem?.packageType}
                 icon={icons.packages}
-                moq={route?.params.productItem?.minOrderQty}
-                paymentType={route?.params.productItem?.paymentType}
-                supply={route?.params.productItem?.supplyCapacity}
-                cert={route?.params.productItem?.productCert}
-                transMode={route?.params.productItem?.transportMode}
+                moq={productItem?.minOrderQty}
+                paymentType={productItem?.paymentType}
+                supply={productItem?.supplyCapacity}
+                cert={productItem?.productCert}
+                transMode={productItem?.transportMode}
               />
 
               {/* product brochure */}
-              {route?.params.productItem?.productDocs.length > 0 && (
+              {productItem?.productDocs.length > 0 && (
                 <ShowDocs
                   title="Product Documentation"
-                  file={route?.params.productItem?.productDocs}
+                  file={productItem?.productDocs}
                   icon={icons.brochure}
                   contentStyle={{
                     marginTop: SIZES.base,
@@ -434,11 +442,11 @@ const ProductDetail = ({showCameraModal, toggleCameraModal}: any) => {
                 />
               )}
               {/* Product Certifications */}
-              {route?.params.productItem?.productCertDocs.length > 0 && (
+              {productItem?.productCertDocs.length > 0 && (
                 <ShowDocs
                   title="Product Certifications"
                   icon={icons.cert}
-                  file={route?.params.productItem?.productCertDocs}
+                  file={productItem?.productCertDocs}
                   contentStyle={{
                     marginTop: SIZES.base,
                     padding: SIZES.semi_margin,

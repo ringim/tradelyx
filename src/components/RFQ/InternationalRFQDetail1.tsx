@@ -34,48 +34,43 @@ const InternationalRFQDetail1 = ({
           </Text>
         </View>
 
-        {/* Buyer from */}
+        {/* Buyer Country Name */}
+        <View>
+          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            Buyer from
+          </Text>
+        </View>
+
+        {/* Buyer from country flag */}
         <View
           style={{
-            flex: 1.5,
-            justifyContent: 'center',
+            flex: 1,
+            marginLeft: SIZES.radius,
+          }}>
+          <FastImage
+            source={{uri: placeOriginFlag}}
+            resizeMode={FastImage.resizeMode.contain}
+            style={{
+              width: 17,
+              height: 17,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            flex: 4,
             alignItems: 'flex-end',
           }}>
-          <View
+          <Text
+            numberOfLines={3}
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              ...FONTS.cap1,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
             }}>
-            <View
-              style={{
-                justifyContent: 'center',
-                paddingRight: SIZES.base,
-              }}>
-              <FastImage
-                source={{uri: placeOriginFlag}}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  width: 17,
-                  height: 17,
-                }}
-              />
-            </View>
-
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                numberOfLines={1}
-                style={{
-                  ...FONTS.cap1,
-                  fontWeight: '600',
-                  color: COLORS.Neutral1,
-                }}>
-                {placeOriginName}
-              </Text>
-            </View>
-          </View>
+            {placeOriginName}
+          </Text>
         </View>
       </View>
 
@@ -88,55 +83,42 @@ const InternationalRFQDetail1 = ({
           marginHorizontal: SIZES.base,
         }}>
         {/* Buyer Country Name */}
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
+        <View>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-            Delivery To
+           Delivery To
           </Text>
         </View>
+
+        {/* Buyer from country flag */}
         <View
           style={{
-            flex: 1.5,
-            justifyContent: 'center',
+            flex: 1,
+            marginLeft: SIZES.radius,
+          }}>
+          <FastImage
+            source={{uri: placeDestinationFlag}}
+            resizeMode={FastImage.resizeMode.contain}
+            style={{
+              width: 17,
+              height: 17,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            flex: 4,
             alignItems: 'flex-end',
           }}>
-          <View
+          <Text
+            numberOfLines={3}
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              ...FONTS.cap1,
+              fontWeight: '600',
+              color: COLORS.Neutral1,
             }}>
-            <View
-              style={{
-                justifyContent: 'center',
-                paddingRight: SIZES.base,
-              }}>
-              <FastImage
-                source={{uri: placeDestinationFlag}}
-                resizeMode={FastImage.resizeMode.contain}
-                style={{
-                  width: 17,
-                  height: 17,
-                }}
-              />
-            </View>
-
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
-              <Text
-                numberOfLines={1}
-                style={{
-                  ...FONTS.cap1,
-                  fontWeight: '600',
-                  color: COLORS.Neutral1,
-                }}>
-                {placeDestination}
-              </Text>
-            </View>
-          </View>
+            {placeDestination}
+          </Text>
         </View>
       </View>
 

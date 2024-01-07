@@ -115,8 +115,6 @@ const ReplyRFQStandardPayment = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -261,9 +259,11 @@ const ReplyRFQStandardPayment = () => {
         readAt: 0,
         requestType: 'Standard Reply',
         actorID: authUser?.attributes?.sub,
+        userID: rfqDetails?.userID,
         SType: 'NOTIFICATION',
         notificationRFQReplyId: id,
         chatroomID,
+        title: 'Standard RFQ Reply',
         description: `${softData?.getUser?.title} has replied your RFQ request`,
       };
       const res = await doCreateNotification({

@@ -141,6 +141,7 @@ const ServiceModal2 = ({bottomSheetModalRef, hideModal}: any) => {
               : navigation.navigate('AddProducts');
             hideModal();
           }}
+          buttonContainerStyle={{marginTop: SIZES.radius}}
         />
       </View>
     </BottomSheetModal>

@@ -43,7 +43,7 @@ const CustomSellOfferDetail = () => {
 
   const expiryDateString = getSellOfferDetail?.offerValidity;
   const expiryDate = dayjs(expiryDateString);
-  const currentDate = dayjs();
+const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
 
   function renderViewMore(onPress: any) {

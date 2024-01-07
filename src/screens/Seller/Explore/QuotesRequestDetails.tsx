@@ -40,6 +40,8 @@ import {
   CreateNotificationMutationVariables,
   CreateNotificationInput,
   NotificationType,
+  GetRFFQuery,
+  GetRFFQueryVariables,
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -51,6 +53,7 @@ import {
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {createNotification} from '../../../queries/NotificationQueries';
+import {getRFF} from '../../../queries/RFFQueries';
 
 const QuotesRequestDetails = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
@@ -59,10 +62,15 @@ const QuotesRequestDetails = () => {
   const {authUser}: any = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // console.log(route?.params?.quoteItem);
+  // RFQ DETAILS
+  const {loading: nowLoad, data: nowData} = useQuery<
+    GetRFFQuery,
+    GetRFFQueryVariables
+  >(getRFF, {variables: {id: route?.params?.rffID}});
+  const rffItem: any = nowData?.getRFF;
 
   const onCopy = () => {
-    Clipboard.setString(route?.params?.quoteItem?.orderID);
+    Clipboard.setString(rffItem?.orderID);
   };
 
   // GET USER
@@ -70,7 +78,7 @@ const QuotesRequestDetails = () => {
     getUser,
     {
       variables: {
-        id: route?.params?.quoteItem?.userID,
+        id: rffItem?.userID,
       },
     },
   );
@@ -82,7 +90,7 @@ const QuotesRequestDetails = () => {
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
-    usrID => usrID?.userId === route?.params?.quoteItem?.userID,
+    usrID => usrID?.userId === rffItem?.userID,
   );
   const newArray = allChatRoomUsers?.map((item: any) => ({
     chatRoomId: item.chatRoomId,
@@ -153,13 +161,13 @@ const QuotesRequestDetails = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFF request soon",
-              rffID: route?.params?.quoteItem?.rffNo,
-              requestTitle: route?.params?.quoteItem?.productName,
-              requestID: route?.params?.quoteItem?.id,
+              rffID: rffItem?.rffNo,
+              requestTitle: rffItem?.productName,
+              requestID: rffItem?.id,
               serviceType: serviceType?.RFF,
-              rffType: route?.params?.quoteItem?.rffType,
-              requestPrice: route?.params?.quoteItem?.budget,
-              packageType: route?.params?.quoteItem?.packageType,
+              rffType: rffItem?.rffType,
+              requestPrice: rffItem?.budget,
+              packageType: rffItem?.packageType,
               chatroomID: similarChatRoomIDs[0]?.chatRoomId,
             },
           },
@@ -198,7 +206,7 @@ const QuotesRequestDetails = () => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: route?.params?.quoteItem?.userID,
+              userId: rffItem?.userID,
             },
           },
         });
@@ -220,11 +228,11 @@ const QuotesRequestDetails = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFF request soon",
-              rffID: route?.params?.quoteItem?.rffNo,
-              requestTitle: route?.params?.quoteItem?.productName,
-              requestID: route?.params?.quoteItem?.id,
+              rffID: rffItem?.rffNo,
+              requestTitle: rffItem?.productName,
+              requestID: rffItem?.id,
               serviceType: serviceType?.RFF,
-              rffType: route?.params?.quoteItem?.rffType,
+              rffType: rffItem?.rffType,
               chatroomID: newChatRoom?.id,
             },
           },
@@ -266,12 +274,13 @@ const QuotesRequestDetails = () => {
         id: uuidV4(),
         type: NotificationType?.RFF_REPLY,
         readAt: 0,
-        requestType: route?.params?.quoteItem?.rffType,
+        requestType: rffItem?.rffType,
         actorID: authUser?.attributes?.sub,
         SType: 'NOTIFICATION',
-        notificationSellOfferId: route?.params?.quoteItem?.id,
+        notificationSellOfferId: rffItem?.id,
         chatroomID,
-        description: `${softData?.getUser?.title} will respond to your request for ${route?.params?.quoteItem?.productName}`,
+        title: `${rffItem?.rffType} RFF Request`,
+        description: `${softData?.getUser?.title} will respond to your request for ${rffItem?.productName}`,
       };
       const res = await doCreateNotification({
         variables: {
@@ -288,7 +297,7 @@ const QuotesRequestDetails = () => {
     }
   };
 
-  if (loading || newLoad || softLoad) {
+  if (loading || newLoad || nowLoad || softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -324,44 +333,42 @@ const QuotesRequestDetails = () => {
               backgroundColor: COLORS.white,
             }}>
             <QuoteRequestItem
-              to={route?.params?.quoteItem?.placeDestinationName}
-              from={route?.params?.quoteItem?.placeOriginName}
-              fromImg={route?.params?.quoteItem?.placeOriginFlag}
-              toImg={route?.params?.quoteItem?.placeDestinationFlag}
+              to={rffItem?.placeDestinationName}
+              from={rffItem?.placeOriginName}
+              fromImg={rffItem?.placeOriginFlag}
+              toImg={rffItem?.placeDestinationFlag}
             />
 
             <QuoteRequestItem2
-              orderID={route?.params?.quoteItem?.rffNo}
+              orderID={rffItem?.rffNo}
               onCopy={onCopy}
-              packageType={route?.params?.quoteItem?.packageType}
-              name={route?.params?.quoteItem?.productName}
-              containerCount={route?.params?.quoteItem?.qty}
-              transportMode={route?.params?.quoteItem?.rffType}
-              containerSize={route?.params?.quoteItem?.containerSize}
-              containerDetails={route?.params?.quoteItem?.containerDetails}
-              relatedServices={route?.params?.quoteItem?.relatedServices}
-              container={route?.params?.quoteItem?.container}
-              containerType={route?.params?.quoteItem?.containerType}
-              rffType={route?.params?.quoteItem?.rffType}
-              weight={route?.params?.quoteItem?.weight}
-              notes={route?.params?.quoteItem?.notes}
-              handling={route?.params?.quoteItem?.handling}
-              length={route?.params?.quoteItem?.length}
-              height={route?.params?.quoteItem?.height}
+              packageType={rffItem?.packageType}
+              name={rffItem?.productName}
+              containerCount={rffItem?.qty}
+              transportMode={rffItem?.rffType}
+              containerSize={rffItem?.containerSize}
+              containerDetails={rffItem?.containerDetails}
+              relatedServices={rffItem?.relatedServices}
+              container={rffItem?.container}
+              containerType={rffItem?.containerType}
+              rffType={rffItem?.rffType}
+              weight={rffItem?.weight}
+              notes={rffItem?.notes}
+              handling={rffItem?.handling}
+              length={rffItem?.length}
+              height={rffItem?.height}
             />
 
             {/* Origin Details*/}
             <OriginDestinationDetails
-              address={route?.params?.quoteItem?.placeOriginName}
+              address={rffItem?.placeOriginName}
               type={'Origin'}
-              departDate={route?.params?.quoteItem?.loadDate}
+              departDate={rffItem?.loadDate}
               typeName={'Ready to load date'}
             />
 
             {/* Destination Details  */}
-            <QuoteDetail
-              place={route?.params?.quoteItem?.placeDestinationName}
-            />
+            <QuoteDetail place={rffItem?.placeDestinationName} />
 
             {/* Button */}
             <TextButton

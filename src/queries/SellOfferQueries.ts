@@ -16,6 +16,7 @@ export const getSellOffer = gql`
       sellOfferImage
       image
       images
+      forUserID
       rfqType
       packageType
       placeOrigin
@@ -102,6 +103,7 @@ export const sellOffersByDate = gql`
         description
         packageDesc
         sellOfferImage
+        forUserID
         image
         images
         rfqType
@@ -187,6 +189,7 @@ export const createSellOffer = gql`
       packageType
       placeOrigin
       landmark
+      forUserID
       unit
       deliveryDate
       qtyMeasure
@@ -234,6 +237,7 @@ export const updateSellOffer = gql`
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       updatedAt

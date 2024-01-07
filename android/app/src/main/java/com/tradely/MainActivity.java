@@ -1,4 +1,4 @@
-package com.tradely;
+package com.tradelyx;
 
 import expo.modules.ReactActivityDelegateWrapper;
 import android.os.Bundle;

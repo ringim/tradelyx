@@ -111,8 +111,6 @@ const ReplyRFFOceanPayment = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -265,9 +263,11 @@ const ReplyRFFOceanPayment = () => {
         readAt: 0,
         requestType: `${RFFTYPE.OCEAN} Reply`,
         actorID: authUser?.attributes?.sub,
+        userID: rffDetails?.userID,
         SType: 'NOTIFICATION',
         notificationRFFReplyId: id,
         chatroomID,
+        title: 'Ocean RFF Reply',
         description: `${softData?.getUser?.title} has replied your RFF request`,
       };
       const res = await doCreateNotification({

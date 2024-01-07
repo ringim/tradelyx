@@ -169,6 +169,7 @@ const LandPickupProcess = () => {
         requestType: RFFTYPE?.LAND,
         notificationRFFId: route?.params.rffID,
         SType: 'NOTIFICATION',
+        title: 'Land Freight Request',
         description: `Buyer's request - ${rffDetail}`,
       };
       const res = await doCreateNotification({
@@ -176,7 +177,7 @@ const LandPickupProcess = () => {
           input,
         },
       });
-      console.log('notification created', res);
+      // console.log('notification created', res);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

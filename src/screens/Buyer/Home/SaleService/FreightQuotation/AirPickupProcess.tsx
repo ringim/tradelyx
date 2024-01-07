@@ -170,6 +170,7 @@ const AirPickupProcess = () => {
         requestType: RFFTYPE?.AIR,
         notificationRFFId: route?.params.rffID,
         SType: 'NOTIFICATION',
+        title: 'Air Freight Request',
         description: `Buyer's request - ${rffDetail}`,
       };
       const res = await doCreateNotification({

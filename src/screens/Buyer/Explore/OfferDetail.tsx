@@ -40,6 +40,8 @@ import {
   CreateNotificationMutationVariables,
   CreateNotificationInput,
   NotificationType,
+  GetSellOfferQuery,
+  GetSellOfferQueryVariables,
 } from '../../../API';
 import {
   createChatRoom,
@@ -50,20 +52,27 @@ import {
 } from '../../../queries/ChatQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {createNotification} from '../../../queries/NotificationQueries';
+import {getSellOffer} from '../../../queries/SellOfferQueries';
 
 const OfferDetail = () => {
   const {authUser}: any = useAuthContext();
 
   const navigation = useNavigation<HomeStackNavigatorParamList>();
   const route: any = useRoute<OfferDetailRouteProp>();
-  const {image, images, userID, id, sellOfferImage, productName}: any =
-    route?.params?.detail;
+
+  // SELL OFFER DETAILS
+  const {loading: nowLoad, data: nowData} = useQuery<
+    GetSellOfferQuery,
+    GetSellOfferQueryVariables
+  >(getSellOffer, {variables: {id: route?.params?.sellOfferID}});
+
+  const sellOfferItem: any = nowData?.getSellOffer;
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [imageUri2, setImageUri2] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const expiryDateString = route?.params?.detail?.offerValidity;
+  const expiryDateString = sellOfferItem?.offerValidity;
   const expiryDate = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryDate.diff(currentDate, 'day');
@@ -73,7 +82,7 @@ const OfferDetail = () => {
     getUser,
     {
       variables: {
-        id: userID,
+        id: sellOfferItem?.userID,
       },
     },
   );
@@ -85,7 +94,7 @@ const OfferDetail = () => {
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
-    usrID => usrID?.userId === userID,
+    usrID => usrID?.userId === sellOfferItem?.userID,
   );
   const newArray = allChatRoomUsers?.map((item: any) => ({
     chatRoomId: item.chatRoomId,
@@ -97,8 +106,6 @@ const OfferDetail = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -158,13 +165,13 @@ const OfferDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'm interested in this Sell Offer",
-              sellOfferID: route?.params?.detail?.sellOfferID,
-              requestTitle: route?.params?.detail?.title,
-              packageType: route?.params?.detail?.packageType,
-              serviceImage: route?.params?.detail?.sellOfferImage,
-              requestID: id,
-              requestQty: route?.params?.detail?.qtyMeasure,
-              requestPrice: route?.params?.detail?.basePrice,
+              sellOfferID: sellOfferItem?.sellOfferID,
+              requestTitle: sellOfferItem?.title,
+              packageType: sellOfferItem?.packageType,
+              serviceImage: sellOfferItem?.sellOfferImage,
+              requestID: sellOfferItem?.id,
+              requestQty: sellOfferItem?.qtyMeasure,
+              requestPrice: sellOfferItem?.basePrice,
               serviceType: serviceType?.SELLOFFERS,
               chatroomID: similarChatRoomIDs[0]?.chatRoomId,
             },
@@ -204,7 +211,7 @@ const OfferDetail = () => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: userID,
+              userId: sellOfferItem?.userID,
             },
           },
         });
@@ -227,13 +234,13 @@ const OfferDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'm interested in this Sell Offer",
-              sellOfferID: route?.params?.detail?.sellOfferID,
-              requestTitle: route?.params?.detail?.title,
-              packageType: route?.params?.detail?.packageType,
-              serviceImage: route?.params?.detail?.sellOfferImage,
-              requestID: id,
-              requestQty: route?.params?.detail?.qtyMeasure,
-              requestPrice: route?.params?.detail?.basePrice,
+              sellOfferID: sellOfferItem?.sellOfferID,
+              requestTitle: sellOfferItem?.title,
+              packageType: sellOfferItem?.packageType,
+              serviceImage: sellOfferItem?.sellOfferImage,
+              requestID: sellOfferItem?.id,
+              requestQty: sellOfferItem?.qtyMeasure,
+              requestPrice: sellOfferItem?.basePrice,
               serviceType: serviceType?.SELLOFFERS,
               chatroomID: newChatRoom.id,
             },
@@ -282,9 +289,10 @@ const OfferDetail = () => {
         requestType: 'Sell Offer',
         actorID: authUser?.attributes?.sub,
         SType: 'NOTIFICATION',
-        notificationSellOfferId: id,
+        notificationSellOfferId: sellOfferItem?.id,
         chatroomID,
-        description: `${softData?.getUser?.name} has requested about ${productName} Sell Offer`,
+        title: 'Sell Offer Request',
+        description: `${softData?.getUser?.name} has requested about ${sellOfferItem?.productName} Sell Offer`,
       };
       const res = await doCreateNotification({
         variables: {
@@ -313,15 +321,15 @@ const OfferDetail = () => {
 
   useEffect(() => {
     let isCurrent = true;
-    if (sellOfferImage && isCurrent) {
-      Storage.get(sellOfferImage).then(setImageUri2);
+    if (sellOfferItem?.sellOfferImage && isCurrent) {
+      Storage.get(sellOfferItem?.sellOfferImage).then(setImageUri2);
     }
     return () => {
       isCurrent = false;
     };
-  }, [sellOfferImage]);
+  }, [sellOfferItem?.sellOfferImage]);
 
-  if (newLoad || softLoad || loading) {
+  if (newLoad || softLoad || loading || nowLoad) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="small" color={COLORS.primary6} />
@@ -345,30 +353,30 @@ const OfferDetail = () => {
             userInfo={userInfo}
             imageUri={imageUri}
             imageUri2={imageUri2}
-            placeOrigin={route?.params?.detail?.placeOrigin}
-            title={route?.params?.detail?.title}
-            unit={route?.params?.detail?.unit}
-            deliveryDate={route?.params?.detail?.offerValidity}
-            paymentType={route?.params?.detail?.paymentType}
-            basePrice={route?.params?.detail?.basePrice}
-            productName={route?.params?.detail?.productName}
-            qtyMeasure={route?.params?.detail?.qtyMeasure}
-            category={route?.params?.detail?.requestCategory}
-            packageType={route?.params?.detail?.packageType}
-            paymentMethod={route?.params?.detail?.paymentMethod}
-            coverage={route?.params?.detail?.rfqType}
+            placeOrigin={sellOfferItem?.placeOrigin}
+            title={sellOfferItem?.title}
+            unit={sellOfferItem?.unit}
+            deliveryDate={sellOfferItem?.offerValidity}
+            paymentType={sellOfferItem?.paymentType}
+            basePrice={sellOfferItem?.basePrice}
+            productName={sellOfferItem?.productName}
+            qtyMeasure={sellOfferItem?.qtyMeasure}
+            category={sellOfferItem?.requestCategory}
+            packageType={sellOfferItem?.packageType}
+            paymentMethod={sellOfferItem?.paymentMethod}
+            coverage={sellOfferItem?.rfqType}
           />
 
           <SellOfferDetail2
-            basePrice={route?.params?.detail?.basePrice}
+            basePrice={sellOfferItem?.basePrice}
             daysUntilExpiry={daysUntilExpiry}
-            packageDesc={route?.params?.detail?.packageDesc}
-            description={route?.params?.detail?.description}
+            packageDesc={sellOfferItem?.packageDesc}
+            description={sellOfferItem?.description}
             onPress={onPress}
-            image={image}
-            images={images}
+            image={sellOfferItem?.image}
+            images={sellOfferItem?.images}
             showBtn={true}
-            createdAtd={route?.params?.detail?.createdAtd}
+            createdAtd={sellOfferItem?.createdAtd}
           />
 
           <TextIconButton

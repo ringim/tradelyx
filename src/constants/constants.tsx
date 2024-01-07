@@ -874,17 +874,17 @@ const freightType = [
   },
 ];
 
-const RFFType = [
+const RFQType = [
   {
-    id: `0`,
+    id: 0,
     label: 'Standard',
   },
   {
-    id: `1`,
+    id: 1,
     label: 'Domestic',
   },
   {
-    id: `2`,
+    id: 2,
     label: 'International',
   },
 ];
@@ -998,7 +998,7 @@ export default {
   priceOffer,
   freight,
   paymentType2,
-  RFFType,
+  RFQType,
   businessType,
   payType2,
   payType3,

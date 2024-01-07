@@ -143,7 +143,8 @@ const InternationalEngagementTerms = () => {
         type: NotificationType?.PRODUCT,
         SType: 'NOTIFICATION',
         notificationProductId: route?.params.productID,
-        description: `${userInfo} posted a new product - ${ProductDetail}`,
+        title: 'New Product posted',
+        description: `${userInfo} posted a new item - ${ProductDetail}`,
       };
       const res = await doCreateNotification({
         variables: {

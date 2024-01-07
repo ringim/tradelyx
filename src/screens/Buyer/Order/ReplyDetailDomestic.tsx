@@ -68,7 +68,6 @@ const ReplyDetailDomestic = () => {
             onClose={() => setShowModal(false)}
           />
         )}
-
         <ScrollView
           style={{marginHorizontal: 5}}
           showsVerticalScrollIndicator={false}>
@@ -81,57 +80,42 @@ const ReplyDetailDomestic = () => {
               marginHorizontal: SIZES.base,
             }}>
             {/* Buyer Country Name */}
-            <View
-              style={{
-                justifyContent: 'center',
-              }}>
+            <View>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
                 Buyer from
               </Text>
             </View>
 
-            {/* Buyer from */}
+            {/* Buyer from country flag */}
             <View
               style={{
-                flex: 1.5,
-                justifyContent: 'center',
+                flex: 1,
+                marginLeft: SIZES.radius,
+              }}>
+              <FastImage
+                source={{uri: route?.params?.sellerItem?.placeOriginFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                flex: 4,
                 alignItems: 'flex-end',
               }}>
-              <View
+              <Text
+                numberOfLines={3}
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
                 }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    paddingRight: SIZES.base,
-                  }}>
-                  <FastImage
-                    source={{uri: route?.params?.sellerItem?.placeOriginFlag}}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{
-                      width: 17,
-                      height: 17,
-                    }}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      ...FONTS.cap1,
-                      fontWeight: '600',
-                      color: COLORS.Neutral1,
-                    }}>
-                    {route?.params?.sellerItem?.placeOrigin}
-                  </Text>
-                </View>
-              </View>
+                {route?.params?.sellerItem?.placeOrigin}
+              </Text>
             </View>
           </View>
 

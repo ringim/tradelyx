@@ -39,6 +39,8 @@ import {
   CreateNotificationMutationVariables,
   NotificationType,
   CreateNotificationInput,
+  GetRFQQuery,
+  GetRFQQueryVariables,
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -50,22 +52,29 @@ import {
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {createNotification} from '../../../queries/NotificationQueries';
+import {getRFQ} from '../../../queries/RFQQueries';
 
 const DomesticRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<DomesticRFQDetailRouteProp>();
-  const {rfqNo, userID, expiryDate}: any = route?.params?.rfqItem;
+
+  // RFQ DETAILS
+  const {loading: nowLoad, data: nowData} = useQuery<
+    GetRFQQuery,
+    GetRFQQueryVariables
+  >(getRFQ, {variables: {id: route?.params?.rfqID}});
+  const rfqItem: any = nowData?.getRFQ;
 
   const {authUser}: any = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const expiryDateString = expiryDate;
+  const expiryDateString = rfqItem?.expiryDate;
   const expiryPeriod = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryPeriod.diff(currentDate, 'day');
 
   const onCopy = () => {
-    Clipboard.setString(rfqNo);
+    Clipboard.setString(rfqItem?.rfqNo);
   };
 
   // GET USER
@@ -73,7 +82,7 @@ const DomesticRFQDetail = () => {
     getUser,
     {
       variables: {
-        id: userID,
+        id: rfqItem?.userID,
       },
     },
   );
@@ -85,7 +94,7 @@ const DomesticRFQDetail = () => {
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
-    usrID => usrID?.userId === userID,
+    usrID => usrID?.userId === rfqItem?.userID,
   );
   const newArray = allChatRoomUsers?.map((item: any) => ({
     chatRoomId: item.chatRoomId,
@@ -156,9 +165,9 @@ const DomesticRFQDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFQ request soon",
-              rfqID: route?.params?.rfqItem?.rfqNo,
-              requestTitle: route?.params?.rfqItem?.title,
-              requestID: route?.params?.rfqItem?.id,
+              rfqID: rfqItem?.rfqNo,
+              requestTitle: rfqItem?.title,
+              requestID: rfqItem?.id,
               serviceType: serviceType?.RFQ,
               rfqType: RFQTYPE.DOMESTIC,
               chatroomID: similarChatRoomIDs[0]?.chatRoomId,
@@ -199,7 +208,7 @@ const DomesticRFQDetail = () => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: userID,
+              userId: rfqItem?.userID,
             },
           },
         });
@@ -222,11 +231,11 @@ const DomesticRFQDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFQ request soon",
-              rfqID: route?.params?.rfqItem?.rfqNo,
-              requestTitle: route?.params?.rfqItem?.title,
-              requestID: route?.params?.rfqItem?.id,
-              requestPrice: route?.params?.rfqItem?.budget,
-              packageType: route?.params?.rfqItem?.packageType,
+              rfqID: rfqItem?.rfqNo,
+              requestTitle: rfqItem?.title,
+              requestID: rfqItem?.id,
+              requestPrice: rfqItem?.budget,
+              packageType: rfqItem?.packageType,
               serviceType: serviceType?.RFQ,
               chatroomID: newChatRoom.id,
             },
@@ -270,9 +279,10 @@ const DomesticRFQDetail = () => {
         requestType: RFQTYPE?.DOMESTIC,
         actorID: authUser?.attributes?.sub,
         SType: 'NOTIFICATION',
-        notificationRFQId: route?.params?.rfqItem?.id,
+        notificationRFQId: rfqItem?.id,
         chatroomID,
-        description: `${softData?.getUser?.title} will respond to your request for ${route?.params?.rfqItem?.title}`,
+        title: 'Domestic RFQ Request',
+        description: `${softData?.getUser?.title} will respond to your request for ${rfqItem?.title}`,
       };
       const res = await doCreateNotification({
         variables: {
@@ -289,7 +299,7 @@ const DomesticRFQDetail = () => {
     }
   };
 
-  if (loading || newLoad || softLoad) {
+  if (loading || newLoad || nowLoad || softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -314,31 +324,31 @@ const DomesticRFQDetail = () => {
           style={{marginHorizontal: 5}}
           showsVerticalScrollIndicator={false}>
           <DomesticRFQDetail1
-            placeOriginName={route?.params?.rfqItem?.placeOrigin}
+            placeOriginName={rfqItem?.placeOrigin}
             onCopy={onCopy}
             daysUntilExpiry={daysUntilExpiry}
-            placeOriginFlag={route?.params?.rfqItem?.placeOriginFlag}
-            rfqNo={route?.params?.rfqItem?.rfqNo}
-            expiryDate={route?.params?.rfqItem?.expiryDate}
+            placeOriginFlag={rfqItem?.placeOriginFlag}
+            rfqNo={rfqItem?.rfqNo}
+            expiryDate={rfqItem?.expiryDate}
           />
           <DomesticRFQDetail2
-            description={route?.params?.rfqItem?.description}
-            title={route?.params?.rfqItem?.title}
-            qty={route?.params?.rfqItem?.qty}
-            productName={route?.params?.rfqItem?.productName}
-            buyFrequency={route?.params?.rfqItem?.buyFrequency}
-            paymentMethod={route?.params?.rfqItem?.paymentMethod}
-            paymentType={route?.params?.rfqItem?.paymentType}
-            unit={route?.params?.rfqItem?.unit}
-            requestCategory={route?.params?.rfqItem?.requestCategory}
-            coverage={route?.params?.rfqItem?.rfqType}
+            description={rfqItem?.description}
+            title={rfqItem?.title}
+            qty={rfqItem?.qty}
+            productName={rfqItem?.productName}
+            buyFrequency={rfqItem?.buyFrequency}
+            paymentMethod={rfqItem?.paymentMethod}
+            paymentType={rfqItem?.paymentType}
+            unit={rfqItem?.unit}
+            requestCategory={rfqItem?.requestCategory}
+            coverage={rfqItem?.rfqType}
           />
           <DomesticRFQDetail3
-            tags={route?.params?.rfqItem?.tags}
-            landmark={route?.params?.rfqItem?.landmark}
-            budget={route?.params?.rfqItem?.budget}
+            tags={rfqItem?.tags}
+            landmark={rfqItem?.landmark}
+            budget={rfqItem?.budget}
             onPress={onPress}
-            documents={route?.params?.rfqItem?.documents}
+            documents={rfqItem?.documents}
           />
         </ScrollView>
       </View>

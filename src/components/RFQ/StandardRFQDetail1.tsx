@@ -44,44 +44,38 @@ const StandardRFQDetail1 = ({
           marginHorizontal: SIZES.semi_margin,
         }}>
         {/* Buyer Country Name */}
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
+        <View>
           <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
             Buyer from
           </Text>
         </View>
 
-        {/* Buyer from flag */}
+        {/* Buyer from country flag */}
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'flex-end',
+            marginLeft: SIZES.radius,
           }}>
           <FastImage
             source={{uri: placeOriginFlag}}
             resizeMode={FastImage.resizeMode.contain}
             style={{
-              width: 20,
-              height: 20,
+              width: 17,
+              height: 17,
             }}
           />
         </View>
 
-        {/* Buyer from  */}
         <View
           style={{
-            marginLeft: SIZES.radius,
-            justifyContent: 'center',
+            flex: 4,
             alignItems: 'flex-end',
           }}>
           <Text
             numberOfLines={3}
             style={{
               ...FONTS.cap1,
-              fontWeight: '500',
+              fontWeight: '600',
               color: COLORS.Neutral1,
             }}>
             {placeOriginName}
@@ -92,7 +86,7 @@ const StandardRFQDetail1 = ({
       {/* RFQ Number */}
       <View
         style={{
-          marginTop: SIZES.margin,
+          marginTop: SIZES.radius,
           flexDirection: 'row',
           justifyContent: 'space-between',
           marginHorizontal: SIZES.semi_margin,

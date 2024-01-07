@@ -23,8 +23,14 @@ const AltHeader = ({
   return (
     <View
       style={{
-        paddingTop: SIZES.height > 700 ? 60 : 30,
-        height: SIZES.height > 700 ? 100 : 70,
+        paddingTop:
+          Platform.OS === 'android'
+            ? SIZES.height > 700
+              ? 15
+              : SIZES.radius
+            : 55,
+        height:
+          Platform.OS === 'android' ? (SIZES.height > 700 ? 60 : 70) : 100,
         backgroundColor: COLORS.white,
         ...contentStyle,
       }}>
@@ -76,7 +82,7 @@ const AltHeader = ({
               style={{
                 width: 24,
                 height: 24,
-                ...iconStyle
+                ...iconStyle,
               }}
             />
           </TouchableOpacity>

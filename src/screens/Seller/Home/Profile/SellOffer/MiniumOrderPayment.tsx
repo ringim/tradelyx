@@ -181,6 +181,7 @@ const MiniumOrderPayment = () => {
         actorID: userID,
         SType: 'NOTIFICATION',
         notificationSellOfferId: route?.params.sellOfferID,
+         title: 'Sell Offer',
         description: `${userInfo} posted a Sell Offer - ${sellOfferDetail}`,
       };
       const res = await doCreateNotification({

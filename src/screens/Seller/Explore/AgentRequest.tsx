@@ -50,7 +50,7 @@ const AgentRequest = () => {
         ListFooterComponent={
           <View
             style={{
-              marginBottom: dummyData?.rffAgentReq?.length - 1 && 200,
+              marginBottom: dummyData?.rffAgentReq?.length - 1 && 100,
             }}
           />
         }

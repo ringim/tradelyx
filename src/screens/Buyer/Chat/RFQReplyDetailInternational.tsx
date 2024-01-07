@@ -92,58 +92,42 @@ const RFQReplyDetailInternational = () => {
               marginHorizontal: SIZES.base,
             }}>
             {/* Buyer Country Name */}
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-              }}>
+            <View>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
                 Buyer from
               </Text>
             </View>
 
-            {/* Buyer from */}
+            {/* Buyer from country flag */}
             <View
               style={{
-                flex: 1.5,
-                justifyContent: 'center',
+                flex: 1,
+                marginLeft: SIZES.radius,
+              }}>
+              <FastImage
+                source={{uri: rfqDetail?.placeOriginFlag}}
+                resizeMode={FastImage.resizeMode.contain}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                flex: 4,
                 alignItems: 'flex-end',
               }}>
-              <View
+              <Text
+                numberOfLines={3}
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  ...FONTS.cap1,
+                  fontWeight: '600',
+                  color: COLORS.Neutral1,
                 }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    paddingRight: SIZES.base,
-                  }}>
-                  <FastImage
-                    source={{uri: rfqDetail?.placeOriginFlag}}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{
-                      width: 17,
-                      height: 17,
-                    }}
-                  />
-                </View>
-
-                <View
-                  style={{
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      ...FONTS.cap1,
-                      fontWeight: '600',
-                      color: COLORS.Neutral1,
-                    }}>
-                    {rfqDetail?.placeOrigin}
-                  </Text>
-                </View>
-              </View>
+                {rfqDetail?.placeOrigin}
+              </Text>
             </View>
           </View>
 
@@ -156,40 +140,38 @@ const RFQReplyDetailInternational = () => {
               marginHorizontal: SIZES.base,
             }}>
             {/* Buyer Country Name */}
+            <View>
+              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+               Delivery To
+              </Text>
+            </View>
+
+            {/* Buyer from country flag */}
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
-              }}>
-              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                Delivery To
-              </Text>
-            </View>
-            <View
-              style={{
-                alignItems: 'flex-end',
-                justifyContent: 'center',
+                marginLeft: SIZES.radius,
               }}>
               <FastImage
                 source={{uri: rfqDetail?.placeDestinationFlag}}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
-                  width: 20,
-                  height: 20,
+                  width: 17,
+                  height: 17,
                 }}
               />
             </View>
 
             <View
               style={{
-                flex: 2.5,
-                marginLeft: SIZES.radius,
-                justifyContent: 'center',
+                flex: 4,
+                alignItems: 'flex-end',
               }}>
               <Text
                 numberOfLines={3}
                 style={{
-                  ...FONTS.h5,
+                  ...FONTS.cap1,
+                  fontWeight: '600',
                   color: COLORS.Neutral1,
                 }}>
                 {rfqDetail?.placeDestination}

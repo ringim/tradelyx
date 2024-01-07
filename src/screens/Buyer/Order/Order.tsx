@@ -125,7 +125,7 @@ const Tabs = ({scrollX, onTabPress}: any) => {
                 backgroundColor: bgColor,
                 paddingVertical: SIZES.height > 700 ? SIZES.radius : SIZES.base,
                 borderRadius: SIZES.margin,
-                marginBottom: 5
+                marginBottom: 5,
               }}>
               <Animated.Text
                 style={{
@@ -238,11 +238,17 @@ const Order = () => {
       <TabHeader
         userImage={user?.logo}
         containerStyle={{
-          paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,
+          paddingTop:
+            Platform.OS === 'android'
+              ? SIZES.height > 700
+                ? 10
+                : SIZES.radius
+              : 50,
           height: Platform.OS == 'ios' ? '14%' : '10%',
           marginBottom: SIZES.base,
         }}
       />
+
       {renderTopTabBar()}
       <ScrollView
         showsVerticalScrollIndicator={false}

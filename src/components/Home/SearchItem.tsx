@@ -114,10 +114,7 @@ const SearchItem = ({
           justifyContent: 'space-between',
         }}>
         {/* Supplier image */}
-        <View
-          style={{
-            justifyContent: 'center',
-          }}>
+        <View>
           <FastImage
             source={{
               uri: imageUri2 || DEFAULT_PROFILE_IMAGE,
@@ -125,8 +122,8 @@ const SearchItem = ({
             }}
             resizeMode={FastImage.resizeMode.cover}
             style={{
-              width: 32,
-              height: 32,
+              width: 28,
+              height: 28,
               borderRadius: SIZES.base,
             }}
           />
@@ -139,14 +136,15 @@ const SearchItem = ({
             marginLeft: SIZES.radius,
             justifyContent: 'center',
           }}>
-          <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
+          <Text
+            numberOfLines={1}
+            style={{...FONTS.cap1, fontWeight: 'bold', color: COLORS.Neutral1}}>
             {userInfo?.title}
           </Text>
 
           {/* Rating, */}
           <View
             style={{
-              marginTop: 4,
               marginStart: 0,
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -157,18 +155,22 @@ const SearchItem = ({
                 resizeMode={FastImage.resizeMode.contain}
                 source={icons.rate}
                 style={{
-                  width: 20,
-                  height: 20,
+                  width: 15,
+                  height: 15,
                 }}
               />
             </View>
             <View
               style={{
                 flex: 1,
-                marginLeft: 4,
+                marginLeft: 2,
                 justifyContent: 'center',
               }}>
-              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+              <Text
+                style={{
+                  ...FONTS.cap1,
+                  color: COLORS.Neutral6,
+                }}>
                 {userInfo?.rating}
               </Text>
             </View>
@@ -190,7 +192,7 @@ const SearchItem = ({
             }}
             style={{
               width: SIZES.height > 700 ? 350 : 300,
-              height: 150,
+              height: 120,
               borderRadius: SIZES.base,
             }}
           />
@@ -199,7 +201,7 @@ const SearchItem = ({
         {/* Product title */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.base,
             marginHorizontal: SIZES.semi_margin,
           }}>
           <Text numberOfLines={2} style={{...FONTS.h5, color: COLORS.Neutral1}}>
@@ -221,8 +223,8 @@ const SearchItem = ({
               resizeMode={FastImage.resizeMode.contain}
               source={icons.location}
               style={{
-                width: 20,
-                height: 20,
+                width: 16,
+                height: 16,
               }}
             />
           </View>
@@ -247,14 +249,14 @@ const SearchItem = ({
         {/* Qty offered */}
         <View
           style={{
-            marginTop: SIZES.radius,
+            marginTop: SIZES.base,
             marginHorizontal: SIZES.semi_margin,
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
           <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-              QTY Offered
+            <Text style={{...FONTS.cap1, color: COLORS.Neutral6}}>
+              Qty Offered
             </Text>
           </View>
           <View
@@ -263,7 +265,7 @@ const SearchItem = ({
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral1}}>
+              style={{...FONTS.cap1, color: COLORS.Neutral1}}>
               {item?.qtyMeasure} {item?.unit}
             </Text>
           </View>
@@ -278,7 +280,7 @@ const SearchItem = ({
             justifyContent: 'space-between',
           }}>
           <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            <Text style={{...FONTS.cap1, color: COLORS.Neutral6}}>
               Payment Type
             </Text>
           </View>
@@ -288,7 +290,7 @@ const SearchItem = ({
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral1}}>
+              style={{...FONTS.cap1, color: COLORS.Neutral1}}>
               {item?.paymentType}
             </Text>
           </View>
@@ -303,7 +305,7 @@ const SearchItem = ({
             justifyContent: 'space-between',
           }}>
           <View style={{justifyContent: 'center'}}>
-            <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+            <Text style={{...FONTS.cap1, color: COLORS.Neutral6}}>
               Offer Expiry Date
             </Text>
           </View>
@@ -313,7 +315,7 @@ const SearchItem = ({
             }}>
             <Text
               numberOfLines={2}
-              style={{...FONTS.body3, color: COLORS.Neutral1}}>
+              style={{...FONTS.cap1, color: COLORS.Neutral1}}>
               {dayjs(item?.offerValidity).format('MMMM DD, YYYY')}
             </Text>
           </View>
@@ -323,17 +325,17 @@ const SearchItem = ({
       {/*Base Price */}
       <View
         style={{
-          marginTop: SIZES.radius,
+          marginTop: SIZES.base,
           flexDirection: 'row',
           justifyContent: 'space-between',
           backgroundColor: COLORS.Neutral10,
           borderBottomLeftRadius: SIZES.radius,
           borderBottomRightRadius: SIZES.radius,
           paddingHorizontal: SIZES.semi_margin,
-          padding: SIZES.radius,
+          padding: SIZES.base,
         }}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+          <Text style={{...FONTS.cap1, color: COLORS.Neutral6}}>
             Base Price
           </Text>
           <Text
@@ -341,7 +343,7 @@ const SearchItem = ({
               ...FONTS.h3,
               color: COLORS.primary1,
               letterSpacing: -1,
-              paddingTop: SIZES.base,
+              paddingTop: 4,
             }}>
             ₦{formatNumberWithCommas(item?.basePrice)}
           </Text>
@@ -349,7 +351,7 @@ const SearchItem = ({
 
         <TextButton
           buttonContainerStyle={{
-            height: 40,
+            height: 35,
             width: 85,
             justifyContent: 'center',
             marginTop: 0,

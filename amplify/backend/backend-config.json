@@ -105,6 +105,30 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "notifyTriggers": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "tradelyx"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "tradelyx"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "tradelyxPostConfirmation": {
       "build": true,
       "dependsOn": [
@@ -136,6 +160,22 @@
         {
           "category": "function",
           "resourceName": "TradelyXMessagingFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_notifyTriggers_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "notifyTriggers"
+        }
+      ]
+    },
+    "AMPLIFY_function_notifyTriggers_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "notifyTriggers"
         }
       ]
     },

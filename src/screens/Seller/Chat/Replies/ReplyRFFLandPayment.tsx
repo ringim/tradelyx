@@ -122,8 +122,6 @@ const ReplyRFFLandPayment = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -263,9 +261,11 @@ const ReplyRFFLandPayment = () => {
         readAt: 0,
         requestType: `${RFFTYPE.LAND} Reply`,
         actorID: authUser?.attributes?.sub,
+        userID: rffDetails?.userID,
         SType: 'NOTIFICATION',
         notificationRFFReplyId: id,
         chatroomID,
+        title: 'Land RFF Reply',
         description: `${softData?.getUser?.title} has replied your RFF request`,
       };
       const res = await doCreateNotification({

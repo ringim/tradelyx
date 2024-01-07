@@ -115,7 +115,8 @@ const RFQDomestic = () => {
           searchFilterFunction={(text: any) => searchFilterFunction(text)}
           search={search}
           onPress={() => navigation.navigate('RFQFilter')}
-          containerStyle={{margin: SIZES.semi_margin}}
+          containerStyle={{marginTop: SIZES.base}}
+          contentStyle={{marginHorizontal: SIZES.radius}}
         />
 
         <FlatList
@@ -136,7 +137,7 @@ const RFQDomestic = () => {
                 onCopy={copyToClipboard}
                 onPress={() =>
                   navigation.navigate('StandardRFQDetail', {
-                    rfqItem: item,
+                    rfqID: item?.id,
                   })
                 }
               />

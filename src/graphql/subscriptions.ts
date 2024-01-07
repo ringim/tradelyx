@@ -141,8 +141,6 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -304,8 +302,6 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -467,8 +463,6 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -739,6 +733,7 @@ export const onCreateSellOffer = /* GraphQL */ `subscription OnCreateSellOffer($
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -813,6 +808,7 @@ export const onUpdateSellOffer = /* GraphQL */ `subscription OnUpdateSellOffer($
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -887,6 +883,7 @@ export const onDeleteSellOffer = /* GraphQL */ `subscription OnDeleteSellOffer($
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -2167,8 +2164,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -2404,6 +2399,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -2491,8 +2487,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2568,8 +2562,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2626,8 +2618,6 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2704,6 +2694,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -3007,8 +2998,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -3244,6 +3233,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -3331,8 +3321,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3408,8 +3396,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3466,8 +3452,6 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3544,6 +3528,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -3847,8 +3832,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -4084,6 +4067,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -4171,8 +4155,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4248,8 +4230,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4306,8 +4286,6 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4384,6 +4362,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -4700,8 +4679,6 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4925,6 +4902,7 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -5039,8 +5017,6 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -5264,6 +5240,7 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -5398,6 +5375,7 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -5854,8 +5832,6 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6079,6 +6055,7 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -6193,8 +6170,6 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6418,6 +6393,7 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -6552,6 +6528,7 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -7008,8 +6985,6 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7233,6 +7208,7 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -7347,8 +7323,6 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7572,6 +7546,7 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -7706,6 +7681,7 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -8245,8 +8221,6 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8470,6 +8444,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -8689,8 +8664,6 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8914,6 +8887,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -9133,8 +9107,6 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -9358,6 +9330,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt

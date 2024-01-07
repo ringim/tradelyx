@@ -35,6 +35,7 @@ import {
   NotificationsByDateQuery,
   NotificationsByDateQueryVariables,
   NotificationType,
+  User,
 } from '../../../API';
 import {
   notificationsByDate,
@@ -54,12 +55,13 @@ const Chat = () => {
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [messages, setMessages] = useState<MessageModel[] | any>([]);
+  const [user, setUser] = useState<User | null>(null); // the display user
 
   // FETCH CHAT ROOM ID FILTER BY CHATROOM ID TO FIND USERS NAME & IMAGE IN THAT CHATROOM
-  const {data: newData} = useQuery<
+  const {data: newData, loading} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
-  >(listUserChatRooms);
+  >(listUserChatRooms, {pollInterval: 500});
   const fetchUsers: any =
     newData?.listUserChatRooms?.items
       .filter(cru => cru?.chatRoomId === route?.params?.id)
@@ -89,6 +91,23 @@ const Chat = () => {
     onData?.messagesByDate?.items
       ?.filter((msg: any) => msg?.chatroomID === route?.params?.id)
       .filter((item: any) => !item?._deleted) || [];
+
+  // FETCH CHAT ROOM FILTER BY CHATROOM ID AND FIND A USER IN THAT CHATROOM
+  const {data: nowData} = useQuery<
+    ListUserChatRoomsQuery,
+    ListUserChatRoomsQueryVariables
+  >(listUserChatRooms, {pollInterval: 500, fetchPolicy: 'network-only'});
+  const fetchedUsers = async () => {
+    const userFetched: any =
+      nowData?.listUserChatRooms?.items
+        ?.filter(crUser => crUser?.chatRoomId === route?.params?.id)
+        .map(chatRoomUser => chatRoomUser?.user)
+        .find(authUsr => authUsr?.id !== userID) || null;
+    setUser(userFetched);
+  };
+  useEffect(() => {
+    fetchedUsers();
+  }, [data]);
 
   // LIST NOTIFICATIONS
   const {data: softData} = useQuery<
@@ -155,7 +174,7 @@ const Chat = () => {
     }
   }, [fetchUsers?.logo]);
 
-  if (onLoad) {
+  if (onLoad || loading) {
     return <LoadingIndicator />;
   }
 
@@ -166,7 +185,10 @@ const Chat = () => {
         image={imageUri}
         showPlus={true}
         onPress={() =>
-          navigation.navigate('CustomSellOffer', {crID: route?.params?.id})
+          navigation.navigate('CustomSellOffer', {
+            crID: route?.params?.id,
+            forUserID: user?.id,
+          })
         }
       />
 

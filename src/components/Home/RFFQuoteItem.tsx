@@ -293,7 +293,7 @@ const RFFQuoteItem = ({containerStyle, onPress, item}: any) => {
         buttonContainerStyle={{
           height: 40,
           borderRadius: SIZES.radius,
-          marginTop: SIZES.base,
+          marginTop: 0,
           width: 330,
         }}
         label="View"

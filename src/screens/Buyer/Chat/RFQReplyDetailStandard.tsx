@@ -91,36 +91,32 @@ const RFQReplyDetailStandard = () => {
               marginHorizontal: SIZES.semi_margin,
             }}>
             {/* Buyer Country Name */}
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-              }}>
+            <View>
               <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
                 Buyer from
               </Text>
             </View>
 
-            {/* Buyer from */}
+            {/* Buyer from country flag */}
             <View
               style={{
-                justifyContent: 'center',
+                flex: 1,
+                marginLeft: SIZES.radius,
               }}>
               <FastImage
                 source={{uri: rfqDetail?.placeOriginFlag}}
                 resizeMode={FastImage.resizeMode.contain}
                 style={{
-                  width: 23,
-                  height: 23,
+                  width: 17,
+                  height: 17,
                 }}
               />
             </View>
 
             <View
               style={{
-                flex: 2,
-                marginLeft: SIZES.radius,
-                justifyContent: 'center',
+                flex: 4,
+                alignItems: 'flex-end',
               }}>
               <Text
                 numberOfLines={3}

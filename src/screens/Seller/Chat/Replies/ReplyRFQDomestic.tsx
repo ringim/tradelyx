@@ -95,57 +95,51 @@ const ReplyRFQDomestic = () => {
               marginHorizontal: SIZES.base,
             }}>
             {/* Buyer Country Name */}
+            {/* buyer from */}
             <View
               style={{
-                flex: 1,
-                justifyContent: 'center',
+                marginTop: SIZES.base,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginHorizontal: SIZES.base,
               }}>
-              <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
-                Buyer from
-              </Text>
-            </View>
+              {/* Buyer Country Name */}
+              <View>
+                <Text style={{...FONTS.body3, color: COLORS.Neutral6}}>
+                  Buyer from
+                </Text>
+              </View>
 
-            {/* Buyer from */}
-            <View
-              style={{
-                flex: 1.5,
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}>
+              {/* Buyer from country flag */}
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  flex: 1,
+                  marginLeft: SIZES.radius,
                 }}>
-                <View
+                <FastImage
+                  source={{uri: rfqDetails?.placeOriginFlag}}
+                  resizeMode={FastImage.resizeMode.contain}
                   style={{
-                    justifyContent: 'center',
-                    paddingRight: SIZES.base,
-                  }}>
-                  <FastImage
-                    source={{uri: rfqDetails?.placeOriginFlag}}
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{
-                      width: 17,
-                      height: 17,
-                    }}
-                  />
-                </View>
+                    width: 17,
+                    height: 17,
+                  }}
+                />
+              </View>
 
-                <View
+              <View
+                style={{
+                  flex: 4,
+                  alignItems: 'flex-end',
+                }}>
+                <Text
+                  numberOfLines={3}
                   style={{
-                    justifyContent: 'center',
+                    ...FONTS.cap1,
+                    fontWeight: '600',
+                    color: COLORS.Neutral1,
                   }}>
-                  <Text
-                    numberOfLines={1}
-                    style={{
-                      ...FONTS.cap1,
-                      fontWeight: '600',
-                      color: COLORS.Neutral1,
-                    }}>
-                    {rfqDetails?.placeOrigin}
-                  </Text>
-                </View>
+                  {rfqDetails?.placeOrigin}
+                </Text>
               </View>
             </View>
           </View>

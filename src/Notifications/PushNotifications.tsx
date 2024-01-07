@@ -1,18 +1,59 @@
-import {View, Text} from 'react-native';
+import {PermissionsAndroid, ToastAndroid} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {useMutation, useQuery} from '@apollo/client';
 import {useNavigation} from '@react-navigation/native';
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 
+import {
+  GetUserQuery,
+  GetUserQueryVariables,
+  UpdateUserMutation,
+  UpdateUserMutationVariables,
+} from '../API';
+import {getUser, updateUser} from '../queries/UserQueries';
+import {useAuthContext} from '../context/AuthContext';
+
+// Register background handler
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
 const PushNotifications = () => {
+  const {userID} = useAuthContext();
   const navigation = useNavigation<any>();
 
   const [enabled, setEnabled] = useState(false);
   const [token, setToken] = useState('');
 
+  // GET USER
+  const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+
+  // UPDATE USER FCM TOKEN
+  const [doUpdateUser] = useMutation<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
+  >(updateUser);
+
   useEffect(() => {
-    let unmounted = false;
+    if (token && data?.getUser) {
+      doUpdateUser({
+        variables: {
+          input: {
+            id: data.getUser.id,
+            fcmToken: token,
+          },
+        },
+      });
+    }
+  }, [token, data?.getUser?.id]);
+
+  useEffect(() => {
     async function requestUserPermission() {
       const authStatus = await messaging().requestPermission();
       const enabled =
@@ -20,47 +61,71 @@ const PushNotifications = () => {
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
       if (enabled) {
-        console.log('Authorization status:', authStatus);
+        // console.log('Authorization status:', authStatus);
         setEnabled(true);
         await getDeviceToken();
       }
     }
     requestUserPermission();
-    return () => {
-      unmounted = true;
-    };
+    requestAndroidPermission();
   }, []);
 
-  // useEffect(() => {
-  //   if (!enabled) {
-  //     return;
-  //   }
+  const requestAndroidPermission = async () => {
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
 
-  //   // handle notifications that are received while the application is in foreground state
-  //   const unsubscribe = messaging().onMessage(handleNotification);
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
 
-  //   // handle notifications that are opened the app from the background state
-  //   messaging().onNotificationOpenedApp(handleNotification);
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      ToastAndroid.show(
+        'Post Notification permission denied by user.',
+        ToastAndroid.LONG,
+      );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      ToastAndroid.show(
+        'Post Notification permission revoked by user.',
+        ToastAndroid.LONG,
+      );
+    }
 
-  //   // handle notifications that are opened the app from the Quit state
-  //   messaging().getInitialNotification().then(handleNotification);
+    return false;
+  };
 
-  //   return unsubscribe;
-  // }, [enabled]);
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
 
-  // const handleNotification = (
-  //   remoteMessage?: FirebaseMessagingTypes.RemoteMessage,
-  // ) => {
-  //   console.log(JSON.stringify(remoteMessage, null, 2));
+    // handle notifications that are received while the application is in foreground state
+    const unsubscribe = messaging().onMessage(handleNotification);
 
-  //   if (!remoteMessage) {
-  //     return;
-  //   }
+    // handle notifications that are opened the app from the background state
+    // messaging().onNotificationOpenedApp(handleNotification);
 
-  //   if (remoteMessage.data?.postId) {
-  //     navigation.navigate('Post', {id: remoteMessage?.data?.postId});
-  //   }
-  // };
+    // handle notifications that are opened the app from the Quit state
+    // messaging().getInitialNotification().then(handleNotification);
+
+    return unsubscribe;
+  }, [enabled]);
+
+  const handleNotification = (
+    remoteMessage: FirebaseMessagingTypes.RemoteMessage | null,
+  ) => {
+    console.log(JSON.stringify(remoteMessage, null, 2));
+
+    if (!remoteMessage) {
+      return;
+    }
+
+    if (remoteMessage.data?.productID) {
+      navigation.navigate('ProductDetail', {
+        productID: remoteMessage?.data?.productID,
+      });
+    }
+  };
 
   const getDeviceToken = async () => {
     await messaging().registerDeviceForRemoteMessages();
@@ -68,7 +133,7 @@ const PushNotifications = () => {
     setToken(newToken);
   };
 
-  console.log('Token:', token);
+  // console.log('Token:', token);
 
   return null;
 };

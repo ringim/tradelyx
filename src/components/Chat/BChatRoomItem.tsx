@@ -47,7 +47,7 @@ const BChatRoomItem = ({chatRoom}: any) => {
   });
 
   // FETCH CHAT ROOM FILTER BY CHATROOM ID AND FIND A USER IN THAT CHATROOM
-  const {data, loading} = useQuery<
+  const {data} = useQuery<
     ListUserChatRoomsQuery,
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms, {pollInterval: 500, fetchPolicy: 'network-only'});
@@ -97,11 +97,11 @@ const BChatRoomItem = ({chatRoom}: any) => {
 
   useEffect(() => {
     getAllNotifications();
-  }, [lastMessage, newData]);
+  }, [newData]);
 
   useEffect(() => {
     fetchedUsers();
-  }, [loading]);
+  }, [data]);
 
   useEffect(() => {
     if (user?.logo) {

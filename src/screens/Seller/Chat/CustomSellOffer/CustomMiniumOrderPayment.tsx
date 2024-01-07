@@ -64,7 +64,7 @@ interface IFreight {
 
 const CustomMiniumOrderPayment = () => {
   const navigation = useNavigation<ChatStackNavigatorParamList>();
-  const route = useRoute<any>();
+  const route: any = useRoute<any>();
 
   const {userID}: any = useAuthContext();
   const {control, handleSubmit}: any = useForm();
@@ -129,7 +129,7 @@ const CustomMiniumOrderPayment = () => {
       id: route?.params.sellOfferID,
     },
   });
-  const sellOfferDetail = data?.getSellOffer?.title;
+  const sellOfferDetail: any = data?.getSellOffer?.title;
 
   // SEND MESSAGE
   const [doCreateMessage] = useMutation<
@@ -161,6 +161,7 @@ const CustomMiniumOrderPayment = () => {
         basePrice: price,
         paymentType: type3,
         paymentMethod: type2,
+        forUserID: data?.getSellOffer?.forUserID,
         offerValidity: date,
         qtyMeasure: qty,
         unit: type,
@@ -212,7 +213,7 @@ const CustomMiniumOrderPayment = () => {
         });
       };
       updateLastMessage(res1?.data?.createMessage?.id);
-      await createNotify();
+      await createNotify(route?.params?.crID);
       navigation.reset({
         index: 0,
         routes: [
@@ -239,7 +240,7 @@ const CustomMiniumOrderPayment = () => {
     CreateNotificationMutation,
     CreateNotificationMutationVariables
   >(createNotification);
-  const createNotify = async () => {
+  const createNotify = async (chatroomID: string) => {
     try {
       const input: CreateNotificationInput = {
         id: uuidV4(),
@@ -247,8 +248,11 @@ const CustomMiniumOrderPayment = () => {
         readAt: 0,
         requestType: 'Sell Offer',
         actorID: userID,
+        userID: data?.getSellOffer?.forUserID,
         SType: 'NOTIFICATION',
         notificationSellOfferId: route?.params.sellOfferID,
+        chatroomID,
+        title: 'Custom Sell Offer',
         description: `${userInfo} sent you a Custom Sell Offer - ${sellOfferDetail}`,
       };
       const res = await doCreateNotification({

@@ -106,8 +106,6 @@ export const createChatRoom = /* GraphQL */ `mutation CreateChatRoom(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -272,8 +270,6 @@ export const updateChatRoom = /* GraphQL */ `mutation UpdateChatRoom(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -438,8 +434,6 @@ export const deleteChatRoom = /* GraphQL */ `mutation DeleteChatRoom(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -731,6 +725,7 @@ export const createSellOffer = /* GraphQL */ `mutation CreateSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -808,6 +803,7 @@ export const updateSellOffer = /* GraphQL */ `mutation UpdateSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -885,6 +881,7 @@ export const deleteSellOffer = /* GraphQL */ `mutation DeleteSellOffer(
     paymentType
     paymentMethod
     offerValidity
+    forUserID
     agreement
     userID
     SellOfferReplies {
@@ -2234,8 +2231,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -2471,6 +2466,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -2558,8 +2554,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2635,8 +2629,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2693,8 +2685,6 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2771,6 +2761,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -3077,8 +3068,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -3314,6 +3303,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -3401,8 +3391,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3478,8 +3466,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3536,8 +3522,6 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3614,6 +3598,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -3920,8 +3905,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     name
     email
     phone_number
-    enableNotification
-    enableNotificationProducts
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -4157,6 +4140,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
         paymentType
         paymentMethod
         offerValidity
+        forUserID
         agreement
         userID
         SellOfferReplies {
@@ -4244,8 +4228,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4321,8 +4303,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4379,8 +4359,6 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           name
           email
           phone_number
-          enableNotification
-          enableNotificationProducts
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4457,6 +4435,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -4774,8 +4753,6 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4999,6 +4976,7 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -5113,8 +5091,6 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -5338,6 +5314,7 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -5472,6 +5449,7 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -5929,8 +5907,6 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6154,6 +6130,7 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -6268,8 +6245,6 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6493,6 +6468,7 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -6627,6 +6603,7 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -7084,8 +7061,6 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7309,6 +7284,7 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -7423,8 +7399,6 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7648,6 +7622,7 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -7782,6 +7757,7 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
       paymentType
       paymentMethod
       offerValidity
+      forUserID
       agreement
       userID
       SellOfferReplies {
@@ -8322,8 +8298,6 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8547,6 +8521,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -8767,8 +8742,6 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8992,6 +8965,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt
@@ -9212,8 +9186,6 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -9437,6 +9409,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
           paymentType
           paymentMethod
           offerValidity
+          forUserID
           agreement
           userID
           updatedAt

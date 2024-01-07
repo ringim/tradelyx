@@ -163,6 +163,7 @@ const OceanPickupProcess = () => {
         requestType: RFFTYPE?.OCEAN,
         notificationRFFId: route?.params.rffID,
         SType: 'NOTIFICATION',
+        title: 'Ocean Freight Request',
         description: `Buyer's request - ${rffDetail}`,
       };
       const res = await doCreateNotification({

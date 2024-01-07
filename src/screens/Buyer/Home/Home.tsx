@@ -174,8 +174,13 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
       <TabHeader
         userImage={user?.logo}
         containerStyle={{
-          paddingTop: SIZES.height > 700 ? 50 : SIZES.semi_margin,
-          height: Platform.OS == 'ios' ? '14%' : '10%',
+          paddingTop:
+            Platform.OS == 'ios'
+              ? SIZES.height > 700
+                ? 50
+                : SIZES.semi_margin
+              : SIZES.base,
+          height: Platform.OS == 'ios' ? '14%' : '9%',
           marginBottom: SIZES.base,
         }}
       />
@@ -222,7 +227,7 @@ const Home = ({showCameraModal, toggleCameraModal}: any) => {
                 item={item}
                 store_image={item?.productImage}
                 onPress={() =>
-                  navigation.navigate('ProductDetail', {productItem: item})
+                  navigation.navigate('ProductDetail', {productID: item?.id})
                 }
               />
             </View>

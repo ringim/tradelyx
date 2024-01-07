@@ -1,4 +1,4 @@
-package com.tradely;
+package com.tradelyx;
 
 import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;

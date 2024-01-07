@@ -10,13 +10,15 @@ const SearchBox2 = ({
   searchFilterFunction,
   containerStyle,
   onPress,
+  contentStyle,
+  children
 }: any) => {
   return (
-    <View style={{alignItems: 'center', marginHorizontal: SIZES.semi_margin}}>
+    <View style={{alignItems: 'center', marginHorizontal: SIZES.semi_margin, ...contentStyle}}>
       <View
         style={{
           backgroundColor: COLORS.white,
-          height: 50,
+          height: 45,
           width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -68,6 +70,7 @@ const SearchBox2 = ({
           </TouchableOpacity>
         )}
       </View>
+      {children}
     </View>
   );
 };

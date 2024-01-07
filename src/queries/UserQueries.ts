@@ -7,8 +7,6 @@ export const getUser = gql`
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -74,8 +72,6 @@ export const getUser = gql`
             name
             email
             phone_number
-            enableNotification
-            enableNotificationProducts
             enableNotificationOrders
             enableNotificationPromotions
             enableNotificationRFF
@@ -153,8 +149,6 @@ export const listUsers = gql`
         name
         email
         phone_number
-        enableNotification
-        enableNotificationProducts
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -233,8 +227,6 @@ export const updateUser = gql`
       name
       email
       phone_number
-      enableNotification
-      enableNotificationProducts
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF

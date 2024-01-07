@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   View,
   ActivityIndicator,
@@ -8,6 +8,7 @@ import {
   Platform,
   Text,
 } from 'react-native';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
 import DocumentPicker from 'react-native-document-picker';
 import {Asset, launchImageLibrary} from 'react-native-image-picker';
 import {Storage} from 'aws-amplify';
@@ -30,9 +31,18 @@ import {
   UpdateChatRoomMutationVariables,
   ListUserChatRoomsQuery,
   ListUserChatRoomsQueryVariables,
+  CreateNotificationMutation,
+  CreateNotificationMutationVariables,
+  NotificationType,
+  CreateNotificationInput,
+  GetUserQuery,
+  GetUserQueryVariables,
+  User,
 } from '../../API';
+import {createNotification} from '../../queries/NotificationQueries';
 import {useAuthContext} from '../../context/AuthContext';
 import ChatStyles from './ChatStyles';
+import {getUser} from '../../queries/UserQueries';
 
 const MessageInput = ({chatRoom}: any) => {
   const {userID} = useAuthContext();
@@ -41,6 +51,7 @@ const MessageInput = ({chatRoom}: any) => {
   const [fileName, setFileName] = useState<any>('');
   const [singleFile, setSingleFile] = useState<any>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<any | Asset>(null);
+  const [title, setTitle] = useState<User | any>('');
   const [progress, setProgress] = useState(0);
 
   // FETCH CHAT ROOM ID FILTER BY CHATROOM ID TO FIND USERS NAME & IMAGE IN THAT CHATROOM
@@ -70,13 +81,14 @@ const MessageInput = ({chatRoom}: any) => {
             forUserID: fetchUsers?.id,
             chatroomID: chatRoom.id,
             status: MessageStatus?.SENT,
-            readAt: 0
+            readAt: 0,
             // replyToMessageID: messageReplyTo?.id,
           },
         },
       });
       updateLastMessage(res?.data?.createMessage?.id);
       resetFields();
+      createNotify(res?.data?.createMessage?.id, chatRoom.id);
     } catch (error) {
       return error;
     }
@@ -138,13 +150,14 @@ const MessageInput = ({chatRoom}: any) => {
             image: key,
             status: MessageStatus?.SENT,
             chatroomID: chatRoom.id,
-            readAt: 0
+            readAt: 0,
             // replyToMessageID: messageReplyTo?.id,
           },
         },
       });
       updateLastMessage(res?.data?.createMessage?.id);
       resetFields();
+      createNotify(res?.data?.createMessage?.id, chatRoom.id);
     } catch (error) {
       return error;
     }
@@ -180,13 +193,14 @@ const MessageInput = ({chatRoom}: any) => {
             file: key,
             status: MessageStatus?.SENT,
             chatroomID: chatRoom.id,
-            readAt: 0
+            readAt: 0,
             // replyToMessageID: messageReplyTo?.id,
           },
         },
       });
       updateLastMessage(res?.data?.createMessage?.id);
       resetFields();
+      createNotify(res?.data?.createMessage?.id, chatRoom.id);
       // console.log('SEND MESSAGE', res);
     } catch (error) {
       return error;
@@ -242,7 +256,63 @@ const MessageInput = ({chatRoom}: any) => {
     }
   };
 
-  if (loading || newLoad) {
+  // GET USER
+  const {data: onData, loading: onLoad} = useQuery<
+    GetUserQuery,
+    GetUserQueryVariables
+  >(getUser, {
+    variables: {
+      id: userID,
+    },
+  });
+
+  useEffect(() => {
+    const userType = () => {
+      if (onData?.getUser?.accountType === 'BUYER') {
+        setTitle(onData?.getUser?.name);
+      } else {
+        setTitle(onData?.getUser?.title);
+      }
+    };
+    userType();
+  }, [onData?.getUser]);
+
+  // CREATE SELL OFFER NOTIFICATION
+  const [doCreateNotification] = useMutation<
+    CreateNotificationMutation,
+    CreateNotificationMutationVariables
+  >(createNotification);
+  const createNotify = async (msgID: string, chatroomID: string) => {
+    try {
+      const input: CreateNotificationInput = {
+        id: uuidV4(),
+        type: NotificationType?.MESSAGE,
+        readAt: 0,
+        requestType: NotificationType?.MESSAGE,
+        title: title,
+        actorID: userID,
+        userID: fetchUsers?.id,
+        SType: 'NOTIFICATION',
+        chatroomID,
+        notificationMessageId: msgID,
+        description: message,
+      };
+      const res = await doCreateNotification({
+        variables: {
+          input,
+        },
+      });
+      // console.log('notification created', res);
+    } catch (error) {
+      Toast.show({
+        type: ALERT_TYPE.WARNING,
+        title: (error as Error).message,
+        autoClose: 1500,
+      });
+    }
+  };
+
+  if (loading || newLoad || onLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center', top: -50}}
@@ -276,7 +346,10 @@ const MessageInput = ({chatRoom}: any) => {
               </View>
             </View>
             <TouchableOpacity
-              style={{justifyContent: 'space-between', marginLeft: SIZES.base}}
+              style={{
+                justifyContent: 'space-between',
+                marginLeft: SIZES.base,
+              }}
               onPress={() => setSelectedPhoto(null)}>
               <FastImage
                 source={icons.remove}

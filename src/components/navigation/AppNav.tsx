@@ -66,7 +66,7 @@ const AppNav = ({onBoarded}: any) => {
       variables: {
         id: userID,
       },
-      pollInterval: 100,
+      pollInterval: 500,
     },
   );
   const userInfo: any = data?.getUser;
@@ -251,7 +251,7 @@ const AppNav = ({onBoarded}: any) => {
   return (
     <BottomSheetModalProvider>
       <NavigationContainer linking={linking}>
-        {/* <PushNotifications /> */}
+        <PushNotifications />
         {!authUser ? (
           <AuthStack onBoarded={onBoarded} />
         ) : (

@@ -307,9 +307,7 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:GetItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:PutItem"
+                "dynamodb:GetItem"
               ],
               "Resource": [
                 {

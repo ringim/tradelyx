@@ -48,6 +48,7 @@ const Welcome = () => {
     return (
       <View
         style={{
+          marginTop: SIZES.margin,
           marginHorizontal: SIZES.margin,
         }}>
         <View

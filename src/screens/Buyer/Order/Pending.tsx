@@ -181,14 +181,14 @@ const Pending = () => {
 
   return (
     <View style={{flex: 1, backgroundColor: COLORS.white}}>
-      <View style={{marginHorizontal: SIZES.margin, marginTop: SIZES.margin}}>
+      <View style={{marginHorizontal: SIZES.margin, marginTop: SIZES.base}}>
         <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>Manage Reply</Text>
       </View>
 
       {/* Tab Filter Button */}
       <View
         style={{
-          marginTop: SIZES.margin,
+          marginTop: SIZES.base,
           marginHorizontal: SIZES.semi_margin,
           flexDirection: 'row',
           justifyContent: 'space-between',

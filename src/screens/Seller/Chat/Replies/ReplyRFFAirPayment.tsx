@@ -117,8 +117,6 @@ const ReplyRFFAirPayment = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -268,9 +266,11 @@ const ReplyRFFAirPayment = () => {
         readAt: 0,
         requestType: `${RFFTYPE.AIR} Reply`,
         actorID: authUser?.attributes?.sub,
+        userID: rffDetails?.userID,
         SType: 'NOTIFICATION',
         notificationRFFReplyId: id,
         chatroomID,
+        title: 'Air RFF Reply',
         description: `${softData?.getUser?.title} has replied your RFF request`,
       };
       const res = await doCreateNotification({

@@ -28,6 +28,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "notifyTriggers": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "tradelyxPostConfirmation": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

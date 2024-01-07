@@ -18,8 +18,6 @@ const ChatHeader = ({contentStyle, image, onPress, name, showPlus}: any) => {
   const [onlineStatus, setOnlineStatus] = useState(false);
 
   const {data} = useQuery<GetUserQuery, GetUserQueryVariables>(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: userID,
     },
@@ -48,12 +46,12 @@ const ChatHeader = ({contentStyle, image, onPress, name, showPlus}: any) => {
   }, [onlineStatus]);
 
   return (
-    <SafeAreaView style={{flex: 1, marginBottom: SIZES.height > 700 ? 60 : 65}}>
+    <SafeAreaView style={{flex: 1, marginBottom: SIZES.height > 700 ? 80 : 65}}>
       <View
         style={{
-          height: SIZES.height > 700 ? 130 : 140,
+          height: SIZES.height > 700 ? 150 : 140,
           bottom: 70,
-          paddingTop: SIZES.height > 700 ? 70 : 80,
+          paddingTop: SIZES.height > 700 ? 80 : 80,
           padding: SIZES.radius,
           backgroundColor: COLORS.white,
           flexDirection: 'row',

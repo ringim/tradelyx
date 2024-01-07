@@ -170,8 +170,6 @@ const ReplySellOfferPayment = () => {
     GetUserQuery,
     GetUserQueryVariables
   >(getUser, {
-    pollInterval: 500,
-    fetchPolicy: 'network-only',
     variables: {
       id: authUser?.attributes?.sub,
     },
@@ -320,9 +318,11 @@ const ReplySellOfferPayment = () => {
         readAt: 0,
         requestType: 'Sell Offer',
         actorID: authUser?.attributes?.sub,
+        userID: route?.params?.forUserID,
         SType: 'NOTIFICATION',
         notificationSellOfferReplyId: id,
         chatroomID,
+        title: 'Sell Offer Reply',
         description: `${softData?.getUser?.title} has replied your Sell Offer request`,
       };
       const res = await doCreateNotification({

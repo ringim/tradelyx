@@ -144,6 +144,7 @@ const PaymentQuotation = () => {
         actorID: userID,
         notificationRFQId: route?.params.rfqID,
         SType: 'NOTIFICATION',
+        title: 'Domestic Quotation Request',
         description: `Buyer's Order - ${rfqDetail}`,
       };
       const res = await doCreateNotification({
@@ -151,7 +152,7 @@ const PaymentQuotation = () => {
           input,
         },
       });
-      console.log('notification created', res);
+      // console.log('notification created', res);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

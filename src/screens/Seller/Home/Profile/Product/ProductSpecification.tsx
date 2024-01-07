@@ -30,7 +30,6 @@ interface IAddProduct {
   supply: string;
   moq: string;
   packageType: string;
-  file: string;
   file2: any;
 }
 

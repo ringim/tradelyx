@@ -1,4 +1,4 @@
-import {View, Text, Platform, TextInput} from 'react-native';
+import {View, Text, Platform, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {useMutation} from '@apollo/client';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -26,7 +26,6 @@ import {
   RequestTags,
   FileSection,
   MultipleImages,
-  OneImage,
 } from '../../../../../components';
 import {createProduct} from '../../../../../queries/ProductQueries';
 import {
@@ -97,14 +96,6 @@ const AddProducts = () => {
       if (productImage) {
         input.productImage = await uploadMedia(productImage.uri);
       }
-      // upload file or multiple files
-      if (singleFile) {
-        const fileKeys = await Promise.all(
-          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
-        );
-        input.productCertDocs = fileKeys;
-      }
-
       // single or multiple image brochures upload
       if (selectedPhoto) {
         const imageKey = await uploadMedia(selectedPhoto);
@@ -114,6 +105,14 @@ const AddProducts = () => {
           selectedPhotos.map((img: any) => uploadMedia(img?.uri)),
         );
         input.images = imageKeys;
+      }
+
+      // upload file or multiple files
+      if (singleFile) {
+        const fileKeys = await Promise.all(
+          singleFile.map((singleFile: any) => uploadFile2(singleFile?.uri)),
+        );
+        input.productCertDocs = fileKeys;
       }
 
       await doCreateProduct({
@@ -368,10 +367,37 @@ const AddProducts = () => {
               }
             />
           ) : selectedPhoto ? (
-            <OneImage
-              selectedPhoto={selectedPhoto}
-              setSelectedPhoto={setSelectedPhoto}
-            />
+            <View style={{marginTop: SIZES.padding}}>
+              <FastImage
+                source={{
+                  uri: selectedPhoto,
+                  priority: FastImage.priority.high,
+                }}
+                style={{
+                  height: 100,
+                  width: 100,
+                  overflow: 'hidden',
+                  borderRadius: SIZES.radius,
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => setSelectedPhoto(null)}
+                style={{
+                  padding: SIZES.base,
+                  top: -18,
+                  left: 90,
+                  borderRadius: SIZES.margin,
+                  backgroundColor: COLORS.NeutralBlue10,
+                  position: 'absolute',
+                }}>
+                <FastImage
+                  source={icons.remove}
+                  style={{width: 20, height: 20}}
+                  tintColor={COLORS.Rose5}
+                  resizeMode={FastImage.resizeMode.contain}
+                />
+              </TouchableOpacity>
+            </View>
           ) : (
             <MultipleImages
               selectedPhotos={selectedPhotos}

@@ -131,7 +131,7 @@ const RFQInternational = () => {
                 onCopy={copyToClipboard}
                 onPress={() =>
                   navigation.navigate('InternationalRFQDetail', {
-                    rfqItem: item,
+                    rfqID: item?.id,
                   })
                 }
               />
@@ -142,7 +142,7 @@ const RFQInternational = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource.length - 1  ? 300 : 300,
+                marginBottom: filteredDataSource.length - 1  ? 200 : 200,
               }}
             />
           }

@@ -136,7 +136,7 @@ const RFQDomestic = () => {
                 item={item}
                 onCopy={copyToClipboard}
                 onPress={() =>
-                  navigation.navigate('DomesticRFQDetail', {rfqItem: item})
+                  navigation.navigate('DomesticRFQDetail', {rfqID: item?.id})
                 }
               />
             );
@@ -146,7 +146,7 @@ const RFQDomestic = () => {
           ListFooterComponent={
             <View
               style={{
-                marginBottom: filteredDataSource.length - 1  ? 300 : 300,
+                marginBottom: filteredDataSource.length - 1 ? 200 : 200,
               }}
             />
           }

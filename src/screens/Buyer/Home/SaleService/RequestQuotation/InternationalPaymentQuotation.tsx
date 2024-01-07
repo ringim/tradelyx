@@ -139,6 +139,7 @@ const InternationalPaymentQuotation = () => {
         requestType: RFQTYPE?.INTERNATIONAL,
         SType: 'NOTIFICATION',
         notificationRFQId: route?.params.rfqID,
+        title: 'International Quotation Request',
         description: `Buyer's Order - ${rfqDetail}`,
       };
       const res = await doCreateNotification({
@@ -146,7 +147,7 @@ const InternationalPaymentQuotation = () => {
           input,
         },
       });
-      console.log('notification created', res);
+      // console.log('notification created', res);
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,

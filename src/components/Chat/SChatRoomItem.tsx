@@ -66,7 +66,7 @@ const SChatRoomItem = ({chatRoom}: any) => {
     NotificationsByDateQueryVariables
   >(notificationsByDate, {
     pollInterval: 500,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'network-only',  
     variables: {
       SType: 'NOTIFICATION',
       sortDirection: ModelSortDirection.DESC,

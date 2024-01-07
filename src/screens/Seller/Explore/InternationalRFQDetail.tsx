@@ -39,6 +39,8 @@ import {
   CreateNotificationMutationVariables,
   NotificationType,
   CreateNotificationInput,
+  GetRFQQuery,
+  GetRFQQueryVariables
 } from '../../../API';
 import {
   listUserChatRooms,
@@ -50,22 +52,29 @@ import {
 import {getUser} from '../../../queries/UserQueries';
 import {useAuthContext} from '../../../context/AuthContext';
 import {createNotification} from '../../../queries/NotificationQueries';
+import { getRFQ } from '../../../queries/RFQQueries';
 
 const InternationalRFQDetail = () => {
   const navigation = useNavigation<ExploreStackNavigatorParamList>();
   const route: any = useRoute<StandardDomesticRFQDetailRouteProp>();
-  const {rfqNo, userID, expiryDate, budget}: any = route?.params?.rfqItem;
+
+  // RFQ DETAILS
+  const {loading: nowLoad, data: nowData} = useQuery<
+    GetRFQQuery,
+    GetRFQQueryVariables
+  >(getRFQ, {variables: {id: route?.params?.rfqID}});
+  const rfqItem: any = nowData?.getRFQ;
 
   const {authUser}: any = useAuthContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const expiryDateString = expiryDate;
+  const expiryDateString = rfqItem?.expiryDate;
   const expiryPeriod = dayjs(expiryDateString);
   const currentDate = dayjs();
   const daysUntilExpiry = expiryPeriod.diff(currentDate, 'day');
 
   const onCopy = () => {
-    Clipboard.setString(rfqNo);
+    Clipboard.setString(rfqItem?.rfqNo);
   };
 
   // GET USER
@@ -73,7 +82,7 @@ const InternationalRFQDetail = () => {
     getUser,
     {
       variables: {
-        id: userID,
+        id: rfqItem?.userID,
       },
     },
   );
@@ -85,7 +94,7 @@ const InternationalRFQDetail = () => {
     ListUserChatRoomsQueryVariables
   >(listUserChatRooms);
   const allChatRoomUsers: any = newData?.listUserChatRooms?.items.filter(
-    usrID => usrID?.userId === userID,
+    usrID => usrID?.userId === rfqItem?.userID,
   );
   const newArray = allChatRoomUsers?.map((item: any) => ({
     chatRoomId: item.chatRoomId,
@@ -156,13 +165,13 @@ const InternationalRFQDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFQ request soon",
-              rfqID: route?.params?.rfqItem?.rfqNo,
-              requestTitle: route?.params?.rfqItem?.title,
-              requestID: route?.params?.rfqItem?.id,
+              rfqID: rfqItem?.rfqNo,
+              requestTitle: rfqItem?.title,
+              requestID: rfqItem?.id,
               serviceType: serviceType?.RFQ,
               rfqType: RFQTYPE.INTERNATIONAL,
-              requestPrice: route?.params?.rfqItem?.budget,
-              packageType: route?.params?.rfqItem?.packageType,
+              requestPrice: rfqItem?.budget,
+              packageType: rfqItem?.packageType,
               chatroomID: similarChatRoomIDs[0]?.chatRoomId,
             },
           },
@@ -201,7 +210,7 @@ const InternationalRFQDetail = () => {
           variables: {
             input: {
               chatRoomId: newChatRoom?.id,
-              userId: userID,
+              userId: rfqItem?.userID,
             },
           },
         });
@@ -224,9 +233,9 @@ const InternationalRFQDetail = () => {
               userID: authUser?.attributes?.sub,
               status: MessageStatus.SENT,
               text: "Hello, I'll respond to your RFQ request soon",
-              rfqID: route?.params?.rfqItem?.rfqNo,
-              requestTitle: route?.params?.rfqItem?.title,
-              requestID: route?.params?.rfqItem?.id,
+              rfqID: rfqItem?.rfqNo,
+              requestTitle: rfqItem?.title,
+              requestID: rfqItem?.id,
               serviceType: serviceType?.RFQ,
               chatroomID: newChatRoom.id,
             },
@@ -269,9 +278,10 @@ const InternationalRFQDetail = () => {
         requestType: RFQTYPE?.INTERNATIONAL,
         actorID: authUser?.attributes?.sub,
         SType: 'NOTIFICATION',
-        notificationRFQId: route?.params?.rfqItem?.id,
+        notificationRFQId: rfqItem?.id,
         chatroomID,
-        description: `${softData?.getUser?.title}will respond to your request for ${route?.params?.rfqItem?.title}`,
+        title: 'International RFQ Request',
+        description: `${softData?.getUser?.title}will respond to your request for ${rfqItem?.title}`,
       };
       const res = await doCreateNotification({
         variables: {
@@ -288,7 +298,7 @@ const InternationalRFQDetail = () => {
     }
   };
 
-  if (loading || newLoad || softLoad) {
+  if (loading || newLoad || nowLoad|| softLoad) {
     return (
       <ActivityIndicator
         style={{flex: 1, justifyContent: 'center'}}
@@ -315,32 +325,32 @@ const InternationalRFQDetail = () => {
           <InternationalRFQDetail1
             daysUntilExpiry={daysUntilExpiry}
             onCopy={onCopy}
-            placeOriginFlag={route?.params?.rfqItem?.placeOriginFlag}
-            placeOriginName={route?.params?.rfqItem?.placeOrigin}
-            placeDestinationFlag={route?.params?.rfqItem?.placeDestinationFlag}
-            placeDestination={route?.params?.rfqItem?.placeDestination}
-            rfqNo={route?.params?.rfqItem?.rfqNo}
-            expiryDate={route?.params?.rfqItem?.expiryDate}
+            placeOriginFlag={rfqItem?.placeOriginFlag}
+            placeOriginName={rfqItem?.placeOrigin}
+            placeDestinationFlag={rfqItem?.placeDestinationFlag}
+            placeDestination={rfqItem?.placeDestination}
+            rfqNo={rfqItem?.rfqNo}
+            expiryDate={rfqItem?.expiryDate}
           />
 
           <InternationalRFQDetail2
-            description={route?.params?.rfqItem?.description}
-            title={route?.params?.rfqItem?.title}
-            qty={route?.params?.rfqItem?.qty}
-            productName={route?.params?.rfqItem?.productName}
-            buyFrequency={route?.params?.rfqItem?.buyFrequency}
-            paymentMethod={route?.params?.rfqItem?.paymentMethod}
-            incoterms={route?.params?.rfqItem?.incoterms}
-            unit={route?.params?.rfqItem?.unit}
-            requestCategory={route?.params?.rfqItem?.requestCategory}
-            coverage={route?.params?.rfqItem?.rfqType}
+            description={rfqItem?.description}
+            title={rfqItem?.title}
+            qty={rfqItem?.qty}
+            productName={rfqItem?.productName}
+            buyFrequency={rfqItem?.buyFrequency}
+            paymentMethod={rfqItem?.paymentMethod}
+            incoterms={rfqItem?.incoterms}
+            unit={rfqItem?.unit}
+            requestCategory={rfqItem?.requestCategory}
+            coverage={rfqItem?.rfqType}
           />
 
           <InternationalRFQDetail3
-            tags={route?.params?.rfqItem?.tags}
-            budget={route?.params?.rfqItem?.budget}
+            tags={rfqItem?.tags}
+            budget={rfqItem?.budget}
             onPress={onPress}
-            documents={route?.params?.rfqItem?.documents}
+            documents={rfqItem?.documents}
           />
         </ScrollView>
       </View>

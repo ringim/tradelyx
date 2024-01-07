@@ -211,27 +211,20 @@ const RFFList = () => {
         flex: 1,
         backgroundColor: COLORS.white,
       }}>
+      <View style={{marginTop: SIZES.semi_margin, marginHorizontal: SIZES.margin, marginBottom: 5}}>
+        <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>
+          Latest Freight Quotes Request
+        </Text>
+      </View>
       <FlatList
         data={[]}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <View style={{marginTop: SIZES.radius}}>
-            <View
-              style={{marginTop: SIZES.margin, marginHorizontal: SIZES.margin}}>
-              <Text style={{...FONTS.h4, color: COLORS.Neutral1}}>
-                Latest Freight Quotes Request
-              </Text>
-            </View>
-          </View>
-        }
         renderItem={() => <View />}
         ListFooterComponent={
           <View
-            style={
-              {
-                // marginBottom: 50,
-              }
-            }>
+            style={{
+              marginBottom: constants.freightType?.length - 1 && 300,
+            }}>
             {renderTopTabBar()}
 
             {renderScheduleTabContent()}

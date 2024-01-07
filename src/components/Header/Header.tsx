@@ -21,8 +21,14 @@ const Header = ({
   return (
     <View
       style={{
-        paddingTop: SIZES.height > 700 ? 60 : 30,
-        height: SIZES.height > 700 ? 100 : 70,
+        paddingTop:
+          Platform.OS === 'android'
+            ? SIZES.height > 700
+              ? 15
+              : SIZES.radius
+            : 55,
+        height:
+          Platform.OS === 'android' ? (SIZES.height > 700 ? 60 : 50) : 100,
         backgroundColor: COLORS.white,
         ...contentStyle,
       }}>
