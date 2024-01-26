@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>Tradely X</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(MARKETING_VERSION)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLName</key>
+				<string>gizmos</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>tradely</string>
+				</array>
+			</dict>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>whatsapp</string>
+			<string>mailto</string>
+			<string>instagram</string>
+			<string>instagram-stories</string>
+			<string>tel</string>
+			<string>sms</string>
+			<string>telprompt</string>
+			<string>fb</string>
+			<string>facebook-stories</string>
+		</array>
+		<key>LSRequiresIPhoneOS</key>
+		<true />
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSExceptionDomains</key>
+			<dict>
+				<key>localhost</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true />
+				</dict>
+			</dict>
+		</dict>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>$(PRODUCT_NAME) would like access to your Media</string>
+		<key>NSCameraUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs access to your Camera</string>
+		<key>NSContactsUsageDescription</key>
+		<string>$(PRODUCT_NAME) request access to your Contacts</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>$(PRODUCT_NAME) wants requires your current location</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>$(PRODUCT_NAME) wants to use your current location</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>$(PRODUCT_NAME) wants to request your current location</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>$(PRODUCT_NAME) would like access to your microphone</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+		<key>UIAppFonts</key>
+		<array>
+			<string>PlusJakartaSans-Bold.ttf</string>
+			<string>PlusJakartaSans-BoldItalic.ttf</string>
+			<string>PlusJakartaSans-ExtraBold.ttf</string>
+			<string>PlusJakartaSans-ExtraBoldItalic.ttf</string>
+			<string>PlusJakartaSans-ExtraLight.ttf</string>
+			<string>PlusJakartaSans-ExtraLightItalic.ttf</string>
+			<string>PlusJakartaSans-Italic.ttf</string>
+			<string>PlusJakartaSans-Light.ttf</string>
+			<string>PlusJakartaSans-LightItalic.ttf</string>
+			<string>PlusJakartaSans-Medium.ttf</string>
+			<string>PlusJakartaSans-MediumItalic.ttf</string>
+			<string>PlusJakartaSans-Regular.ttf</string>
+			<string>PlusJakartaSans-SemiBold.ttf</string>
+			<string>PlusJakartaSans-SemiBoldItalic.ttf</string>
+			<string>AntDesign.ttf</string>
+			<string>Entypo.ttf</string>
+			<string>EvilIcons.ttf</string>
+			<string>Feather.ttf</string>
+			<string>FontAwesome.ttf</string>
+			<string>FontAwesome5_Brands.ttf</string>
+			<string>FontAwesome5_Regular.ttf</string>
+			<string>FontAwesome5_Solid.ttf</string>
+			<string>FontAwesome6_Brands.ttf</string>
+			<string>FontAwesome6_Regular.ttf</string>
+			<string>FontAwesome6_Solid.ttf</string>
+			<string>Foundation.ttf</string>
+			<string>Ionicons.ttf</string>
+			<string>MaterialIcons.ttf</string>
+			<string>MaterialCommunityIcons.ttf</string>
+			<string>SimpleLineIcons.ttf</string>
+			<string>Octicons.ttf</string>
+			<string>Zocial.ttf</string>
+			<string>Fontisto.ttf</string>
+		</array>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>BootSplash.storyboard</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>armv7</string>
+		</array>
+		<key>UIStatusBarHidden</key>
+		<false />
+		<key>UIStatusBarStyle</key>
+		<string></string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false />
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false />
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false />
+	</dict>
+</plist>

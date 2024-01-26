@@ -1,0 +1,11 @@
+{
+  "name": "Tradely",
+  "displayName": "Tradely",
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "7fe15906-aff0-408e-a10c-b728414f2e85"
+      }
+    }
+  }
+}

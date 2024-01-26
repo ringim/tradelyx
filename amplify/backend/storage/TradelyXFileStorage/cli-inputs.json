@@ -1,0 +1,14 @@
+{
+  "resourceName": "TradelyXFileStorage",
+  "policyUUID": "44eab4ec",
+  "bucketName": "tradelyx-media",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
