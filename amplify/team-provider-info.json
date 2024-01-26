@@ -115,24 +115,24 @@
       "function": {
         "TradelyXPostConfirmation": {
           "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
-          "s3Key": "amplify-builds/TradelyXPostConfirmation-6445317766774d433237-build.zip"
+          "s3Key": "amplify-builds/TradelyXPostConfirmation-58306841576a462f734e-build.zip"
         },
         "tradelyx": {},
         "TradelyXChatTriggers": {
           "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
-          "s3Key": "amplify-builds/TradelyXChatTriggers-7355326c3357334c7270-build.zip"
+          "s3Key": "amplify-builds/TradelyXChatTriggers-646234346f5654767750-build.zip"
         },
         "TradelyXNotifyTriggers": {
           "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
-          "s3Key": "amplify-builds/TradelyXNotifyTriggers-45396c4f31653643354a-build.zip"
+          "s3Key": "amplify-builds/TradelyXNotifyTriggers-71616c35676f642f6e78-build.zip"
         },
         "TradelyXSellerPostTriggers": {
           "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
-          "s3Key": "amplify-builds/TradelyXSellerPostTriggers-2b3542653136474d7833-build.zip"
+          "s3Key": "amplify-builds/TradelyXSellerPostTriggers-74723171774471717257-build.zip"
         },
         "TradelyXUserPostTriggers": {
           "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
-          "s3Key": "amplify-builds/TradelyXUserPostTriggers-4e5a624d3750396a646e-build.zip"
+          "s3Key": "amplify-builds/TradelyXUserPostTriggers-744b432f5a4954795363-build.zip"
         }
       },
       "api": {
