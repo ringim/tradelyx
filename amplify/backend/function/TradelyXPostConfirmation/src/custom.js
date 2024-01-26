@@ -89,6 +89,7 @@ exports.handler = async (event, context) => {
     memberShipType: 'Basic',
     lat: 0,
     lng: 0,
+    accountStatus: false,
     enableNotificationOrders: true,
     enableNotificationPromotions: true,
     enableNotificationSellOffer: true,

@@ -8,12 +8,14 @@ export type RootNavigatorParamList = {
 };
 
 export type SetupNavigatorParamList = {
+  replace(arg0: string): unknown;
   reset(arg0: {index: number; routes: {name: string}[]}): unknown;
   navigate: any;
   goBack: any;
   CompleteProfile: undefined;
   BusinessDetail: undefined;
   BusinessAddress: undefined;
+  AccountNotVerified: undefined;
 };
 
 export type BottomTabNavigatorParamList = {

@@ -155,10 +155,11 @@ const BusinessDetail = () => {
         },
       });
       // console.log('Profile Updated', input);
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Home'}],
-      });
+      navigation.replace('AccountSuccessSeller');
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{name: 'AccountSuccessSeller'}],
+      // });
     } catch (error) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -296,7 +297,7 @@ const BusinessDetail = () => {
           onTagPress={onTagPress}
           renderTag={renderTag}
           title={'Main Markets'}
-          contentStyle={{marginTop: SIZES.padding}}
+          contentStyle={{marginTop: SIZES.radius}}
         />
 
         {/* Languages */}
@@ -306,6 +307,7 @@ const BusinessDetail = () => {
           onTagPress={onTagPress2}
           renderTag={renderTag2}
           title={'Languages Spoken'}
+          contentStyle={{marginTop: SIZES.radius}}
         />
 
         {/* Upload Cert Doc */}

@@ -27,10 +27,11 @@ import {
   UpdateUserMutationVariables,
 } from '../../API';
 import {getUser, updateUser} from '../../queries/UserQueries';
-import {ChooseCategory} from '../../screens';
+import {ChooseCategory, ForgotPassword, NewPassword, SignIn, SignUp, VerificationCode} from '../../screens';
 import SellerAuthStack from './SellerNav/SellerAuthStack';
 import BuyerAuthStack from './BuyerNav/BuyerAuthStack';
 import PushNotifications from '../../Notifications/PushNotifications';
+import AccountNotVerified from '../../screens/Auth/SellerAuth/AccountNotVerified';
 
 const Stack = createNativeStackNavigator<any>();
 const options: any = {
@@ -137,6 +138,26 @@ const AppNav = ({onBoarded}: any) => {
   //   return <NoInternet />;
   // }
 
+  // if (userInfo?.accountStatus === true) {
+  //   stackScreens = (
+  //     <Stack.Screen
+  //       name="Home"
+  //       component={BuyerStack}
+  //       options={() => options}
+  //     />
+  //   );
+  // } else {
+  //   stackScreens = (
+  //     <>
+  //       <Stack.Screen
+  //         name="AccountNotVerified"
+  //         component={AccountNotVerified}
+  //         options={() => options}
+  //       />
+  //     </>
+  //   );
+  // }
+
   // STACK SCREENS
   let stackScreens = null;
   if (userInfo?.accountType === 'BUYER') {
@@ -147,7 +168,10 @@ const AppNav = ({onBoarded}: any) => {
         options={() => options}
       />
     );
-  } else if (userInfo?.accountType === 'SELLER') {
+  } else if (
+    userInfo?.accountType === 'SELLER' &&
+    userInfo?.accountStatus === true
+  ) {
     stackScreens = (
       <Stack.Screen
         name="SellerStack"
@@ -159,18 +183,33 @@ const AppNav = ({onBoarded}: any) => {
     stackScreens = (
       <>
         <Stack.Screen
-          name="ChooseCategory"
-          component={ChooseCategory}
+          name="AccountNotVerified"
+          component={AccountNotVerified}
           options={() => options}
         />
         <Stack.Screen
-          name="BuyerAuthStack"
-          component={BuyerAuthStack}
+          name="SignUp"
+          component={SignUp}
           options={() => options}
         />
         <Stack.Screen
-          name="SellerAuthStack"
-          component={SellerAuthStack}
+          name="SignIn"
+          component={SignIn}
+          options={() => options}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={() => options}
+        />
+        <Stack.Screen
+          name="NewPassword"
+          component={NewPassword}
+          options={() => options}
+        />
+        <Stack.Screen
+          name="VerificationCode"
+          component={VerificationCode}
           options={() => options}
         />
       </>

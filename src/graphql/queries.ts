@@ -144,6 +144,7 @@ export const getChatRoom = /* GraphQL */ `query GetChatRoom($id: ID!) {
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3279,6 +3280,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -3634,6 +3636,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3709,6 +3712,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3765,6 +3769,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4148,6 +4153,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4503,6 +4509,7 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -4842,6 +4849,7 @@ export const getNotification = /* GraphQL */ `query GetNotification($id: ID!) {
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -5662,6 +5670,7 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -5758,6 +5767,7 @@ export const listNotifications = /* GraphQL */ `query ListNotifications(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6217,6 +6227,7 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6313,6 +6324,7 @@ export const notificationsByDate = /* GraphQL */ `query NotificationsByDate(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6770,6 +6782,7 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -6866,6 +6879,7 @@ export const notificationsByUserID = /* GraphQL */ `query NotificationsByUserID(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -7395,6 +7409,7 @@ export const getUserChatRoom = /* GraphQL */ `query GetUserChatRoom($id: ID!) {
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7803,6 +7818,7 @@ export const listUserChatRooms = /* GraphQL */ `query ListUserChatRooms(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -7979,6 +7995,7 @@ export const userChatRoomsByChatRoomId = /* GraphQL */ `query UserChatRoomsByCha
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF
@@ -8155,6 +8172,7 @@ export const userChatRoomsByUserId = /* GraphQL */ `query UserChatRoomsByUserId(
         name
         email
         phone_number
+        accountStatus
         enableNotificationOrders
         enableNotificationPromotions
         enableNotificationRFF

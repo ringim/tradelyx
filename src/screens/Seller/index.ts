@@ -1,7 +1,9 @@
 // Auth
 import BusinessAddress from '../Auth/SellerAuth/BusinessAddress';
 import CompleteProfile from '../Auth/SellerAuth/CompleteProfile';
+import AccountSuccessSeller from '../Auth/SellerAuth/AccountSuccessSeller';
 import BusinessDetail from '../Auth/SellerAuth/BusinessDetail';
+import AccountNotVerified from '../Auth/SellerAuth/AccountNotVerified';
 
 // Home
 import Home from './Home/Home';
@@ -109,6 +111,8 @@ import SuccessService7 from './Chat/Replies/SuccessService7';
 
 export {
   Home,
+  AccountNotVerified,
+  AccountSuccessSeller,
   Explore,
   NotificationSetting,
   OrderNotifications,
