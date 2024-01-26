@@ -168,6 +168,7 @@ export const createChatRoom = /* GraphQL */ `mutation CreateChatRoom(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -334,6 +335,7 @@ export const updateChatRoom = /* GraphQL */ `mutation UpdateChatRoom(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -500,6 +502,7 @@ export const deleteChatRoom = /* GraphQL */ `mutation DeleteChatRoom(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2444,6 +2447,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -2799,6 +2803,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2874,6 +2879,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2930,6 +2936,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3314,6 +3321,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -3669,6 +3677,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3744,6 +3753,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3800,6 +3810,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4184,6 +4195,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -4539,6 +4551,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4614,6 +4627,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4670,6 +4684,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -5065,6 +5080,7 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -5404,6 +5420,7 @@ export const createNotification = /* GraphQL */ `mutation CreateNotification(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6222,6 +6239,7 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6561,6 +6579,7 @@ export const updateNotification = /* GraphQL */ `mutation UpdateNotification(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7379,6 +7398,7 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7718,6 +7738,7 @@ export const deleteNotification = /* GraphQL */ `mutation DeleteNotification(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8621,6 +8642,7 @@ export const createUserChatRoom = /* GraphQL */ `mutation CreateUserChatRoom(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -9068,6 +9090,7 @@ export const updateUserChatRoom = /* GraphQL */ `mutation UpdateUserChatRoom(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -9515,6 +9538,7 @@ export const deleteUserChatRoom = /* GraphQL */ `mutation DeleteUserChatRoom(
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF

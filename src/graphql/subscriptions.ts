@@ -195,6 +195,7 @@ export const onCreateChatRoom = /* GraphQL */ `subscription OnCreateChatRoom($fi
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -358,6 +359,7 @@ export const onUpdateChatRoom = /* GraphQL */ `subscription OnUpdateChatRoom($fi
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -521,6 +523,7 @@ export const onDeleteChatRoom = /* GraphQL */ `subscription OnDeleteChatRoom($fi
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2369,6 +2372,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -2724,6 +2728,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2799,6 +2804,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -2855,6 +2861,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3236,6 +3243,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -3591,6 +3599,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3666,6 +3675,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -3722,6 +3732,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4103,6 +4114,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
     name
     email
     phone_number
+    accountStatus
     enableNotificationOrders
     enableNotificationPromotions
     enableNotificationRFF
@@ -4458,6 +4470,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4533,6 +4546,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4589,6 +4603,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser($filter: Mo
           name
           email
           phone_number
+          accountStatus
           enableNotificationOrders
           enableNotificationPromotions
           enableNotificationRFF
@@ -4983,6 +4998,7 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -5322,6 +5338,7 @@ export const onCreateNotification = /* GraphQL */ `subscription OnCreateNotifica
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6139,6 +6156,7 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -6478,6 +6496,7 @@ export const onUpdateNotification = /* GraphQL */ `subscription OnUpdateNotifica
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7295,6 +7314,7 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -7634,6 +7654,7 @@ export const onDeleteNotification = /* GraphQL */ `subscription OnDeleteNotifica
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8536,6 +8557,7 @@ export const onCreateUserChatRoom = /* GraphQL */ `subscription OnCreateUserChat
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -8982,6 +9004,7 @@ export const onUpdateUserChatRoom = /* GraphQL */ `subscription OnUpdateUserChat
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
@@ -9428,6 +9451,7 @@ export const onDeleteUserChatRoom = /* GraphQL */ `subscription OnDeleteUserChat
       name
       email
       phone_number
+      accountStatus
       enableNotificationOrders
       enableNotificationPromotions
       enableNotificationRFF
