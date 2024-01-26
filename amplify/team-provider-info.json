@@ -19,7 +19,7 @@
       "function": {
         "TradelyXPostConfirmation": {
           "deploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
-          "s3Key": "amplify-builds/TradelyXPostConfirmation-6445317766774d433237-build.zip"
+          "s3Key": "amplify-builds/TradelyXPostConfirmation-58306841576a462f734e-build.zip"
         },
         "tradelyx": {},
         "TradelyXChatTriggers": {
@@ -67,7 +67,7 @@
       "function": {
         "TradelyXPostConfirmation": {
           "deploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
-          "s3Key": "amplify-builds/TradelyXPostConfirmation-6445317766774d433237-build.zip"
+          "s3Key": "amplify-builds/TradelyXPostConfirmation-58306841576a462f734e-build.zip"
         },
         "tradelyx": {},
         "TradelyXChatTriggers": {

@@ -3,16 +3,16 @@
 
 const awsmobile = {
     "aws_project_region": "eu-west-1",
-    "aws_appsync_graphqlEndpoint": "https://4iihkv5r6fanhmumcpoutxupgq.appsync-api.eu-west-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://wkfdea3hqnc5lknlhtwtrjr5oy.appsync-api.eu-west-1.amazonaws.com/graphql",
     "aws_appsync_region": "eu-west-1",
     "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-mk4s5vuqffcoljstmul6ksijna",
-    "aws_cognito_identity_pool_id": "eu-west-1:d96634fa-7cd7-4ab9-9a3d-46621de86e25",
+    "aws_appsync_apiKey": "da2-olimf7zinneethu6hxxxr4mgwe",
+    "aws_cognito_identity_pool_id": "eu-west-1:e98bd842-72cb-4743-9248-b3e4ba919f60",
     "aws_cognito_region": "eu-west-1",
-    "aws_user_pools_id": "eu-west-1_61k9j887Z",
-    "aws_user_pools_web_client_id": "ppjr0m5puo18vj5062ju4bcps",
+    "aws_user_pools_id": "eu-west-1_PoJkp1ySP",
+    "aws_user_pools_web_client_id": "3ms40opm94l93aa4gaa7qpk5ju",
     "oauth": {
-        "domain": "tradelyx6020b379-6020b379-staging.auth.eu-west-1.amazoncognito.com",
+        "domain": "tradelyx6020b379-6020b379-prod.auth.eu-west-1.amazoncognito.com",
         "scope": [
             "phone",
             "email",
@@ -49,7 +49,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "tradelyx-media150432-staging",
+    "aws_user_files_s3_bucket": "tradelyx-media215500-prod",
     "aws_user_files_s3_bucket_region": "eu-west-1"
 };
 

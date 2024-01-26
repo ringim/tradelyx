@@ -2,12 +2,13 @@ import React from 'react';
 import {Easing} from 'react-native';
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 
-import SellerStack from './SellerStack';
 import {
   BusinessAddress,
   BusinessDetail,
   CompleteProfile,
+  AccountSuccessSeller,
 } from '../../../screens/Seller';
+import AuthStack from '../AuthStack';
 
 const Stack = createSharedElementStackNavigator();
 const options: any = {
@@ -19,7 +20,7 @@ const options: any = {
     },
     close: {
       animation: 'timing',
-      config: {duration: 300, easing: Easing.inOut(Easing.ease)},
+      config: {durationpna: 300, easing: Easing.inOut(Easing.ease)},
     },
   },
   cardStyleInterpolator: ({current: {progress}}: any) => {
@@ -55,10 +56,12 @@ const SellerAuthStack = () => {
         options={() => options}
       />
       <Stack.Screen
-        name="Home"
-        component={SellerStack}
+        name="AccountSuccessSeller"
+        component={AccountSuccessSeller}
         options={() => options}
       />
+
+      <AuthStack />
     </Stack.Navigator>
   );
 };
