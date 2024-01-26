@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import {FlashList} from '@shopify/flash-list';
+import {FlashList, useBlankAreaTracker} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useMutation, useQuery} from '@apollo/client';
 import FastImage from 'react-native-fast-image';
@@ -34,8 +34,20 @@ const BNotifications = constants?.notifyTypes;
 const Notifications = () => {
   const {userID} = useAuthContext();
   const navigation = useNavigation<HomeStackNavigatorParamList>();
+  const ref = useRef(null);
 
   const [fetchingMore, setFetchingMore] = useState<any>(false);
+
+  const [blankAreaTrackerResult, onBlankArea] = useBlankAreaTracker(ref);
+  const onLoadListener = useCallback(({elapsedTimeInMs}: any) => {
+    return elapsedTimeInMs;
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      blankAreaTrackerResult;
+    };
+  }, []);
 
   // LIST NOTIFICATIONS
   const {loading, data, refetch, fetchMore} = useQuery<
@@ -123,6 +135,8 @@ const Notifications = () => {
           data={showNotifications}
           keyExtractor={item => `${item?.id}`}
           showsVerticalScrollIndicator={false}
+          onLoad={onLoadListener}
+          onBlankArea={onBlankArea}
           estimatedItemSize={20000}
           getItemType={({item}: any) => {
             return item;
