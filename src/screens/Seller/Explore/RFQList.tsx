@@ -225,7 +225,7 @@ const RFFList = () => {
             marginBottom: SIZES.base,
             marginTop: SIZES.radius,
           }}>
-          <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>Latest RFFs</Text>
+          <Text style={{...FONTS.h5, color: COLORS.Neutral1}}>Latest Request for Quotations (RFQ)</Text>
         </View>
       </View>
       <FlashList

@@ -362,7 +362,7 @@ const OfferDetail = () => {
           />
 
           <TextIconButton
-            label={'Coming Soon'}
+            label={'Buy (Coming Soon!!!)'}
             labelStyle={{
               color: COLORS.primary1,
               ...FONTS.h4,
