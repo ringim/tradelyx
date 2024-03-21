@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "api": {
+      "tradelyx": [
+        "Query"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -1,0 +1,615 @@
+type Promo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  promoImage: String!
+  title: String!
+  description: String!
+  url: String
+  bgColor: String
+}
+
+type ChatRoom @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String!
+    @index(
+      name: "chatRoomByDate"
+      queryField: "chatRoomByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  name: String
+  imageUri: String
+  lastMessage: Message @hasOne
+
+  Messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
+  users: [User] @manyToMany(relationName: "UserChatRoom")
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+}
+
+# enum RequestStatus {
+#   REPLY
+#   NEW_REQUEST
+# }
+
+type Message @model @auth(rules: [{allow: public}]) {
+  text: String
+  createdAt: AWSDateTime!
+  readAt: AWSTimestamp
+  SType: String!
+    @index(
+      name: "messagesByDate"
+      queryField: "messagesByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  rffID: ID
+  rfqID: ID
+  rfqType: String
+  rffType: String
+  sellOfferID: ID
+  productID: ID
+  requestID: ID
+  requestTitle: String
+  requestQty: Int
+  packageType: String
+  unit: String
+  description: String
+  serviceType: serviceType
+  requestPrice: String
+  serviceImage: String
+  requestFrom: String
+  requestFromImg: String
+  requestTo: String
+  requestToImg: String
+  status: MessageStatus
+  image: String
+  file: String
+  replyToMessageID: ID
+  title: String
+
+  forUserID: ID
+  userID: ID! @index(name: "byUser")
+  chatroomID: ID! @index(name: "byChatRoom")
+}
+
+enum OrderStatus {
+  ORDER_ACCEPTED
+  ORDER_RECEIVED
+  REQUEST_REVIEW
+  DELIVERY_UPDATE
+  COMPLETE
+  CANCELED
+  PENDING
+  DISPUTE_RESOLUTION
+  RFF_REPLY_SENT
+  RFQ_REPLY_SENT
+  ORDER_DELIVERED
+  ORDER_SHIPPED
+  IN_TRANSIT
+  PAYMENT
+  ORDER_ARRIVED
+}
+
+enum OrderType {
+  PENDING
+  IN_PROGRESS
+  COMPLETE
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "ordersByDate"
+      queryField: "ordersByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  requestID: String
+  orderType: OrderType
+  orderStatus: OrderStatus
+  totalAmount: Float
+  orderDate: Float
+  paidThrough: String
+  paymentResponse: String
+
+  userID: ID! @index(name: "byUser")
+}
+
+enum RFFTYPE {
+  AIR
+  OCEAN
+  LAND
+}
+
+enum RFQTYPE {
+  STANDARD
+  DOMESTIC
+  INTERNATIONAL
+}
+
+type SellOffer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "sellOffersByDate"
+      queryField: "sellOffersByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  sellOfferID: String!
+  requestCategory: String
+  title: String
+  tags: [String]
+  productName: String
+  description: String
+  packageDesc: String
+  sellOfferImage: String
+  image: String
+  images: [String]
+  rfqType: String
+  packageType: String
+  placeOrigin: String
+  landmark: String
+  unit: String
+  deliveryDate: AWSDate
+  qtyMeasure: Int
+  basePrice: String
+  fobPrice: String
+  paymentType: String
+  paymentMethod: String
+  offerValidity: AWSDate
+  forUserID: String
+  agreement: [String]
+
+  userID: ID! @index(name: "byUser")
+  SellOfferReplies: [SellOfferReply]
+    @hasMany(indexName: "bySellOffer", fields: ["id"])
+}
+
+type SellOfferReply @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "sellOffersByDateRely"
+      queryField: "sellOffersByDateRely"
+      sortKeyFields: ["createdAt"]
+    )
+  requestCategory: String
+  title: String
+  tags: [String]
+  productName: String
+  description: String
+  packageDesc: String
+  sellOfferID: String
+  sellOfferImage: String
+  image: String
+  images: [String]
+  rfqType: String
+  packageType: String
+  placeOrigin: String
+  landmark: String
+  unit: String
+  deliveryDate: AWSDate
+  qtyMeasure: Int
+  basePrice: String
+  fobPrice: String
+  paymentType: String
+  paymentMethod: String
+  offerValidity: AWSDate
+  forUserID: String
+  userID: String
+  agreement: [String]
+
+  SellOffer: ID! @index(name: "bySellOffer")
+}
+
+type RFQ @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "rfqByDate"
+      queryField: "rfqByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  rfqNo: String
+  rfqType: RFQTYPE
+  title: String
+  requestCategory: String
+  description: String
+  documents: [String]
+  productName: String
+  tags: [String]
+  qty: Int
+  buyFrequency: String
+  budget: String
+  placeOrigin: String
+  placeOriginFlag: String
+  placeOriginName: String
+  placeOriginCountry: String
+  landmark: String
+  unit: String
+  incoterms: String
+  placeDestinationName: String
+  placeDestination: String
+  placeDestinationFlag: String
+  destinationCountry: String
+  deliveryPeriod: AWSDate
+  expiryDate: AWSDate
+  paymentType: String
+  paymentMethod: String
+
+  userID: ID! @index(name: "byUser")
+  RFQReplies: [RFQReply] @hasMany(indexName: "byRFQ", fields: ["id"])
+}
+
+type RFQReply @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "rfqByDateReply"
+      queryField: "rfqByDateReply"
+      sortKeyFields: ["createdAt"]
+    )
+  rfqNo: String
+  rfqType: RFQTYPE
+  title: String
+  requestCategory: String
+  description: String
+  documents: [String]
+  productName: String
+  tags: [String]
+  qty: Int
+  buyFrequency: String
+  budget: String
+  price: String
+  placeOrigin: String
+  placeOriginFlag: String
+  placeOriginName: String
+  landmark: String
+  unit: String
+  incoterms: String
+  placeDestinationName: String
+  placeOriginCountry: String
+  placeDestination: String
+  placeDestinationFlag: String
+  destinationCountry: String
+  deliveryPeriod: AWSDate
+  expiryDate: AWSDate
+  paymentType: String
+  paymentMethod: String
+  forUserID: String
+  userID: String
+  statusText: String
+  agreement: [String]
+
+  RFQ: ID! @index(name: "byRFQ")
+}
+
+enum RFF_REQUEST_TYPE {
+  QUOTE_REQUEST
+  AGENT_REQUEST
+}
+
+type RFF @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "rffByDate"
+      queryField: "rffByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  rffNo: String
+  rffType: RFFTYPE
+  deliveryPeriod: String
+  requestCategory: String
+  rffRequestType: String
+  productName: String
+  handling: String
+  budget: String
+  loadDate: AWSDate
+  weight: Float
+  qty: Int
+  length: Float
+  width: Float
+  height: Float
+  packageType: String
+  placeOrigin: String
+  placeOriginFlag: String
+  placeOriginName: String
+  placeOriginCountry: String
+  placeDestinationName: String
+  placeDestinationFlag: String
+  destinationCountry: String
+  placeDestination: String
+  relatedServices: [String]
+  document: [String]
+  notes: String
+  containerDetails: String
+  containerSize: String
+  containerType: String
+  requestType: String
+
+  userID: ID! @index(name: "byUser")
+  RFFReplies: [RFFReply] @hasMany(indexName: "byRFF", fields: ["id"])
+}
+
+type RFFReply @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "rffByDateRely"
+      queryField: "rffByDateRely"
+      sortKeyFields: ["createdAt"]
+    )
+  rffNo: String
+  rffType: RFFTYPE
+  deliveryPeriod: String
+  requestCategory: String
+  rffRequestType: String
+  productName: String
+  handling: String
+  budget: String
+  price: String
+  loadDate: AWSDate
+  weight: Float
+  qty: Int
+  length: Float
+  width: Float
+  height: Float
+  packageType: String
+  placeOrigin: String
+  placeOriginFlag: String
+  placeOriginName: String
+  placeOriginCountry: String
+  placeDestinationName: String
+  placeDestinationFlag: String
+  paymentType: String
+  paymentMethod: String
+  destinationCountry: String
+  placeDestination: String
+  relatedServices: [String]
+  document: [String]
+  notes: String
+  unit: String
+  containerDetails: String
+  containerSize: String
+  containerType: String
+  requestType: String
+  forUserID: String
+  userID: String
+  statusText: String
+  agreement: [String]
+
+  RFF: ID! @index(name: "byRFF")
+}
+
+type Review @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "reviewByDate"
+      queryField: "reviewByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  name: String
+  rating: Float
+  comment: String
+  forUserID: String
+
+  userID: ID! @index(name: "byUser")
+  productID: ID! @index(name: "byProduct")
+}
+
+enum serviceType {
+  RFF
+  RFF_REPLY
+  RFQ
+  RFQ_REPLY
+  PRODUCTS
+  SELLOFFERS
+  SELLOFFERS_REPLY
+  CUSTOM_SELLOFFER
+  CUSTOM_SELLOFFER_REPLY
+}
+
+type Wishlist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "WishlistByDate"
+      queryField: "WishlistByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  productImage: String
+  title: String
+  serviceType: serviceType
+  supplyCapacity: String
+  minOrderQty: String
+  productID: String
+  product: Product @hasOne
+
+  userID: ID! @index(name: "byUser")
+}
+
+type Product @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "productByDate"
+      queryField: "productByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  productID: String!
+  title: String
+  productImage: String
+  image: String
+  images: [String]
+  description: String
+  productSpec: String
+  rating: Float
+  tags: [String]
+  productCert: String
+  landmark: String
+  supplyCapacity: String
+  unit: String
+  minOrderQty: String
+  packageType: String
+  quantity: Int
+  noOfReviews: Int
+  transportMode: String
+  placeOrigin: String
+  dateAvailable: AWSDate
+  productDocs: [String]
+  productCertDocs: [String]
+  category: String
+  commodityCategory: String
+
+  userID: ID! @index(name: "byUser")
+  Reviews: [Review] @hasMany(indexName: "byProduct", fields: ["id"])
+}
+
+enum AccountCategoryType {
+  BUYER
+  SELLER
+}
+
+enum IdentificationType {
+  DRIVER_LICENSE
+  NATIONAL_IDENTIFICATION_NUMBER
+  VOTERS_CARD
+  INTERNATIONAL_PASSPORT
+}
+
+enum AccountType {
+  INDIVIDUAL
+  BUSINESS
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  email: String
+  phone_number: String
+  accountStatus: Boolean
+  enableNotificationOrders: Boolean
+  enableNotificationPromotions: Boolean
+  enableNotificationRFF: Boolean
+  enableNotificationRFQ: Boolean
+  enableNotificationSellOffer: Boolean
+  rating: Float
+  accountType: String
+  lastOnlineAt: AWSTimestamp
+  lat: Float
+  lng: Float
+  ledgerBalance: Float
+  address: String
+  city: String
+  state: String
+  zipCode: String
+  lga: String
+  website: String
+  incorporateDate: String
+  rcNumber: String
+  totalOrders: Int
+  level: String
+  identification: String
+  identificationNumber: String
+  identityDocs: [String]
+  keyProduct: [String]
+  country: String
+  inviteCode: String
+  title: String
+  logo: String
+  backgroundImage: String
+  images: [String]
+  businessType: [String]
+  certifications: String
+  certsDoc: [String]
+  mainMarkets: [String]
+  memberShipType: String
+  sellerLevel: String
+  estRevenue: Float
+  totalStaff: String
+  responseTime: String
+  languages: [String]
+  legalRep: String
+  overview: String
+  activeOrder: Float
+  Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
+  Products: [Product] @hasMany(indexName: "byUser", fields: ["id"])
+  Reviews: [Review] @hasMany(indexName: "byUser", fields: ["id"])
+  RFQS: [RFQ] @hasMany(indexName: "byUser", fields: ["id"])
+  RFFS: [RFF] @hasMany(indexName: "byUser", fields: ["id"])
+  SellOffers: [SellOffer] @hasMany(indexName: "byUser", fields: ["id"])
+  Wishlists: [Wishlist] @hasMany(indexName: "byUser", fields: ["id"])
+  Messages: [Message] @hasMany(indexName: "byUser", fields: ["id"])
+  ChatRooms: [ChatRoom] @manyToMany(relationName: "UserChatRoom")
+
+  fcmToken: String
+  Notifications: [Notification] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+enum NotificationType {
+  PRODUCT
+  SELLOFFER
+  SELLOFFERS_REPLY
+  CUSTOM_SELLOFFER
+  RFF
+  RFF_REPLY
+  RFQ
+  RFQ_REPLY
+  MESSAGE
+  ORDER
+  PROMOTIONS
+}
+
+type Notification @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  SType: String
+    @index(
+      name: "notificationsByDate"
+      queryField: "notificationsByDate"
+      sortKeyFields: ["createdAt"]
+    )
+  type: NotificationType!
+  readAt: AWSTimestamp!
+  title: String
+  description: String
+  requestType: String
+  chatroomID: String
+
+  # The user we have to notify
+  userID: ID @index(name: "byUser")
+  User: User @belongsTo(fields: ["userID"])
+
+  # The user who triggered the notification
+  actorID: ID
+  Actor: User @belongsTo(fields: ["actorID"])
+
+  SellOffer: SellOffer @hasOne
+  SellOfferReply: SellOfferReply @hasOne
+  RFF: RFF @hasOne
+  RFFReply: RFFReply @hasOne
+  RFQ: RFQ @hasOne
+  RFQReply: RFQReply @hasOne
+  Product: Product @hasOne
+  Order: Order @hasOne
+}
+
+type Subscription {
+  onCreateMessageByChatRoomID(chatroomID: ID!): Message
+    @aws_subscribe(mutations: ["createMessage"])
+}

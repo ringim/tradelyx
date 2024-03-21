@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "tradelyx",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2024-01-23T12:20:35.798Z"
+}

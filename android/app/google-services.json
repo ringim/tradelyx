@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "585584759067",
+    "project_id": "tradely-x-5d910",
+    "storage_bucket": "tradely-x-5d910.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585584759067:android:6d30695c135d82be2e83be",
+        "android_client_info": {
+          "package_name": "com.tradelyx.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRGdABaqiWoze5mbPpkIeYMwjAhKeCU4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

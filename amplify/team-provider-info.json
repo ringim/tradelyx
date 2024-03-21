@@ -1,0 +1,134 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tradelyx-staging-150432-authRole",
+      "UnauthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-staging-150432-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-staging-150432-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
+      "UnauthRoleName": "amplify-tradelyx-staging-150432-unauthRole",
+      "StackName": "amplify-tradelyx-staging-150432",
+      "StackId": "arn:aws:cloudformation:eu-west-1:016887497077:stack/amplify-tradelyx-staging-150432/0d3b6240-b6dc-11ee-b58a-06708ec7e901",
+      "AmplifyAppId": "ds0rdbnjtlkgo",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-tradelyx-staging-150432-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "TradelyX": {}
+      },
+      "function": {
+        "TradelyXPostConfirmation": {
+          "deploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
+          "s3Key": "amplify-builds/TradelyXPostConfirmation-58306841576a462f734e-build.zip"
+        },
+        "tradelyx": {},
+        "TradelyXChatTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
+          "s3Key": "amplify-builds/TradelyXChatTriggers-646234346f5654767750-build.zip"
+        },
+        "TradelyXNotifyTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
+          "s3Key": "amplify-builds/TradelyXNotifyTriggers-71616c35676f642f6e78-build.zip"
+        },
+        "TradelyXSellerPostTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
+          "s3Key": "amplify-builds/TradelyXSellerPostTriggers-74723171774471717257-build.zip"
+        },
+        "TradelyXUserPostTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-staging-150432-deployment",
+          "s3Key": "amplify-builds/TradelyXUserPostTriggers-744b432f5a4954795363-build.zip"
+        }
+      },
+      "api": {
+        "tradelyx": {}
+      },
+      "storage": {
+        "TradelyXFileStorage": {}
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tradelyx-dev-212058-authRole",
+      "UnauthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-dev-212058-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-dev-212058-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
+      "UnauthRoleName": "amplify-tradelyx-dev-212058-unauthRole",
+      "StackName": "amplify-tradelyx-dev-212058",
+      "StackId": "arn:aws:cloudformation:eu-west-1:016887497077:stack/amplify-tradelyx-dev-212058/607bc6d0-b708-11ee-993c-0617c6b7861d",
+      "AmplifyAppId": "ds0rdbnjtlkgo",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-tradelyx-dev-212058-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "TradelyX": {}
+      },
+      "function": {
+        "TradelyXPostConfirmation": {
+          "deploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
+          "s3Key": "amplify-builds/TradelyXPostConfirmation-58306841576a462f734e-build.zip"
+        },
+        "tradelyx": {},
+        "TradelyXChatTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
+          "s3Key": "amplify-builds/TradelyXChatTriggers-7355326c3357334c7270-build.zip"
+        },
+        "TradelyXUserPostTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
+          "s3Key": "amplify-builds/TradelyXUserPostTriggers-4e5a624d3750396a646e-build.zip"
+        },
+        "TradelyXSellerPostTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
+          "s3Key": "amplify-builds/TradelyXSellerPostTriggers-2b3542653136474d7833-build.zip"
+        },
+        "TradelyXNotifyTriggers": {
+          "deploymentBucketName": "amplify-tradelyx-dev-212058-deployment",
+          "s3Key": "amplify-builds/TradelyXNotifyTriggers-45396c4f31653643354a-build.zip"
+        }
+      },
+      "api": {
+        "tradelyx": {}
+      },
+      "storage": {
+        "TradelyXFileStorage": {}
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tradelyx-prod-215500-authRole",
+      "UnauthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-prod-215500-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::016887497077:role/amplify-tradelyx-prod-215500-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
+      "UnauthRoleName": "amplify-tradelyx-prod-215500-unauthRole",
+      "StackName": "amplify-tradelyx-prod-215500",
+      "StackId": "arn:aws:cloudformation:eu-west-1:016887497077:stack/amplify-tradelyx-prod-215500/3b1ae420-b70d-11ee-9edd-063c3ff1db7d",
+      "AmplifyAppId": "ds0rdbnjtlkgo",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-tradelyx-prod-215500-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "TradelyX": {}
+      },
+      "function": {
+        "TradelyXPostConfirmation": {
+          "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
+          "s3Key": "amplify-builds/TradelyXPostConfirmation-58306841576a462f734e-build.zip"
+        },
+        "tradelyx": {},
+        "TradelyXChatNotify": {
+          "deploymentBucketName": "amplify-tradelyx-prod-215500-deployment",
+          "s3Key": "amplify-builds/TradelyXChatNotify-615262324f576e67754a-build.zip"
+        }
+      },
+      "api": {
+        "tradelyx": {}
+      },
+      "storage": {
+        "TradelyXFileStorage": {}
+      }
+    }
+  }
+}
