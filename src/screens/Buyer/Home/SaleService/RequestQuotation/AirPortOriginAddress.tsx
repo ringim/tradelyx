@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {ALERT_TYPE, Toast, Root} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
-import LottieView from 'lottie-react-native';
 
 import {FONTS, SIZES, COLORS} from '../../../../../constants';
 import {AddressPickup, Header, TextButton} from '../../../../../components';
@@ -120,9 +119,7 @@ const AirPortOriginAddress = () => {
               fontSize: SIZES.body2,
             },
             listView: {
-              position: 'absolute',
-              top: 50,
-              height: 300,
+              height: '80%',
             },
             autocompleteContainer: {
               position: 'absolute',
@@ -147,7 +144,8 @@ const AirPortOriginAddress = () => {
           marginHorizontal: SIZES.radius,
           backgroundColor: COLORS.primary1,
           position: 'absolute',
-          marginTop:SIZES.height > 700 ? SIZES.padding * 29 : SIZES.padding * 23,
+          marginTop:
+            SIZES.height > 700 ? SIZES.padding * 33 : SIZES.padding * 23,
           alignSelf: 'center',
           width: 270,
         }}

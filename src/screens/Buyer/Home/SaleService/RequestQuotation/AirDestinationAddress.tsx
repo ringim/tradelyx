@@ -120,9 +120,7 @@ const AirDestinationAddress = () => {
               fontSize: SIZES.body2,
             },
             listView: {
-              position: 'absolute',
-              top: 50,
-              height: 300,
+              height: '80%',
             },
             autocompleteContainer: {
               position: 'absolute',
@@ -147,7 +145,8 @@ const AirDestinationAddress = () => {
           marginHorizontal: SIZES.radius,
           backgroundColor: COLORS.primary1,
           position: 'absolute',
-          marginTop:SIZES.height > 700 ? SIZES.padding * 29 : SIZES.padding * 23,
+          marginTop:
+            SIZES.height > 700 ? SIZES.padding * 33 : SIZES.padding * 23,
           alignSelf: 'center',
           width: 270,
         }}

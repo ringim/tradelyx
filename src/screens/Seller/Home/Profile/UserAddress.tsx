@@ -1,10 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Platform, Text, View} from 'react-native';
+import {Platform, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {useNavigation} from '@react-navigation/native';
 import {ALERT_TYPE, Root, Toast} from 'react-native-alert-notification';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LottieView from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 
 import {Header} from '../../../../components';
@@ -14,7 +13,6 @@ import PlaceRow from '../../../../components/Others/PlaceRow';
 const UserAddress = () => {
   const navigation = useNavigation<any>();
 
-  const animationRef = useRef<any>(null);
   const ref: any = useRef<any>(null);
 
   const [address, setAddress] = useState<any>(null);
@@ -75,7 +73,6 @@ const UserAddress = () => {
           <GooglePlacesAutocomplete
             ref={ref}
             placeholder="Search for a new address"
-            minLength={4}
             nearbyPlacesAPI="GooglePlacesSearch"
             listViewDisplayed="auto"
             debounce={400}
@@ -145,9 +142,7 @@ const UserAddress = () => {
                 fontSize: SIZES.body2,
               },
               listView: {
-                position: 'absolute',
-                top: 50,
-                height: 300,
+                height: '80%',
               },
               autocompleteContainer: {
                 position: 'absolute',
@@ -174,46 +169,9 @@ const UserAddress = () => {
             }}
           />
         </View>
-
-        <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            alignItems: 'center',
-            marginTop: SIZES.padding * 21,
-          }}>
-          <LottieView
-            style={{
-              width: 150,
-              alignSelf: 'center',
-            }}
-            autoPlay
-            loop
-            ref={animationRef}
-            source={require('../../../../assets/json/location.json')}
-          />
-
-          <Text
-            style={{
-              color: COLORS.Neutral1,
-              textAlign: 'center',
-              ...FONTS.body2,
-              top: -20,
-            }}>
-            We’ll show you a list of nearby addresses.
-          </Text>
-        </View>
       </View>
     </Root>
   );
 };
-
-function mapStateToProps(state: any) {
-  return {
-    appTheme: state.themeReducer.appTheme,
-    error: state.error,
-  };
-}
 
 export default UserAddress;

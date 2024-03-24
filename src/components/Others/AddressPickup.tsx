@@ -28,7 +28,6 @@ const AddressPickup = ({
       <View style={{marginTop: SIZES.margin, marginHorizontal: SIZES.radius}}>
         <GooglePlacesAutocomplete
           placeholder={placheholderText}
-          minLength={4}
           autoFillOnNotFound={true}
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={400}

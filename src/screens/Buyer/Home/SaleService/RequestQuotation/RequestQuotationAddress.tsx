@@ -1,10 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
-import {
-  ALERT_TYPE,
-  Toast,
-  Root,
-} from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast, Root} from 'react-native-alert-notification';
 import {useNavigation} from '@react-navigation/native';
 
 import {SIZES, COLORS} from '../../../../../constants';
@@ -77,7 +73,7 @@ const RequestQuotationAddress = () => {
 
   useEffect(() => {
     let unmounted = true;
-   unmounted && requestUserLocation();
+    unmounted && requestUserLocation();
     return () => {
       unmounted = false;
     };
@@ -123,9 +119,7 @@ const RequestQuotationAddress = () => {
               fontSize: SIZES.body2,
             },
             listView: {
-              position: 'absolute',
-              top: 50,
-              height: 300,
+              height: '80%',
             },
             autocompleteContainer: {
               position: 'absolute',
@@ -148,7 +142,8 @@ const RequestQuotationAddress = () => {
         buttonContainerStyle={{
           backgroundColor: COLORS.primary1,
           position: 'absolute',
-          marginTop:SIZES.height > 700 ? SIZES.padding * 29 : SIZES.padding * 23,
+          marginTop:
+            SIZES.height > 700 ? SIZES.padding * 33 : SIZES.padding * 23,
         }}
         onPress={checKNavigation}
       />

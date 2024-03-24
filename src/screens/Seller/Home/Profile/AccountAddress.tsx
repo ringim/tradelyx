@@ -137,9 +137,7 @@ const AccountAddress = () => {
               fontSize: SIZES.body2,
             },
             listView: {
-              position: 'absolute',
-              top: 50,
-              height: 300,
+              height: '80%',
             },
             autocompleteContainer: {
               position: 'absolute',
@@ -155,35 +153,6 @@ const AccountAddress = () => {
           }}
         />
       </View>
-      <View
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          alignItems: 'center',
-          marginTop: SIZES.padding * 21,
-        }}>
-        <LottieView
-          style={{
-            width: 150,
-            alignSelf: 'center',
-          }}
-          autoPlay
-          loop
-          ref={animationRef}
-          source={require('../../../../assets/json/location.json')}
-        />
-
-        <Text
-          style={{
-            color: COLORS.Neutral1,
-            textAlign: 'center',
-            ...FONTS.body2,
-            top: -20,
-          }}>
-          We’ll show you a list of nearby addresses.
-        </Text>
-      </View>
 
       {/* Navigation Button */}
       <TextButton
@@ -193,7 +162,8 @@ const AccountAddress = () => {
           marginHorizontal: SIZES.radius,
           backgroundColor: COLORS.primary1,
           position: 'absolute',
-          marginTop:SIZES.height > 700 ? SIZES.padding * 29 : SIZES.padding * 23,
+          marginTop:
+            SIZES.height > 700 ? SIZES.padding * 33 : SIZES.padding * 23,
           alignSelf: 'center',
           width: 270,
         }}
